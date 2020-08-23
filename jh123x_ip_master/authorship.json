@@ -1,0 +1,4686 @@
+[
+  {
+    "path": "src/main/java/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.function.Function;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public enum Command {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //The main State of tasks"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    TODO(Todo::parseCommand),"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    EVENT(Event::parseCommand),"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    DEADLINE(Deadline::parseCommand);"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Create a variable to store the Function"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    protected final Function\u003cString, Task\u003e commandParser;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Constructor for the function"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    Command(final Function\u003cString, Task\u003e commandParser) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        this.commandParser \u003d commandParser;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Get the task given description"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public Task createTask(final String description) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return commandParser.apply(description);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 24
+    }
+  },
+  {
+    "path": "src/main/java/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.regex.Matcher;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.regex.Pattern;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Store the variables"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private final String at;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private static final Pattern DATEMATCH \u003d"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            Pattern.compile(\"^(.*) (/by) (.*)$\");"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Constructor for the event class"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public Deadline(final String description, final String by) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Call the superclass constructor"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Store the at variable"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        at \u003d by;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Getter for the date of the"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String getDate() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Return the date"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return this.at;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public static Task parseCommand(final String args) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Create the matcher"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        Matcher matcher \u003d DATEMATCH.matcher(args);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Check for matches"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        matcher.find();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Get the date and the name"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String name \u003d matcher.group(1);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String date \u003d matcher.group(3);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Pass the 2 arguments into the function"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return new Deadline(name, date);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return \"[D]\""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + super.toString()"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + String.format(\" (by: %s)\", this.getDate());"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 49
+    }
+  },
+  {
+    "path": "src/main/java/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.regex.Matcher;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.regex.Pattern;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Store the variables"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private final String at;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private static final Pattern DATEMATCH \u003d"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            Pattern.compile(\"^(.*) (/at) (.*)$\");"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Constructor for the event class"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public Event(final String description, final String by) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Call the superclass constructor"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Store the at variable"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        at \u003d by;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Getter for the date of the"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String getDate() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Return the date"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return this.at;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public static Task parseCommand(final String args) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Create the matcher"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        Matcher matcher \u003d DATEMATCH.matcher(args);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Check for matches"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        matcher.find();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Get the date and the name"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String name \u003d matcher.group(1);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String date \u003d matcher.group(3);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Pass the 2 arguments into the function"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return new Event(name, date);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return \"[E]\""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + super.toString()"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + String.format(\" (at: %s)\", this.getDate());"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 49
+    }
+  },
+  {
+    "path": "src/main/java/ExceptionType.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public enum ExceptionType {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    NO_ARGUMENTS_SUPPLIED(\"No arguments supplied for %s\"),"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    INVALID_ARGUMENT(\"Invalid value of %s with \u0027%s\u0027\"),"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    INVALID_NUMBER(\"\u0027%s\u0027 is not a valid number\"),"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    INVALID_COMMAND(\"Invalid command \u0027%s\u0027\");"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Store the error message"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private final String errorMessage;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    ExceptionType(String errorMessage) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Store the error message"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        this.errorMessage \u003d errorMessage;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String getMessage(String inputString, String inputArguments) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Return the string formatted error message"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return String.format(this.errorMessage, inputString, inputArguments);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String getMessage(String inputString) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Return the formatted error message"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return String.format(this.errorMessage, inputString);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 28
+    }
+  },
+  {
+    "path": "src/main/java/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public abstract class Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Store the messages"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    private final String message;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Boolean to check if task is completed"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private boolean completed;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Constructor for Task"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public Task(final String description) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Store the message"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        this.message \u003d description;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Mark the current task as not done"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        this.markUnDone();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public String getMessage() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Return the message"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        return this.message;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public boolean isDone() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //returns true if the task is done"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return this.completed;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public void markDone() {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Mark the task as complete"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        this.completed \u003d true; //mark the task as done"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public void markUnDone() {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Mark the test as not done"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        this.completed \u003d false; //mark the task as undone"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Get the statusIcon based on state"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return (this.isDone() ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Convert the object to string"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return String.format(\"[%s] %s\","
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                this.getStatusIcon(),"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                this.getMessage());"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 49,
+      "-": 9
+    }
+  },
+  {
+    "path": "src/main/java/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    //Store the internal list"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private final ArrayList\u003cTask\u003e list;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public TaskList() {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Create a new arraylist to store the tasks"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        this.list \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public void displayContent() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Iterate through the list of tasks"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        for (int i \u003d 0; i \u003c this.list.size(); ++i) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "            //Print the index and the message of the task"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            System.out.printf(\"%d.%s%n\", i + 1, this.get(i));"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public int size() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Get the size of the list"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return this.list.size();"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public boolean markDone(final int index) {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Check if the index is valid"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        if (index \u003c this.list.size() \u0026\u0026 index \u003e\u003d 0) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Mark the task at index as done"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            this.get(index).markDone();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Return true if operation is successful"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Otherwise operation will fail"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public boolean remove(final int index) {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Check if the index is valid"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        if (index \u003c this.list.size() \u0026\u0026 index \u003e\u003d 0) {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Remove the task at index"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            this.list.remove(index);"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Return true if operation is successful"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Otherwise operation will fail"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public Task get(final int index) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Return the index of the arraylist"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        return this.list.get(index);"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public void add(final Task task) {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Add the task to the list"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        this.list.add(task);"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 43,
+      "-": 35
+    }
+  },
+  {
+    "path": "src/main/java/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public class Todo extends Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Call the constructor"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public Todo(final String description) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Call the superclass constructor"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public static Todo parseCommand(final String args) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return new Todo(args);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 19
+    }
+  },
+  {
+    "path": "src/main/java/UI.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public class UI {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    // Create the scanner object"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private final Scanner scanner;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public UI() {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Create a new scanner object"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        scanner \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String wrapper(final String message) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Wrapper when printing the error message"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return \"Heh, you can\u0027t even type in a correct command\\n\""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + message"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"\\nI\u0027ll give u a pity tip\\n\""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"Use \u0027help\u0027 for more information\";"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public void helpMessage() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        System.out.println(\"Heh I guess I could help an insect like you:\\n\""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"- help                      : Get help for the commands\\n\""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"- todo (name)               : Adds a todo to the list\\n\""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"- event (name) /at (date)   : Adds an event at date\\n\""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"- deadline (name) /by (date): \""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"Adds a deadline which expires by date\\n\""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"- delete (number)           : Removes a todo from the list\\n\""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        );"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public String getInput() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Declare type"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String input;"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        // Take in input"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        input \u003d this.scanner.nextLine();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Return the input"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return input;"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public void printEnd() {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        // Print the end message"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        showLine();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        System.out.println(\"Clearly you were not worth my time.\\n\");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        showLine();"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public void printIntro() {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        // Print the intro messages"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Logo for the mascot"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String logo \u003d \"  _    _ _ _                   \\n\""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \" | |  | | | |                  \\n\""
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \" | |  | | | |_ _ __ ___  _ __  \\n\""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \" | |  | | | __| \u0027__/ _ \\\\| \u0027_ \\\\ \\n\""
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \" | |__| | | |_| | | (_) | | | |\\n\""
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"  \\\\____/|_|\\\\__|_|  \\\\___/|_| |_|\\n\";"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Print the intro"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        System.out.println(logo);"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        showLine();"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        System.out.println(\"Hello lesser being, I am Ultron\\n\""
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"What do you want?\\n\");"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        showLine();"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public void showLine() {"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        System.out.println(\"_______________________________\""
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                + \"_____________________________\\n\");"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 74
+    }
+  },
+  {
+    "path": "src/main/java/Ultron.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.regex.Matcher;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "import java.util.regex.Pattern;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public class Ultron {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Task list to store the tasks"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private final TaskList taskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Create a UI class"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private UI ui;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    //Get the pattern for the regex for parsing the command"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private final Pattern pattern \u003d Pattern.compile(\"(^\\\\s?\\\\w+\\\\b) ?(.*)?$\");"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public Ultron() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Create a new task list"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        taskList \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Create new instance of UI"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        ui \u003d new UI();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private int parseInteger(final String args) throws UltronException {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Catch any errors in the number"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Get the index of the items"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            return Integer.parseInt(args) - 1;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        } catch (NumberFormatException e) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Throw a new Ultron exception"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            throw new UltronException(args, ExceptionType.INVALID_NUMBER);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    private boolean checkInput(final String input) throws UltronException {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Checks if the user wants to quit"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Use regex to get the grp"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        Matcher inputs \u003d this.pattern.matcher(input);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Find the items in the group"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        if (!inputs.find()) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Throw an invalid command error if it is unable to find any matches"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            throw new UltronException(input, ExceptionType.INVALID_COMMAND);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Get the command"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String inputCommand \u003d inputs.group(1);"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Get the other arguments"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        String arguments \u003d inputs.group(2);"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Switch case to process the commands"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        switch (inputCommand) {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "            //If the user keys in bye"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            case \"bye\":"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                return true;"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "            //If the user keys in list"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            case \"list\":"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                //Print out the list so far"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                System.out.println(\"Heh, you cant even remember what you had\");"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                //Display the content"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                this.taskList.displayContent();"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Check if the user is asking for help"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            case \"help\":"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Print the help message"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                ui.helpMessage();"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            case \"delete\":"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Initialise index"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                int index \u003d this.parseInteger(arguments);"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Check if the index is out of range"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                if (index \u003e\u003d this.taskList.size()) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Throw an Ultron exception if it is out of range"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    throw new UltronException(inputCommand,"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                            Integer.toString(index + 1),"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                            ExceptionType.INVALID_ARGUMENT);"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Get the task"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                Task tsk \u003d this.taskList.get(index);"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Remove the task"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                this.taskList.remove(index);"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Print the delete message"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                System.out.printf(\"What are you doing removing this?!?!\\n  \""
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                                + \"%s\\nNow you have %d burdens%n\","
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                        tsk,"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                        this.taskList.size());"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Check if the user is done with any task"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            case \"done\":"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Initialise index"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                index \u003d this.parseInteger(arguments);"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Mark the task as done"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                if (!this.taskList.markDone(index)) {"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Throw an error if the method return false"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    throw new UltronException(inputCommand,"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                            Integer.toString(index),"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                            ExceptionType.INVALID_ARGUMENT);"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Print the done message"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                System.out.printf(\"Finally! Making yourself useful\\n\""
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                        + \"  %s%n\", this.taskList.get(index));"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "            //Otherwise it will be a task to be added"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            default:"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Init the enum states"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                Command command;"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                Task task;"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                try {"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Get the state"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    command \u003d Command.valueOf(inputCommand.toUpperCase());"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                } catch (IllegalArgumentException e) {"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Throw a Duke exception"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    throw new UltronException(inputCommand,"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                            ExceptionType.INVALID_COMMAND);"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Trim the args"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                if (arguments.trim().length() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Throw an exception when there is nothing supplied"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    throw new UltronException(inputCommand,"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                            ExceptionType.NO_ARGUMENTS_SUPPLIED);"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                try {"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Create a new task"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    task \u003d command.createTask(arguments);"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                } catch (IllegalStateException e) {"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Throw a Duke exception"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    throw new UltronException(inputCommand,"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                            ExceptionType.INVALID_COMMAND);"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                //Add the task to the task list"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                this.taskList.add(task);"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Print out the message"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                System.out.printf(\"Can\u0027t you keep track of \u0027%s\u0027 yourself?\\n\""
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                        + \"Now you have %d burdens%n\","
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                        task, this.taskList.size());"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Do not quit"
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public void mainLoop() {"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Print the intro"
+      },
+      {
+        "lineNumber": 173,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        ui.printIntro();"
+      },
+      {
+        "lineNumber": 174,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 175,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        // While the user input is not bye"
+      },
+      {
+        "lineNumber": 176,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        do {"
+      },
+      {
+        "lineNumber": 177,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            // Get the next line as input"
+      },
+      {
+        "lineNumber": 178,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            String input \u003d ui.getInput();"
+      },
+      {
+        "lineNumber": 179,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 180,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "            //Print the separator"
+      },
+      {
+        "lineNumber": 181,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            ui.showLine();"
+      },
+      {
+        "lineNumber": 182,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 183,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "            //If it is a terminating condition"
+      },
+      {
+        "lineNumber": 184,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 185,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 186,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //If the input returns True to quitting"
+      },
+      {
+        "lineNumber": 187,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                if (this.checkInput(input.trim())) {"
+      },
+      {
+        "lineNumber": 188,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 189,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                    //Break out of the loop"
+      },
+      {
+        "lineNumber": 190,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 191,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 192,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 193,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            //Catch the Ultron exception"
+      },
+      {
+        "lineNumber": 194,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            } catch (UltronException e) {"
+      },
+      {
+        "lineNumber": 195,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 196,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                //Print the error message"
+      },
+      {
+        "lineNumber": 197,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                System.out.println(ui.wrapper(e.getMessage()));"
+      },
+      {
+        "lineNumber": 198,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 199,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 200,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "            //Print the separator"
+      },
+      {
+        "lineNumber": 201,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "            ui.showLine();"
+      },
+      {
+        "lineNumber": 202,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 203,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        } while (true);"
+      },
+      {
+        "lineNumber": 204,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 205,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Print the ending before the bot exits"
+      },
+      {
+        "lineNumber": 206,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        ui.printEnd();"
+      },
+      {
+        "lineNumber": 207,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 208,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 209,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public static void main(final String[] args) {"
+      },
+      {
+        "lineNumber": 210,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 211,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Create a new duke"
+      },
+      {
+        "lineNumber": 212,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        Ultron duke \u003d new Ultron();"
+      },
+      {
+        "lineNumber": 213,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 214,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        //Run the main loop"
+      },
+      {
+        "lineNumber": 215,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        duke.mainLoop();"
+      },
+      {
+        "lineNumber": 216,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 217,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 218,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 173,
+      "-": 45
+    }
+  },
+  {
+    "path": "src/main/java/UltronException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "public class UltronException extends Exception {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public UltronException(final String inputString,"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                           final  ExceptionType errorType) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Call the superclass method"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        super(errorType.getMessage(inputString));"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    public UltronException(final String inputString,"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                           final String inputArguments,"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "                           final ExceptionType errorType) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        //Call the superclass method"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "        super(errorType.getMessage(inputString, inputArguments));"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 17
+    }
+  },
+  {
+    "path": "text-ui-test/input.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "todo read book"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "deadline return book /by June 6th"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "event project meeting /at Aug 6th 2-4pm"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "todo join sports club"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "done 1"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "done hello"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "done 4"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "todo"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "todo return book"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "deadline"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "deadline return book /by Sunday"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "event"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "event project meeting /at Mon 2-4pm"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "bye"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 13,
+      "-": 2
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.bat",
+    "fileType": "bat",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "@ECHO OFF"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM create bin directory if it doesn\u0027t exist"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if not exist ..\\bin mkdir ..\\bin"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM delete output from previous run"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "del ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compile the code into the bin folder"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "set JAVA_TOOL_OPTIONS\u003d-Dfile.encoding\u003dUTF-8"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "javac  -cp ..\\src -Xlint:none -d ..\\bin ..\\src\\main\\java\\*.java"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "IF ERRORLEVEL 1 ("
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo ********** BUILD FAILURE **********"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit /b 1"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ")"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM no error here, errorlevel \u003d\u003d 0"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "java -classpath ..\\bin Ultron \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compare the output to the expected output"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "FC ACTUAL.TXT EXPECTED.TXT"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "jh123x"
+        },
+        "content": "pause"
+      }
+    ],
+    "authorContributionMap": {
+      "jh123x": 5,
+      "-": 19
+    }
+  }
+]

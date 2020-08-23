@@ -1,0 +1,2874 @@
+[
+  {
+    "path": "src/main/java/Chatbot.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.io.BufferedReader;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.io.InputStream;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.io.InputStreamReader;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class Chatbot {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private enum CommandStatus {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        STOP, SUCCESS"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private BufferedReader textParser;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private List\u003cTask\u003e storedTasks;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Chatbot(InputStream in) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        textParser \u003d new BufferedReader(new InputStreamReader(in));"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        storedTasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private String indentText(String textToIndent) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return String.format(\"\\t %s\", textToIndent);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private void printDecorations() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        System.out.printf(\"\\t|%s|\\n\", \" @ . \".repeat(20));"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        System.out.print(\"\\n\");"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private void printWithDecorations(String textToPrint) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        String[] sentences \u003d textToPrint.split(\"\\n\");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        printDecorations();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        for (String sentence : sentences) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            System.out.println(indentText(sentence));"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        System.out.print(\"\\n\");"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        printDecorations();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private String parseText() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        String text \u003d \"\";"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            text \u003d textParser.readLine();"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        } catch(IOException e) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            System.err.println(\"ERROR: Unable to parse input stream!\\n\");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            System.exit(1);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return text;"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private int findIndex(String[] arr, String searchTerm) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        for (int i \u003d 0; i \u003c arr.length; ++i) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            if (arr[i].equals(searchTerm)) {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                return i;"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return -1;"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private String strArrJoin(String[] arr, int startIndex, int endIndex, String delimiter) {"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        StringBuilder builder \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        for (int i \u003d startIndex; i \u003c endIndex; ++i) {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            builder.append(arr[i]);"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            // Do not add delimiter in final iteration"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            if (i !\u003d endIndex - 1) {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                builder.append(delimiter);"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return builder.toString();"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private Command parseCommand(String[] args)"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throws IncorrectArgumentException, UnknownCommandException {"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        if (args.length \u003c\u003d 0) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"i hAtE YoU! \""
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \"sToP MaKiNg mE Do sOmEtHiNg iMpOsSiBlE.\");"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        Command command \u003d Command.getCommand(args[0]);"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        if (command \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new UnknownCommandException(\"sToP TrYiNg tO FoOl mE. \\\"\""
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + args[0] + \"\\\" iS An uNkNoWn cOmMaNd.\");"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return command;"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private CommandStatus runCommand(Command command, String[] args)"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throws IncorrectArgumentException {"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            switch (command) {"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            case EXIT:"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                printWithDecorations(\"hOpE To sEe yOu aGaIn. NoT.\");"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                return CommandStatus.STOP;"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            case LIST:"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                list();"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            case MARK_AS_DONE:"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                done(args);"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            case DELETE:"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                delete(args);"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            case ADD_TODO:"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                Task task \u003d createTodo(args);"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                storeTask(task);"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            case ADD_DEADLINE:"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                task \u003d createDeadline(args);"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                storeTask(task);"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            case ADD_EVENT:"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                task \u003d createEvent(args);"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                storeTask(task);"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        } catch(IncorrectArgumentException e) {"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw e;"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return CommandStatus.SUCCESS;"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private void storeTask(Task task) {"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        storedTasks.add(task);"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        printWithDecorations(\"sInCe yOu\u0027rE So hElPlEsS, \""
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                + \"i\u0027lL ReMeMbEr \\\"\"+ task.toString() + \"\\\" FoR YoU.\\n\""
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                + \"yOu hAvE MaDe mE ReMeMbEr \" + storedTasks.size() +\" tAsK(s).\");"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private void list() {"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        StringBuilder builder \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        int i \u003d 0;"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        builder.append(\"dO YoU ReAlLy nEeD Me tO NaMe tHeM OuT foR yOu?\\n\");"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        for (Task task : storedTasks) {"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            builder.append(String.format(\"%d. %s\\n\", ++i, task.toString()));"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        printWithDecorations(builder.toString());"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public void done(String[] args) throws IncorrectArgumentException {"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            // The index provided by the user is off by one"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            int index \u003d Integer.parseInt(args[1]) - 1;"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                storedTasks.get(index).markAsDone();"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                printWithDecorations(\"fInAlLy, I feLL AsLeEp wHiLe wAiTiNg fOr yOu tO FiNiSh: \""
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                        + storedTasks.get(index).toString());"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE. taSK #\""
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                        + (index + 1) + \" dOeS NoT ExIsT.\");"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        } catch (NumberFormatException | IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE. tHe \\\"done\\\" ComMand\""
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \" mUsT Be FolLoWed bY tHe InDEx Of THe TAsK.\");"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public void delete(String[] args) throws IncorrectArgumentException {"
+      },
+      {
+        "lineNumber": 173,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 174,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            // The index provided by the user is off by one"
+      },
+      {
+        "lineNumber": 175,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            int index \u003d Integer.parseInt(args[1]) - 1;"
+      },
+      {
+        "lineNumber": 176,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 177,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 178,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                Task removedTask \u003d storedTasks.remove(index);"
+      },
+      {
+        "lineNumber": 179,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                printWithDecorations(\"gReAt! OnE FeWeR ThInG To rEmEmBeR: \""
+      },
+      {
+        "lineNumber": 180,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                        + removedTask.toString() + \"\\n\""
+      },
+      {
+        "lineNumber": 181,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                        + \"i sTiLl nEeD To rEmEmBeR \" + storedTasks.size() +\" tAsK(s).\");"
+      },
+      {
+        "lineNumber": 182,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 183,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE. taSK #\""
+      },
+      {
+        "lineNumber": 184,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                        + (index + 1) + \" dOeS NoT ExIsT.\");"
+      },
+      {
+        "lineNumber": 185,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 186,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        } catch (NumberFormatException | IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 187,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE. tHe \\\"delete\\\" ComMand\""
+      },
+      {
+        "lineNumber": 188,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \" mUsT Be FolLoWed bY tHe InDEx Of THe TAsK.\");"
+      },
+      {
+        "lineNumber": 189,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 190,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 191,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 192,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Todo createTodo(String[] args) throws IncorrectArgumentException {"
+      },
+      {
+        "lineNumber": 193,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        if (args.length \u003c\u003d 1) {"
+      },
+      {
+        "lineNumber": 194,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE.\""
+      },
+      {
+        "lineNumber": 195,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \" a tOdO MuSt bE FoLlOwEd bY A DesCrIpTiOn.\");"
+      },
+      {
+        "lineNumber": 196,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 197,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 198,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        String description \u003d strArrJoin(args, 1, args.length, \" \");"
+      },
+      {
+        "lineNumber": 199,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 200,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return new Todo(description);"
+      },
+      {
+        "lineNumber": 201,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 202,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 203,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Deadline createDeadline(String[] args) throws IncorrectArgumentException {"
+      },
+      {
+        "lineNumber": 204,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        if (args.length \u003c\u003d 2) {"
+      },
+      {
+        "lineNumber": 205,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE.\""
+      },
+      {
+        "lineNumber": 206,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \" a dEaDlInE MuSt bE FoLlOwEd bY A DeScRiPtIoN AnD TiMe.\");"
+      },
+      {
+        "lineNumber": 207,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 208,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 209,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        String description;"
+      },
+      {
+        "lineNumber": 210,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        String by;"
+      },
+      {
+        "lineNumber": 211,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        int index \u003d findIndex(args, \"/by\");"
+      },
+      {
+        "lineNumber": 212,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 213,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        if (index !\u003d -1) {"
+      },
+      {
+        "lineNumber": 214,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            description \u003d strArrJoin(args, 1, index, \" \");"
+      },
+      {
+        "lineNumber": 215,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            by \u003d strArrJoin(args, index + 1, args.length, \" \");"
+      },
+      {
+        "lineNumber": 216,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 217,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE.\""
+      },
+      {
+        "lineNumber": 218,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \" tHe tImE MuSt cOmE BeFoRe \\\"/by\\\".\");"
+      },
+      {
+        "lineNumber": 219,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 220,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 221,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return new Deadline(description, by);"
+      },
+      {
+        "lineNumber": 222,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 223,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 224,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Event createEvent(String[] args) throws IncorrectArgumentException {"
+      },
+      {
+        "lineNumber": 225,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        if (args.length \u003c\u003d 2) {"
+      },
+      {
+        "lineNumber": 226,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE.\""
+      },
+      {
+        "lineNumber": 227,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \" aN EvEnT MuSt bE FoLlOwEd bY A DeScRiPtIoN AnD TiMe.\");"
+      },
+      {
+        "lineNumber": 228,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 229,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 230,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        String description;"
+      },
+      {
+        "lineNumber": 231,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        String at;"
+      },
+      {
+        "lineNumber": 232,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        int index \u003d findIndex(args, \"/at\");"
+      },
+      {
+        "lineNumber": 233,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 234,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        if (index !\u003d -1) {"
+      },
+      {
+        "lineNumber": 235,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            description \u003d strArrJoin(args, 1, index, \" \");"
+      },
+      {
+        "lineNumber": 236,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            at \u003d strArrJoin(args, index + 1, args.length, \" \");"
+      },
+      {
+        "lineNumber": 237,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 238,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            throw new IncorrectArgumentException(\"sToP TrYiNg tO FoOl mE.\""
+      },
+      {
+        "lineNumber": 239,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                    + \" tHe tImE MuSt cOmE BeFoRe \\\"/at\\\".\");"
+      },
+      {
+        "lineNumber": 240,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 241,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 242,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return new Event(description, at);"
+      },
+      {
+        "lineNumber": 243,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 244,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 245,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public void start() {"
+      },
+      {
+        "lineNumber": 246,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        CommandStatus status \u003d CommandStatus.SUCCESS;"
+      },
+      {
+        "lineNumber": 247,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 248,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        printWithDecorations(\"yOu HavE nO cOnTrOL ovEr ME!\");"
+      },
+      {
+        "lineNumber": 249,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 250,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        for (String text \u003d parseText(); status \u003d\u003d CommandStatus.SUCCESS; text \u003d parseText()) {"
+      },
+      {
+        "lineNumber": 251,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            String[] args \u003d text.trim().split(\"\\\\s+\");"
+      },
+      {
+        "lineNumber": 252,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 253,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 254,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                Command command \u003d parseCommand(args);"
+      },
+      {
+        "lineNumber": 255,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                status \u003d runCommand(command, args);"
+      },
+      {
+        "lineNumber": 256,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            } catch (IncorrectArgumentException | UnknownCommandException e) {"
+      },
+      {
+        "lineNumber": 257,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "                printWithDecorations(e.getMessage());"
+      },
+      {
+        "lineNumber": 258,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 259,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 260,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 261,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 261
+    }
+  },
+  {
+    "path": "src/main/java/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.util.HashMap;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "import java.util.Map;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public enum Command {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    ADD_TODO        (\"todo\"),"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    ADD_DEADLINE    (\"deadline\"),"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    ADD_EVENT       (\"event\"),"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    LIST            (\"list\"),"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    DELETE          (\"delete\"),"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    MARK_AS_DONE    (\"done\"),"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    EXIT            (\"bye\");"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private final String shortcut;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    private static final Map\u003cString, Command\u003e COMMAND_STRING_MAP \u003d new HashMap\u003c\u003e();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    // Cache the command and its corresponding shortcut for reverse lookup"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    static {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        for (Command command : values()) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "            COMMAND_STRING_MAP.put(command.shortcut, command);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    Command(String shortcut) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        this.shortcut \u003d shortcut;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public static Command getCommand(String shortcut) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return COMMAND_STRING_MAP.get(shortcut);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 31
+    }
+  },
+  {
+    "path": "src/main/java/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    protected String by;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Deadline(String description, String by) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by + \")\";"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 13
+    }
+  },
+  {
+    "path": "src/main/java/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    protected String at;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Event(String description, String at) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        this.at \u003d at;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (by: \" + at + \")\";"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 14
+    }
+  },
+  {
+    "path": "src/main/java/IncorrectArgumentException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class IncorrectArgumentException extends Exception {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public IncorrectArgumentException(String description) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 5
+    }
+  },
+  {
+    "path": "src/main/java/Rogue.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class Rogue {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        Chatbot rogue \u003d new Chatbot(System.in);"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        rogue.start();"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 6
+    }
+  },
+  {
+    "path": "src/main/java/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\");"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public void markAsDone() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        isDone \u003d true;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return String.format(\"[%s] %s\", getStatusIcon(), description);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 22
+    }
+  },
+  {
+    "path": "src/main/java/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class Todo extends Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public Todo(String description) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 10
+    }
+  },
+  {
+    "path": "src/main/java/UnknownCommandException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "public class UnknownCommandException extends Exception {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    public UnknownCommandException(String description) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 5
+    }
+  },
+  {
+    "path": "text-ui-test/input.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "todo borrow book"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "deadline return book /by Sunday"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "event project meeting /at Mon 2-4pm"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "deadline do home /by no idea :-p"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "done 1"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "done 2"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "bye"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 8
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.bat",
+    "fileType": "bat",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "@ECHO OFF"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM create bin directory if it doesn\u0027t exist"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if not exist ..\\bin mkdir ..\\bin"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM delete output from previous run"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "del ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compile the code into the bin folder"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "javac  -cp ..\\src -Xlint:none -d ..\\bin ..\\src\\main\\java\\*.java"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "IF ERRORLEVEL 1 ("
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo ********** BUILD FAILURE **********"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit /b 1"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ")"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM no error here, errorlevel \u003d\u003d 0"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "w-yeehong"
+        },
+        "content": "java -classpath ..\\bin Rogue \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compare the output to the expected output"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "FC ACTUAL.TXT EXPECTED.TXT"
+      }
+    ],
+    "authorContributionMap": {
+      "w-yeehong": 2,
+      "-": 19
+    }
+  }
+]

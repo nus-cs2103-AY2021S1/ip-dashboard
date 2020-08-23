@@ -1,0 +1,4272 @@
+[
+  {
+    "path": "src/main/java/Duke.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import duke.Command;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import duke.Parser;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final Storage storage;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final TaskList list;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final Ui ui;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Duke(String filePath) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        TaskList list1;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.storage \u003d new Storage(filePath);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            list1 \u003d this.storage.loadList();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            System.out.println(e.getMessage());"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            System.out.println(\"Creating a new list instead...\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            // perhaps create the specified filePath and request for user confirmation?"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            list1 \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.list \u003d list1;"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.ui \u003d new Ui();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void run() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printLogo();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printWelcomeMessage();"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        boolean isExit \u003d false;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        while (!isExit) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                String query \u003d ui.readLine();"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                Command c \u003d Parser.parse(query);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                c.execute(this.list, this.ui, this.storage);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                isExit \u003d c.isExit();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                ui.printError(e);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        // Duke chatBot \u003d new Duke(\"../data/duke.txt\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        Duke chatBot \u003d new Duke(\"./data/duke.txt\");"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        chatBot.run();"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 45,
+      "-": 4
+    }
+  },
+  {
+    "path": "src/main/java/duke/AddCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class AddCommand extends Command {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final String command;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final String input;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public AddCommand(String command, String input) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.command \u003d command;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.input \u003d input;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void execute(TaskList list, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        Task task \u003d list.addTask(command, input);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String output \u003d \"Got it. I\u0027ve added this task: \\n\";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        output +\u003d task;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        output +\u003d \"\\nNow you have \" + list.size() + \" tasks in the list.\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        storage.updateTextFile(list);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printLine(output);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 20
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public abstract class Command {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public boolean isExit() { return false; }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public abstract void execute(TaskList list, Ui ui, Storage storage) throws DukeException;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 8
+    }
+  },
+  {
+    "path": "src/main/java/duke/DateCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class DateCommand extends Command {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final LocalDate date;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public DateCommand(String dateString) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.date \u003d LocalDate.parse(dateString, DateTimeFormatter.ofPattern(\"d-M-yyyy\"));"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void execute(TaskList list, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String formattedDate \u003d this.date.format(DateTimeFormatter.ofPattern(\"dd MMM yyyy\"));"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        TaskList timedTasks \u003d list.getTimedTasks(this.date);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String output \u003d \"Here are your tasks for \" + formattedDate + \":\\n\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        output +\u003d timedTasks;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printLine(output);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 22
+    }
+  },
+  {
+    "path": "src/main/java/duke/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class Deadline extends TimedTask {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Deadline(String description, String datetime) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        super(description, datetime);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected String textFormat() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return \"deadline, \" + super.textFormat() + \"/by\" + this.datetime.format(Deadline.inputFormatter);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + super.datetimeString() + \")\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final int index;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public DeleteCommand(int index) {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.index \u003d index;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void execute(TaskList list, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        Task task \u003d list.deleteTask(this.index);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String textOutput \u003d \"Nice! I\u0027ve marked this task as done:\\n\";"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        textOutput +\u003d task;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        storage.updateTextFile(list);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printLine(textOutput);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class DoneCommand extends Command {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final int index;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public DoneCommand(int index) {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.index \u003d index;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void execute(TaskList list, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        Task task \u003d list.markAsDone(this.index);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String textOutput \u003d \"Nice! I\u0027ve marked this task as done:\\n\";"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        textOutput +\u003d task;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        storage.updateTextFile(list);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printLine(textOutput);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public DukeException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class Event extends TimedTask {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Event(String description, String datetime) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        super(description, datetime);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected String textFormat() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return \"event, \" + super.textFormat() + \"/at\" + this.datetime.format(Event.inputFormatter);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (at: \" + super.datetimeString() + \")\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/ExitCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class ExitCommand extends Command {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void execute(TaskList list, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printBye();"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 12
+    }
+  },
+  {
+    "path": "src/main/java/duke/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void execute(TaskList list, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        if (list.isEmpty()) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"OOPS!!! I\u0027m sorry, your list is empty :\u003c\");"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String textOutput \u003d \"Here is the complete list of your task: \\n\";"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        textOutput +\u003d list.toString();"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        ui.printLine(textOutput);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 12
+    }
+  },
+  {
+    "path": "src/main/java/duke/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public static Command parse(String query) throws DukeException {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String[] queryArr \u003d query.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        // String command \u003d processArr[0];"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        // if command is not list/bye: String input \u003d processArr[1];"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            switch (queryArr[0]) { // command"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            case \"list\":"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                return new ListCommand();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            case \"done\":"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                return new DoneCommand(Integer.parseInt(queryArr[1]) - 1);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            case \"delete\":"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                return new DeleteCommand(Integer.parseInt(queryArr[1]) - 1);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            case \"date\":"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                return new DateCommand(queryArr[1]);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            case \"bye\":"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                return new ExitCommand();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            default:"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                return new AddCommand(queryArr[0], queryArr[1]);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (NumberFormatException e) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"Sorry, which task number?\");"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"OOPS!!! I\u0027m sorry, I don\u0027t know what that means :\u003c\");"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 32
+    }
+  },
+  {
+    "path": "src/main/java/duke/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.io.FileNotFoundException;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private File file;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Storage(String filePath) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.file \u003d new File(filePath);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public TaskList loadList() throws DukeException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            TaskList list \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            //this.file \u003d new File(\"../data/duke.txt\"); // for testcase running"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            this.file \u003d new File(\"./data/duke.txt\");"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            Scanner sc \u003d new Scanner(this.file);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            while (sc.hasNext()) { // e.g. deadline, 1, description/by date"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                String[] arr \u003d sc.nextLine().split(\", \");"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                if (arr.length \u003d\u003d 3) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                    list.addTask(arr[0], arr[2], arr[1].equals(\"1\"));"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                    throw new DukeException(\"Invalid text format in file.\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            return list;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (FileNotFoundException e) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"Sorry, \" + e.getMessage());"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void updateTextFile(TaskList list) throws DukeException {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            StringBuilder text \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            FileWriter fw \u003d new FileWriter(this.file);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            for (Task task : list) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                text.append(task.textFormat());"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                text.append(\"\\n\");"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            fw.write(text.toString());"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"Sorry, \" + e.getMessage());"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 51
+    }
+  },
+  {
+    "path": "src/main/java/duke/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public abstract class Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected boolean done \u003d false;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected Task(String description) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected boolean isDone() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.done;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected Task markAsDone() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.done \u003d true;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected String textFormat() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return (this.done ? \"1, \" : \"0, \") + this.description;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String status \u003d this.done ? \"[✓]\" : \"[✗]\";"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return status + \" \" + description;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 30
+    }
+  },
+  {
+    "path": "src/main/java/duke/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.util.Iterator;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.lang.Iterable;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class TaskList implements Iterable\u003cTask\u003e {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final ArrayList\u003cTask\u003e list;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Iterator\u003cTask\u003e iterator() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.list.iterator();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public int size() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.list.size();"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public TaskList() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.list \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public boolean isEmpty() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.list.isEmpty();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private TaskList(ArrayList\u003cTask\u003e arr) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.list \u003d arr;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Task addTask(String type, String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.addTask(type, input, false);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Task addTask(String type, String input, boolean done) throws DukeException {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        Task task;"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        switch (type) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        case \"todo\":"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            task \u003d new Todo(input);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            break;"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        case \"deadline\":"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            String[] arr \u003d input.split(\"/by\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                task \u003d new Deadline(arr[0].trim(), arr[1].trim());"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                throw new DukeException(\"OOPS!!! I\u0027m sorry, when is the deadline? (/by...)\");"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                throw new DukeException(\"Invalid date-time format! (/by...)\");"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            break;"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        case \"event\":"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            arr \u003d input.split(\"/at\");"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                task \u003d new Event(arr[0].trim(), arr[1].trim());"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                throw new DukeException(\"OOPS!!! I\u0027m sorry, when is the event? (/at...)\");"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                throw new DukeException(\"Invalid date-time format! (/at...)\");"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            break;"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"OOPS!!! I\u0027m sorry, I don\u0027t know what that means :\u003c\");"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        if (input.isEmpty()) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"OOPS!!! I\u0027m sorry, the description cannot be empty :\u003c\");"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        task \u003d done ? task.markAsDone() : task;"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.list.add(task);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return task;"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public TaskList getTimedTasks(LocalDate date) throws DukeException { // input of form \"dd-MM-yyyy\""
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            ArrayList\u003cTask\u003e timedTasks \u003d new ArrayList\u003c\u003e(this.list);"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            timedTasks.removeIf(i -\u003e i instanceof Todo);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            Task[] timedTasksArr \u003d timedTasks.toArray(new Task[0]);"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            for (Task i : timedTasksArr) {"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                assert(i instanceof TimedTask);"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                if (!((TimedTask) i).getDate().equals(date)) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                    timedTasks.remove(i);"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            if (timedTasks.isEmpty()) {"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                throw new DukeException(\"OOPS!!! I\u0027m sorry, your list is empty :\u003c\");"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                return new TaskList(new ArrayList\u003c\u003e(timedTasks));"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"Invalid date-time format! (/at...)\");"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Task markAsDone(int i) throws DukeException {"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            return this.list.get(i).markAsDone();"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"OOPS!!! I\u0027m sorry, the task number is out of range :\u003c\");"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Task deleteTask(int i) throws DukeException {"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            return this.list.remove(i);"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            throw new DukeException(\"OOPS!!! I\u0027m sorry, the task number is out of range :\u003c\");"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        StringBuilder output \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        for (int i \u003d 0; i \u003c this.size(); i++) {"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            int taskNum \u003d i + 1;"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            output.append(taskNum);"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            output.append(\".\");"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            output.append(this.list.get(i).toString());"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "            output.append(i \u003d\u003d this.size() - 1 ? \"\" : \u0027\\n\u0027);"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return output.toString();"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 124
+    }
+  },
+  {
+    "path": "src/main/java/duke/TimedTask.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public abstract class TimedTask extends Task {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected LocalDateTime datetime;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected static final DateTimeFormatter inputFormatter \u003d DateTimeFormatter.ofPattern(\"d-M-yyyy k:mm\");"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected static final DateTimeFormatter printFormatter \u003d DateTimeFormatter.ofPattern(\"dd MMM yyyy hh.mma\");"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected TimedTask(String description, String datetime) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.datetime \u003d LocalDateTime.parse(datetime, TimedTask.inputFormatter);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected String datetimeString() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.datetime.format(TimedTask.printFormatter);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    protected LocalDate getDate() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.datetime.toLocalDate();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 25
+    }
+  },
+  {
+    "path": "src/main/java/duke/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class Todo extends Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public Todo(String description) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public String textFormat() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return \"todo, \" + super.textFormat();"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 19
+    }
+  },
+  {
+    "path": "src/main/java/duke/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final Scanner sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    private final String line \u003d \"------------------------------------------------------------\";;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void printLogo() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        String logo \u003d \" ____        _        \\n\""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                + \"|  _ \\\\ _   _| | _____ \\n\""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        System.out.println(logo);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void printWelcomeMessage() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        System.out.println(\"Hello! I\u0027m Duke.\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        System.out.println(\"What can I do for you?\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        System.out.println(this.line);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public String readLine() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        return this.sc.nextLine();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void printLine(String message) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        System.out.println(message);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        System.out.println(this.line);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void printBye() {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        System.out.println(\"Bye. Hope to see you again!\");"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    public void printError(DukeException exception) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "        this.printLine(exception.getMessage());"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 41
+    }
+  },
+  {
+    "path": "text-ui-test/input.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "date 27-08-2020"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "todo cs2105 lecture"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event cs2030 TA meeting /at 24-08-2020 16:00"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "deadline cs2030 /by 27-08-2020 09:00"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "date 27-08-2020"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event test /at 27-08-2020"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event test /at 27-08-2020 7:00"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event test /at 27-08-2020 07:00"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event test /at 27-8-2020 7:00"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event test /at 27-08-2020 7:00"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event test /at 7-08-2020 7:00"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "event test /at 07-08-2020 7:00"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "date 07-08-2020"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "date 27-08-2020"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "delete 9"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "date 07-8-2020"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "date 7-8-2020"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "date 7-08-2020"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "bye"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 25
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "#!/usr/bin/env bash"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# create bin directory if it doesn\u0027t exist"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ ! -d \"../bin\" ]"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    mkdir ../bin"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# delete output from previous run"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ -e \"./ACTUAL.TXT\" ]"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    rm ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# compile the code into the bin folder, terminates if error occurred"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "marcus2k"
+        },
+        "content": "if ! javac -cp ../src -Xlint:none -d ../bin ../src/main/java/*.java"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"********** BUILD FAILURE **********\""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 1"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "java -classpath ../bin Duke \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# convert to UNIX format"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "cp EXPECTED.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# compare the output to the expected output"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "diff ACTUAL.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ $? -eq 0 ]"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"Test result: PASSED\""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 0"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "else"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"Test result: FAILED\""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 1"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      }
+    ],
+    "authorContributionMap": {
+      "marcus2k": 1,
+      "-": 36
+    }
+  }
+]

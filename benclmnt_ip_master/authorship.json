@@ -1,0 +1,4566 @@
+[
+  {
+    "path": "data/duke.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "T | 1 | read book"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "D | 0 | return book | 2020-06-06"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "E | 0 | project meeting | 2020-08-06"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "T | 1 | join sports club"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 4
+    }
+  },
+  {
+    "path": "src/main/java/Main.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import duke.Duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class Main {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        Duke chatbot \u003d new Duke();"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        chatbot.start();"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 8
+    }
+  },
+  {
+    "path": "src/main/java/duke/Commands.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public enum Commands {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    BYE,"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    LIST,"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    DONE,"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    DELETE,"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    TODO,"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    DEADLINE,"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    EVENT,"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    VIEWALL,"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 12
+    }
+  },
+  {
+    "path": "src/main/java/duke/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import exception.DeadlineInvalidUsageException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import exception.EventInvalidUsageException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    protected LocalDate by;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private Deadline(String description, LocalDate by) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public static Deadline create(String deadline) throws DeadlineInvalidUsageException {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        String[] parsedDeadline \u003d deadline.split(\"\\\\s*/by\\\\s*\", 2);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (parsedDeadline.length \u003c 2) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new DeadlineInvalidUsageException(\"You should specify the deadline by using `/by`\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (parsedDeadline[0].equals(\"\")) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new DeadlineInvalidUsageException(\"Deadline description cannot be empty.\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return new Deadline(parsedDeadline[0], parseDate(parsedDeadline[1]));"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (DateTimeParseException ex) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new DeadlineInvalidUsageException(\"Deadline date must be of the form yyyy-mm-dd.\");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public static Deadline create(String deadline, String by) throws DeadlineInvalidUsageException {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (deadline.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new DeadlineInvalidUsageException(\"Deadline description cannot be empty.\");"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return new Deadline(deadline, parseDate(by));"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (DateTimeParseException ex) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new DeadlineInvalidUsageException(\"Deadline date must be of the form yyyy-mm-dd.\");"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String showTask() {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return String.format(\"[%s]%s (by: %s)\", this.getType(), super.showTask(), showDate(this.by));"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getType() {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return \"D\";"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getDescription() {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return super.getDescription() + \" | \" + this.by;"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static LocalDate parseDate(String str) {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return LocalDate.parse(str);"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static String showDate(LocalDate date) {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return date.format(DateTimeFormatter.ofPattern(\"MMM d, yyyy\"));"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 69
+    }
+  },
+  {
+    "path": "src/main/java/duke/Duke.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import exception.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.io.BufferedReader;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.io.BufferedWriter;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.nio.file.Path;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.nio.file.Files;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.DateTimeException;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.util.stream.Collectors;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    Scanner sc;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    String input;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    List\u003cTask\u003e taskList;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public Duke() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        String input;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public void start() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            this.taskList \u003d Duke.loadStorage();"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            Duke.hello();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            handleInteraction();"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            Duke.bye();"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (IOException ex) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            ex.printStackTrace();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    // file functions"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static List\u003cTask\u003e loadStorage() throws IOException {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        Path folderPath \u003d Path.of(\"data\");"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        Path filePath \u003d folderPath.resolve(\"duke.txt\");"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        // create folders containing the file and its parents"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        Files.createDirectories(folderPath);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (!Files.exists(filePath)) {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            Files.createFile(filePath);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        // read from file"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        BufferedReader br \u003d Files.newBufferedReader(filePath);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        List\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        br.lines().forEach(line -\u003e {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                Task task \u003d parseStorageData(line);"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                tasks.add(task);"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            } catch (StorageException ex) {"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                System.out.println(ex.getMessage());"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        });"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return tasks;"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static Task parseStorageData(String line) throws StorageException {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        // split by the pipe `|` token"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        String[] tokens \u003d line.split(\"(\\\\s)*(\\\\|)(\\\\s)*\");"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        Task task;"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            switch (tokens[0]) {"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            case \"T\":"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                task \u003d new Todo(tokens[2]);"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            case \"D\":"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                task \u003d Deadline.create(tokens[2], tokens[3]);"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            case \"E\":"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                task \u003d Event.create(tokens[2], tokens[3]);"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            default:"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                throw new StorageException(\"Unknown task identifier \" + tokens[0] + \"! Skipping...\");"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            if (tokens[1].equals(\"1\")) {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                task.markAsDone();"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return task;"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException ex) {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new StorageException(\"Data\" + line + \"in wrong format! Skipping...\");"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (EventInvalidUsageException | DeadlineInvalidUsageException ex) {"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new StorageException(ex.getMessage());"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * Update the `duke.txt` file that is used for saving tasks"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * @param tasks a list of task to save"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * @return true indicating storage is updated, or false indicating storage fails to update"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static boolean updateStorage(List\u003cTask\u003e tasks) {"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            BufferedWriter bw \u003d Files.newBufferedWriter(Path.of(\"data/duke.txt\"));"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            for (Task task : tasks) {"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                String storeFormat \u003d String.format("
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        \"%s | %d | %s\","
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        task.getType(),"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        task.getStatus() ? 1 : 0,"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        task.getDescription()"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                );"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                bw.write(storeFormat);"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                bw.newLine();"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            bw.close();"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (IOException ex) {"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            ex.printStackTrace();"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    // interaction functions"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public void handleInteraction() {"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        while (sc.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            input \u003d sc.nextLine();"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            // stopping condition"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            if (input.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            buildChatFence();"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            // handle commands"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                String[] parsed \u003d parseInput(input);"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                Commands command;"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                try {"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    // modify parsed[0] to uppercase to ensure that comparison with the commands enum is standardized"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    command \u003d Commands.valueOf(parsed[0].toUpperCase());"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                } catch (IllegalArgumentException ex) {"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    // if parsed[0] not amongst valid commands, will throw an IllegalArgumentException"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    throw new UnknownCommandException();"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                switch (command) {"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                case LIST:"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    // we ignore the argument after `list`."
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    System.out.println(\"     Here are the tasks in your list:\");"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    for (int i \u003d 0; i \u003c taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        System.out.printf(\"     %d. %s%n\", i + 1, taskList.get(i).showTask());"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                case DONE:"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    try {"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        int taskNumber \u003d Integer.parseInt(parsed[1]) - 1;"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        // Check that the task number makes sense."
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        if (taskNumber \u003e\u003d 0 \u0026\u0026 taskNumber \u003c taskList.size()) {"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            taskList.get(taskNumber).markAsDone();"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            Duke.updateStorage(this.taskList);"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.println(\"     Good job! I\u0027ve marked this task as done:\");"
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.printf(\"      %s%n\", taskList.get(taskNumber).showTask());"
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        } else {"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.println(\"     Sorry, I can\u0027t find it in your list!\");"
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        throw new InvalidUsageException(\"Usage: done \u003ctask number\u003e\");"
+      },
+      {
+        "lineNumber": 173,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 174,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 175,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                case DELETE:"
+      },
+      {
+        "lineNumber": 176,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    try {"
+      },
+      {
+        "lineNumber": 177,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        int taskNumber \u003d Integer.parseInt(parsed[1]) - 1;"
+      },
+      {
+        "lineNumber": 178,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        // Check that the task number makes sense."
+      },
+      {
+        "lineNumber": 179,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        if (taskNumber \u003e\u003d 0 \u0026\u0026 taskNumber \u003c taskList.size()) {"
+      },
+      {
+        "lineNumber": 180,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.println(\"     Noted. I\u0027ve removed this task: \");"
+      },
+      {
+        "lineNumber": 181,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.printf(\"      %s%n\", taskList.remove(taskNumber).showTask());"
+      },
+      {
+        "lineNumber": 182,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.printf(\"     Now you have %d %s in the list%n\","
+      },
+      {
+        "lineNumber": 183,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                                    taskList.size(), taskList.size() \u003e 1 ? \"tasks\" : \"task\");"
+      },
+      {
+        "lineNumber": 184,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            Duke.updateStorage(this.taskList);"
+      },
+      {
+        "lineNumber": 185,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        } else {"
+      },
+      {
+        "lineNumber": 186,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.println(\"     Sorry, I can\u0027t find it in your list!\");"
+      },
+      {
+        "lineNumber": 187,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 188,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
+      },
+      {
+        "lineNumber": 189,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        throw new InvalidUsageException(\"Usage: delete \u003ctask number\u003e\");"
+      },
+      {
+        "lineNumber": 190,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 191,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 192,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                case TODO:"
+      },
+      {
+        "lineNumber": 193,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    try {"
+      },
+      {
+        "lineNumber": 194,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        this.addTodo(parsed[1]);"
+      },
+      {
+        "lineNumber": 195,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    } catch (ArrayIndexOutOfBoundsException ex) {"
+      },
+      {
+        "lineNumber": 196,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        throw new TodoInvalidUsageException(\"Todo description cannot be empty.\");"
+      },
+      {
+        "lineNumber": 197,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 198,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 199,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                case DEADLINE:"
+      },
+      {
+        "lineNumber": 200,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    try {"
+      },
+      {
+        "lineNumber": 201,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        this.addDeadline(parsed[1]);"
+      },
+      {
+        "lineNumber": 202,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    } catch (ArrayIndexOutOfBoundsException ex) {"
+      },
+      {
+        "lineNumber": 203,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        throw new DeadlineInvalidUsageException(\"Deadline description cannot be empty.\");"
+      },
+      {
+        "lineNumber": 204,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 205,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 206,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                case EVENT:"
+      },
+      {
+        "lineNumber": 207,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    try {"
+      },
+      {
+        "lineNumber": 208,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        this.addEvent(parsed[1]);"
+      },
+      {
+        "lineNumber": 209,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    } catch (ArrayIndexOutOfBoundsException ex) {"
+      },
+      {
+        "lineNumber": 210,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        throw new EventInvalidUsageException(\"Event description cannot be empty.\");"
+      },
+      {
+        "lineNumber": 211,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 212,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 213,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                case VIEWALL:"
+      },
+      {
+        "lineNumber": 214,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    try {"
+      },
+      {
+        "lineNumber": 215,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        List\u003cTask\u003e filtered \u003d this.viewAll(parsed[1]);"
+      },
+      {
+        "lineNumber": 216,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        System.out.println(\"     Here are the tasks on given date:\");"
+      },
+      {
+        "lineNumber": 217,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        for (int i \u003d 0; i \u003c filtered.size(); i++) {"
+      },
+      {
+        "lineNumber": 218,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                            System.out.printf(\"     %d. %s%n\", i + 1, filtered.get(i).showTask());"
+      },
+      {
+        "lineNumber": 219,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 220,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    } catch (DateTimeException | ArrayIndexOutOfBoundsException ex) {"
+      },
+      {
+        "lineNumber": 221,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        throw new ViewallInvalidUsageException(\"Date should be in yyyy-mm-dd format.\");"
+      },
+      {
+        "lineNumber": 222,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 223,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 224,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 225,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                    throw new UnknownCommandException();"
+      },
+      {
+        "lineNumber": 226,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 227,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            } catch (InvalidUsageException | UnknownCommandException ex) {"
+      },
+      {
+        "lineNumber": 228,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                System.out.println(ex.getMessage());"
+      },
+      {
+        "lineNumber": 229,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 230,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            buildChatFence();"
+      },
+      {
+        "lineNumber": 231,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 232,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 233,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 234,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static void hello() {"
+      },
+      {
+        "lineNumber": 235,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        buildChatFence();"
+      },
+      {
+        "lineNumber": 236,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        System.out.println(\"     Hellowww!! I\u0027m Alexa, your personal todo manager!\");"
+      },
+      {
+        "lineNumber": 237,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        System.out.println(\"     How can I help you today?\");"
+      },
+      {
+        "lineNumber": 238,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        buildChatFence();"
+      },
+      {
+        "lineNumber": 239,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 240,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 241,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static void bye() {"
+      },
+      {
+        "lineNumber": 242,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        buildChatFence();"
+      },
+      {
+        "lineNumber": 243,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        System.out.println(\"     Bye? I hope it\u0027s not forever! Come back soon!\");"
+      },
+      {
+        "lineNumber": 244,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        buildChatFence();"
+      },
+      {
+        "lineNumber": 245,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 246,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 247,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static void buildChatFence() {"
+      },
+      {
+        "lineNumber": 248,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        System.out.println(\"    ----------------------------------------\");"
+      },
+      {
+        "lineNumber": 249,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 250,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 251,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private void printAddConfirmation(int index) {"
+      },
+      {
+        "lineNumber": 252,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        int size \u003d taskList.size();"
+      },
+      {
+        "lineNumber": 253,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        System.out.println(\"     Got it. I\u0027ve added this task:\");"
+      },
+      {
+        "lineNumber": 254,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        System.out.printf(\"       %s%n\", taskList.get(index).showTask());"
+      },
+      {
+        "lineNumber": 255,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        System.out.printf(\"     Now you have %d %s in the list%n\", size, size \u003e 1 ? \"tasks\" : \"task\");"
+      },
+      {
+        "lineNumber": 256,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 257,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 258,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 259,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * Split the input string into first word (command) and others"
+      },
+      {
+        "lineNumber": 260,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 261,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * @param input user input"
+      },
+      {
+        "lineNumber": 262,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * @return an array, first element is command, second element is input"
+      },
+      {
+        "lineNumber": 263,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 264,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private String[] parseInput(String input) {"
+      },
+      {
+        "lineNumber": 265,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return input.split(\"\\\\s+\", 2);"
+      },
+      {
+        "lineNumber": 266,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 267,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 268,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private void addTodo(String todo) {"
+      },
+      {
+        "lineNumber": 269,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        taskList.add(new Todo(todo));"
+      },
+      {
+        "lineNumber": 270,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        Duke.updateStorage(this.taskList);"
+      },
+      {
+        "lineNumber": 271,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        printAddConfirmation(taskList.size() - 1);"
+      },
+      {
+        "lineNumber": 272,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 273,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 274,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private void addDeadline(String deadline) throws DeadlineInvalidUsageException {"
+      },
+      {
+        "lineNumber": 275,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        taskList.add(Deadline.create(deadline));"
+      },
+      {
+        "lineNumber": 276,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        printAddConfirmation(taskList.size() - 1);"
+      },
+      {
+        "lineNumber": 277,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 278,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 279,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private void addEvent(String event) throws EventInvalidUsageException {"
+      },
+      {
+        "lineNumber": 280,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        taskList.add(Event.create(event));"
+      },
+      {
+        "lineNumber": 281,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        printAddConfirmation(taskList.size() - 1);"
+      },
+      {
+        "lineNumber": 282,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 283,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 284,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private List\u003cTask\u003e viewAll(String dateStr) throws DateTimeException {"
+      },
+      {
+        "lineNumber": 285,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        LocalDate date \u003d LocalDate.parse(dateStr);"
+      },
+      {
+        "lineNumber": 286,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return this.taskList"
+      },
+      {
+        "lineNumber": 287,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                .stream()"
+      },
+      {
+        "lineNumber": 288,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                .filter(x -\u003e"
+      },
+      {
+        "lineNumber": 289,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                        (x instanceof Event \u0026\u0026 ((Event) x).at.equals(date))"
+      },
+      {
+        "lineNumber": 290,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                                || (x instanceof Deadline \u0026\u0026 ((Deadline) x).by.equals(date)))"
+      },
+      {
+        "lineNumber": 291,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "                .collect(Collectors.toList());"
+      },
+      {
+        "lineNumber": 292,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 293,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 293
+    }
+  },
+  {
+    "path": "src/main/java/duke/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import exception.EventInvalidUsageException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    protected LocalDate at;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private Event(String description, LocalDate at) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        this.at \u003d at;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public static Event create(String event) throws EventInvalidUsageException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        String[] parsedEvent \u003d event.split(\"\\\\s*/at\\\\s*\", 2);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (parsedEvent.length \u003c 2) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new EventInvalidUsageException(\"You should specify a date by using `/at`\");"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (parsedEvent[0].equals(\"\")) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new EventInvalidUsageException(\"Event description cannot be empty.\");"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return new Event(parsedEvent[0], parseDate(parsedEvent[1]));"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (DateTimeParseException ex) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new EventInvalidUsageException(\"Deadline date must be of the form yyyy-mm-dd.\");"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public static Event create(String event, String at) throws EventInvalidUsageException {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (event.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new EventInvalidUsageException(\"Event description cannot be empty.\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return new Event(event, parseDate(at));"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } catch (DateTimeParseException ex) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            throw new EventInvalidUsageException(\"Event date must be of the form yyyy-mm-dd.\");"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String showTask() {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return String.format(\"[%s]%s (at: %s)\", this.getType(), super.showTask(), showDate(this.at));"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getType() {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return \"E\";"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getDescription() {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return super.getDescription() + \" | \" + this.at;"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static LocalDate parseDate(String str) {"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return LocalDate.parse(str);"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private static String showDate(LocalDate date) {"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return date.format(DateTimeFormatter.ofPattern(\"MMM d, yyyy\"));"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 68
+    }
+  },
+  {
+    "path": "src/main/java/duke/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "abstract class Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    protected String name;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    Task(String name) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        this.name \u003d name;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * Represent task\u0027s name and status"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * @return a string that represents the task"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String showTask() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return String.format(\"[%s] %s\", getStatusIcon(), this.name);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public boolean getStatus() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return this.isDone;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getDescription() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return this.name;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public abstract String getType();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * Mark the task as done"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     * @return true if it is not done before, otherwise false"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public boolean markAsDone() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        if (this.isDone) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            this.isDone \u003d true;"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "//    private String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "//        return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "//    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    private String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return (isDone ? \"V\" : \"X\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 53
+    }
+  },
+  {
+    "path": "src/main/java/duke/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class Todo extends Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    Todo(String description) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String showTask() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return String.format(\"[%s]%s\", this.getType(), super.showTask());"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getType() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return \"T\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 18
+    }
+  },
+  {
+    "path": "src/main/java/exception/DeadlineInvalidUsageException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class DeadlineInvalidUsageException extends InvalidUsageException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public DeadlineInvalidUsageException(String message) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getMessage() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return super.getMessage() + \"\\n     Usage: deadline \u003cdeadline description\u003e /by \u003cdeadline date\u003e\";"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 12
+    }
+  },
+  {
+    "path": "src/main/java/exception/EventInvalidUsageException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class EventInvalidUsageException extends InvalidUsageException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public EventInvalidUsageException(String message) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getMessage() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return super.getMessage() + \"\\n     Usage: event \u003cevent description\u003e /at \u003cevent date\u003e\";"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 12
+    }
+  },
+  {
+    "path": "src/main/java/exception/InvalidUsageException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class InvalidUsageException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public InvalidUsageException(String message) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(\"     \" + message);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getMessage() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return \"     Invalid usage!\\n\" + super.getMessage();"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 12
+    }
+  },
+  {
+    "path": "src/main/java/exception/StorageException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class StorageException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public StorageException(String message) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(\"     StorageException: \" + message);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 7
+    }
+  },
+  {
+    "path": "src/main/java/exception/TodoInvalidUsageException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class TodoInvalidUsageException extends InvalidUsageException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public TodoInvalidUsageException(String message) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getMessage() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return super.getMessage() + \"\\n     Usage: todo \u003ctodo description\u003e\";"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 12
+    }
+  },
+  {
+    "path": "src/main/java/exception/UnknownCommandException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class UnknownCommandException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getMessage() {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return \"     I\u0027m sorry, but I don\u0027t know what that means :-(\";"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 8
+    }
+  },
+  {
+    "path": "src/main/java/exception/ViewallInvalidUsageException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "public class ViewallInvalidUsageException extends InvalidUsageException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public ViewallInvalidUsageException(String message) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    public String getMessage() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "        return super.getMessage() + \"\\n     Usage: Viewall \u003cdate\u003e\";"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 12
+    }
+  },
+  {
+    "path": "text-ui-test/input.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "todo read book"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "deadline do homework /by no idea :-p"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "done 1"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "event project meeting /at Mon 2-4pm"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "todo join sports club"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "done 4"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "todo borrow book"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "delete 3"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "list"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 9
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.bat",
+    "fileType": "bat",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "@ECHO OFF"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM create bin directory if it doesn\u0027t exist"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if not exist ..\\bin mkdir ..\\bin"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM delete output from previous run"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "del ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compile the code into the bin folder"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "javac  -cp ..\\src\\main\\java -Xlint:none -d ..\\bin ..\\src\\main\\java\\Main.java"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "IF ERRORLEVEL 1 ("
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo ********** BUILD FAILURE **********"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit /b 1"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ")"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM no error here, errorlevel \u003d\u003d 0"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "benclmnt"
+        },
+        "content": "java -classpath ..\\bin Main \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compare the output to the expected output"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "FC ACTUAL.TXT EXPECTED.TXT"
+      }
+    ],
+    "authorContributionMap": {
+      "benclmnt": 2,
+      "-": 19
+    }
+  }
+]

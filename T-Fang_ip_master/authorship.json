@@ -1,0 +1,2122 @@
+[
+  {
+    "path": "src/main/java/Bot.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "import java.util.LinkedList;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "// The bot that handles inputs and give responses"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "public class Bot {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    private static final String divider \u003d \"\\t____________________________________________________________\\n\";"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // Before A-TextUiTesting, scanner is defined in the getInput() method,"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // and everything is fine if Duke.java is run directly in terminal."
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // However, it might cause issues when we use script to automate text ui testing (I find that out when I implement TextUiTesting),"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // From A-TextUiTesting onward, scanner is defined outside of the getInput() method."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    Scanner sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    List\u003cTask\u003e taskList \u003d new LinkedList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    //start the bot"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public void start() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        String greeting \u003d \"Hello! I\u0027m Duke\\n\" +"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                \"\\t What can I do for you?\";"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        giveResponse(greeting);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        String input \u003d getInput();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        while (!input.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                if (input.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                    displayList();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                } else if (input.startsWith(\"done\")) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                    completeTask(input);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                } else if (input.startsWith(\"delete\")){"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                    deleteTask(input);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                    addTask(input);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                giveResponse(e.getMessage());"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            input \u003d getInput();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        giveResponse(\"Bye. Hope to see you again soon!\");"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    //print out the response"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    private void giveResponse(String response) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        System.out.println(divider + \"\\t \" + response + \"\\n\" + divider);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    //get the next input"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    private String getInput() {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        return sc.nextLine();"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // add a task with a given command"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    private void addTask(String command) throws DukeException {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        Task newTask;"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        if (command.startsWith(\"todo\")) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            if (command.length() \u003c\u003d 5) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                throw new DukeException(\"\\u2639 OOPS!!! The description of a todo cannot be empty.\");"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            newTask \u003d new Todo(command.substring(5));"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        } else if (command.startsWith(\"deadline\")) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            if (command.length() \u003c\u003d 9) {"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                throw new DukeException(\"\\u2639 OOPS!!! The description of a deadline cannot be empty.\");"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            String description \u003d command.substring(9);"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            int index \u003d description.indexOf(\"/by\");"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            if (index \u003d\u003d -1 || description.length() - index \u003c\u003d 4 ) {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                throw new DukeException(\"\\u2639 OOPS!!! I don\u0027t know when the deadline is\");"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            String by \u003d description.substring(index + 4);"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            description \u003d description.substring(0, index - 1);"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            newTask \u003d new Deadline(description, by);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        } else if (command.startsWith(\"event\")) {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            if (command.length() \u003c\u003d 6) {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                throw new DukeException(\"\\u2639 OOPS!!! The description of a event cannot be empty.\");"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            String description \u003d command.substring(6);"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            int index \u003d description.indexOf(\"/at\");"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            if (index \u003d\u003d -1 || description.length() - index \u003c\u003d 4 ) {"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                throw new DukeException(\"\\u2639 OOPS!!! I don\u0027t know when the event take place\");"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            String at \u003d description.substring(index + 4);"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            description \u003d description.substring(0, index - 1);"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            newTask \u003d new Event(description, at);"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            throw new DukeException();"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        taskList.add(newTask);"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        giveResponse(\"Got it. I\u0027ve added this task:\\n       \" +"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                newTask +"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                \"\\n\\t Now you have \" + taskList.size() +"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                \" task\" + (taskList.size() \u003e 1 ? \"s\" : \"\") + \" in the list.\");"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // mark a task as completed"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    private void completeTask(String command) throws DukeException {"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        if (command.length() \u003c\u003d 5) {"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            throw new DukeException(\"\\u2639 OOPS!!! I don\u0027t know which task should be marked as completed.\");"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        int index;"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            index \u003d Integer.parseInt(command.substring(5)) - 1;"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        } catch (NumberFormatException e) {"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            throw new DukeException(\"\\u2639 OOPS!!! The task index should be a number.\");"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        if (index \u003c 0) {"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            throw new DukeException(\"\\u2639 OOPS!!! The task index should be a positive number.\");"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        Task task \u003d taskList.get(index);"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        task.markAsDone();"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        giveResponse(\"Nice! I\u0027ve marked this task as done:\\n       \" + task);"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // delete a task"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    private void deleteTask(String command) throws DukeException {"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        if (command.length() \u003c\u003d 7) {"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            throw new DukeException(\"\\u2639 OOPS!!! I don\u0027t know which task should be deleted.\");"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        int index;"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            index \u003d Integer.parseInt(command.substring(7)) - 1;"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        } catch (NumberFormatException e) {"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            throw new DukeException(\"\\u2639 OOPS!!! The task index should be a number.\");"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        if (index \u003c 0) {"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            throw new DukeException(\"\\u2639 OOPS!!! The task index should be a positive number.\");"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        Task task \u003d taskList.get(index);"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        taskList.remove(index);"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        giveResponse(\" Noted. I\u0027ve removed this task:\\n       \" +"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                task +"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                \"\\n\\t Now you have \" + taskList.size() +"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "                \" task\" + (taskList.size() \u003e 1 ? \"s\" : \"\") + \" in the list.\");"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    // display the task list"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    private void displayList(){"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        String list \u003d \"Here are the tasks in your list:\\n\";"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        for (int i \u003d 1; i \u003c\u003d taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            list +\u003d \"\\t \" + i + \". \" + taskList.get(i - 1) + \"\\n\";"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        //remove the extra \"\\n\""
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        if(!list.isEmpty()) {"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "            list \u003d list.substring(0, list.length() - 1);"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        giveResponse(list);"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "}"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 152
+    }
+  },
+  {
+    "path": "src/main/java/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    protected String by;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public Deadline(String description, String by) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by + \")\";"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 14
+    }
+  },
+  {
+    "path": "src/main/java/Duke.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        Bot bot \u003d new Bot();"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        bot.start();"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 2,
+      "-": 4
+    }
+  },
+  {
+    "path": "src/main/java/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public DukeException() {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        super(\"\\u2639 OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\");"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public DukeException(String msg) {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 9
+    }
+  },
+  {
+    "path": "src/main/java/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    protected String at;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public Event(String description, String at) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        this.at \u003d at;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (at: \" + at + \")\";"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 14
+    }
+  },
+  {
+    "path": "src/main/java/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "public class Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public void markAsDone() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        isDone \u003d true;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 21
+    }
+  },
+  {
+    "path": "src/main/java/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "public class Todo extends Task {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public Todo(String description) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "        return \"[T][\" + getStatusIcon() + \"] \" + description;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 9
+    }
+  },
+  {
+    "path": "text-ui-test/input.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "blah"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "todo"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "todo borrow book"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "deadline"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "deadline return book"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "deadline return book /by"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "deadline return book /by Sunday"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "event"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "event project meeting"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "event project meeting /at"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "event project meeting /at Mon 2-4pm"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "done"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "done three"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "done 0"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "done 1"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "done 3"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "delete"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "delete two"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "delete 0"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "delete 1"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "bye"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 26
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "#!/usr/bin/env bash"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# create bin directory if it doesn\u0027t exist"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ ! -d \"../bin\" ]"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    mkdir ../bin"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# delete output from previous run"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ -e \"./ACTUAL.TXT\" ]"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    rm ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "export LC_ALL\u003den_GB.UTF-8"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# compile the code into the bin folder, terminates if error occurred"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "T-Fang"
+        },
+        "content": "if ! javac -cp ../src -Xlint:none -d ../bin ../src/main/java/*.java"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"********** BUILD FAILURE **********\""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 1"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "java -classpath ../bin Duke \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# convert to UNIX format"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "cp EXPECTED.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "dos2unix ACTUAL.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# compare the output to the expected output"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "diff ACTUAL.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ $? -eq 0 ]"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"Test result: PASSED\""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 0"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "else"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"Test result: FAILED\""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 1"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      }
+    ],
+    "authorContributionMap": {
+      "T-Fang": 3,
+      "-": 37
+    }
+  }
+]

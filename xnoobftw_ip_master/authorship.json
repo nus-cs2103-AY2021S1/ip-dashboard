@@ -1,0 +1,7873 @@
+[
+  {
+    "path": "src/main/java/duke/Command/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public abstract class Command {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public final String input;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public Command(String input) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.input \u003d input;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    abstract public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    abstract public boolean isExit();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/DeadlineCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DeadlineException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Deadline;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Task;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.DateTimeException;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DeadlineCommand extends Command {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int day;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int month;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int year;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int hour;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int min;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public DeadlineCommand(String input, int day, int month, int year, int hour, int min) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.day \u003d day;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.month \u003d month;"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.year \u003d year;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.hour \u003d hour;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.min \u003d min;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DeadlineException {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        LocalDateTime dateTime \u003d null;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            dateTime \u003d LocalDateTime.of(year, month, day, hour, min);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } catch (DateTimeException e) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            throw new DeadlineException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Got it. I\u0027ve added this task:\");"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Task task \u003d new Deadline(input, dateTime);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        tasks.add(task);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(task);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Now you have \" + tasks.size() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 53
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DeletionException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int index;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public DeleteCommand(String input, int index) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.index \u003d index;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DeletionException {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        if (index \u003e\u003d tasks.size() || index \u003c 0) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            throw new DeletionException(\"Item does not exist in list!\");"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Task task \u003d tasks.get(index);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        tasks.remove(index);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Noted. I\u0027ve removed this task:\");"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(task);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Now you have \" + tasks.size() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 36
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DoneException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DoneCommand extends Command {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int listNumber;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public DoneCommand(String input, int listNumber) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.listNumber \u003d listNumber;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DoneException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        if (listNumber \u003e tasks.size()) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            throw new DoneException(\"Item number \" + listNumber + \" does not exist in list!\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        tasks.get(listNumber - 1).completeTask();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Nice! I\u0027ve marked this task as done:\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(tasks.get(listNumber - 1).toString());"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 30
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/EventCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.EventException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Event;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Task;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.DateTimeException;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class EventCommand extends Command {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int day;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int month;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int year;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int hour;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final int min;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public EventCommand(String input, int day, int month, int year, int hour, int min) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.day \u003d day;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.month \u003d month;"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.year \u003d year;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.hour \u003d hour;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.min \u003d min;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws EventException {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        LocalDateTime dateTime \u003d null;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            dateTime \u003d LocalDateTime.of(year, month, day, hour, min);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } catch (DateTimeException e) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            throw new EventException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Got it. I\u0027ve added this task:\");"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Task task \u003d new Event(input, dateTime);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        tasks.add(task);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(task);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Now you have \" + tasks.size() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 51
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/ExitCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class ExitCommand extends Command {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public ExitCommand(String input) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Bye. Hope to see you again soon!\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        // saves tasks to filePath"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            storage.saveToCSV(tasks);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 30
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/InvalidCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.InvalidInputException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class InvalidCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public InvalidCommand(String input) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        throw new InvalidInputException(\"I\u0027m sorry, but I don\u0027t know what that means! :-(\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 24
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public ListCommand(String input) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Here are the tasks in your list:\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int index \u003d 1;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        for (Task task : tasks.getList()) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            System.out.println(index + \". \" + task.toString());"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            index++;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 29
+    }
+  },
+  {
+    "path": "src/main/java/duke/Command/ToDoCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.ToDoException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.ToDo;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class ToDoCommand extends Command {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public ToDoCommand(String input) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws ToDoException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Task task \u003d new ToDo(input);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        tasks.add(task);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Got it. I\u0027ve added this task:\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(task);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Now you have \" + tasks.size() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 29
+    }
+  },
+  {
+    "path": "src/main/java/duke/Duke.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Command.Command;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.DukeException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final Storage storage;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final TaskList tasks;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final Ui ui;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public Duke(String filePath) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.storage \u003d new Storage(filePath);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.tasks \u003d new TaskList(this.storage.read());"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.ui \u003d new Ui();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void run() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        ui.showWelcome();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        boolean isExit \u003d false;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        while (!isExit) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                String input \u003d ui.readCommand();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                ui.showLine();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                Command c \u003d Parser.parse(input);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                c.execute(tasks, ui, storage);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                isExit \u003d c.isExit();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                ui.showError(e.getMessage());"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            } finally {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                ui.showLine();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        new Duke(\"data/tasks.csv\").run();"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 38,
+      "-": 3
+    }
+  },
+  {
+    "path": "src/main/java/duke/Exception/DeadlineException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DeadlineException extends DukeException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public DeadlineException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Exception/DeletionException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DeletionException extends DukeException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public DeletionException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Exception/DoneException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DoneException extends DukeException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public DoneException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Exception/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public DukeException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Exception/EventException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class EventException extends DukeException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public EventException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Exception/InvalidInputException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class InvalidInputException extends DukeException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public InvalidInputException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Exception/ToDoException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class ToDoException extends DukeException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public ToDoException(String msg) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(msg);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Command.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Exception.*;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.DateTimeException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public static Command parse(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        if (input.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // when user inputs bye"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new ExitCommand(input);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else if (input.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // when user wants to print list of task"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new ListCommand(input);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else if (input.startsWith(\"done\")) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // when user completes task"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] temp \u003d input.split(\" \");"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (temp.length \u003d\u003d 1) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new DoneException(\"Please input number after done! Example of input would be \u0027done 2\u0027 checks item number 2 from list\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (temp.length \u003e 2) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new DoneException(\"Too many arguements! Example of input would be \u0027done 2\u0027 which checks item number 2 from list\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int listNumber \u003d Integer.parseInt(temp[1]);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new DoneCommand(input, listNumber);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else if (input.startsWith(\"deadline\")) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // when user inputs a deadline"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] temp \u003d input.split(\"/\");"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] commandTemp \u003d temp[0].split(\" \");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String command \u003d commandTemp[0];"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (temp.length !\u003d 2) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                if (temp.length \u003e 2) {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    // if user ended up using a dd/mm/yyyy HHHH format"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    throw new DeadlineException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                            \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    throw new DeadlineException(\"Both time description and description of a deadline must be filled!\");"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String description \u003d \"\";"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            for (int i \u003d 1; i \u003c commandTemp.length; i++) {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                description +\u003d commandTemp[i] + \" \";"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] timeTemp \u003d temp[1].split(\" \");"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (timeTemp.length !\u003d 3) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // timeTemp[0] \u003d timeCommand which is a by or at"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // timeTemp[1] \u003d DDMMYYYY"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // timeTemp[2] \u003d HHHH"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new DeadlineException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String timeCommand \u003d timeTemp[0];"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String DDMMYYYY \u003d timeTemp[1];"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] DDMMYYYtemp \u003d DDMMYYYY.split(\"-\");"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String HHHH \u003d timeTemp[2];"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (DDMMYYYtemp.length !\u003d 3 || HHHH.length() !\u003d 4) {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new DeadlineException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int day \u003d Integer.parseInt(DDMMYYYtemp[0]);"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int month \u003d Integer.parseInt(DDMMYYYtemp[1]);"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int year \u003d Integer.parseInt(DDMMYYYtemp[2]);"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int hour \u003d Integer.parseInt(HHHH.substring(0, 2));"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int min \u003d Integer.parseInt(HHHH.substring(2, 4));"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new DeadlineCommand(description, day, month, year, hour, min);"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else if (input.startsWith(\"event\")) {"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // when user inputs an event"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] temp \u003d input.split(\"/\");"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] commandTemp \u003d temp[0].split(\" \");"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String command \u003d commandTemp[0];"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (temp.length !\u003d 2) {"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                if (temp.length \u003e 2) {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    // if user ended up using a dd/mm/yyyy HHHH format"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    throw new EventException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                            \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    throw new EventException(\"Both time description and description of a event must be filled!\");"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String description \u003d \"\";"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            for (int i \u003d 1; i \u003c commandTemp.length; i++) {"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                description +\u003d commandTemp[i] + \" \";"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] timeTemp \u003d temp[1].split(\" \");"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (timeTemp.length !\u003d 3) {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // timeTemp[0] \u003d timeCommand which is a by or at"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // timeTemp[1] \u003d DDMMYYYY"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // timeTemp[2] \u003d HHHH"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new EventException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String timeCommand \u003d timeTemp[0];"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String DDMMYYYY \u003d timeTemp[1];"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] DDMMYYYtemp \u003d DDMMYYYY.split(\"-\");"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String HHHH \u003d timeTemp[2];"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (DDMMYYYtemp.length !\u003d 3 || HHHH.length() !\u003d 4) {"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new EventException(\"Please input date time format in DD-MM-YYYY HHHH format!\\n\" +"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        \"Eg: 2-12-2019 1800 OR 02-12-2019 1800\");"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int day \u003d Integer.parseInt(DDMMYYYtemp[0]);"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int month \u003d Integer.parseInt(DDMMYYYtemp[1]);"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int year \u003d Integer.parseInt(DDMMYYYtemp[2]);"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int hour \u003d Integer.parseInt(HHHH.substring(0, 2));"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int min \u003d Integer.parseInt(HHHH.substring(2, 4));"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new EventCommand(description, day, month, year, hour, min);"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else if (input.startsWith(\"todo\")) {"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // when user inputs a todo"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] temp \u003d input.split(\" \");"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String command \u003d temp[0];"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String description \u003d \"\";"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            for(int i \u003d 1; i \u003c temp.length; i++) {"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                description +\u003d temp[i] + \" \";"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (description.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new ToDoException(\"The description of a todo cannot be empty!\");"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new ToDoCommand(description);"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else if (input.startsWith(\"delete\")) {"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // if input starts with delete"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String[] temp \u003d input.split(\" \");"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (temp.length \u003d\u003d 1) {"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new DeletionException(\"Please input index after delete! Example of input would be \u0027delete 1\u0027 which deletes 1st item from list\");"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (temp.length \u003e 2) {"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                throw new DeletionException(\"Too many arguments! Example of input would be \u0027delete 1\u0027 which deletes 1st item from list\");"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String command \u003d temp[0];"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            int index \u003d Integer.parseInt(temp[1]) - 1;"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new DeleteCommand(input, index);"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // invalid input"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new InvalidCommand(input);"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 167
+    }
+  },
+  {
+    "path": "src/main/java/duke/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Deadline;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Event;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.ToDo;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.BufferedReader;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.FileReader;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.FileNotFoundException;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final String filePath;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public Storage(String filePath) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.filePath \u003d filePath;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        initialize();"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public ArrayList\u003cTask\u003e read() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        if (isEmpty()) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // if file is totally new"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                FileWriter csvWriter \u003d insertColumnHeadersToCSV();"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                csvWriter.flush();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                csvWriter.close();"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                e.printStackTrace();"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return new ArrayList\u003cTask\u003e();"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // if csv file has existing data"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                BufferedReader csvReader \u003d new BufferedReader(new FileReader(filePath));"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // does once to remove column headers"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                String row \u003d csvReader.readLine();"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                while ((row \u003d csvReader.readLine()) !\u003d null) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    String[] data \u003d row.split(\",\");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    // data[0] \u003d type_of_task"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    // data[1] \u003d is_completed"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    // data[2] \u003d task_description"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    // data[3] \u003d time_description (only applicable to deadline and event)"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    String typeOfTask \u003d data[0];"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    String isCompleted \u003d data[1];"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    String taskDescription \u003d data[2];"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    String timeDescription \u003d \"\";"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    if (data.length \u003e 3) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        timeDescription \u003d data[3];"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    if (typeOfTask.equals(\"Event\")) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        String[] temp \u003d timeDescription.split(\" \");"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int day \u003d Integer.parseInt(temp[0]);"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int month \u003d Integer.parseInt(temp[1]);"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int year \u003d Integer.parseInt(temp[2]);"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int hour \u003d Integer.parseInt(temp[3]);"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int min \u003d Integer.parseInt(temp[4]);"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        Event event \u003d new Event(taskDescription, LocalDateTime.of(year, month, day, hour, min));"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        if (isCompleted.equals(\"true\")) {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                            event.completeTask();"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        taskList.add(event);"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    } else if (typeOfTask.equals(\"Deadline\")) {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        String[] temp \u003d timeDescription.split(\" \");"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int day \u003d Integer.parseInt(temp[0]);"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int month \u003d Integer.parseInt(temp[1]);"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int year \u003d Integer.parseInt(temp[2]);"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int hour \u003d Integer.parseInt(temp[3]);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        int min \u003d Integer.parseInt(temp[4]);"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        Deadline dl \u003d new Deadline(taskDescription, LocalDateTime.of(year, month, day, hour, min));"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        if (isCompleted.equals(\"true\")) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                            dl.completeTask();"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        taskList.add(dl);"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    } else if (typeOfTask.equals(\"ToDo\")) {"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        ToDo toDo \u003d new ToDo(taskDescription);"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        if (isCompleted.equals(\"true\")) {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                            toDo.completeTask();"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        taskList.add(toDo);"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                e.printStackTrace();"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            return taskList;"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void saveToCSV(TaskList taskList) throws IOException {"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        FileWriter csvWriter \u003d insertColumnHeadersToCSV();"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        for(Task task : taskList.getList()) {"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String typeOfTask \u003d task.getClass().getSimpleName();"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String isCompleted \u003d Boolean.toString(task.isCompleted());"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String taskDescription \u003d task.getTaskDescription();"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            String timeDescription \u003d \"\";"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            if (typeOfTask.equals(\"Deadline\")) {"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                Deadline dl \u003d (Deadline) task;"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                timeDescription \u003d dl.getDateTime();"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            } else if (typeOfTask.equals(\"Event\")) {"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                Event event \u003d (Event) task;"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                timeDescription \u003d event.getDateTime();"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(typeOfTask);"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(\",\");"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(isCompleted);"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(\",\");"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(taskDescription);"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(\",\");"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(timeDescription);"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            csvWriter.append(\"\\n\");"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.flush();"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.close();"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private FileWriter insertColumnHeadersToCSV() throws IOException {"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        // writes column headers in"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        FileWriter csvWriter \u003d new FileWriter(filePath);"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\"typeOfTask\");"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\",\");"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\"isCompleted\");"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\",\");"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\"taskDescription\");"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\",\");"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\"timeDescriptionInDDMMYYYYHHMM\");"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        csvWriter.append(\"\\n\");"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return csvWriter;"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isEmpty() {"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return new File(filePath).length() \u003d\u003d 0;"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private void initialize() {"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        BufferedReader csvReader \u003d null;"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        File dataFolder \u003d new File(\"data\");"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        if (dataFolder.exists()) {"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // if data folder exists"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // try to read duke.txt in filePath"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                new BufferedReader(new FileReader(filePath));"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            } catch (FileNotFoundException e) {"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // if csv file has not been created yet"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                try {"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    // creates the csv file"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    FileWriter csvWriter \u003d new FileWriter(filePath);"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    csvWriter.flush();"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    csvWriter.close();"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                } catch (IOException IOError) {"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                    IOError.printStackTrace();"
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            // if data folder does not exist"
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            dataFolder.mkdir(); // makes the data folder"
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                // creates the csv file"
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                FileWriter csvWriter \u003d new FileWriter(filePath);"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                csvWriter.flush();"
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                csvWriter.close();"
+      },
+      {
+        "lineNumber": 173,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            } catch (IOException IOError) {"
+      },
+      {
+        "lineNumber": 174,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                IOError.printStackTrace();"
+      },
+      {
+        "lineNumber": 175,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 176,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 177,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 178,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 178
+    }
+  },
+  {
+    "path": "src/main/java/duke/Task/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final LocalDateTime dateTime;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public Deadline(String task, LocalDateTime dateTime) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(task);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.dateTime \u003d dateTime;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String getDateTime() {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int dd \u003d this.dateTime.getDayOfMonth();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int mm \u003d this.dateTime.getMonthValue();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int yyyy \u003d this.dateTime.getYear();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int hour \u003d this.dateTime.getHour();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int min \u003d this.dateTime.getMinute();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return dd + \" \" + mm + \" \" + yyyy + \" \" + hour + \" \" + min;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        String MMM \u003d this.dateTime.getMonth().toString().substring(0, 3);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        String DDD \u003d this.dateTime.getDayOfWeek().toString().substring(0, 3);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int dd \u003d this.dateTime.getDayOfMonth();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int yyyy \u003d this.dateTime.getYear();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        String HHHH \u003d this.dateTime.toLocalTime().toString();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return \"[D]\" + super.toString() + \"(at: \" + dd + \" \" + MMM + \" \" + yyyy + \", \" + DDD + \" @ \" + HHHH + \")\";"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 30
+    }
+  },
+  {
+    "path": "src/main/java/duke/Task/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final LocalDateTime dateTime;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public Event(String task, LocalDateTime dateTime) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(task);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.dateTime \u003d dateTime;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String getDateTime() {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int dd \u003d this.dateTime.getDayOfMonth();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int mm \u003d this.dateTime.getMonthValue();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int yyyy \u003d this.dateTime.getYear();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int hour \u003d this.dateTime.getHour();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int min \u003d this.dateTime.getMinute();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return dd + \" \" + mm + \" \" + yyyy + \" \" + hour + \" \" + min;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        String MMM \u003d this.dateTime.getMonth().toString().substring(0, 3);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        String DDD \u003d this.dateTime.getDayOfWeek().toString().substring(0, 3);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int dd \u003d this.dateTime.getDayOfMonth();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        int yyyy \u003d this.dateTime.getYear();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        String HHHH \u003d this.dateTime.toLocalTime().toString();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return \"[E]\" + super.toString() + \"(at: \" + dd + \" \" + MMM + \" \" + yyyy + \", \" + DDD + \" @ \" + HHHH + \")\";"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 30
+    }
+  },
+  {
+    "path": "src/main/java/duke/Task/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final String taskDescription;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private boolean isDone;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public Task(String task) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.taskDescription \u003d task;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String getTaskDescription() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return this.taskDescription;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean isCompleted() {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return this.isDone;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void completeTask() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.isDone \u003d true;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return \"[\" + (this.isDone ? \"\\u2713\" : \"\\u2717\") + \"] \" + this.taskDescription;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 27
+    }
+  },
+  {
+    "path": "src/main/java/duke/Task/ToDo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class ToDo extends Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public ToDo(String taskDescription) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        super(taskDescription);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 12
+    }
+  },
+  {
+    "path": "src/main/java/duke/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import duke.Task.Task;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private List\u003cTask\u003e taskList;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public TaskList(ArrayList\u003cTask\u003e taskList) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.taskList \u003d taskList;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public List\u003cTask\u003e getList() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return taskList;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public boolean add(Task task) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return this.taskList.add(task);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void remove(int index) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        this.taskList.remove(index);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public Task get(int index) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return this.taskList.get(index);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public int size() {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return this.taskList.size();"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return this.taskList.toString();"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 38
+    }
+  },
+  {
+    "path": "src/main/java/duke/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    private final static Scanner sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void showWelcome() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"Hello! I\u0027m Duke\");"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"What can i do for you?\");"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public String readCommand() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        return sc.nextLine();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void showError(String errorMessage) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(errorMessage);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void showLine() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        System.out.println(\"______________________________\");"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 25
+    }
+  },
+  {
+    "path": "src/test/java/duke/DukeTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.io.PrintWriter;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DukeTest {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//    @Test"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//    public void Test1() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//        new Duke(\"data/test1.csv\").run();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//        PrintWriter writer \u003d new PrintWriter(System.out);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//        String input \u003d \"todo eat\\n\""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//                + \"todo sleep\\n\""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//                + \"list\\n\""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//                + \"done 1\\n\""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//                + \"done 2\\n\""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//                + \"list\\n\""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//                + \"delete 1\\n\""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//                + \"delete 2\\n\";"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//        writer.println(\"todo eat\");"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//        writer.flush();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//        writer.close();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "//    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 28
+    }
+  },
+  {
+    "path": "src/test/java/duke/Task/DeadlineTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class DeadlineTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestConstructor() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[D][\\u2717] Individual Project(at: 23 AUG 2020, SUN @ 18:00)\","
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                new Deadline(\"Individual Project\","
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        LocalDateTime.of(2020, 8, 23, 18, 0)).toString());"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestCompletedTask() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Deadline dl \u003d new Deadline(\"Individual Project\","
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                LocalDateTime.of(2020, 8, 23, 18, 0));"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        dl.completeTask();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[D][\\u2713] Individual Project(at: 23 AUG 2020, SUN @ 18:00)\", dl.toString());"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 26
+    }
+  },
+  {
+    "path": "src/test/java/duke/Task/EventTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class EventTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestConstructor() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[E][\\u2717] Individual Project(at: 23 AUG 2020, SUN @ 18:00)\","
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                new Event(\"Individual Project\","
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                        LocalDateTime.of(2020, 8, 23, 18, 0)).toString());"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestCompletedTask() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Event dl \u003d new Event(\"Individual Project\","
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                LocalDateTime.of(2020, 8, 23, 18, 0));"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        dl.completeTask();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[E][\\u2713] Individual Project(at: 23 AUG 2020, SUN @ 18:00)\", dl.toString());"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 26
+    }
+  },
+  {
+    "path": "src/test/java/duke/Task/TaskInheritanceTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class TaskInheritanceTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestEventInheritance() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Task task \u003d new Event(\"Individual Project\","
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                LocalDateTime.of(2020, 8, 23, 18, 0));"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[E][\\u2717] Individual Project(at: 23 AUG 2020, SUN @ 18:00)\","
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                task.toString());"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestDeadlineInheritance() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        Task task \u003d new Deadline(\"Individual Project\","
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                LocalDateTime.of(2020, 8, 23, 18, 0));"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[D][\\u2717] Individual Project(at: 23 AUG 2020, SUN @ 18:00)\","
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "                task.toString());"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 26
+    }
+  },
+  {
+    "path": "src/test/java/duke/Task/ToDoTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "package duke.Task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "public class ToDoTest {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestConstructor() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[T][\\u2717] Test1\", new ToDo(\"Test1\").toString());"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    public void TestCompletedTask() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        ToDo testee \u003d new ToDo(\"Test2\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        testee.completeTask();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "        assertEquals(\"[T][\\u2713] Test2\", testee.toString());"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 19
+    }
+  },
+  {
+    "path": "text-ui-test/input.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "todo"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline return book"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline return book /by 22 1600"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline return book /by 22-08 1700"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline return book /by 22-08-2020"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline return book /by 22-2020 1900"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event project meeting"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event project meeting /at 22 1600"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event project meeting /at 22-08 1700"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event project meeting /at 22-08-2020"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event project meeting /at 22-2020 1900"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "todo read book"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline return book /by 22-08-2020 1700"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event project meeting /at 22-08-2020 1900"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "deadline return book /by Sunday"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "event project meeting /at Mon 2-4pm"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "todo join sports club"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "todo borrow book"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "done"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "done 1 2 3"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "done 213123"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "done 1"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "done 4"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete 312312"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete -1"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete 1"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete 3"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete 5"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete 1"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete 1"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "delete 1"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "bye"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 38
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.bat",
+    "fileType": "bat",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "@ECHO OFF"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM create bin directory if it doesn\u0027t exist"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if not exist ..\\bin mkdir ..\\bin"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM delete output from previous run"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "del ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compile the code into the bin folder"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "javac  -cp ..\\src -Xlint:none -d ..\\bin ..\\src\\main\\java\\duke\\Command\\*.java ..\\src\\main\\java\\duke\\Exception\\*.java ..\\src\\main\\java\\duke\\Task\\*.java ..\\src\\main\\java\\duke\\*.java"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "IF ERRORLEVEL 1 ("
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo ********** BUILD FAILURE **********"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit /b 1"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "    PAUSE"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ")"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM no error here, errorlevel \u003d\u003d 0"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "xnoobftw"
+        },
+        "content": "java -classpath ..\\bin duke.Duke \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compare the output to the expected output"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "FC ACTUAL.TXT EXPECTED.TXT"
+      }
+    ],
+    "authorContributionMap": {
+      "xnoobftw": 4,
+      "-": 19
+    }
+  }
+]

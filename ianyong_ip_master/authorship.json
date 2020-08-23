@@ -1,0 +1,5612 @@
+[
+  {
+    "path": "src/main/java/Duke.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * Entrypoint for the Duke chatbot."
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Starts the REPL environment."
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param args The command line parameters (unused)"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        Repl.run();"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "-": 4,
+      "ianyong": 9
+    }
+  },
+  {
+    "path": "src/main/java/Repl.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import enums.Command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import exceptions.DukeException;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import tasks.Deadline;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import tasks.Event;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import tasks.TaskManager;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import tasks.ToDo;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.PrettyPrinter;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.ResourceHandler;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * A read-eval-print loop (REPL) that reads in a command from the user, executes it, and prints out the result."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class Repl {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    // Formatting"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Number of spaces to prefix each line with. */"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private static final int LEFT_PADDING_SIZE \u003d 4;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Number of underscores each divider should be made up of. */"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private static final int DIVIDER_LENGTH \u003d 60;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** {@code Scanner} object which reads in user input. */"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private static final Scanner scanner \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** {@code PrettyPrinter} object for formatting the REPL output. */"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private static final PrettyPrinter prettyPrinter \u003d new PrettyPrinter(LEFT_PADDING_SIZE, DIVIDER_LENGTH);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** {@code TaskManager} object to keep track of tasks */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private static final TaskManager taskManager \u003d new TaskManager();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Runs the REPL."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public static void run() {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        prettyPrinter.print(ResourceHandler.getString(\"repl.greeting\"));"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        while (scanner.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String line \u003d scanner.nextLine();"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String firstToken \u003d line.split(\" \")[0];"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                Command command \u003d Command.valueOf(firstToken.toUpperCase());"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                // Check that the user input is of the correct format for the command."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                command.validate(line);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                switch (command) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    case BYE:"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        prettyPrinter.print(ResourceHandler.getString(\"repl.farewell\"));"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        return;"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    case DEADLINE: {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String lineWithoutCommand \u003d line.replaceFirst(\"^deadline\", \"\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String[] args \u003d lineWithoutCommand.split(\"/by\", 2);"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String deadlineName \u003d args[0].trim();"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String dueDate \u003d args[1].trim();"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        prettyPrinter.print(taskManager.addTask(new Deadline(deadlineName, dueDate)));"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    case DELETE: {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String lineWithoutCommand \u003d line.replaceFirst(\"^delete\", \"\");"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String listIndexStr \u003d lineWithoutCommand.trim();"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        // `listIndexStr` is guaranteed to be a string made up of only digit characters."
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        int listIndex \u003d Integer.parseInt(listIndexStr) - 1;"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        try {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                            prettyPrinter.print(taskManager.removeTask(listIndex));"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                            prettyPrinter.print(ResourceHandler.getString(\"repl.invalidTaskIndex\"));"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    case DONE: {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String lineWithoutCommand \u003d line.replaceFirst(\"^done\", \"\");"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String listIndexStr \u003d lineWithoutCommand.trim();"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        // `listIndexStr` is guaranteed to be a string made up of only digit characters."
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        int listIndex \u003d Integer.parseInt(listIndexStr) - 1;"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        try {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                            prettyPrinter.print(taskManager.markAsDone(listIndex));"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                            prettyPrinter.print(ResourceHandler.getString(\"repl.invalidTaskIndex\"));"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    case EVENT: {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String lineWithoutCommand \u003d line.replaceFirst(\"^event\", \"\");"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String[] args \u003d lineWithoutCommand.split(\"/at\", 2);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String eventName \u003d args[0].trim();"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String dateTime \u003d args[1].trim();"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        prettyPrinter.print(taskManager.addTask(new Event(eventName, dateTime)));"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    case LIST: {"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        prettyPrinter.print(taskManager.toString());"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    case TODO: {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String lineWithoutCommand \u003d line.replaceFirst(\"^todo\", \"\");"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        String toDoName \u003d lineWithoutCommand.trim();"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        prettyPrinter.print(taskManager.addTask(new ToDo(toDoName)));"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                prettyPrinter.print(e.getMessage());"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            } catch (IllegalArgumentException e) {"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                prettyPrinter.print(ResourceHandler.getString(\"repl.unknownCommand\"));"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 102
+    }
+  },
+  {
+    "path": "src/main/java/enums/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package enums;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import exceptions.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.ResourceHandler;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.text.MessageFormat;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.regex.Pattern;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * Commands that can be used in \u003ci\u003eDuke\u003c/i\u003e."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public enum Command {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Terminates the running of \u003ci\u003eDuke\u003c/i\u003e."
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    BYE {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        /**"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * Validates whether the user input is of the correct format for the \u0027bye\u0027 command."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         *"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @param input the user input."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         */"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        @Override"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        public void validate(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String regex \u003d \"^(?i)bye\\\\s*$\";"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            if (!Pattern.matches(regex, input)) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String message \u003d MessageFormat.format(template, \"bye\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                throw new DukeException(message);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    },"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Adds a {@code Deadline} task to the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    DEADLINE {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        /**"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * Validates whether the user input is of the correct format for the \u0027deadline\u0027 command."
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         *"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @param input the user input."
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         */"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        @Override"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        public void validate(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String regex \u003d \"^(?i)deadline\\\\s+.*\\\\S+.*\\\\s+/by\\\\s+.*\\\\S+.*\\\\s*$\";"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            if (!Pattern.matches(regex, input)) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        ResourceHandler.getString(\"command.deadlineFormat\"));"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String message \u003d MessageFormat.format(template, \"deadline\");"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                throw new DukeException(message);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    },"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Deletes a {@code Task} from the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    DELETE {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        /**"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * Validates whether the user input is of the correct format for the \u0027delete\u0027 command."
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         *"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @param input the user input."
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         */"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        @Override"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        public void validate(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String regex \u003d \"^(?i)delete\\\\s+\\\\d+\\\\s*$\";"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            if (!Pattern.matches(regex, input)) {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        ResourceHandler.getString(\"command.deleteFormat\"));"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String message \u003d MessageFormat.format(template, \"delete\");"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                throw new DukeException(message);"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    },"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Marks a {@code Task} as done."
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    DONE {"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        /**"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * Validates whether the user input is of the correct format for the \u0027done\u0027 command."
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         *"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @param input the user input."
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         */"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        @Override"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        public void validate(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String regex \u003d \"^(?i)done\\\\s+\\\\d+\\\\s*$\";"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            if (!Pattern.matches(regex, input)) {"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        ResourceHandler.getString(\"command.doneFormat\"));"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String message \u003d MessageFormat.format(template, \"done\");"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                throw new DukeException(message);"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    },"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Adds an {@code Event} task to the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    EVENT {"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        /**"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * Validates whether the user input is of the correct format for the \u0027event\u0027 command."
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         *"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @param input the user input."
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         */"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        @Override"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        public void validate(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String regex \u003d \"^(?i)event\\\\s+.*\\\\S+.*\\\\s+/at\\\\s+.*\\\\S+.*\\\\s*$\";"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            if (!Pattern.matches(regex, input)) {"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        ResourceHandler.getString(\"command.eventFormat\"));"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String message \u003d MessageFormat.format(template, \"event\");"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                throw new DukeException(message);"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    },"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Lists all {@code Task}s in the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    LIST {"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        /**"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * Validates whether the user input is of the correct format for the \u0027list\u0027 command."
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         *"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @param input the user input."
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         */"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        @Override"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        public void validate(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String regex \u003d \"^(?i)list\\\\s*$\";"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            if (!Pattern.matches(regex, input)) {"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String message \u003d MessageFormat.format(template, \"list\");"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                throw new DukeException(message);"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    },"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Adds a {@code ToDo} task to the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    TODO {"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        /**"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * Validates whether the user input is of the correct format for the \u0027todo\u0027 command."
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         *"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @param input the user input."
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "         */"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        @Override"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        public void validate(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            String regex \u003d \"^(?i)todo\\\\s+.*\\\\S+.*\\\\s*$\";"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            if (!Pattern.matches(regex, input)) {"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        ResourceHandler.getString(\"command.toDoFormat\"));"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                String message \u003d MessageFormat.format(template, \"todo\");"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                throw new DukeException(message);"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    };"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Validates whether the user input is of the correct format."
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param input the user input."
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @throws DukeException if the user input is invalid."
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public abstract void validate(String input) throws DukeException;"
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 172
+    }
+  },
+  {
+    "path": "src/main/java/exceptions/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package exceptions;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * Represents an {@code Exception} that is related to \u003ci\u003eDuke\u003c/i\u003e."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new {@code DukeException} with the specified detail message."
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param message the detail message."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public DukeException(String message) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 15
+    }
+  },
+  {
+    "path": "src/main/java/tasks/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.ResourceHandler;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.text.MessageFormat;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * A specialised {@code Task} that needs to be done before a specific date/time."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private final String dueDate;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new uncompleted {@code Deadline} object."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code Deadline}."
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param dueDate a string representing the due date of the {@code Deadline}."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public Deadline(String name, String dueDate) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        super(name);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.dueDate \u003d dueDate;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new {@code Deadline} object."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code Deadline}."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param dueDate a string representing the due date of the {@code Deadline}."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param isDone whether the {@code Deadline} has been completed."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private Deadline(String name, String dueDate, boolean isDone) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        super(name, isDone);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.dueDate \u003d dueDate;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Marks the {@code Deadline} as done."
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a new completed {@code Deadline} object with the same {@code name} as this {@code Deadline}."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public Deadline markAsDone() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return new Deadline(name, dueDate, true);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns a string representation of this {@code Deadline} object."
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the {@code Deadline}."
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return MessageFormat.format(ResourceHandler.getString(\"deadline.toString\"), super.toString(), dueDate);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 54
+    }
+  },
+  {
+    "path": "src/main/java/tasks/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.ResourceHandler;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.text.MessageFormat;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * A specialised {@code Task} that starts and ends at a specific time."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private final String dateTime;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new uncompleted {@code Event} object."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code Event}."
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param dateTime a string representing the date and time of the {@code Event}."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public Event(String name, String dateTime) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        super(name);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.dateTime \u003d dateTime;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new uncompleted {@code Event} object."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code Event}."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param dateTime a string representing the date and time of the {@code Event}."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param isDone whether the {@code Event} has been completed."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public Event(String name, String dateTime, boolean isDone) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        super(name, isDone);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.dateTime \u003d dateTime;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Marks the {@code Event} as done."
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a new completed {@code Event} object with the same {@code name} as this {@code Event}."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public Event markAsDone() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return new Event(name, dateTime, true);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns a string representation of this {@code Event} object."
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the {@code Event}."
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return MessageFormat.format(ResourceHandler.getString(\"event.toString\"), super.toString(), dateTime);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 54
+    }
+  },
+  {
+    "path": "src/main/java/tasks/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.ResourceHandler;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.text.MessageFormat;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * Represents a task within \u003ci\u003eDuke\u003c/i\u003e."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public abstract class Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Name of the {@code Task}. */"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    protected final String name;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Whether the {@code Task} has been completed. */"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private final boolean isDone;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new uncompleted {@code Task} object."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code Task}."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    protected Task(String name) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this(name, false);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new {@code Task} object."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code Task}."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param isDone whether the {@code Task} has been completed."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    protected Task(String name, boolean isDone) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.name \u003d name;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.isDone \u003d isDone;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Marks the {@code Task} as done."
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a new completed {@code Task} object with the same {@code name} as this {@code Task}."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public abstract Task markAsDone();"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns a string representation of this {@code Task} object."
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the {@code Task}."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        String key \u003d isDone ? \"task.toString.done\" : \"task.toString.notDone\";"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return MessageFormat.format(ResourceHandler.getString(key), name);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 52
+    }
+  },
+  {
+    "path": "src/main/java/tasks/TaskManager.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.ResourceHandler;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.text.MessageFormat;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * Manages {@code Task} objects."
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class TaskManager {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** List of {@code Task} objects. */"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private final List\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Constructs a {@code TaskManager} object. */"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public TaskManager() {}"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Adds a new {@code Task} to the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param task the {@code Task} object to be added."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the action of adding a {@code Task}."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String addTask(Task task) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        tasks.add(task);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        String taskCountKey \u003d \"taskManager.taskCount.\" + (tasks.size() \u003d\u003d 1 ? \"singular\" : \"plural\");"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"taskManager.addTask\"),"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                ResourceHandler.getString(taskCountKey));"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return MessageFormat.format(template, task, tasks.size());"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Removes a {@code Task} from the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param listIndex the index of the {@code Task} in the {@code TaskManager} list."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the action of removing a {@code Task}."
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String removeTask(int listIndex) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        Task removedTask \u003d tasks.remove(listIndex);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        String taskCountKey \u003d \"taskManager.taskCount.\" + (tasks.size() \u003d\u003d 1 ? \"singular\" : \"plural\");"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"taskManager.removeTask\"),"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                ResourceHandler.getString(taskCountKey));"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return MessageFormat.format(template, removedTask, tasks.size());"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Mark a {@code Task} as done."
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param listIndex the index of the {@code Task} in the {@code TaskManager} list."
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the action of marking a {@code Task} as done."
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String markAsDone(int listIndex) {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        Task updatedTask \u003d tasks.get(listIndex).markAsDone();"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        tasks.set(listIndex, updatedTask);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return String.format(\"%s\\n  %s\", ResourceHandler.getString(\"taskManager.markTaskDone\"), updatedTask);"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns a list of {@code Task}s under the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the {@code TaskManager}."
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        StringBuilder formattedList \u003d"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                new StringBuilder(ResourceHandler.getString(\"taskManager.listTasksPrefix\") + \"\\n\");"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            formattedList.append(String.format(\"%d. %s\\n\", i + 1, tasks.get(i)));"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return formattedList.toString();"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 72
+    }
+  },
+  {
+    "path": "src/main/java/tasks/ToDo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import utils.ResourceHandler;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.text.MessageFormat;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * A specialised {@code Task} that does not have any date/time attached to it."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class ToDo extends Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new uncompleted {@code ToDo} object."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code ToDo}."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public ToDo(String name) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        super(name);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new {@code ToDo} object."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param name the name of the {@code ToDo}."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param isDone whether the {@code ToDo} has been completed."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private ToDo(String name, boolean isDone) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        super(name, isDone);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Marks the {@code ToDo} as done."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a new completed {@code ToDo} object with the same {@code name} as this {@code ToDo}."
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public ToDo markAsDone() {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return new ToDo(name, true);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns a string representation of this {@code ToDo} object."
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a string representation of the {@code ToDo}."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return MessageFormat.format(ResourceHandler.getString(\"toDo.toString\"), super.toString());"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 48
+    }
+  },
+  {
+    "path": "src/main/java/utils/PrettyPrinter.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package utils;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * Responsible for the formatting of output from \u003ci\u003eDuke\u003c/i\u003e."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class PrettyPrinter {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Number of spaces to prefix each line with. */"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private final int leftPadding;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Number of underscores each divider should be made up of. */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private final int dividerLength;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Constructs a new {@code PrettyPrinter} object that will prefix each line with the specified number of spaces and"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * add a divider with the specified number of underscores to the top and bottom of each message block."
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param leftPadding the number of spaces to prefix each line with."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param dividerLength the number of underscores of each divider."
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public PrettyPrinter(int leftPadding, int dividerLength) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.leftPadding \u003d leftPadding;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        this.dividerLength \u003d dividerLength;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Prints out the number of spaces specified by {@code leftPadding}."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private void printPadding() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        System.out.print(\" \".repeat(leftPadding));"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Prints out the divider using the number of underscores specified by {@code dividerLength}. The dividers are"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * subject to left padding. If the {@code dividerLength} is {@code 0}, this method does nothing."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private void printDivider() {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        if (dividerLength !\u003d 0) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            printPadding();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            System.out.println(\"_\".repeat(dividerLength));"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Pretty prints the message by adding left padding and dividers at the top and bottom of the message."
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param message the string to be pretty printed."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public void print(String message) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        // Handle both LF and CRLF"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        String[] lines \u003d message.split(\"\\\\r?\\\\n\");"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        printDivider();"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        for (String line : lines) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            printPadding();"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            System.out.println(line);"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        printDivider();"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 58
+    }
+  },
+  {
+    "path": "src/main/java/utils/ResourceHandler.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "package utils;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.HashMap;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.Locale;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.Map;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "import java.util.ResourceBundle;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " * Interface through which string resources are retrieved."
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "public class ResourceHandler {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** Default locale - set to English/Singapore */"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private static final Locale defaultLocale \u003d new Locale(\"en\", \"SG\");"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /** For caching the `ResourceBundle` objects of each locale */"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    private static final Map\u003cLocale, ResourceBundle\u003e resourceBundles \u003d new HashMap\u003c\u003e();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns the string resource for the given key and locale."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param key the identifier for the string resource."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param locale the locale of the string."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return the string resource."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public static String getString(String key, Locale locale) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        resourceBundles.putIfAbsent(locale, ResourceBundle.getBundle(\"Strings\", locale));"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return resourceBundles.get(locale).getString(key);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns the string resource for the given key in the default locale (English/Singapore)."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param key the identifier for the string resource."
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return the string resource."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public static String getString(String key) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return getString(key, defaultLocale);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 38
+    }
+  },
+  {
+    "path": "text-ui-test/input.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "todo read book"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "event project meeting /at Friday 2 to 4pm"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "deadline individual project /by August 20"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "listtt"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "list all"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "done 7"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "done -5"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "done ewofije"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "done 2"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "event birthday celebration /by September 5"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "deadline movie night /at December 28"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "delete 13"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "delete -324"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "delete 2"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "bye bye"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "bye"
+      }
+    ],
+    "authorContributionMap": {
+      "ianyong": 18
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.bat",
+    "fileType": "bat",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "@ECHO OFF"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "REM discard any changes to env vars when script exits"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "setlocal enabledelayedexpansion"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "REM recreate bin directory"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "rmdir /s /q ..\\bin"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "mkdir ..\\bin"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM delete output from previous run"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "del ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compile the code into the bin folder"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "(for /f \"delims\u003d\" %%f in (\u0027dir /b /s ..\\src\\main\\*.java\u0027) do ("
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    set file\u003d%%f"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    set file\u003d!file:\\\u003d\\\\!"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @echo \"!file!\""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ")) \u003e sources.txt"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "javac -cp ..\\src -Xlint:none -d ..\\bin @sources.txt"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "IF ERRORLEVEL 1 ("
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo ********** BUILD FAILURE **********"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit /b 1"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ")"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM no error here, errorlevel \u003d\u003d 0"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "REM copy properties files into the bin folder"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "(for /f \"delims\u003d\" %%f in (\u0027dir /b /s ..\\src\\main\\*.properties\u0027) do ("
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    set file\u003d%%f"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    set file\u003d!file:\\\u003d\\\\!"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @echo \"!file!\""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ")) \u003e sources.txt"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "for /f \"delims\u003d\" %%f in (sources.txt) do copy %%f ..\\bin"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "REM delete sources.txt"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "del sources.txt"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "java -D\"file.encoding\u003dUTF-8\" -classpath ..\\bin Duke \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "REM compare the output to the expected output"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "FC ACTUAL.TXT EXPECTED.TXT"
+      }
+    ],
+    "authorContributionMap": {
+      "-": 17,
+      "ianyong": 24
+    }
+  },
+  {
+    "path": "text-ui-test/runtest.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "#!/usr/bin/env bash"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "# recreate bin directory"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "rm -rf ../bin"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "mkdir ../bin"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# delete output from previous run"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ -e \"./ACTUAL.TXT\" ]"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    rm ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# compile the code into the bin folder, terminates if error occurred"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "if"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "  ! ("
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    find ../src/main/java -name \"*.java\" \u003e sources.txt"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    javac -cp ../src -Xlint:none -d ../bin @sources.txt"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "  )"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"********** BUILD FAILURE **********\""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 1"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "# delete sources.txt"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "rm sources.txt"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "# copy properties files into the bin folder"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "find ../src/main -name \"*.properties\" -exec cp \"{}\" ../bin \\;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# run the program, feed commands from input.txt file and redirect the output to the ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "java -classpath ../bin Duke \u003c input.txt \u003e ACTUAL.TXT"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# convert to UNIX format"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "cp EXPECTED.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "dos2unix ACTUAL.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "# compare the output to the expected output"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "diff ACTUAL.TXT EXPECTED-UNIX.TXT"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "if [ $? -eq 0 ]"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "then"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"Test result: PASSED\""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 0"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "else"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    echo \"Test result: FAILED\""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    exit 1"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "fi"
+      }
+    ],
+    "authorContributionMap": {
+      "-": 33,
+      "ianyong": 13
+    }
+  }
+]
