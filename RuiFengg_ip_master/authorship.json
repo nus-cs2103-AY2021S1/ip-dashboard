@@ -1,6 +1,6 @@
 [
   {
-    "path": "src/main/java/Duke.java",
+    "path": "src/main/java/Database.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,133 +8,133 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "import exceptions.InvalidCommandException;"
+        "content": "import task.Deadline;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "import task.Event;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import task.Task;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "import task.Todo;"
       },
       {
         "lineNumber": 5,
         "author": {
-          "gitId": "-"
+          "gitId": "RuiFengg"
         },
-        "content": "public class Duke {"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "import java.io.File;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    private void userInput(TaskList taskList) {"
+        "content": "import java.io.FileNotFoundException;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
+        "content": "import java.io.FileWriter;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        while (sc.hasNextLine()) {"
+        "content": "import java.io.IOException;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            String input \u003d sc.nextLine();"
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            Output output \u003d new Output();"
+        "content": "import java.util.ArrayList;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            try {"
+        "content": "import java.util.Scanner;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                output.response(input, taskList);"
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            } catch (InvalidCommandException e) {"
+        "content": "public class Database {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                System.out.println(e.getMessage());"
+        "content": "    private String directory;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            }"
+        "content": "    private File db;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            if (input.equals(\"bye\")) break;"
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "    public static Database dbInstance() {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        sc.close();"
+        "content": "        return new Database().init();"
       },
       {
         "lineNumber": 20,
@@ -155,77 +155,737 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    private void printWelcomeMessage() {"
+        "content": "    private Database init() {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        String welcome \u003d \"_____________________________________\\n\""
+        "content": "        String projectRoot \u003d new File(System.getProperty(\"user.dir\"))"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                + \"Hello! I\u0027m Ray\\n\" + \"Please input a command\\n\""
+        "content": "                .getParentFile()"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                + \"_____________________________________\\n\";"
+        "content": "                .getPath();"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        System.out.println(welcome);"
+        "content": "        this.directory \u003d String.format(\"%s/data/db.txt\", projectRoot);"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        try {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "            this.db \u003d new File(this.directory);"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public void start() {"
+        "content": "            this.db.getParentFile().mkdirs();"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        TaskList todoList \u003d new TaskList();"
+        "content": "            this.db.createNewFile();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        printWelcomeMessage();"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        userInput(todoList);"
+        "content": "            System.out.println(\"Error creating file, file might already exist.\");"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return this;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public ArrayList\u003cTask\u003e getTaskListFromDatabase() {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            File file \u003d new File(this.directory);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            Scanner scanner \u003d new Scanner(file);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            while (scanner.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                taskList.add(createTaskFromDatabase(scanner.nextLine()));"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        } catch (FileNotFoundException e) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            System.out.println(\"Database file does not exist in directory\");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        listAllItemsFromDatabase(taskList);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return taskList;"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public void listAllItemsFromDatabase(ArrayList\u003cTask\u003e taskList) {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        System.out.println(\"Your saved tasks:\");"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        for (int i \u003d 0; i \u003c taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            String output \u003d (i + 1) + \".\" + taskList.get(i);"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            System.out.println(output);"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public Task createTaskFromDatabase(String string) {"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        String[] parts \u003d string.split(\"\\\\|\");"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        String typeOfTask \u003d parts[0];"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        int doneStatus \u003d Integer.parseInt(parts[1]);"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        String details \u003d parts[2];"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        if (typeOfTask.equals(\"T\")) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            return new Todo(doneStatus, details);"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        } else if (typeOfTask.equals(\"D\")) {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            LocalDateTime timing \u003d LocalDateTime.parse(parts[3]);"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            return new Deadline(doneStatus, details, timing);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        } else if (typeOfTask.equals(\"E\")) {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            LocalDateTime timing \u003d LocalDateTime.parse(parts[3]);"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            return new Event(doneStatus, details, timing);"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return null;"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public void updateDatabase(ArrayList\u003cTask\u003e taskList) {"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        StringBuilder stringBuilder \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        taskList.forEach(task -\u003e stringBuilder.append(task.formatTaskForDatabase() + \"\\n\"));"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            FileWriter fileWriter \u003d new FileWriter(this.directory);"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            fileWriter.write(stringBuilder.toString());"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            fileWriter.close();"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            System.out.println(\"Error while updating database file\");"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "RuiFengg": 93
+    }
+  },
+  {
+    "path": "src/main/java/Duke.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "import exceptions.InvalidCommandException;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "import task.Task;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    private ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    private Database database;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    private void getUserInput(ArrayList\u003cTask\u003e taskList) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        Scanner sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        while (sc.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            String input \u003d sc.nextLine();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            Output output \u003d new Output();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                output.response(input, taskList);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            } catch (InvalidCommandException e) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                System.out.println(e.getMessage());"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            if (input.equals(\"bye\")) break;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        this.database.updateDatabase(taskList);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        sc.close();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    private void printWelcomeMessage() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        String welcome \u003d \"_____________________________________\\n\""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                + \"Hello! I\u0027m Ray\\n\" + \"Please input a command\\n\""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                + \"_____________________________________\\n\";"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        System.out.println(welcome);"
       },
       {
         "lineNumber": 33,
@@ -244,26 +904,89 @@
       {
         "lineNumber": 35,
         "author": {
-          "gitId": "-"
+          "gitId": "RuiFengg"
         },
-        "content": "    public static void main(String[] args) {"
+        "content": "    public void start() {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        new Duke().start();"
+        "content": "        this.database \u003d Database.dbInstance();"
       },
       {
         "lineNumber": 37,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        //this.taskList \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        printWelcomeMessage();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        this.taskList \u003d this.database.getTaskListFromDatabase();"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        getUserInput(this.taskList);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        new Duke().start();"
+      },
+      {
+        "lineNumber": 46,
         "author": {
           "gitId": "-"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 38,
+        "lineNumber": 47,
         "author": {
           "gitId": "-"
         },
@@ -271,7 +994,7 @@
       }
     ],
     "authorContributionMap": {
-      "RuiFengg": 34,
+      "RuiFengg": 43,
       "-": 4
     }
   },
@@ -347,406 +1070,406 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "public class Output {"
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    void response(String s, TaskList taskList) throws InvalidCommandException {"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        if (s.equals(\"bye\")) {"
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(\"Bye. Hope to see you again soon!\");"
+        "content": "import java.util.ArrayList;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (s.isEmpty()) {"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(\"Please enter a command\");"
+        "content": "public class Output {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (s.equals(\"list\")) {"
+        "content": "    void response(String s, ArrayList\u003cTask\u003e taskList) throws InvalidCommandException {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(\"Here are the tasks in your list:\");"
+        "content": "        if (s.equals(\"bye\")) {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            taskList.listAllTasks();"
+        "content": "            System.out.println(\"Bye. Hope to see you again soon!\");"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (s.length() \u003e\u003d 4 \u0026\u0026 s.startsWith(\"done\")) {"
+        "content": "        } else if (s.isEmpty()) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            try {"
+        "content": "            System.out.println(\"Please enter a command\");"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                doneResponse(taskList, s);"
+        "content": "        } else if (s.equals(\"list\")) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            } catch (InvalidTaskIndexException e) {"
+        "content": "            listResponse(taskList);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                System.out.println(e.getMessage());"
+        "content": "        } else if (s.length() \u003e\u003d 4 \u0026\u0026 s.startsWith(\"done\")) {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            }"
+        "content": "            try {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (s.length() \u003e\u003d 4 \u0026\u0026 s.startsWith(\"todo\")) {"
+        "content": "                doneResponse(taskList, s);"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            todoResponse(taskList, s);"
+        "content": "            } catch (InvalidTaskIndexException e) {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (s.length() \u003e\u003d 8 \u0026\u0026 s.startsWith(\"deadline\")) {"
+        "content": "                System.out.println(e.getMessage());"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            deadlineResponse(taskList, s);"
+        "content": "            }"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (s.length() \u003e\u003d 5 \u0026\u0026 s.startsWith(\"event\")) {"
+        "content": "        } else if (s.length() \u003e\u003d 4 \u0026\u0026 s.startsWith(\"todo\")) {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            eventResponse(taskList, s);"
+        "content": "            todoResponse(taskList, s);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (s.length() \u003e\u003d 6 \u0026\u0026 s.startsWith(\"delete\")) {"
+        "content": "        } else if (s.length() \u003e\u003d 8 \u0026\u0026 s.startsWith(\"deadline\")) {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            try {"
+        "content": "            deadlineResponse(taskList, s);"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                deleteTask(taskList, s);"
+        "content": "        } else if (s.length() \u003e\u003d 5 \u0026\u0026 s.startsWith(\"event\")) {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            } catch (InvalidTaskIndexException e) {"
+        "content": "            eventResponse(taskList, s);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                System.out.println(e.getMessage());"
+        "content": "        } else if (s.length() \u003e\u003d 6 \u0026\u0026 s.startsWith(\"delete\")) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            }"
+        "content": "            try {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "                deleteTask(taskList, s);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        else {"
+        "content": "            } catch (InvalidTaskIndexException e) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            throw new InvalidCommandException(\"Please enter a valid command for me!\");"
+        "content": "                System.out.println(e.getMessage());"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        } else {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "            throw new InvalidCommandException(\"Please enter a valid command for me!\");"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public void doneResponse(TaskList taskList, String command) throws InvalidTaskIndexException {"
+        "content": "        }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        int numTodos \u003d taskList.list.size();"
+        "content": "    }"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        if (command.length() \u003c\u003d 5) throw new InvalidTaskIndexException(\"Please include the index of the task!\");"
+        "content": ""
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        try {"
+        "content": "    public void listResponse(ArrayList\u003cTask\u003e taskList) {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            int todoIndex \u003d Integer.parseInt(command.substring(5, 6));"
+        "content": "        System.out.println(\"Here are the tasks in your list\");"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            if (todoIndex \u003c\u003d numTodos \u0026\u0026 todoIndex \u003e 0) {"
+        "content": "        for (int i \u003d 0; i \u003c taskList.size(); i++) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                Task selectedTodo \u003d taskList.getTask(todoIndex);"
+        "content": "            String output \u003d (i + 1) + \".\" + taskList.get(i);"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                selectedTodo.setDone();"
+        "content": "            System.out.println(output);"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                System.out.println(\"Nice! I\u0027ve marked this task as done:\\n \" + selectedTodo);"
+        "content": "        }"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            } else {"
+        "content": "    }"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                throw new InvalidTaskIndexException(\"Oh no! Task number does not exist in task list.\");"
+        "content": ""
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            }"
+        "content": "    public void doneResponse(ArrayList\u003cTask\u003e taskList, String command) throws InvalidTaskIndexException {"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } catch (NumberFormatException e) {"
+        "content": "        int numTodos \u003d taskList.size();"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.print(\"Please enter the index of the task you want to remove!\");"
+        "content": "        if (command.length() \u003c\u003d 5) throw new InvalidTaskIndexException(\"Please include the index of the task!\");"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "        try {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "            int todoIndex \u003d Integer.parseInt(command.substring(5, 6));"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "            if (todoIndex \u003c\u003d numTodos \u0026\u0026 todoIndex \u003e 0) {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public void todoResponse(TaskList taskList, String command) {"
+        "content": "                Task selectedTodo \u003d taskList.get(todoIndex - 1);"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        try {"
+        "content": "                selectedTodo.setDone();"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            Todo todo \u003d new Todo(command.substring(4));"
+        "content": "                System.out.println(\"Nice! I\u0027ve marked this task as done:\\n \" + selectedTodo);"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            taskList.add(todo);"
+        "content": "            } else {"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(\"Got it. I\u0027ve added this task:\\n \" + todo + \"\\nNow you have \""
+        "content": "                throw new InvalidTaskIndexException(\"Oh no! Task number does not exist in task list.\");"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                    + taskList.list.size() + \" in the list\");"
+        "content": "            }"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } catch (InvalidDescriptionException e) {"
+        "content": "        } catch (NumberFormatException e) {"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(e.getMessage());"
+        "content": "            System.out.print(\"Please enter the index of the task you want to remove!\");"
       },
       {
         "lineNumber": 68,
@@ -774,7 +1497,7 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public void deadlineResponse(TaskList taskList, String command) {"
+        "content": "    public void todoResponse(ArrayList\u003cTask\u003e taskList, String command) {"
       },
       {
         "lineNumber": 72,
@@ -788,35 +1511,35 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            Deadline deadline \u003d new Deadline(command.substring(8));"
+        "content": "            Todo todo \u003d new Todo(command.substring(4));"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            taskList.add(deadline);"
+        "content": "            taskList.add(todo);"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(\"Got it. I\u0027ve added this task:\\n\" +"
+        "content": "            System.out.println(\"Got it. I\u0027ve added this task:\\n \" + todo + \"\\nNow you have \""
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                    deadline + \"\\nNow you have \" + taskList.list.size() + \" in the list\");"
+        "content": "                    + taskList.size() + \" in the list\");"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } catch (MissingTimingException | InvalidDescriptionException e) {"
+        "content": "        } catch (InvalidDescriptionException e) {"
       },
       {
         "lineNumber": 78,
@@ -851,447 +1574,487 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "    public void deadlineResponse(ArrayList\u003cTask\u003e taskList, String command) {"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public void eventResponse(TaskList taskList, String command) {"
+        "content": "        try {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        try {"
+        "content": "            String detail \u003d formatTimingInput(\"/by\", command.substring(8))[0];"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            Event event \u003d new Event(command.substring(5));"
+        "content": "            String timing \u003d formatTimingInput(\"/by\", command.substring(8))[1].trim();"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            taskList.add(event);"
+        "content": ""
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(\"Got it. I\u0027ve added this task:\\n\" +"
+        "content": "            DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"MM-dd-yyyy HH:mm\");"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                    event + \"\\nNow you have \" + taskList.list.size() + \" in the list\");"
+        "content": "            LocalDateTime dateTime \u003d LocalDateTime.parse(timing, formatter);"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } catch (MissingTimingException | InvalidDescriptionException e) {"
+        "content": ""
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(e.getMessage());"
+        "content": "            Deadline deadline \u003d new Deadline(detail, dateTime);"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "            taskList.add(deadline);"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "            System.out.println(\"Got it. I\u0027ve added this task:\\n\" +"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public void deleteTask(TaskList taskList, String command) throws InvalidTaskIndexException {"
+        "content": "                    deadline + \"\\nNow you have \" + taskList.size() + \" in the list\");"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        int numTodos \u003d taskList.list.size();"
+        "content": "        } catch (MissingTimingException | InvalidDescriptionException e) {"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        if (command.length() \u003c\u003d 7 ) throw new InvalidTaskIndexException(\"Please include the index of the task!\");"
+        "content": "            System.out.println(e.getMessage());"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        try {"
+        "content": "        } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            int todoIndex \u003d Integer.parseInt(command.substring(7, 8));"
+        "content": "            System.out.println(\"Please enter timing in \u0027/by 12-30-2020 23:59\u0027 format\");"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            if (todoIndex \u003c\u003d numTodos \u0026\u0026 todoIndex \u003e 0) {"
+        "content": "        }"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                Task selectedTodo \u003d taskList.deleteTask(todoIndex);"
+        "content": "    }"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                System.out.println(\"Noted. I\u0027ve removed this task:\\n \" + selectedTodo"
+        "content": ""
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                        + \"\\nNow you have \" + taskList.list.size() + \" in the list.\");"
+        "content": ""
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            } else {"
+        "content": "    public void eventResponse(ArrayList\u003cTask\u003e taskList, String command) {"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "                throw new InvalidTaskIndexException(\"Oh no! Task number does not exist in task list.\");"
+        "content": "        try {"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            }"
+        "content": "            String detail \u003d formatTimingInput(\"/at\", command.substring(5))[0];"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } catch (NumberFormatException e) {"
+        "content": "            String timing \u003d formatTimingInput(\"/at\", command.substring(5))[1].trim();"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            System.out.println(\"Please enter the index of the task you want to remove!\");"
+        "content": ""
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "            DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"MM-dd-yyyy HH:mm\");"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "            LocalDateTime dateTime \u003d LocalDateTime.parse(timing, formatter);"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "RuiFengg"
         },
+        "content": "            Event event \u003d new Event(detail, dateTime);"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            taskList.add(event);"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            System.out.println(\"Got it. I\u0027ve added this task:\\n\" +"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                    event + \"\\nNow you have \" + taskList.size() + \" in the list\");"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        } catch (MissingTimingException | InvalidDescriptionException e) {"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            System.out.println(e.getMessage());"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            System.out.println(\"Please enter timing in \u0027/by 12-30-2020 23:59\u0027 format\");"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public void deleteTask(ArrayList\u003cTask\u003e taskList, String command) throws InvalidTaskIndexException {"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        int numTodos \u003d taskList.size();"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        if (command.length() \u003c\u003d 7) throw new InvalidTaskIndexException(\"Please include the index of the task!\");"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            int todoIndex \u003d Integer.parseInt(command.substring(7, 8));"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            if (todoIndex \u003c\u003d numTodos \u0026\u0026 todoIndex \u003e 0) {"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                Task selectedTodo \u003d taskList.remove(todoIndex - 1);"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                System.out.println(\"Noted. I\u0027ve removed this task:\\n \" + selectedTodo"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                        + \"\\nNow you have \" + taskList.size() + \" in the list.\");"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                throw new InvalidTaskIndexException(\"Oh no! Task number does not exist in task list.\");"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        } catch (NumberFormatException e) {"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            System.out.println(\"Please enter the index of the task you want to remove!\");"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String[] formatTimingInput(String format, String input) throws MissingTimingException {"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        if (!input.contains(format)) {"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            String message \u003d \"Don\u0027t forget to add a timing in \u0027\""
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "                    + format + \" 12-12-2020 23:59\u0027 format\";"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "            throw new MissingTimingException(message);"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        String[] parts \u003d input.trim().split(format);"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return parts;"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "RuiFengg"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "RuiFengg": 111
-    }
-  },
-  {
-    "path": "src/main/java/TaskList.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "import task.Task;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "import java.util.ArrayList;"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "public class TaskList {"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    ArrayList\u003cTask\u003e list;"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    TaskList() {"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "        this.list \u003d new ArrayList\u003c\u003e();"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    public void add(Task task) {"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "        this.list.add(task);"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    public Task getTask(int index) {"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "        return this.list.get(index - 1);"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    public Task deleteTask(int index) {"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "        return this.list.remove(index - 1);"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    public void listAllTasks() {"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "        this.list.forEach(task -\u003e {"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "            String index \u003d String.valueOf(this.list.indexOf(task) + 1);"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "            System.out.println(index + \". \" + task);"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "        });"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "RuiFengg"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "RuiFengg": 32
+      "RuiFengg": 150
     }
   },
   {
@@ -1556,115 +2319,213 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "import exceptions.MissingTimingException;"
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public Deadline(String s) throws MissingTimingException, InvalidDescriptionException {"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        super(s);"
+        "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        if (s.isBlank()) {"
+        "content": "public class Deadline extends Task {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            throw new InvalidDescriptionException(\"Please add a description for your deadline!\");"
+        "content": "    private LocalDateTime deadline;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (!s.contains(\"/\")) {"
+        "content": ""
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            throw new MissingTimingException(\"Don\u0027t forget to add a timing for your deadline!\");"
+        "content": "    public Deadline(String detail, LocalDateTime deadline) throws InvalidDescriptionException {"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "        super(detail);"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        this.deadline \u003d deadline;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public String toString() {"
+        "content": "    public Deadline(int doneStatus, String detail, LocalDateTime deadline) {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        return \"[D]\" + super.toString().replace(\"/by\", \"(by:\") + \")\";"
+        "content": "        super(doneStatus, detail);"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        this.deadline \u003d deadline;"
       },
       {
         "lineNumber": 20,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String formatTaskForDatabase() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        int status \u003d super.isDone ? 1 : 0;"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return \"D|\" + status + \"|\" + super.description + \"|\" + this.deadline;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        DateTimeFormatter dateTimeFormatter \u003d DateTimeFormatter.ofPattern(\"MMM dd yyyy HH:mm\");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return \"[D]\" + super.toString()+ \" \" + super.description + \"(by:\" + deadline.format(dateTimeFormatter) + \")\";"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
         "author": {
           "gitId": "RuiFengg"
         },
@@ -1672,7 +2533,7 @@
       }
     ],
     "authorContributionMap": {
-      "RuiFengg": 20
+      "RuiFengg": 34
     }
   },
   {
@@ -1726,101 +2587,206 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "public class Event extends Task {"
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public Event(String s) throws MissingTimingException, InvalidDescriptionException {"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        super(s);"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        if (s.isBlank()) {"
+        "content": "public class Event extends Task {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            throw new InvalidDescriptionException(\"Please add a description for your event!\");"
+        "content": "    private LocalDateTime timing;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        } else if (!s.contains(\"/\")) {"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            throw new MissingTimingException(\"Don\u0027t forget to add a timing for your event!\");"
+        "content": "    public Event(String detail, LocalDateTime timing) throws InvalidDescriptionException {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": "        super(detail);"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        this.timing \u003d timing;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public String toString() {"
+        "content": "    public Event(int doneStatus, String detail, LocalDateTime timing) {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        return \"[E]\" + super.toString().replace(\"/at\", \"(at:\") + \")\";"
+        "content": "        super(doneStatus, detail);"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        this.timing \u003d timing;"
       },
       {
         "lineNumber": 21,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String formatTaskForDatabase() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        int status \u003d super.isDone ? 1 : 0;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return \"E|\" + status + \"|\" + super.description + \"|\" + timing;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        DateTimeFormatter dateTimeFormatter \u003d DateTimeFormatter.ofPattern(\"MMM dd yyyy HH:mm\");"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" \" + super.description + \"(at:\" + timing.format(dateTimeFormatter) + \")\";"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
         "author": {
           "gitId": "RuiFengg"
         },
@@ -1828,7 +2794,7 @@
       }
     ],
     "authorContributionMap": {
-      "RuiFengg": 21
+      "RuiFengg": 36
     }
   },
   {
@@ -1854,122 +2820,213 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "public class Task {"
+        "content": "import exceptions.InvalidDescriptionException;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    protected String description;"
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    protected boolean isDone;"
+        "content": "public abstract class Task {"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public Task(String s) {"
+        "content": "    protected String description;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        this.description \u003d s;"
+        "content": "    protected boolean isDone;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        this.isDone \u003d false;"
+        "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "    public Task(String s) throws InvalidDescriptionException {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "        if (s.isBlank()) {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public void setDone() {"
+        "content": "            throw new InvalidDescriptionException(\"Please add a nice description to your todo :)\");"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        this.isDone \u003d !isDone;"
+        "content": "        }"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        this.description \u003d s;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "        this.isDone \u003d false;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public String toString() {"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        String checked \u003d (isDone ? \"[\\u2713]\" : \"[\\u2718]\");"
+        "content": "    public Task(int doneStatus, String s) {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        return checked + \" \" + description;"
+        "content": "        if (doneStatus \u003d\u003d 1) this.isDone \u003d true;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "        this.description \u003d s;"
       },
       {
         "lineNumber": 20,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public void setDone() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        this.isDone \u003d !isDone;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public abstract String formatTaskForDatabase();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        String checked \u003d (isDone ? \"[\\u2713]\" : \"[\\u2718]\");"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return checked;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
         "author": {
           "gitId": "RuiFengg"
         },
@@ -1977,7 +3034,7 @@
       }
     ],
     "authorContributionMap": {
-      "RuiFengg": 20
+      "RuiFengg": 33
     }
   },
   {
@@ -2024,80 +3081,157 @@
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public Todo(String s) throws InvalidDescriptionException {"
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        super(s);"
+        "content": "    public Todo(String s) throws InvalidDescriptionException {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        if (s.isBlank()) {"
+        "content": "        super(s);"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "            throw new InvalidDescriptionException(\"Please add a nice description to your todo :)\");"
+        "content": "    }"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": "    public Todo(int doneStatus, String s)  {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": ""
+        "content": "        super(doneStatus ,s);"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    public String toString() {"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "        return \"[T]\" + super.toString();"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "RuiFengg"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 17,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String formatTaskForDatabase() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        int status \u003d super.isDone ? 1 : 0;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return \"T|\" + status + \"|\" + super.description;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "        return \"[T]\" + super.toString() + super.description;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "RuiFengg"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
         "author": {
           "gitId": "RuiFengg"
         },
@@ -2105,7 +3239,7 @@
       }
     ],
     "authorContributionMap": {
-      "RuiFengg": 17
+      "RuiFengg": 28
     }
   },
   {

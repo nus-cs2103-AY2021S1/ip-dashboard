@@ -1,6 +1,29 @@
 [
   {
-    "path": "src/main/java/Deadline.java",
+    "path": "data/duke.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "T,0,cut hair"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "T,1,2"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 2
+    }
+  },
+  {
+    "path": "src/main/java/duke/Duke.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,87 +31,311 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    protected String by;"
+        "content": "import duke.command.Command;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    public Deadline(String description, String by) {"
+        "content": ""
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        super(description);"
+        "content": "public class Duke {"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        this.by \u003d by;"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "    public static final String FILE_PATH \u003d \"data/duke.txt\";"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": ""
+        "content": "    private Storage storage;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    @Override"
+        "content": "    private TaskList taskItems;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    public String toString() {"
+        "content": "    private Ui ui;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        return String.format(\"[D]\" + super.toString() + \" (by: %s)\", by);"
+        "content": ""
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": ""
+        "content": "    public Duke(String filePath) {"
       },
       {
         "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        ui \u003d new Ui();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        storage \u003d new Storage(filePath);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            taskItems \u003d new TaskList(storage.loadTasksFromMemory());"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "//            ui.showLoadingError();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            taskItems \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }    "
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void run() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        ui.greeting();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        boolean isExit \u003d false;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        while(!isExit) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                String fullCommand \u003d ui.readCommand();"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                Command c \u003d Parser.parse(fullCommand);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                c.execute(taskItems, ui, storage);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                isExit \u003d c.isExit();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            } catch (DukeException duked) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                ui.showError(duked.getMessage());"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            } finally {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     * main driver function"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     * @param args"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        new Duke(FILE_PATH).run(); "
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
         "author": {
           "gitId": "orzymandias"
         },
@@ -96,11 +343,11 @@
       }
     ],
     "authorContributionMap": {
-      "orzymandias": 13
+      "orzymandias": 45
     }
   },
   {
-    "path": "src/main/java/Duke.java",
+    "path": "src/main/java/duke/DukeException.java",
     "fileType": "java",
     "lines": [
       {
@@ -108,42 +355,557 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "import java.util.Arrays;"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "import java.util.Scanner;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "import java.util.List;"
+        "content": "public class DukeException extends Exception {"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "    public DukeException(String errorMessage) {"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": ""
+        "content": "        super(errorMessage);"
       },
       {
         "lineNumber": 6,
         "author": {
-          "gitId": "-"
+          "gitId": "orzymandias"
         },
-        "content": "public class Duke {"
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.ByeCommand;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.Command;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.DeadlineCommand;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.DeleteCommand;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.DoneCommand;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.EventCommand;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.ListCommand;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.command.ToDoCommand;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Deadline;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Event;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.ToDo;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     * Parses user input and carry out operations on user\u0027s tasks"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    static Command parse(String reply) throws DukeException {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        String[] replyArray \u003d reply.split(\" \");"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        String command \u003d replyArray[0];"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        if (command.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            return new ByeCommand();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        } else if (command.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            return new ListCommand();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                switch (command) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"done\":"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    return new DoneCommand(reply);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"delete\":"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    return new DeleteCommand(reply);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"todo\":"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    Task newTodo \u003d new ToDo(reply.substring(5));"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    return new ToDoCommand(newTodo);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"deadline\":"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    String[] taskAndTimeByArray \u003d reply.split(\" /by \");"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    String deadlineDescription \u003d taskAndTimeByArray[0].substring(9);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    String by \u003d taskAndTimeByArray[1];"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    Task newDeadline \u003d new Deadline(deadlineDescription, LocalDate.parse(by));"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    return new DeadlineCommand(newDeadline);"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"event\":"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    String[] taskAndTimeAtArray \u003d reply.split(\" /at \");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    String eventDescription \u003d taskAndTimeAtArray[0].substring(6);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    String at \u003d taskAndTimeAtArray[1];"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    Task newEvent \u003d new Event(eventDescription, LocalDate.parse(at));"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    return new EventCommand(newEvent);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    throw new DukeException("
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                            \"Invalid Command Exception, start every cmd with todo, deadline or event\");"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                throw new DukeException(String.format("
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                        \"Time format has to be in the form: YYYY-MM-DD %s\", e.getMessage()));"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            } catch (StringIndexOutOfBoundsException | ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                throw new DukeException(String.format(\"Invalid arguments specified for %s\", command));"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }   "
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 64
+    }
+  },
+  {
+    "path": "src/main/java/duke/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Deadline;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Event;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.ToDo;"
       },
       {
         "lineNumber": 7,
@@ -157,35 +919,1159 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    // Collection of user\u0027s tasks"
+        "content": "import java.io.File;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    static List\u003cTask\u003e taskItems \u003d new ArrayList\u003c\u003e();"
+        "content": "import java.io.FileWriter;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": ""
+        "content": "import java.io.IOException;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    /**"
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "orzymandias"
         },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    private String filePath;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Storage(String filePath) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.filePath \u003d filePath;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     * Handles logic where ./data or duke.txt does not exists by creating them."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    private void handleFileOrDirectoryDoesNotExist(File savedTasks) throws IOException {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        if(savedTasks.getParentFile().mkdirs()) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            System.out.println(\"./data directory created\");"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        if (savedTasks.createNewFile()) {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            System.out.println(\"duke.txt created in ./data\");"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void saveTaskToMemory(List\u003cTask\u003e taskList) throws DukeException {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        File savedTasks \u003d new File(filePath);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            if (!savedTasks.exists()) {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                handleFileOrDirectoryDoesNotExist(savedTasks);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            // Once file path exists, instantiate FileWriter Object."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            FileWriter fw \u003d new FileWriter(filePath);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            String taskToWrite \u003d \"\";"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            for (Task task: taskList) {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                if (task instanceof ToDo) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    taskToWrite +\u003d String.format(\"T,%d,%s\\n\", task.getIsDone() ? 1 : 0, task.getDescription());"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                } else if (task instanceof Deadline) {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    taskToWrite +\u003d String.format(\"D,%d,%s,%s\\n\", task.getIsDone() ? 1 : 0,"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                                                task.getDescription(), ((Deadline) task).getByWhen());"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                } else if (task instanceof Event) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    taskToWrite +\u003d String.format(\"E,%d,%s,%s\\n\", task.getIsDone() ? 1 : 0,"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                                                task.getDescription(), ((Event) task).getAtWhen());"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    throw new DukeException(\"Cannot save invalid task type\");"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            fw.write(taskToWrite);"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        } catch (IOException exception) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            throw new DukeException(String.format(\"task cannot be saved to memory %s\", exception.getMessage()));"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     * Loads Tasks array from memory, else returns an empty array "
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     * @return"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public List\u003cTask\u003e loadTasksFromMemory() throws DukeException {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        List\u003cTask\u003e tasksInMemory \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            File savedTasks \u003d new File(filePath);"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            // file or directory does not exists, make parent directory and file"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            if (!savedTasks.exists()) {"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                handleFileOrDirectoryDoesNotExist(savedTasks);"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                return tasksInMemory;"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            // read and return from saved file"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            Scanner sc \u003d new Scanner(savedTasks);"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            while (sc.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                Task taskToAdd;"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                String savedTask \u003d sc.nextLine();"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                // Array of task type, status, description and time"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                String[] parsedTask \u003d savedTask.split(\",\");"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                String taskType \u003d parsedTask[0];"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                boolean isDone \u003d parsedTask[1].equals(\"1\") ? true : false;"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                String description \u003d parsedTask[2];"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                String time;"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                switch (taskType) {"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"T\":"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    taskToAdd \u003d new ToDo(description, isDone);"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"D\":"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    time \u003d parsedTask[3];"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    taskToAdd \u003d new Deadline(description, isDone, LocalDate.parse(time));"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                case \"E\":"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    time \u003d parsedTask[3];"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    taskToAdd \u003d new Event(description, isDone, LocalDate.parse(time));"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                   throw new DukeException(\"duke.task.Task cannot be read from Duke.txt\");"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                tasksInMemory.add(taskToAdd);"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            return tasksInMemory;"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        } catch (IOException exception) {"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            throw new DukeException(String.format(\"File cannot be loaded %s\", exception.getMessage()));"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 111
+    }
+  },
+  {
+    "path": "src/main/java/duke/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    List\u003cTask\u003e taskList;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public TaskList() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public TaskList(List\u003cTask\u003e taskList) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.taskList \u003d taskList;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void addTask(Task task) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        taskList.add(task);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Task removeTask(int index) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        // 1 index list"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return taskList.remove(index - 1);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public List\u003cTask\u003e getAll() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return this.taskList;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Task getTask(int taskIndex) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return taskList.get(taskIndex);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public int getSize() {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "       return taskList.size();"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            String formattedListString \u003d \"\";"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            for (int i \u003d 0; i \u003c taskList.size(); i ++) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "                formattedListString+\u003d String.format(\"%d. %s\\n\", i + 1, taskList.get(i));"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            return formattedListString;"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 47
+    }
+  },
+  {
+    "path": "src/main/java/duke/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    private static final Scanner SCANNER \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
         "content": "     * Sends a greeting to user and indicates the INTRUBOT is active."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "     * Loads data from harddisk"
       },
       {
         "lineNumber": 13,
@@ -199,7 +2085,7 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    static void start() {"
+        "content": "    public void greeting() {"
       },
       {
         "lineNumber": 15,
@@ -290,154 +2176,154 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    // EventHandlers"
+        "content": "    public void sayGoodbye() {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    static void handleDone(String reply) throws DukeException {"
+        "content": "        printReply(replyFormatter(\"SAYONARA!\"));"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        try {"
+        "content": "    }"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            int itemNumber \u003d Integer.parseInt(reply.split(\" \")[1]) - 1;"
+        "content": "    "
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            Task task \u003d taskItems.get(itemNumber);"
+        "content": "    // Formatting and UI"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            task.markDone();"
+        "content": "    public String replyFormatter(String reply) {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            printReply(replyFormatter(\"Nice! I\u0027ve marked this task as done:\\n\" + task.toString()));"
+        "content": "        String partition \u003d \"__________________________\";"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": "        return String.format(partition + \"\\n%s\\n\" + partition, reply);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            throw new DukeException(\"Task number does not exist\");"
+        "content": "    }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "    public void showError(String errorMessage) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": ""
+        "content": "        System.out.println(replyFormatter(String.format(\"Something is amiss `(OCO)/ !!: %s\", errorMessage)));"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    static void handleDelete(String reply) throws DukeException {"
+        "content": "    }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        try {"
+        "content": "    "
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            int itemNumber \u003d Integer.parseInt(reply.split(\" \")[1]) - 1;"
+        "content": "    public void doneTaskReply(Task task) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            Task task \u003d taskItems.remove(itemNumber);"
+        "content": "        printReply(replyFormatter(\"Nice! I\u0027ve marked this task as done:\\n\" + task.toString()));"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            printReply(deleteTaskReplyFormatter(task));"
+        "content": "    }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": ""
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            throw new DukeException(\"Cannot delete task that does not exist\");"
+        "content": "    public void addTaskReply(Task task, TaskList taskItems) {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        }"
+        "content": "        printReply(replyFormatter(String.format(\"Got it. I\u0027ve added this task:\\n    %s\\nNow you have %d tasks in the list\""
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "                , task.toString(), taskItems.getSize())));"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 49,
@@ -451,709 +2337,106 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    /**"
+        "content": "    public void deleteTaskReply(Task task, TaskList taskItems) {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "     * Parses user input and carry out operations on user\u0027s tasks"
+        "content": "        printReply(replyFormatter(String.format(\"HAI. I\u0027ve deleted this task:\\n    %s\\nNow you have %d tasks in the list\""
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "     */"
+        "content": "                , task.toString(), taskItems.getSize())));"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    static void replyHandler(String reply) throws DukeException {"
+        "content": "    }"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            String[] replyArray \u003d reply.split(\" \");"
+        "content": ""
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            String command \u003d replyArray[0];"
+        "content": ""
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            if (command.equals(\"bye\")) {"
+        "content": "    public void printReply(String reply) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "                printReply(replyFormatter(reply));"
+        "content": "        System.out.println(reply);"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "                System.exit(0);"
+        "content": "    }"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            } else if (command.equals(\"list\")) {"
+        "content": "    "
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "                printReply(replyFormatter(listFormatter(taskItems)));"
+        "content": "    public String readCommand() {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            } else {"
+        "content": "        return  SCANNER.nextLine();"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "                try {"
+        "content": "    }"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "                    switch (command) {"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                        case \"done\":"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            handleDone(reply);"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                        case \"delete\":"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            handleDelete(reply);"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                        case \"todo\":"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            Task newTodo \u003d new ToDo(reply.substring(5));"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            taskItems.add(newTodo);"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            printReply(addTaskReplyFormatter(newTodo));"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                        case \"deadline\":"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            String[] taskAndTimeByArray \u003d reply.split(\" /by \");"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            String deadlineDescription \u003d taskAndTimeByArray[0].substring(9);"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            String by \u003d taskAndTimeByArray[1];"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            Task newDeadline \u003d new Deadline(deadlineDescription, by);"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            taskItems.add(newDeadline);"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            printReply(addTaskReplyFormatter(newDeadline));"
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                        case \"event\":"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            String[] taskAndTimeAtArray \u003d reply.split(\" /at \");"
-      },
-      {
-        "lineNumber": 85,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            String eventDescription \u003d taskAndTimeAtArray[0].substring(6);"
-      },
-      {
-        "lineNumber": 86,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            String at \u003d taskAndTimeAtArray[1];"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            Task newEvent \u003d new Event(eventDescription, at);"
-      },
-      {
-        "lineNumber": 88,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            taskItems.add(newEvent);"
-      },
-      {
-        "lineNumber": 89,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            printReply(addTaskReplyFormatter(newEvent));"
-      },
-      {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 91,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                        default:"
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                            throw new DukeException(\"Invalid Command Exception\");"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                } catch (StringIndexOutOfBoundsException e) {"
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                    throw new DukeException(String.format(\"No arguments specified for %s\", command));"
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    // Formatting and UI"
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    static String replyFormatter(String reply) {"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        String partition \u003d \"__________________________\";"
-      },
-      {
-        "lineNumber": 104,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        return String.format(partition + \"\\n%s\\n\" + partition, reply);"
-      },
-      {
-        "lineNumber": 105,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    static void errorReply(String reply) {"
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        System.out.println(replyFormatter(String.format(\"Something is amiss `(OCO)/ !!: %s\", reply)));"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    static String addTaskReplyFormatter(Task task) {"
-      },
-      {
-        "lineNumber": 112,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        return replyFormatter(String.format(\"Got it. I\u0027ve added this task:\\n    %s\\nNow you have %d tasks in the list\""
-      },
-      {
-        "lineNumber": 113,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                , task.toString(), taskItems.size()));"
-      },
-      {
-        "lineNumber": 114,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 115,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 116,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    static String deleteTaskReplyFormatter(Task task) {"
-      },
-      {
-        "lineNumber": 117,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        return replyFormatter(String.format(\"HAI. I\u0027ve deleted this task:\\n    %s\\nNow you have %d tasks in the list\""
-      },
-      {
-        "lineNumber": 118,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                , task.toString(), taskItems.size()));"
-      },
-      {
-        "lineNumber": 119,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 120,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 121,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    static String listFormatter(List\u003cTask\u003e ls) {"
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        String formattedListString \u003d \"\";"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        for (int i \u003d 0; i \u003c ls.size(); i ++) {"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "            formattedListString+\u003d String.format(\"%d. %s\\n\", i + 1, ls.get(i));"
-      },
-      {
-        "lineNumber": 125,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 126,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        return formattedListString;"
-      },
-      {
-        "lineNumber": 127,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 128,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 129,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    static void printReply(String reply) {"
-      },
-      {
-        "lineNumber": 130,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        System.out.println(reply);"
-      },
-      {
-        "lineNumber": 131,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 132,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 133,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 134,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "     * main driver function"
-      },
-      {
-        "lineNumber": 135,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "     * @param args"
-      },
-      {
-        "lineNumber": 136,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 137,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
-        "lineNumber": 138,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        start();"
-      },
-      {
-        "lineNumber": 139,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
-      },
-      {
-        "lineNumber": 140,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        while(sc.hasNextLine()) {"
-      },
-      {
-        "lineNumber": 141,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "            String reply \u003d sc.nextLine();"
-      },
-      {
-        "lineNumber": 142,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "            try {"
-      },
-      {
-        "lineNumber": 143,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                replyHandler(reply);"
-      },
-      {
-        "lineNumber": 144,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "            } catch (DukeException duked) {"
-      },
-      {
-        "lineNumber": 145,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "                errorReply(duked.getMessage());"
-      },
-      {
-        "lineNumber": 146,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 147,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 148,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 149,
-        "author": {
-          "gitId": "-"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "orzymandias": 145,
-      "-": 4
+      "orzymandias": 63
     }
   },
   {
-    "path": "src/main/java/DukeException.java",
+    "path": "src/main/java/duke/command/ByeCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -1161,86 +2444,42 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "public class DukeException extends Exception {"
+        "content": "package duke.command;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    public DukeException(String errorMessage) {"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        super(errorMessage);"
+        "content": "import duke.DukeException;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "import duke.Storage;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "orzymandias": 5
-    }
-  },
-  {
-    "path": "src/main/java/Event.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "public class Event extends Task {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    protected String at;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    public Event(String description, String at) {"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        this.at \u003d at;"
+        "content": "import duke.TaskList;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "import duke.Ui;"
       },
       {
         "lineNumber": 7,
@@ -1251,131 +2490,31 @@
       },
       {
         "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class ByeCommand extends Command {"
+      },
+      {
+        "lineNumber": 9,
         "author": {
           "gitId": "orzymandias"
         },
         "content": "    @Override"
       },
       {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    public String toString() {"
-      },
-      {
         "lineNumber": 10,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "            return String.format(\"[E]\" + super.toString() + \" (at: %s)\", at);"
+        "content": "    public void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "orzymandias": 13
-    }
-  },
-  {
-    "path": "src/main/java/Task.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "public class Task {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    protected String description;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    protected boolean isDone;"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    public Task(String description) {"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        this.description \u003d description;"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        this.isDone \u003d false;"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "    public String getStatusIcon() {"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "orzymandias"
-        },
-        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+        "content": "        ui.sayGoodbye();"
       },
       {
         "lineNumber": 12,
@@ -1396,14 +2535,1318 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    public void markDone() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        this.isDone \u003d true;"
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "abstract public class Command {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public abstract void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public abstract boolean isExit();"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 11
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DeadlineCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class DeadlineCommand extends ToDoCommand {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public DeadlineCommand(Task task) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(task);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super.execute(taskItems, ui, storage);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    private String args;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public DeleteCommand(String args) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.args \u003d args;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            // parse for argument - item number"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            int itemNumber \u003d Integer.parseInt(args.split(\" \")[1]) - 1;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            Task task \u003d taskItems.removeTask(itemNumber);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            ui.deleteTaskReply(task, taskItems);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            storage.saveTaskToMemory(taskItems.getAll());"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            throw new DukeException(\"Cannot delete task that does not exist\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 33
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class DoneCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    private String args;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public DoneCommand(String args) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.args \u003d args;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            // parse for argument - item number"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            int itemNumber \u003d Integer.parseInt(args.split(\" \")[1]) - 1;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            Task task \u003d taskItems.getTask(itemNumber);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            task.markDone();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            ui.doneTaskReply(task);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            storage.saveTaskToMemory(taskItems.getAll());"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "            throw new DukeException(\"duke.task.Task number does not exist\");"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 34
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/EventCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class EventCommand extends ToDoCommand {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public EventCommand(Task task) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(task);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super.execute(taskItems, ui, storage);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        ui.printReply(ui.replyFormatter(taskItems.toString()));"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ToDoCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import duke.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class ToDoCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    private Task task;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "   public ToDoCommand(Task task) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "       this.task \u003d task;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "   }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void execute(TaskList taskItems, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        taskItems.addTask(task);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        ui.addTaskReply(task, taskItems);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        storage.saveTaskToMemory(taskItems.getAll());"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 26
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    protected LocalDate by;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Deadline(String description, LocalDate by) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Deadline(String description, boolean isDone,  LocalDate time) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.by \u003d time;"
       },
       {
         "lineNumber": 16,
@@ -1417,57 +3860,92 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": ""
+        "content": "    "
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    @Override"
+        "content": "    public LocalDate getByWhen() {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    public String toString() {"
+        "content": "        return this.by;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
+        "content": "    }"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "    "
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "}"
+        "content": "    @Override"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "orzymandias"
         },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        String formattedTimeBy \u003d by.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\"));"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return String.format(\"[D]\" + super.toString() + \" (by: %s)\", formattedTimeBy);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
         "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
       }
     ],
     "authorContributionMap": {
-      "orzymandias": 23
+      "orzymandias": 28
     }
   },
   {
-    "path": "src/main/java/ToDo.java",
+    "path": "src/main/java/duke/task/Event.java",
     "fileType": "java",
     "lines": [
       {
@@ -1475,59 +3953,185 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "public class ToDo extends Task {"
+        "content": "package duke.task;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    public ToDo(String description) {"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        super(description);"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    public String toString() {"
+        "content": "public class Event extends Task {"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "        return \"[T]\" + super.toString();"
+        "content": "    protected LocalDate at;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "    }"
+        "content": "    public Event(String description, LocalDate at) {"
       },
       {
         "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.at \u003d at;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public LocalDate getAtWhen() {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return this.at;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Event(String description, boolean isDone, LocalDate time) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.at \u003d time;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        String formattedTimeAt \u003d at.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\"));"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return String.format(\"[E]\" + super.toString() + \" (at: %s)\", formattedTimeAt);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
         "author": {
           "gitId": "orzymandias"
         },
@@ -1535,7 +4139,412 @@
       }
     ],
     "authorContributionMap": {
-      "orzymandias": 9
+      "orzymandias": 27
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public Task(String description, boolean isDone) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.isDone \u003d isDone;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public void markDone() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        this.isDone \u003d true;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public boolean getIsDone() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return this.isDone;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public String getDescription() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return this.description;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 38
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/ToDo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "public class ToDo extends Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public ToDo(String description) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public ToDo(String description, boolean isDone) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 14
+    }
+  },
+  {
+    "path": "text-ui-test/data/duke.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "T,0,borrow book"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "D,1,return book,2020-12-2 "
+      }
+    ],
+    "authorContributionMap": {
+      "orzymandias": 2
     }
   },
   {
@@ -1554,14 +4563,14 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "deadline return book /by Sunday"
+        "content": "deadline return book /by 2020-12-2 "
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "event project meeting /at Mon 2-4pm"
+        "content": "event project meeting /at 2012-11-3"
       },
       {
         "lineNumber": 4,
@@ -1632,10 +4641,17 @@
           "gitId": "orzymandias"
         },
         "content": "bye"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "orzymandias"
+        },
+        "content": "event project meeting /at 2012-11-4"
       }
     ],
     "authorContributionMap": {
-      "orzymandias": 13
+      "orzymandias": 14
     }
   },
   {
@@ -1710,7 +4726,7 @@
         "author": {
           "gitId": "orzymandias"
         },
-        "content": "javac  -cp ..\\src -Xlint:none -d ..\\bin ..\\src\\main\\java\\*.java"
+        "content": "javac  -cp ..\\src -Xlint:none -d ..\\bin ..\\src\\main\\java\\duke\\*.java"
       },
       {
         "lineNumber": 11,

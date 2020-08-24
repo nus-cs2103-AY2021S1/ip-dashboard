@@ -1,6 +1,50 @@
 [
   {
-    "path": "src/main/java/Deadlines.java",
+    "path": "data/tasks.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "[T][✘] kiwi"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "[E][✘] mango (at: 15:00 Aug 30 2020)"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "[D][✘] oranges (by: 15:00 Sep 30 2020)"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "[T][✘] basketball"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "[T][✘] kickball"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 5
+    }
+  },
+  {
+    "path": "src/main/java/Command.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,7 +52,7 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "public class Deadlines extends Task {"
+        "content": "abstract class Command {"
       },
       {
         "lineNumber": 2,
@@ -22,7 +66,7 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    protected String deadline;"
+        "content": "    public final String input;"
       },
       {
         "lineNumber": 4,
@@ -36,66 +80,38 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public Deadlines(String taskDesc, String deadline) {"
+        "content": "    public Command(String input) {"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        super(taskDesc);"
+        "content": "        this.input \u003d input;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        this.deadline \u003d deadline;"
+        "content": "    }"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    }"
+        "content": "    abstract void execute(TaskList tasks,Ui ui, Storage storage) throws DukeException;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": ""
+        "content": "    abstract boolean isExit();"
       },
       {
         "lineNumber": 10,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        return \"[D]\" + super.toString() + \" (by: \"+ deadline.substring(3) + \")\";"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 14,
         "author": {
           "gitId": "khor-jingqian"
         },
@@ -103,11 +119,11 @@
       }
     ],
     "authorContributionMap": {
-      "khor-jingqian": 14
+      "khor-jingqian": 10
     }
   },
   {
-    "path": "src/main/java/Duke.java",
+    "path": "src/main/java/DeadlineCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -115,21 +131,21 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "import java.util.List;"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 4,
@@ -141,9 +157,9 @@
       {
         "lineNumber": 5,
         "author": {
-          "gitId": "-"
+          "gitId": "khor-jingqian"
         },
-        "content": "public class Duke {"
+        "content": "public class DeadlineCommand extends Command{"
       },
       {
         "lineNumber": 6,
@@ -157,196 +173,196 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public static List\u003cTask\u003e toDoList \u003d new ArrayList\u003c\u003e();"
+        "content": "    public static DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public static String seperator \u003d \"\\t____________________________________________________________\";"
+        "content": "    public DeadlineCommand(String input) {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": ""
+        "content": "        super(input);"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public static void listTask() {"
+        "content": "    }"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        System.out.println(seperator);"
+        "content": ""
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        if(toDoList.size() \u003d\u003d 0) {"
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws InvalidDateTimeFormatException,"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            System.out.println(\"\\tList is empty! Start adding some tasks\");"
+        "content": "            InvalidInputException, InvalidSaveFileException {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        } else {"
+        "content": "        if(super.input.length() \u003c\u003d 9) {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            System.out.println(\"\\t Here are the tasks in your list:\");"
+        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a deadline cannot be empty.\");"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            for (int i \u003d 1; i \u003c\u003d toDoList.size(); i++) {"
+        "content": "        }"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                Task current \u003d toDoList.get(i - 1);"
+        "content": "        String[] splitWord \u003d super.input.split(\"/\");"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                System.out.println(\"\\t\" + i + \".\" + current.toString());"
+        "content": "        String desc \u003d splitWord[0].substring(9,splitWord[0].length()-1);"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            }"
+        "content": "        String deadline \u003d splitWord[1].substring(3);"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        }"
+        "content": "        Deadlines task;"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        System.out.println(seperator);"
+        "content": "        try {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    }"
+        "content": "            task \u003d new Deadlines(desc, LocalDateTime.parse(deadline,dtf));"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": ""
+        "content": "        } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public static void completeTask(String newLine) throws InvalidInputException {"
+        "content": "            throw new InvalidDateTimeFormatException(\"\\tDeadline input must follow a certain format: yyyy-mm-dd HH:mm \" +"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        if(newLine.length() \u003c\u003d 5) {"
+        "content": "                    \"e.g. 2020-08-23 16:45\");"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! Please specify which task you want to complete!\");"
+        "content": "        }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        }"
+        "content": "        tasks.getTasks().add(task);"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        int completed \u003d Integer.parseInt(newLine.substring(5));"
+        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\");"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        Task current \u003d toDoList.get(completed - 1);"
+        "content": "        System.out.println(\"\\t\" + task.toString());"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        current.completeTask();"
+        "content": "        System.out.println(\"\\tNow you have \" + tasks.getTasks().size() + \" tasks in the list.\");"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        System.out.println(seperator);"
+        "content": "        storage.saveFile(tasks.getTasks());"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        System.out.println(\"\\tNice! I\u0027ve marked this task as done:\");"
+        "content": "    }"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        System.out.println(\"\\t\\t[\" + current.getIcon() + \"] \" + current.taskDesc);"
+        "content": "    public boolean isExit() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        System.out.println();"
+        "content": "        return false;"
       },
       {
         "lineNumber": 35,
@@ -360,730 +376,15 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": ""
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    private static void deadlineTask(String newLine) throws InvalidInputException {"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        if(newLine.length() \u003c\u003d 9) {"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a deadline cannot be empty.\");"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        String[] splitWord \u003d newLine.split(\"/\");"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        Deadlines task \u003d new Deadlines(splitWord[0].substring(9),splitWord[1]);"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        toDoList.add(task);"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\");"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\t\"+task.toString());"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tNow you have \" + toDoList.size() + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    private static void eventTask(String newLine) throws  InvalidInputException{"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        if(newLine.length() \u003c\u003d 6) {"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of an event cannot be empty.\");"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        String[] splitWord \u003d newLine.split(\"/\");"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        Events task \u003d new Events(splitWord[0].substring(6),splitWord[1]);"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        toDoList.add(task);"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\");"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\t\"+task.toString());"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tNow you have \" + toDoList.size() + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    private static void todoTask(String newLine) throws InvalidInputException {"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        if(newLine.length() \u003c\u003d 5) {"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a todo cannot be empty.\");"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        ToDos task \u003d new ToDos(newLine.substring(5));"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        toDoList.add(task);"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\");"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\t\"+task.toString());"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tNow you have \" + toDoList.size() + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    public static void deleteTask(String newLine) throws InvalidInputException{"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        if(newLine.length() \u003c\u003d 7) {"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a delete operation cannot be empty / invalid index.\");"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        int index \u003d Integer.parseInt(newLine.substring(7));"
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        if( index \u003e\u003d toDoList.size()) {"
-      },
-      {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a delete operation cannot be empty / invalid index.\");"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 85,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        Task task \u003d toDoList.get(index-1);"
-      },
-      {
-        "lineNumber": 86,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        toDoList.remove(index-1);"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 88,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tNoted. I\u0027ve removed this task:\");"
-      },
-      {
-        "lineNumber": 89,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\t\"+task.toString());"
-      },
-      {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tNow you have \" + toDoList.size() + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 91,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        String logo \u003d \" ____        _        \\n\""
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"|  _ \\\\ _   _| | _____ \\n\""
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        System.out.println(\"Hello from\\n\" + logo);"
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(\"\\tHello! I\u0027m Duke\\n\\tWhat can I do for you?\");"
-      },
-      {
-        "lineNumber": 104,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 105,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        while(sc.hasNext()) {"
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            try {"
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                String newLine \u003d sc.nextLine();"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                if (newLine.equals(\"bye\")) {"
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    System.out.println(\"\\tBye. Hope to see you again soon!\");"
-      },
-      {
-        "lineNumber": 112,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 113,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 114,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                } else if (newLine.equals(\"list\")) {"
-      },
-      {
-        "lineNumber": 115,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    listTask();"
-      },
-      {
-        "lineNumber": 116,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                } else if (newLine.startsWith(\"done\")) {"
-      },
-      {
-        "lineNumber": 117,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    completeTask(newLine);"
-      },
-      {
-        "lineNumber": 118,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                } else if (newLine.startsWith(\"todo\")) {"
-      },
-      {
-        "lineNumber": 119,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    todoTask(newLine);"
-      },
-      {
-        "lineNumber": 120,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                } else if (newLine.startsWith(\"deadline\")) {"
-      },
-      {
-        "lineNumber": 121,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    deadlineTask(newLine);"
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                } else if (newLine.startsWith(\"event\")) {"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    eventTask(newLine);"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                } else if (newLine.startsWith(\"delete\")) {"
-      },
-      {
-        "lineNumber": 125,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    deleteTask(newLine);"
-      },
-      {
-        "lineNumber": 126,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 127,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                    throw new InvalidInputException(\"\\t☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\");"
-      },
-      {
-        "lineNumber": 128,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 129,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            } catch (InvalidInputException e) {"
-      },
-      {
-        "lineNumber": 130,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 131,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                System.out.println(e.getMessage());"
-      },
-      {
-        "lineNumber": 132,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "                System.out.println(seperator);"
-      },
-      {
-        "lineNumber": 133,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 134,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 135,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 136,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 137,
-        "author": {
-          "gitId": "khor-jingqian"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 138,
-        "author": {
-          "gitId": "-"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "-": 10,
-      "khor-jingqian": 128
+      "khor-jingqian": 36
     }
   },
   {
-    "path": "src/main/java/Events.java",
+    "path": "src/main/java/Deadlines.java",
     "fileType": "java",
     "lines": [
       {
@@ -1091,7 +392,135 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "public class Events extends Task {"
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class Deadlines extends Task {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    protected LocalDateTime deadline;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public Deadlines(String taskDesc, LocalDateTime deadline) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(taskDesc);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        this.deadline \u003d deadline;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \"+ deadline.format(DateTimeFormatter.ofPattern(\"HH:mm MMM d yyyy\")) + \")\";"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 17
+    }
+  },
+  {
+    "path": "src/main/java/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 2,
@@ -1105,35 +534,35 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    protected String timing;"
+        "content": "public class DeleteCommand extends Command{"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": ""
+        "content": "    public static DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public Events(String taskDesc, String timing) {"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        super(taskDesc);"
+        "content": "    public DeleteCommand(String input) {"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        this.timing \u003d timing;"
+        "content": "        super(input);"
       },
       {
         "lineNumber": 8,
@@ -1154,21 +583,1154 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    @Override"
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws InvalidInputException, InvalidSaveFileException {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public String toString() {"
+        "content": "        if(super.input.length() \u003c\u003d 7) {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        return \"[E]\" + super.toString() + \" (at: \" + timing.substring(3) + \")\";"
+        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a delete operation cannot be empty / invalid index.\");"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        int index \u003d Integer.parseInt(super.input.substring(7));"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if( index \u003e\u003d tasks.getTasks().size() || index\u003c0) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a delete operation cannot be empty / invalid index.\");"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        Task task \u003d tasks.getTasks().get(index-1);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        tasks.getTasks().remove(index-1);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tNoted. I\u0027ve removed this task:\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\t\"+task.toString());"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tNow you have \" + tasks.getTasks().size() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        storage.saveFile(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 28
+    }
+  },
+  {
+    "path": "src/main/java/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class DoneCommand extends  Command{"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public DoneCommand(String input) {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws InvalidInputException, InvalidSaveFileException {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if(super.input.length() \u003c\u003d 5) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! Please specify which task you want to complete!\");"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        int completed \u003d Integer.parseInt(super.input.substring(5));"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            Task current \u003d tasks.getTasks().get(completed - 1);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            current.completeTask();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            System.out.println(\"\\tNice! I\u0027ve marked this task as done:\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            System.out.println(\"\\t\\t\" + current.toString());"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidInputException(\"\\tIndex out of bounds! Please try again.\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        storage.saveFile(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 25
+    }
+  },
+  {
+    "path": "src/main/java/Duke.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    private String fileLocation;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    private Ui ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    private Storage storage;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    private TaskList taskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public Duke(String fileLocation) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        this.fileLocation \u003d fileLocation;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        this.ui \u003d new Ui();"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        this.storage \u003d new Storage(fileLocation);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            this.taskList \u003d new TaskList(this.storage.readFile());"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } catch (InvalidSaveFileException e) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            ui.showError(e.getMessage());"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            taskList \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void run() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        ui.showGreeting();"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        boolean isExit \u003d false;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        while (!isExit) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                String fullCommand \u003d ui.readCommand();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                ui.showLine(); // show the divider line (\"_______\")"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                Command c \u003d Parser.parse(fullCommand);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                c.execute(taskList, ui, storage);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                isExit \u003d c.isExit();"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                ui.showError(e.getMessage());"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            } finally {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                ui.showLine();"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        new Duke(\"data/tasks.txt\").run();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "-": 5,
+      "khor-jingqian": 35
+    }
+  },
+  {
+    "path": "src/main/java/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public DukeException(String message) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 5
+    }
+  },
+  {
+    "path": "src/main/java/EventCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class EventCommand extends Command{"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public static DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public EventCommand(String input) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws InvalidDateTimeFormatException,"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            InvalidInputException, InvalidSaveFileException {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if(super.input.length() \u003c\u003d 6) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of an event cannot be empty.\");"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        String[] splitWord \u003d super.input.split(\"/\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        String desc \u003d splitWord[0].substring(6,splitWord[0].length()-1);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        String timing \u003d splitWord[1].substring(3);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        Events task;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            task \u003d new Events(desc,LocalDateTime.parse(timing,dtf) );"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } catch(DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidDateTimeFormatException(\"\\tEvent timing input must follow a certain format: yyyy-mm-dd HH:mm \" +"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    \"e.g. 2020-08-23 16:45\");"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        tasks.getTasks().add(task);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\");"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\t\"+task.toString());"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tNow you have \" + tasks.getTasks().size() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        storage.saveFile(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 38
+    }
+  },
+  {
+    "path": "src/main/java/Events.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class Events extends Task {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    protected LocalDateTime timing;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public Events(String taskDesc, LocalDateTime timing) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(taskDesc);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        this.timing \u003d timing;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (at: \" +"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                timing.format(DateTimeFormatter.ofPattern(\"HH:mm MMM d yyyy\"))+ \")\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 18
+    }
+  },
+  {
+    "path": "src/main/java/ExitCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class ExitCommand extends Command {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public ExitCommand(String input) {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws InvalidSaveFileException {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tBye. Hope to see you again soon!\");"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        storage.saveFile(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return true;"
       },
       {
         "lineNumber": 13,
@@ -1190,7 +1752,7 @@
     }
   },
   {
-    "path": "src/main/java/InvalidInputException.java",
+    "path": "src/main/java/InvalidDateTimeFormatException.java",
     "fileType": "java",
     "lines": [
       {
@@ -1198,7 +1760,7 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "public class InvalidInputException extends Exception {"
+        "content": "public class InvalidDateTimeFormatException extends DukeException {"
       },
       {
         "lineNumber": 2,
@@ -1212,42 +1774,514 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//    protected String msg;"
+        "content": "    public InvalidDateTimeFormatException(String message) {"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": ""
+        "content": "        super(message);"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public InvalidInputException(String message) {"
+        "content": "    }"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "khor-jingqian"
         },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 6
+    }
+  },
+  {
+    "path": "src/main/java/InvalidInputException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class InvalidInputException extends DukeException {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public InvalidInputException(String message) {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
         "content": "        super(message);"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 6
+    }
+  },
+  {
+    "path": "src/main/java/InvalidSaveFileException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class InvalidSaveFileException extends DukeException {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public InvalidSaveFileException(String message) {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 6
+    }
+  },
+  {
+    "path": "src/main/java/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class ListCommand extends Command{"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public ListCommand(String input) {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        this.msg \u003d message;"
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "khor-jingqian"
         },
+        "content": "        if(tasks.getTasks().size() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            System.out.println(\"\\tList is empty! Start adding some tasks\");"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            System.out.println(\"\\t Here are the tasks in your list:\");"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            for (int i \u003d 1; i \u003c\u003d tasks.getTasks().size(); i++) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                Task current \u003d tasks.getTasks().get(i - 1);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                System.out.println(\"\\t\" + i + \".\" + current.toString());"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
         "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 21
+    }
+  },
+  {
+    "path": "src/main/java/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public static Command parse(String fullCommand) throws InvalidInputException {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if (fullCommand.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            return new ExitCommand(fullCommand);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else if (fullCommand.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            return new ListCommand(fullCommand);"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else if (fullCommand.startsWith(\"done\")) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            return new DoneCommand(fullCommand);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else if (fullCommand.startsWith(\"todo\")) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            return new ToDoCommand(fullCommand);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else if (fullCommand.startsWith(\"deadline\")) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            return new DeadlineCommand(fullCommand);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else if (fullCommand.startsWith(\"event\")) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            return new EventCommand(fullCommand);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else if (fullCommand.startsWith(\"delete\")) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            return new DeleteCommand(fullCommand);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidInputException(\"☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 22
+    }
+  },
+  {
+    "path": "src/main/java/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.util.Scanner;"
       },
       {
         "lineNumber": 9,
@@ -1261,108 +2295,500 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//    public String getMessage() {"
+        "content": "public class Storage {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        if(this.msg.length() \u003c 4) {"
+        "content": "    private String fileLocation;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//            return \"\\t☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\";"
+        "content": "    public Storage(String fileLocation) {"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        } else if (this.msg.contains(\"todo\")) {"
+        "content": "        this.fileLocation \u003d fileLocation;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//            return \"\\t☹ OOPS!!! The description of a todo cannot be empty.\";"
+        "content": "    }"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        } else if (this.msg.contains(\"event\")) {"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//            return \"\\t☹ OOPS!!! The description of an event cannot be empty.\";"
+        "content": "    public List\u003cTask\u003e readFile() throws InvalidSaveFileException {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        } else if (this.msg.contains(\"deadline\")) {"
+        "content": "        List\u003cTask\u003e toDoList \u003d new ArrayList\u003cTask\u003e();"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//            return \"\\t☹ OOPS!!! The description of a deadline cannot be empty.\";"
+        "content": "        File dir \u003d new File(\"data\");"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        } else if(this.msg.contains(\"delete\")) {"
+        "content": "        if (!dir.exists()) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//            return \"\\t☹ OOPS!!! The description of a delete operation cannot be empty / invalid index.\";"
+        "content": "            dir.mkdir();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        } else {"
+        "content": "        }"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//            return \"\\t☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\";"
+        "content": "        try {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//        }"
+        "content": "            File file \u003d new File(fileLocation);"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "//    }"
+        "content": "            if (file.exists()) {"
       },
       {
         "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                Scanner s \u003d new Scanner(file);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                while (s.hasNext()) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    String entry \u003d s.nextLine();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    DateTimeFormatter dtf2 \u003d DateTimeFormatter.ofPattern(\"HH:mm MMM d yyyy\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    if (entry.startsWith(\"[T]\")) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        ToDos t \u003d new ToDos(entry.substring(7));"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        if (entry.contains(\"✓\")) {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                            t.completeTask();"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        toDoList.add(t);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    } else if (entry.startsWith(\"[D]\")) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        int index \u003d entry.indexOf(\"(\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        String datetime \u003d entry.substring(index + 5, entry.length() - 1);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        LocalDateTime ldt \u003d LocalDateTime.parse(datetime, dtf2);"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        Deadlines d \u003d new Deadlines(entry.substring(7, index),"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                                ldt);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        if (entry.contains(\"✓\")) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                            d.completeTask();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        toDoList.add(d);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    } else {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        int index \u003d entry.indexOf(\"(\");"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        String datetime \u003d entry.substring(index + 5, entry.length() - 1);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        LocalDateTime ldt \u003d LocalDateTime.parse(datetime, dtf2);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        Events e \u003d new Events(entry.substring(7, index),"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                                ldt);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        if (entry.contains(\"✓\")) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                            e.completeTask();"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                        toDoList.add(e);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidSaveFileException(\"Hmmmm....there is something wrong with the previous save file! We \" +"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                    \"will have to write a new one!\");"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return toDoList;"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void saveFile(List\u003cTask\u003e toDoList) throws InvalidSaveFileException {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        File dir \u003d new File(\"data\");"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if(!dir.exists()) {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            dir.mkdir();"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            FileWriter fw \u003d new FileWriter(fileLocation);"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            for(int i\u003d0; i\u003ctoDoList.size();i++) {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                Task interim \u003d toDoList.get(i);"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                String desc \u003d interim.toString();"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                fw.write(desc+\"\\n\");"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidSaveFileException(\"\\t☹ OOPS!!! Duke is experiencing IO errors when writing to save file!\");"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 81,
         "author": {
           "gitId": "khor-jingqian"
         },
@@ -1370,7 +2796,7 @@
       }
     ],
     "authorContributionMap": {
-      "khor-jingqian": 25
+      "khor-jingqian": 81
     }
   },
   {
@@ -1530,6 +2956,290 @@
     }
   },
   {
+    "path": "src/main/java/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    private List\u003cTask\u003e taskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public TaskList(List\u003cTask\u003e taskList) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        this.taskList \u003d taskList;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public TaskList() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        this.taskList \u003d new ArrayList\u003cTask\u003e();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public List\u003cTask\u003e getTasks() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return this.taskList;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 18
+    }
+  },
+  {
+    "path": "src/main/java/ToDoCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class ToDoCommand extends Command {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public ToDoCommand(String input) {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws InvalidInputException, InvalidSaveFileException {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if(super.input.length() \u003c\u003d 5) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            throw new InvalidInputException(\"\\t☹ OOPS!!! The description of a todo cannot be empty.\");"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        ToDos task \u003d new ToDos(super.input.substring(5));"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        tasks.getTasks().add(task);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\");"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\t\"+task.toString());"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tNow you have \" + tasks.getTasks().size() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        storage.saveFile(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 20
+    }
+  },
+  {
     "path": "src/main/java/ToDos.java",
     "fileType": "java",
     "lines": [
@@ -1616,6 +3326,1038 @@
     }
   },
   {
+    "path": "src/main/java/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    Scanner sc;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public Ui() {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void showLine() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\t____________________________________________________________\");"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void showGreeting() {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        String logo \u003d \" ____        _        \\n\""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                + \"|  _ \\\\ _   _| | _____ \\n\""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"Hello from\\n\" + logo);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\t____________________________________________________________\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\tHello! I\u0027m Duke\\n\\tWhat can I do for you?\");"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(\"\\t____________________________________________________________\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void showError(String errorMsg) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        System.out.println(errorMsg);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public String readCommand() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return sc.nextLine();"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 32
+    }
+  },
+  {
+    "path": "src/test/java/DeadlinesTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import org.junit.jupiter.api.BeforeAll;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class DeadlinesTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    static DateTimeFormatter dtf;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    static LocalDateTime ldt;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @BeforeAll"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    static void init() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        dtf \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        ldt \u003d LocalDateTime.parse(\"2020-08-23 18:00\",dtf);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void constructorTest() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        Deadlines events \u003d new Deadlines(\"kiwis\", ldt);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        assertEquals("
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                \"[D][\"+\"\\u2718\"+\"] kiwis (by: 18:00 Aug 23 2020)\",events.toString());"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void completionTest() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        Deadlines events \u003d new Deadlines(\"kiwis\", ldt);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        events.completeTask();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        assertEquals(\"[D][\"+\"\\u2713\"+\"] kiwis (by: 18:00 Aug 23 2020)\",events.toString());"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 32
+    }
+  },
+  {
+    "path": "src/test/java/EventTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import org.junit.jupiter.api.BeforeAll;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class EventTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    static DateTimeFormatter dtf;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    static LocalDateTime ldt;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @BeforeAll"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    static void init() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        dtf \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        ldt \u003d LocalDateTime.parse(\"2020-08-23 18:00\",dtf);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void constructorTest() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        Events events \u003d new Events(\"kiwis\", ldt);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        assertEquals("
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                \"[E][\"+\"\\u2718\"+\"] kiwis (at: 18:00 Aug 23 2020)\",events.toString());"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void completionTest() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        Events events \u003d new Events(\"kiwis\", ldt);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        events.completeTask();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        assertEquals(\"[E][\"+\"\\u2713\"+\"] kiwis (at: 18:00 Aug 23 2020)\",events.toString());"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 33
+    }
+  },
+  {
+    "path": "src/test/java/ParserTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class ParserTest {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void testParsing() {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            assertTrue(Parser.parse(\"event kiwis /at 2020-08-30 18:00\") instanceof Command);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } catch (InvalidInputException e) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void testError() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            Parser.parse(\"kiwis /at 2020-08-40 18:00\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        } catch (InvalidInputException e) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            assertEquals(\"☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\",e.getMessage());"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 25
+    }
+  },
+  {
+    "path": "src/test/java/ToDosTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "public class ToDosTest {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void constructorTest() {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        ToDos events \u003d new ToDos(\"kiwis\");"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        assertEquals("
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                \"[T][\"+\"\\u2718\"+\"] kiwis\",events.toString());"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    public void completionTest() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        ToDos events \u003d new ToDos(\"kiwis\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        events.completeTask();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        assertEquals(\"[T][\"+\"\\u2713\"+\"] kiwis\",events.toString());"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "khor-jingqian": 19
+    }
+  },
+  {
     "path": "text-ui-test/input.txt",
     "fileType": "txt",
     "lines": [
@@ -1673,45 +4415,108 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "event project meeting /at Mon 2-4pm"
+        "content": "deadline return book /by 2020-08-40 13:56"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "list"
+        "content": "deadline return book /by 2020-08-23 13:56"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "done 2"
+        "content": "list"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "list"
+        "content": "event project meeting /at Mon 2-4pm"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "delete 1"
+        "content": "event project meeting /at 2020-08-40 13:58"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "list"
+        "content": "event project meeting /at 2020-08-26 13:58"
       },
       {
         "lineNumber": 14,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "done 2"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "done -1"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "done 10"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "delete 1"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "delete -1"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "delete 10"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 23,
         "author": {
           "gitId": "khor-jingqian"
         },
@@ -1719,7 +4524,7 @@
       }
     ],
     "authorContributionMap": {
-      "khor-jingqian": 14
+      "khor-jingqian": 23
     }
   },
   {

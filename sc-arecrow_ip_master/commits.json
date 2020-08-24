@@ -155,22 +155,217 @@
             }
           }
         ]
+      },
+      {
+        "date": "2020-08-21",
+        "commitResults": [
+          {
+            "hash": "ecf53af8e0d10e6ec0aac57f47e25dffb79570a6",
+            "messageTitle": "Modify constructor of Task and subclasses",
+            "messageBody": "Constructor of Task and subclasses Todo, Deadline and Event accept\none argument for its description, and the isDone field is set to\nfalse.\n\nTo load task list data from disk, we must be able to create tasks\nwith isDone field set to true.\n\nLet\u0027s add an isDone parameter to the constructor of Task and its\nsubclasses, which will allow us to dictate the isDone field when\nwe create new task objects.\n",
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 11,
+                "deletions": 11
+              },
+              "sh": {
+                "insertions": 2,
+                "deletions": 2
+              }
+            }
+          },
+          {
+            "hash": "72e785b577613716ea31b0acf9d212e34c60d591",
+            "messageTitle": "Make Task an abstract class and add toTaskData method",
+            "messageBody": "Task is a normal class.\n\nThere are some methods like toTaskData that are implemented\ndifferently depending on the subclass of Task.\n\nLet\u0027s make Task an abstract class to provide this common\nfunctionality across the subclasses while also allowing Task to\nhave default methods.\n\nUsing an abstract class is preferable over an interface because\nthe subclasses have an \"is-a\" relationship to Task, instead of a\n\"can-do\" relationship.\n",
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 20,
+                "deletions": 7
+              }
+            }
+          },
+          {
+            "hash": "7b4010f148d033e754b23d1fc08691f02bef0164",
+            "messageTitle": "Add save functionality",
+            "messageBody": "Viscount does not have save functionality.\n\nHence data is lost after the program ends.\n\nLet\u0027s enhance Viscount with saving functionality so that tasks are\nwritten onto disk after every change to the task list. Let\u0027s also\nupdate the UI testing to simulate running Viscount multiple times\nand test for persistence of data.\n",
+            "fileTypesAndContributionMap": {
+              "txt": {
+                "insertions": 27,
+                "deletions": 25
+              },
+              "java": {
+                "insertions": 77,
+                "deletions": 0
+              },
+              "bat": {
+                "insertions": 7,
+                "deletions": 2
+              },
+              "sh": {
+                "insertions": 10,
+                "deletions": 2
+              }
+            }
+          }
+        ]
+      },
+      {
+        "date": "2020-08-23",
+        "commitResults": [
+          {
+            "hash": "9b7a7795754f6f3d687c84a0d34712440381add0",
+            "messageTitle": "Modify IOException handling",
+            "messageBody": "Viscount continues to run even after an IOException is thrown.\n\nThis runs the risk of users continuing to use Viscount when their\ndata is not being saved to disk.\n\nLet\u0027s modify IOException handling such that when one is thrown,\nViscount immediately shuts down, preventing further loss of data.\n",
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 50,
+                "deletions": 53
+              }
+            }
+          },
+          {
+            "hash": "b6d8af33e712581910a6affd06019092458b1502",
+            "messageTitle": "Improve date and time representation",
+            "messageBody": "Viscount represents date and time with a string given by the user.\n\nThis is inadequate because of the lack of standardisation of date\nand time across different tasks.\n\nLet\u0027s improve date and time representation using the java\nLocalDateTime library so it is standardised across all tasks.\n",
+            "fileTypesAndContributionMap": {
+              "txt": {
+                "insertions": 11,
+                "deletions": 5
+              },
+              "java": {
+                "insertions": 74,
+                "deletions": 14
+              },
+              "sh": {
+                "insertions": 2,
+                "deletions": 2
+              }
+            }
+          },
+          {
+            "hash": "074f73522f190429e90e2852e81a9a823f796e3c",
+            "messageTitle": "Make Task an abstract class and add hasDateTime method",
+            "messageBody": "Task is a normal class.\n\nThere are some methods like hasDateTime that are implemented\ndifferently depending on the subclass of Task.\n\nLet\u0027s make Task an abstract class to provide this common\nfunctionality across the subclasses while also allowing Task to\nhave default methods.\n\nUsing an abstract class is preferable over an interface because the\nsubclasses have an \"is-a\" relationship to Task, instead of a\n\"can-do\" relationship.\n",
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 18,
+                "deletions": 8
+              }
+            }
+          },
+          {
+            "hash": "4725cfb7e0a16ff7e602a749ecee43f7cdf751a3",
+            "messageTitle": "Create TaskType enum",
+            "messageBody": "There is no TaskType enum.\n\nObjects that are instances of subclasses of Task cannot be\ndifferentiated according to their type of task.\n\nLet\u0027s create a TaskType enum and give each instance of Task a\ntaskType field to allow for this differentiation.\n",
+            "tags": [
+              "A-Enums"
+            ],
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 15,
+                "deletions": 4
+              }
+            }
+          },
+          {
+            "hash": "f5230ecd6a86a84f4fe8ecf711ab427bb804c072",
+            "messageTitle": "Improve list function",
+            "messageBody": "Viscount can list tasks that users have added.\n\nWith a better representation of date and time of deadlines and events,\nusers should be able to have better control over what tasks are listed.\n\nLet\u0027s improve the list function to enable users to:\n* list tasks of a specified type\n* list tasks occurring today or a specified day\n",
+            "fileTypesAndContributionMap": {
+              "txt": {
+                "insertions": 12,
+                "deletions": 2
+              },
+              "java": {
+                "insertions": 106,
+                "deletions": 7
+              }
+            }
+          }
+        ]
+      },
+      {
+        "date": "2020-08-24",
+        "commitResults": [
+          {
+            "hash": "49c7c6d0dd44c5bac1d689e07ba0e1dcc30bafa9",
+            "messageTitle": "Extracted Ui, Storage, Parser, TaskList and Command classes.",
+            "messageBody": "Viscount class is handling many functionalities, of which most\ncan be classified into various categories.\n\nNo one class should hold that many functions as it goes against the\nSingle Responsibility Principle in OOP.\n\nLet\u0027s extract out code with similar functions into several classes,\nnamely Ui, Storage, Parser, TaskList and Command, to better represent\nthe system in an object oriented manner.\n",
+            "tags": [
+              "A-MoreOOP"
+            ],
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 572,
+                "deletions": 408
+              }
+            }
+          },
+          {
+            "hash": "d3c31875a7ee67bd1ed5c7bdd0da809b1012e556",
+            "messageTitle": "Added several exception handling cases",
+            "messageBody": "Viscount does not have exception handling for IO exceptions and\nusing the following command \u0027list todo /on\u0027.\n\nSince these are exceptions that can reasonably occur, they are checked\nexceptions and should be handled accordingly.\n\nLet\u0027s:\n* Add a new exception for unsupported operations\n* Gracefully handle IOExceptions by shutting down Viscount when they\noccur, which will potentially save the user from the loss of their data\n",
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 70,
+                "deletions": 34
+              }
+            }
+          },
+          {
+            "hash": "70c97fc738629b957d4064104f1e3278a9da758e",
+            "messageTitle": "Divide classes into packages",
+            "messageBody": "Viscount code is all in one directory.\n\nClass files that are related to one another can be grouped into\npackages. This results in a more organised project structure.\n\nLet\u0027s organise the class files into suitable java packages.\n",
+            "tags": [
+              "A-Packages"
+            ],
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 106,
+                "deletions": 10
+              },
+              "bat": {
+                "insertions": 3,
+                "deletions": 3
+              },
+              "sh": {
+                "insertions": 4,
+                "deletions": 4
+              }
+            }
+          },
+          {
+            "hash": "7f8aab73b230b8203dc30aa0612be98408157281",
+            "messageTitle": "Add JUnit test for some Ui and TaskList functions",
+            "messageBody": "Viscount is not undergoing any unit testing.\n\nIt is difficult to confirm that Viscount is working as intended with\nonly text UI testing. It is also beneficial to test each part of the\nprogram separately.\n\nLet\u0027s add JUnit tests for some of the functions in Ui and TaskList\nto confirm that these parts of Viscount are working as intended.\n",
+            "tags": [
+              "A-JUnit"
+            ],
+            "fileTypesAndContributionMap": {
+              "java": {
+                "insertions": 202,
+                "deletions": 6
+              }
+            }
+          }
+        ]
       }
     ]
   },
   "authorFileTypeContributionMap": {
     "sc-arecrow": {
-      "java": 344,
+      "java": 1079,
       "md": 0,
       "fxml": 0,
-      "sh": 1,
-      "bat": 2,
+      "sh": 11,
+      "bat": 8,
       "gradle": 0,
-      "txt": 25
+      "txt": 43
     }
   },
   "authorContributionVariance": {
-    "sc-arecrow": 11738.53
+    "sc-arecrow": 157476.19
   },
   "authorDisplayNameMap": {
     "sc-arecrow": "GOH ..HIAK"
