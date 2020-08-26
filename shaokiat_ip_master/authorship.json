@@ -1,5 +1,42 @@
 [
   {
+    "path": "data/tasks.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "D|1|buy |2020-10-10 10:10"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "E|1|read |2020-10-10 10:10"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "E|0|reading story |2020-12-12 12:12"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "T|0|hello world"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 4
+    }
+  },
+  {
     "path": "ip_data.txt",
     "fileType": "txt",
     "lines": [
@@ -30,7 +67,23 @@
     }
   },
   {
-    "path": "src/main/java/Bot.java",
+    "path": "output/artifacts/ip_jar/data/tasks.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "T|0|hello"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 1
+    }
+  },
+  {
+    "path": "src/main/java/duke/Duke.java",
     "fileType": "java",
     "lines": [
       {
@@ -38,7 +91,7 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "package main.java;"
+        "content": "package main.java.duke;"
       },
       {
         "lineNumber": 2,
@@ -52,28 +105,28 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "import main.java.duke.command.Command;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import main.java.duke.exceptions.DukeException;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "import java.io.*;"
+        "content": "import main.java.duke.tasks.TaskList;"
       },
       {
         "lineNumber": 7,
@@ -87,238 +140,1722 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "public class Bot {"
+        "content": "/**"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public Bot() {"
+        "content": " * Duke class which initialize a Duke object that handles"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": " * all of the bot logic sequences."
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": " */"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    static String logo \u003d \" ____        _        \\n\""
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
-          "gitId": "shaokiat"
+          "gitId": "-"
         },
-        "content": "            + \"|  _ \\\\ _   _| | _____ \\n\""
+        "content": "public class Duke {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "            + \"| | | | | | | |/ / _ \\\\\\n\""
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "            + \"| |_| | |_| |   \u003c  __/\\n\""
+        "content": "    private Storage storage;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "            + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
+        "content": "    private TaskList tasks;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "    private Ui ui;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public static ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
+        "content": ""
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    enum Action {"
+        "content": "    public Duke(String filePath) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        ADD,"
+        "content": "        ui \u003d new Ui();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        DONE,"
+        "content": "        storage \u003d new Storage(filePath);"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        DELETE"
+        "content": "        try {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": "            tasks \u003d new TaskList(storage.load());"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "        } catch (InvalidFileException e) {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public static void printTask(Task task, Action action) {"
+        "content": "            ui.showErrorMessage(e.getMessage());"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        switch (action) {"
+        "content": "            tasks \u003d new TaskList();"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "            case ADD:"
+        "content": "        }"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "                System.out.println(\"Got it. I\u0027ve added this task:\");"
+        "content": "    }"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "                break;"
+        "content": ""
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "            case DONE:"
+        "content": "    /**"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "                System.out.println(\"Nice! I\u0027ve marked this task as done:\");"
+        "content": "     * Main method for Duke to start running its processors."
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "                break;"
+        "content": "     */"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "            case DELETE:"
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "                System.out.println(\"Noted. I\u0027ve removed this task:\");"
+        "content": "        this.ui.showWelcomeMessage();"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "                break;"
+        "content": "        boolean isExit \u003d false;"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "            default:"
+        "content": "        while (!isExit) {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "                break;"
+        "content": "            try {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        }"
+        "content": "                String fullCommand \u003d ui.readCommand();"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        int num \u003d taskList.size();"
+        "content": "                ui.showLine(); // show the divider line (\"_______\")"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        System.out.println(task);"
+        "content": "                Command c \u003d Parser.parseCommand(fullCommand);"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        System.out.println(\"Now you have \" + num + \" tasks in the list.\");"
+        "content": "                c.execute(tasks, ui, storage);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                isExit \u003d c.isExit();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                ui.showErrorMessage(e.getMessage());"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            } finally {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                ui.showLine();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        new Duke(\"data/tasks.txt\").run();"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 52,
+      "-": 2
+    }
+  },
+  {
+    "path": "src/main/java/duke/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.command.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.DukeException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Parser class to parse user input into respective command lines."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Parse user input into useful commands."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param userInput String input by user through the Ui."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @return respective command that will be executed."
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws DukeException exceptions thrown by parsing user inputs."
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static Command parseCommand(String userInput) throws DukeException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            if (userInput.startsWith(\"done\")) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                return new DoneCommand(userInput);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            } else if (userInput.startsWith(\"delete\")) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                return new DeleteCommand(userInput);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            } else if (userInput.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                return new ExitCommand(userInput);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            } else if (userInput.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                return new ListCommand(userInput);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            } else if (userInput.startsWith(\"find\")) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                return new FindCommand(userInput);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                return addCommand(userInput);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Differentiate user input into commands that add their respective"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * tasks into the task list."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param command user input."
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @return respective Command."
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws DukeException unable to read user input."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static Command addCommand(String command) throws DukeException {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (command.startsWith(\"todo\")) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            return new TodoCommand(command);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } else if (command.startsWith(\"deadline\")) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            return new DeadlineCommand(command);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } else if (command.startsWith(\"event\")) {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            return new EventCommand(command);"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new DukeException(\"☹ OOPS!!! I\u0027m sorry,\" +"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    \" but I don\u0027t know what that means :-(\");"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 52
+    }
+  },
+  {
+    "path": "src/main/java/duke/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.*;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.io.*;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Storage class that contains save and load methods to keep task list"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * updated."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public DateTimeFormatter formatter"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public final String path;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public Storage(String storagePath) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        this.path \u003d storagePath;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Save task list into path specified."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param taskList task list to be saved."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to save."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void save(TaskList taskList) throws InvalidFileException {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        ArrayList\u003cTask\u003e currTaskList \u003d taskList.getTaskList();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        File saved \u003d new File(this.path);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            BufferedWriter bw \u003d new BufferedWriter(new FileWriter(saved));"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            for (Task t: currTaskList) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                bw.write(t.getState());"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                bw.newLine();"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                bw.flush();"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            bw.close();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidFileException(\"Failed to save\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Load saved file into task list."
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @return TaskList"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to load, read or create new file."
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public TaskList load() throws InvalidFileException {"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        TaskList taskList \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        File dir \u003d new File(\"data\");"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (!dir.exists()) {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            dir.mkdir();"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            File saved \u003d new File(this.path);"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            if (!saved.exists()) {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                try {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    saved.createNewFile();"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                } catch (IOException exception) {"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    exception.printStackTrace();"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            BufferedReader br \u003d new BufferedReader(new FileReader(saved));"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            String currLine;"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            while ((currLine \u003d br.readLine()) !\u003d null) {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                String[] readLine \u003d currLine.split(\"\\\\|\");"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                boolean taskDone \u003d readLine[1].equals(\"1\");"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                Task newTask \u003d new Task(\"\");"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                String type \u003d readLine[0];"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                switch(type) {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    case \"T\":"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                        newTask \u003d new Todo(readLine[2]);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    case \"D\":"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                        newTask \u003d new Deadline(readLine[2],"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                                LocalDateTime.parse(readLine[3], formatter));"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    case \"E\":"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                        newTask \u003d new Event(readLine[2],"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                                LocalDateTime.parse(readLine[3], formatter));"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    default:"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                        break;"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                taskList.addTask(newTask);"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                if (taskDone) {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    newTask.markAsDone();"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidFileException(\"Failed to load\");"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return taskList;"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 102
+    }
+  },
+  {
+    "path": "src/main/java/duke/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Ui class to handle the user input and user interface."
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Includes method that will prompt the user for their input."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    static String logo \u003d \" ____        _        \\n\""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            + \"|  _ \\\\ _   _| | _____ \\n\""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            + \"| | | | | | | |/ / _ \\\\\\n\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            + \"| |_| | |_| |   \u003c  __/\\n\""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public Scanner sc;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public Ui() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public String readCommand() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return sc.nextLine();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void showLine() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        System.out.println(\"________________________ \\n\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void showWelcomeMessage() {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        System.out.println(\"Hello from\\n\" + logo);"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        System.out.println(\"Hello! I\u0027m Duke \\nWhat can I do for you?\");"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void showExitMessage() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        System.out.println(\"Bye. Hope to see you again soon!\");"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void showErrorMessage(String message) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        System.out.println(message);"
       },
       {
         "lineNumber": 42,
@@ -339,1065 +1876,50 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public void doneTask(String taskNum) {"
+        "content": "    public void printMessage(String message) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        int index \u003d Integer.parseInt(taskNum) - 1;"
+        "content": "        System.out.println(message);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        Task curr \u003d taskList.get(index);"
+        "content": "    }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        curr.markAsDone();"
+        "content": ""
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        printTask(curr, Action.DONE);"
+        "content": "}"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public void deleteTask(String taskNum) {"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        int index \u003d Integer.parseInt(taskNum) - 1;"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        Task curr \u003d taskList.get(index);"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        taskList.remove(curr);"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        printTask(curr, Action.DELETE);"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public void addTask(String command) throws DukeException {"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        String[] cmdLine \u003d command.split(\" \");"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        String taskType \u003d cmdLine[0];"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        String[] split;"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "shaokiat"
-        },
         "content": ""
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        switch(taskType) {"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            case \"todo\":"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                if (cmdLine.length \u003d\u003d 1) {"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    throw new DukeException(\"☹ OOPS!!! The description of a todo cannot be empty.\");"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                String tasking \u003d command.substring(5);"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                Task todo \u003d new Todo(tasking);"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                taskList.add(todo);"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                printTask(todo, Action.ADD);"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                break;"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            case \"deadline\":"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                if (cmdLine.length \u003d\u003d 1) {"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    throw new DukeException(\"☹ OOPS!!! The description of a deadline cannot be empty.\");"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                split \u003d command.substring(9).split(\"/by \", 2);"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                Task deadline \u003d new Deadline(split[0], split[1]);"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                taskList.add(deadline);"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                printTask(deadline, Action.ADD);"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                break;"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            case \"event\":"
-      },
-      {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                if (cmdLine.length \u003d\u003d 1) {"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    throw new DukeException(\"☹ OOPS!!! The description of a event cannot be empty.\");"
-      },
-      {
-        "lineNumber": 85,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 86,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                split \u003d command.substring(6).split(\"/at \", 2);"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                Task event \u003d new Event(split[0], split[1]);"
-      },
-      {
-        "lineNumber": 88,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                taskList.add(event);"
-      },
-      {
-        "lineNumber": 89,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                printTask(event, Action.ADD);"
-      },
-      {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                break;"
-      },
-      {
-        "lineNumber": 91,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            default:"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                throw new DukeException(\"☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\");"
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public void start() {"
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        System.out.println(\"Hello from\\n\" + logo);"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        System.out.println(\"Hello! I\u0027m Duke \\nWhat can I do for you?\");"
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        Scanner scan \u003d new Scanner(System.in);"
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        loadData();"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        while (scan.hasNext()) {"
-      },
-      {
-        "lineNumber": 104,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            String input \u003d scan.nextLine();"
-      },
-      {
-        "lineNumber": 105,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            try {"
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                if (input.startsWith(\"done\")) {"
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    if (input.length() \u003d\u003d 4) {"
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        throw new DukeException(\"☹ OOPS!!! Please select a task to be done.\");"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    doneTask(input.substring(5));"
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                } else if (input.startsWith(\"delete\")) {"
-      },
-      {
-        "lineNumber": 112,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    if (input.length() \u003d\u003d 6) {"
-      },
-      {
-        "lineNumber": 113,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        throw new DukeException(\"☹ OOPS!!! Please select a task to be deleted.\");"
-      },
-      {
-        "lineNumber": 114,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 115,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    deleteTask(input.substring(7));"
-      },
-      {
-        "lineNumber": 116,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                } else if (input.equals(\"bye\")) {"
-      },
-      {
-        "lineNumber": 117,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    System.out.println(\"Bye. Hope to see you again soon!\");"
-      },
-      {
-        "lineNumber": 118,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    saveData();"
-      },
-      {
-        "lineNumber": 119,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    return;"
-      },
-      {
-        "lineNumber": 120,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                } else if (input.equals(\"list\")) {"
-      },
-      {
-        "lineNumber": 121,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    for (int i \u003d 0; i \u003c taskList.size(); i++) {"
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        System.out.println((i + 1) + \".\" + taskList.get(i));"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 125,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    try {"
-      },
-      {
-        "lineNumber": 126,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        addTask(input);"
-      },
-      {
-        "lineNumber": 127,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    } catch (DukeException e) {"
-      },
-      {
-        "lineNumber": 128,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        System.out.println(e.getMessage());"
-      },
-      {
-        "lineNumber": 129,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 130,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 131,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                saveData();"
-      },
-      {
-        "lineNumber": 132,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            } catch (Exception ex) {"
-      },
-      {
-        "lineNumber": 133,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                System.out.println(ex.getMessage());"
-      },
-      {
-        "lineNumber": 134,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 135,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 136,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 137,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 138,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public void saveData() {"
-      },
-      {
-        "lineNumber": 139,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        File saved \u003d new File(\"ip_data.txt\");"
-      },
-      {
-        "lineNumber": 140,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 141,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            BufferedWriter bw \u003d new BufferedWriter(new FileWriter(saved));"
-      },
-      {
-        "lineNumber": 142,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            for (Task t: taskList) {"
-      },
-      {
-        "lineNumber": 143,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                bw.write(t.getState());"
-      },
-      {
-        "lineNumber": 144,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                bw.newLine();"
-      },
-      {
-        "lineNumber": 145,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                bw.flush();"
-      },
-      {
-        "lineNumber": 146,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 147,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            bw.close();"
-      },
-      {
-        "lineNumber": 148,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 149,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 150,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 151,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 152,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 153,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public void loadData() {"
-      },
-      {
-        "lineNumber": 154,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 155,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            File saved \u003d new File(\"ip_data.txt\");"
-      },
-      {
-        "lineNumber": 156,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            if (!saved.exists()) {"
-      },
-      {
-        "lineNumber": 157,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                try {"
-      },
-      {
-        "lineNumber": 158,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    saved.createNewFile();"
-      },
-      {
-        "lineNumber": 159,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                } catch (IOException exception) {"
-      },
-      {
-        "lineNumber": 160,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    exception.printStackTrace();"
-      },
-      {
-        "lineNumber": 161,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 162,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 163,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            BufferedReader br \u003d new BufferedReader(new FileReader(saved));"
-      },
-      {
-        "lineNumber": 164,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            String currLine;"
-      },
-      {
-        "lineNumber": 165,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            while ((currLine \u003d br.readLine()) !\u003d null) {"
-      },
-      {
-        "lineNumber": 166,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                String[] readLine \u003d currLine.split(\"\\\\|\");"
-      },
-      {
-        "lineNumber": 167,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                boolean taskDone \u003d readLine[1].equals(\"1\");"
-      },
-      {
-        "lineNumber": 168,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                Task newTask \u003d new Task(\"\");"
-      },
-      {
-        "lineNumber": 169,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                String type \u003d readLine[0];"
-      },
-      {
-        "lineNumber": 170,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                switch(type) {"
-      },
-      {
-        "lineNumber": 171,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    case \"T\":"
-      },
-      {
-        "lineNumber": 172,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        newTask \u003d new Todo(readLine[2]);"
-      },
-      {
-        "lineNumber": 173,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 174,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    case \"D\":"
-      },
-      {
-        "lineNumber": 175,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        newTask \u003d new Deadline(readLine[2], readLine[3]);"
-      },
-      {
-        "lineNumber": 176,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 177,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    case \"E\":"
-      },
-      {
-        "lineNumber": 178,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        newTask \u003d new Event(readLine[2], readLine[3]);"
-      },
-      {
-        "lineNumber": 179,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 180,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    default:"
-      },
-      {
-        "lineNumber": 181,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 182,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 183,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                taskList.add(newTask);"
-      },
-      {
-        "lineNumber": 184,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                if (taskDone) {"
-      },
-      {
-        "lineNumber": 185,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                    newTask.markAsDone();"
-      },
-      {
-        "lineNumber": 186,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 187,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 188,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 189,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 190,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 191,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 192,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 193,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 194,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "}"
       }
     ],
     "authorContributionMap": {
-      "shaokiat": 194
+      "shaokiat": 49
     }
   },
   {
-    "path": "src/main/java/Deadline.java",
+    "path": "src/main/java/duke/command/Command.java",
     "fileType": "java",
     "lines": [
       {
@@ -1405,7 +1927,3482 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "package main.java;"
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Abstract Command class which executes specific commands."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Takes in input from the Parser."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public abstract class Command {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public final String input;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public Command(String input) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        this.input \u003d input;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute specific commands."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidInputException when the input cannot be read."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException when the file cannot be read or written."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public abstract void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * To indicate if command is an exit command."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @return true if command exits Duke and false otherwise."
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public abstract boolean isExit();"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 38
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DeadlineCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Deadline;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Deadline Command class to execute command that adds a deadline to"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * the TaskList."
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class DeadlineCommand extends Command {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_SUCCESS \u003d \"Got it. I\u0027ve added this task:\\n\";"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_PARSE_ERROR \u003d \"Invalid date and time format.\\n\" +"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            \"Please enter date and time in the format: yyyy-MM-dd HH:mm\";"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public DeadlineCommand(String input) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute a Deadline Command to add a Deadline into TaskList."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidInputException rejects empty deadline or incorrect date and time format."
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException throws an error when method fails to save."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (super.input.length() \u003c\u003d 8) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    (\"☹ OOPS!!! The description of a deadline cannot be empty.\\n\");"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            String[] split \u003d super.input.substring(9).split(\"/by \", 2);"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            LocalDateTime date \u003d LocalDateTime.parse(split[1], formatter);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            Task deadline \u003d new Deadline(split[0], date);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            tasks.addTask(deadline);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            ui.printMessage(MESSAGE_SUCCESS + deadline.toString()"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    + \"\\nNow you have \" + tasks.taskListSize() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            storage.save(tasks);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException(MESSAGE_PARSE_ERROR);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 62
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Delete Command class to execute command that deletes a task in"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * the TaskList."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_SUCCESS \u003d \"Noted. I\u0027ve removed this task:\\n\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public DeleteCommand(String input) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute a Delete Command to delete a task in the task list."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidInputException incorrect input after delete command."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to save file."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (super.input.length() \u003c\u003d 7) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    (\"☹ OOPS!!! The description of a delete operation cannot be empty / invalid index.\");"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        int index \u003d Integer.parseInt(super.input.substring(7)) - 1;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        Task taskDeleted \u003d tasks.getTask(index);"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        tasks.removeTask(index);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        ui.printMessage(MESSAGE_SUCCESS + taskDeleted);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        storage.save(tasks);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 48
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * DoneCommand class to execute command that mark a task in the task list"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * as done."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class DoneCommand extends Command {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_SUCCESS \u003d \"Nice! I\u0027ve marked this task as done:\\n\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public DoneCommand(String input) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute a command to mark a task as done."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidInputException incorrect input following the done command."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to save file."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (super.input.length() \u003c\u003d 4) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    (\"☹ OOPS!!! Please choose a task to be completed.\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        int index \u003d Integer.parseInt(super.input.substring(5)) - 1;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        Task taskDone \u003d tasks.getTask(index);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        tasks.markAsDone(index);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        ui.printMessage(MESSAGE_SUCCESS + taskDone);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        storage.save(tasks);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 49
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/EventCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Event;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.util.Date;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * EventCommand class to execute command that add an event into"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * the TaskList."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class EventCommand extends Command {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_SUCCESS \u003d \"Got it. I\u0027ve added this task:\\n\";"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_PARSE_ERROR \u003d \"Invalid date and time format.\\n\" +"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            \"Please enter date and time in the format: yyyy-MM-dd HH:mm\";"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public EventCommand(String input) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute the command to add an event into the task list."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidInputException incorrect input or wrong format for date and time."
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to save file."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (super.input.length() \u003c\u003d 5) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    (\"☹ OOPS!!! The description of a event cannot be empty.\\n\");"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            String[] split \u003d super.input.substring(6).split(\"/at \", 2);"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            LocalDateTime date \u003d LocalDateTime.parse(split[1], formatter);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            Task event \u003d new Event(split[0], date);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            tasks.addTask(event);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            ui.printMessage(MESSAGE_SUCCESS + event.toString() + \"\\nNow you have \""
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    + tasks.taskListSize() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            storage.save(tasks);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException(MESSAGE_PARSE_ERROR);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 62
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ExitCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * ExitCommand class to execute command to quit and exit Duke."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class ExitCommand extends Command {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_EXIT_ACKNOWLEDGEMENT \u003d \"Exiting...\";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public ExitCommand(String input) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute the exit process."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to save file."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        ui.showExitMessage();"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        storage.save(tasks);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 38
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/FindCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.util.*;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * FindCommand class to execute command that search for tasks in the"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * task list using keywords."
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class FindCommand extends Command {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static String TASK_FOUND_MESSAGE \u003d \"Here are the matching tasks in your list:\";"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static String NO_TASK_FOUND \u003d \"There are no matching task!\";"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public FindCommand(String input) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute the find command to search the task list for task with similar keywords."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidInputException incorrect input after find command."
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to save file."
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (super.input.length() \u003c\u003d 4) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException(\"Please select task to find!\");"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        String keywords \u003d super.input.substring(5);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        List\u003cTask\u003e tasksFound \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        for (Task t: tasks.getTaskList()) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            if (t.getWordsInTask().contains(keywords)) {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                tasksFound.add(t);"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (tasksFound.size() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            ui.printMessage(NO_TASK_FOUND);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            ui.printMessage(TASK_FOUND_MESSAGE);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            for (int j \u003d 0; j \u003c tasksFound.size(); j++) {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                ui.printMessage((j + 1) + \".\" + tasksFound.get(j));"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 62
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Duke;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.DukeException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * ListCommand class to execute command that list out all tasks"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * in the task list."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public ListCommand(String input) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute the command to list out all tasks in a specific format."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (tasks.taskListSize() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            ui.printMessage(\"List is empty! Start adding to your task list!\");"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            for (int i \u003d 0; i \u003c tasks.taskListSize(); i++) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                ui.printMessage((i + 1) + \".\" + tasks.getTask(i));"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 42
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/TodoCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidFileException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.InvalidInputException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Todo;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * TodoCommand class to execute command that adds a todo to"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * the TaskList."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class TodoCommand extends Command {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public static final String MESSAGE_SUCCESS \u003d \"Got it. I\u0027ve added this task:\\n\";"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public TodoCommand(String input) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(input);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * Execute command that adds a todo task into the task list."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param tasks TaskList of tasks."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param ui Ui object from the Ui class."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @param storage Storage object from the Storage class."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidInputException incorrect input with the todo command."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     * @throws InvalidFileException failed to save file."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage)"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throws InvalidInputException, InvalidFileException {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        if (super.input.length() \u003c\u003d 5) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            throw new InvalidInputException"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                    (\"☹ OOPS!!! The description of a todo cannot be empty.\\n\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        Task todoTask \u003d new Todo(super.input.substring(5));"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        tasks.addTask(todoTask);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        ui.printMessage(MESSAGE_SUCCESS + todoTask.toString() +"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                \"\\nNow you have \" + tasks.taskListSize() + \" tasks in the list.\");"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        storage.save(tasks);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 49
+    }
+  },
+  {
+    "path": "src/main/java/duke/exceptions/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.exceptions;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * DukeException class to customize exceptions for Duke."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public DukeException(String message) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 10
+    }
+  },
+  {
+    "path": "src/main/java/duke/exceptions/InvalidFileException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.exceptions;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * InvalidFileException is thrown when the file fails to save or load."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class InvalidFileException extends DukeException {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public InvalidFileException(String message) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 10
+    }
+  },
+  {
+    "path": "src/main/java/duke/exceptions/InvalidInputException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.exceptions;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * InvalidInputException is thrown when a command has an incorrect"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * input."
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class InvalidInputException extends DukeException {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public InvalidInputException(String message) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 11
+    }
+  },
+  {
+    "path": "src/main/java/duke/tasks/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.tasks;"
       },
       {
         "lineNumber": 2,
@@ -1433,281 +5430,192 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "/**"
       },
       {
         "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * Deadline class which extends from the Task class."
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " * User can add a Deadline with specific date and time using this class."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 10,
         "author": {
           "gitId": "shaokiat"
         },
         "content": "    protected LocalDateTime date;"
       },
       {
-        "lineNumber": 7,
+        "lineNumber": 11,
         "author": {
           "gitId": "shaokiat"
         },
         "content": ""
       },
       {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public Deadline(String description, String date) {"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        this.date \u003d LocalDateTime.parse(date, formatter);"
-      },
-      {
         "lineNumber": 12,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": "    public Deadline(String description, LocalDateTime date) {"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "        super(description);"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    @Override"
+        "content": "        this.date \u003d date;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public String getState() {"
+        "content": "    }"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        return \"D|\" + (this.isDone ? \"1\" : \"0\") + \"|\" + this.description + \"|\" + this.date.toString().replace(\"T\", \" \");"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "     * Method call for a standardise way of storing the Deadline task."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    @Override"
+        "content": "     * @return data of the deadline which can be read in the Storage Class."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public String toString() {"
+        "content": "     */"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        return \"[D]\" + super.toString() + \"(by:\" + date.format(DateTimeFormatter.ofPattern(\"dd/MM/yyyy HH:mm a\")) + \")\";"
+        "content": "    @Override"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": "    public String getState() {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "shaokiat": 23
-    }
-  },
-  {
-    "path": "src/main/java/Duke.java",
-    "fileType": "java",
-    "lines": [
+        "content": "        return \"D|\" + (this.isDone ? \"1\" : \"0\") + \"|\" + this.description +"
+      },
       {
-        "lineNumber": 1,
+        "lineNumber": 24,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "                \"|\" + this.date.toString().replace(\"T\", \" \");"
       },
       {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "import main.java.*;"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "public class Duke {"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        Bot duke \u003d new Bot();"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        duke.start();"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "shaokiat": 8,
-      "-": 4
-    }
-  },
-  {
-    "path": "src/main/java/DukeException.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "package main.java;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "public class DukeException extends Exception {"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public DukeException(String message) {"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        super(message);"
-      },
-      {
-        "lineNumber": 6,
+        "lineNumber": 25,
         "author": {
           "gitId": "shaokiat"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 7,
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return \"[D]\" + super.toString() + \"(by:\""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                + date.format(DateTimeFormatter.ofPattern(\"dd/MM/yyyy HH:mm a\")) + \")\";"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
         "author": {
           "gitId": "shaokiat"
         },
@@ -1715,11 +5623,11 @@
       }
     ],
     "authorContributionMap": {
-      "shaokiat": 7
+      "shaokiat": 32
     }
   },
   {
-    "path": "src/main/java/Event.java",
+    "path": "src/main/java/duke/tasks/Event.java",
     "fileType": "java",
     "lines": [
       {
@@ -1727,7 +5635,7 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "package main.java;"
+        "content": "package main.java.duke.tasks;"
       },
       {
         "lineNumber": 2,
@@ -1790,7 +5698,7 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public Event(String description, String date) {"
+        "content": "    public Event(String description, LocalDateTime date) {"
       },
       {
         "lineNumber": 11,
@@ -1804,289 +5712,105 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
+        "content": "        this.date \u003d date;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        this.date \u003d LocalDateTime.parse(date, formatter);"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    @Override"
+        "content": "    public String getState() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public String getState() {"
+        "content": "        return \"E|\" + (this.isDone ? \"1\" : \"0\") + \"|\" +"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        return \"E|\" + (this.isDone ? \"1\" : \"0\") + \"|\" + this.description + \"|\" + this.date.toString().replace(\"T\", \" \");"
+        "content": "                this.description + \"|\" +"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": "                this.date.toString().replace(\"T\", \" \");"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        return \"[E]\" + super.toString() + \"(at: \" + date.format(DateTimeFormatter.ofPattern(\"dd/MM/yyyy HH:mm a\")) + \")\";"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "shaokiat": 25
-    }
-  },
-  {
-    "path": "src/main/java/Task.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "package main.java;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "public class Task {"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    protected String description;"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    protected boolean isDone;"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public Task(String description) {"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        this.description \u003d description;"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        this.isDone \u003d false;"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public String getStatusIcon() {"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        return (isDone ? \"[\\u2713]\" : \"[\\u2718]\"); //return tick or X symbols"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public void markAsDone() {"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        this.isDone \u003d true;"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    public String getState() {"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "        return \"\";"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "shaokiat"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "shaokiat"
-        },
         "content": "    @Override"
       },
       {
-        "lineNumber": 25,
+        "lineNumber": 23,
         "author": {
           "gitId": "shaokiat"
         },
         "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return \"[E]\" + super.toString() +"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                \"(at: \" +"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        return getStatusIcon() + \" \" + this.description;"
+        "content": "                date.format(DateTimeFormatter.ofPattern(\"dd/MM/yyyy HH:mm a\")) + \")\";"
       },
       {
         "lineNumber": 27,
@@ -2108,7 +5832,7 @@
     }
   },
   {
-    "path": "src/main/java/Todo.java",
+    "path": "src/main/java/duke/tasks/Task.java",
     "fileType": "java",
     "lines": [
       {
@@ -2116,7 +5840,599 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "package main.java;"
+        "content": "package main.java.duke.tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.util.Arrays;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class Task {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return (isDone ? \"[\\u2713]\" : \"[\\u2718]\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void markAsDone() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        this.isDone \u003d true;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public String getState() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return \"\";"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public List\u003cString\u003e getWordsInTask() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return Arrays.asList(description.split(\" \"));"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return getStatusIcon() + \" \" + this.description;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 35
+    }
+  },
+  {
+    "path": "src/main/java/duke/tasks/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    ArrayList\u003cTask\u003e taskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public TaskList() {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        this.taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public TaskList(TaskList list) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        this.taskList \u003d list.getTaskList();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void addTask(Task t) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        taskList.add(t);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void markAsDone(int index) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        taskList.get(index).markAsDone();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void removeTask(int index) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        taskList.remove(index);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public int taskListSize() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return taskList.size();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public Task getTask(int index) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return this.taskList.get(index);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public ArrayList\u003cTask\u003e getTaskList() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return taskList;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void showAllTasks() {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        String allTasks \u003d \"\";"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        for (int i \u003d 0; i \u003c taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            System.out.println((i + 1) + \".\" + taskList.get(i));"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 47
+    }
+  },
+  {
+    "path": "src/main/java/duke/tasks/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package main.java.duke.tasks;"
       },
       {
         "lineNumber": 2,
@@ -2186,14 +6502,389 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        return \"T|\" + (this.isDone ? \"1\" : \"0\") + \"|\" + this.description;"
+        "content": "        return \"T|\" +"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "shaokiat"
         },
+        "content": "                (this.isDone ? \"1\" : \"0\") + \"|\" + this.description;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
         "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 19
+    }
+  },
+  {
+    "path": "src/test/java/duke/ParserTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package test.java.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.Parser;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.command.Command;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.exceptions.DukeException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.*;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "class ParserTest {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void testParseCommand() {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            Parser.parseCommand(\"event read book /at 2020-10-10 20:00\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            assertTrue(true);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void testParseError() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            Parser.parseCommand(\"even read book 2020-10-10 20:00\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "            assertTrue(true);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 32
+    }
+  },
+  {
+    "path": "src/test/java/duke/tasks/DeadlineTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package test.java.duke.tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Deadline;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "class DeadlineTest {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"yyyy-MM-dd HH:mm\");"
       },
       {
         "lineNumber": 13,
@@ -2207,31 +6898,101 @@
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    @Override"
+        "content": "    @Test"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    public String toString() {"
+        "content": "    public void constructorTest() {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "        return \"[T]\" + super.toString();"
+        "content": "        Deadline deadlineTask \u003d new Deadline(\"read book \","
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "shaokiat"
         },
-        "content": "    }"
+        "content": "                LocalDateTime.parse(\"2020-10-10 10:10\", formatter));"
       },
       {
         "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        assertEquals(\"[D][✘] read book (by:10/10/2020 10:10 AM)\", deadlineTask.toString());"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    void getState() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        Deadline deadlineTask \u003d new Deadline(\"read book \","
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "                LocalDateTime.parse(\"2020-10-10 10:10\", formatter));"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        assertEquals(\"D|0|read book |2020-10-10 10:10\", deadlineTask.getState());"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
         "author": {
           "gitId": "shaokiat"
         },
@@ -2239,7 +7000,219 @@
       }
     ],
     "authorContributionMap": {
-      "shaokiat": 18
+      "shaokiat": 28
+    }
+  },
+  {
+    "path": "src/test/java/duke/tasks/TodoTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "package test.java.duke.tasks;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import main.java.duke.tasks.Todo;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "class TodoTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    public void constructorTest() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        Todo todoTask \u003d new Todo(\"read book\");"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        assertEquals(\"[T][✘] read book\", todoTask.toString());"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    void getState() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        Todo todoTask \u003d new Todo(\"read book\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        assertEquals(\"T|0|read book\", todoTask.getState());"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    void doneTask() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        Todo todoTask \u003d new Todo(\"read book\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        todoTask.markAsDone();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "        assertEquals(\"[T][✓] read book\", todoTask.toString());"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "shaokiat"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "shaokiat": 29
     }
   },
   {

@@ -1,6 +1,6 @@
 [
   {
-    "path": "src/main/java/Command.java",
+    "path": "src/main/java/duke/Duke.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,91 +8,91 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.time.format.DateTimeParseException;"
+        "content": "import duke.command.DukeException;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.time.format.FormatStyle;"
+        "content": "import duke.command.Parser;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "import duke.storage.Storage;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.util.Arrays;"
+        "content": "import duke.task.TaskList;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.util.List;"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
-          "gitId": "pangpuncake"
+          "gitId": "-"
         },
-        "content": "import java.util.regex.Matcher;"
+        "content": "public class Duke {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.util.regex.Pattern;"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    private Storage storage;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "public class Command {"
+        "content": "    private TaskList list;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    private Ui ui;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    private DukeList list;"
+        "content": "    private Parser parser;"
       },
       {
         "lineNumber": 14,
@@ -106,245 +106,854 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    Command(DukeList list) {"
+        "content": "    public Duke() {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.list \u003d list;"
+        "content": "        this.storage \u003d new Storage();"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        this.list \u003d storage.getList();"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "        this.ui \u003d new Ui();"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    public String processCommand(String command) throws DukeException {"
+        "content": "        this.parser \u003d new Parser(this.list);"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        Pattern pattern \u003d Pattern.compile(\"^(.*?)\\\\s(.*?)(?:\\\\s/..\\\\s(.*))?$\");"
+        "content": "    }"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "//        String[] stringArray \u003d command.split(\" \");"
+        "content": ""
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "//        List\u003cString\u003e stringList \u003d new ArrayList\u003c\u003e(Arrays.asList(stringArray));"
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "//        String com \u003d stringList.remove(0);"
+        "content": "        ui.showWelcome();"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        Matcher matcher \u003d pattern.matcher(command);"
+        "content": "        boolean isExit \u003d false;"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        if (command.equals(\"list\")) {"
+        "content": "        while (!isExit) {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            return this.list.toString();"
+        "content": "            try {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        }"
+        "content": "                String fullCommand \u003d ui.readCommand();"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        if (command.equals(\"hello\")) {"
+        "content": "                ui.showLine();"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            return \"Hi! I\u0027m Duke! Pleasure to meet you :)\";"
+        "content": "                ui.showOutput(parser.processCommand(fullCommand));"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        }"
+        "content": "                isExit \u003d parser.isExit();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        if (matcher.find()) {"
+        "content": "            } catch (DukeException e) {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            String com \u003d matcher.group(1);"
+        "content": "                ui.showError(e.getMessage());"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            String task \u003d matcher.group(2);"
+        "content": "            } finally {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            String date \u003d matcher.group(3);"
+        "content": "                ui.showLine();"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            String index \u003d matcher.group(2);"
+        "content": "            }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            switch (com) {"
+        "content": "        storage.updateFile(list);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                case (\"undo\"):"
+        "content": "    }"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                case (\"done\"):"
+        "content": ""
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                case (\"delete\"):"
+        "content": "    public static void main(String[] args) {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    try {"
+        "content": "        new Duke().run();"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                        return this.processList(com, index);"
+        "content": "    }"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    } catch (Exception e) {"
+        "content": "}"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                        return e.getMessage();"
+        "content": ""
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    }"
+        "content": ""
+      }
+    ],
+    "authorContributionMap": {
+      "pangpuncake": 44,
+      "-": 1
+    }
+  },
+  {
+    "path": "src/main/java/duke/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "package duke;"
       },
       {
-        "lineNumber": 46,
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 3,
         "author": {
           "gitId": "pangpuncake"
         },
         "content": ""
       },
       {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    Scanner scanner \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String readCommand() {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return scanner.nextLine();"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public void showOutput(String output) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        System.out.println(output);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public void showWelcome() {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        String logo \u003d \" ____        _\\n\""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                + \"|  _ \\\\ _   _| | _____\\n\""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        System.out.println(\"Hello from\\n\" + logo + \"\\nWhat can I do for you?\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public void showLine() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        System.out.println(\"\\n____________________________________________________________\\n\");"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public void showError(String errorMessage) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        System.out.println(errorMessage);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "pangpuncake": 32
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    DukeException(String message) {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "pangpuncake": 6
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.regex.Matcher;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.regex.Pattern;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import duke.task.Deadline;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import duke.task.Event;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import duke.task.TaskList;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import duke.task.Todo;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private TaskList list;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private boolean isExit;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public Parser(TaskList list) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.list \u003d list;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.isExit \u003d false;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return isExit;"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String processCommand(String command) throws DukeException {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        Pattern pattern \u003d Pattern.compile(\"^(.*?)\\\\s(.*?)(?:\\\\s/..\\\\s(.*))?$\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        Matcher matcher \u003d pattern.matcher(command);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (command.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return this.list.toString();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (command.equals(\"hello\")) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return \"Hi! I\u0027m Duke! Pleasure to meet you :)\";"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (command.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            this.isExit \u003d true;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return \"Bye! Hope to see you again soon!\";"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (matcher.find()) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            String com \u003d matcher.group(1);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            String task \u003d matcher.group(2);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            String date \u003d matcher.group(3);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            String index \u003d matcher.group(2);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            switch (com) {"
+      },
+      {
         "lineNumber": 47,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                case (\"todo\"):"
+        "content": "                case (\"undo\"):"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                case (\"deadline\"):"
+        "content": "                case (\"done\"):"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                case (\"event\"):"
+        "content": "                case (\"delete\"):"
       },
       {
         "lineNumber": 50,
@@ -358,7 +967,7 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                        return this.processTask(com, task, date);"
+        "content": "                        return this.processList(com, index);"
       },
       {
         "lineNumber": 52,
@@ -386,210 +995,1171 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            }"
+        "content": ""
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        }"
+        "content": "                case (\"todo\"):"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        throw new DukeException(\"Sorry, I did not understand: \" + command);"
+        "content": "                case (\"deadline\"):"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "                case (\"event\"):"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "                    try {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    private String processTask(String com, String task, String date) throws DukeException {"
+        "content": "                        return this.processTask(com, task, date);"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "                    } catch (Exception e) {"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        switch(com) {"
+        "content": "                        return e.getMessage();"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            case(\"todo\"):"
+        "content": "                    }"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                if (!task.equals(\"\")) {"
+        "content": "            }"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    return list.addItem(new Todo(task));"
+        "content": "        }"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                } else {"
+        "content": "        throw new DukeException(\"Sorry, I did not understand: \" + command);"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    throw new DukeException(\"Please write a task to be done, with \\\"todo \u003ctask\u003e\\\"\");"
+        "content": "    }"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                }"
+        "content": ""
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            case(\"deadline\"):"
+        "content": "    private String processTask(String com, String task, String date) throws DukeException {"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                if (!task.equals(\"\")) {"
+        "content": ""
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    try {"
+        "content": "        switch(com) {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                        return list.addItem(new Deadline(task, Command.convertDate(date)));"
+        "content": "            case(\"todo\"):"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    } catch (DateTimeParseException e){"
+        "content": "                if (!task.equals(\"\")) {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                        return \"Please write your date in the format \\\"dd/MM/yyyy\\\"\";"
+        "content": "                    return list.addItem(new Todo(task));"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    }"
+        "content": "                } else {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                } else {"
+        "content": "                    throw new DukeException(\"Please write a task to be done, with \\\"todo \u003ctask\u003e\\\"\");"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    throw new DukeException(\"Please write a deadline, with \\\"deadline \u003ctask\u003e /by \u003cdate\u003e\\\"\");"
+        "content": "                }"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                }"
+        "content": "            case(\"deadline\"):"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            case(\"event\"):"
+        "content": "                if (!task.equals(\"\")) {"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                if (!task.equals(\"\")) {"
+        "content": "                    try {"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    try {"
+        "content": "                        return list.addItem(new Deadline(task, Parser.convertDate(date)));"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                        return list.addItem(new Event(task, Command.convertDate(date)));"
+        "content": "                    } catch (DateTimeParseException e){"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    } catch (DateTimeParseException e) {"
+        "content": "                        return \"Please write your date in the format \\\"dd/MM/yyyy\\\"\";"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "pangpuncake"
         },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    throw new DukeException(\"Please write a deadline, with \\\"deadline \u003ctask\u003e /by \u003cdate\u003e\\\"\");"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            case(\"event\"):"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                if (!task.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    try {"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                        return list.addItem(new Event(task, Parser.convertDate(date)));"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "pangpuncake"
+        },
         "content": "                        return \"Please write your date in the format \\\"dd/MM/yyyy\\\"\";"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    throw new DukeException(\"Please write an event, with \\\"event \u003ctask\u003e /at \u003cdate\u003e\\\"\");"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            default:"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                return null;"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private String processList(String com, String index) throws DukeException {"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        switch(com) {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            case(\"done\"):"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                if (!index.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    return list.markDone(Integer.parseInt(index) - 1);"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    throw new DukeException(\"Please choose a task to mark as done, with \\\"done \u003ctask number\u003e\\\"\");"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            case(\"undo\"):"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                if (!index.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    return list.revertDone(Integer.parseInt(index) - 1);"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    throw new DukeException(\"Please choose a task to undo, with \\\"undo \u003ctask number\u003e\\\"\");"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            case(\"delete\"):"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                if (!index.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    return list.deleteItem(Integer.parseInt(index) - 1);"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    throw new DukeException(\"Please choose a task to delete, with \\\"delete \u003ctask number\u003e\\\"\");"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            default:"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                return null;"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private static LocalDate convertDate(String date) throws DateTimeParseException {"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (date \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return null;"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"dd/MM/yyyy\");"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return LocalDate.parse(date, formatter);"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "pangpuncake": 136
+    }
+  },
+  {
+    "path": "src/main/java/duke/storage/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "package duke.storage;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import duke.task.*;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.nio.file.Path;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.nio.file.Files;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.nio.file.Paths;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.regex.Matcher;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.regex.Pattern;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private String currentDir \u003d System.getProperty(\"user.dir\");"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private Path dataDir \u003d Paths.get(currentDir, \"src\", \"main\", \"data\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private Path fileDir \u003d Paths.get(currentDir, \"src\", \"main\", \"data\", \"list.txt\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private static final Pattern pattern \u003d Pattern.compile(\"^\\\\[(.)]\\\\s\\\\[(.)]\\\\s(.*?)(?:\\\\s/..\\\\s(.*))?$\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private boolean dirExists() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return Files.exists(dataDir);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private boolean fileExists() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return Files.exists(fileDir);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private File createFile() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        File newFile \u003d new File(dataDir.toString(), \"list.txt\");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        System.out.println(\"Creating File...\");"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            newFile.createNewFile();"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return newFile;"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return null;"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    private File getFile() {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (fileExists()) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return fileDir.toFile();"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        } else if (dirExists()) {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return createFile();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            dataDir.toFile().mkdirs();"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return createFile();"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public boolean updateFile(TaskList list) {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            System.out.println(\"Saving changes...\");"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            File file \u003d getFile();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            FileWriter writer \u003d new FileWriter(file);"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            for (Task t : list.getList()) {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                writer.write(t.getSaveString());"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                writer.write(\"\\n\");"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            writer.close();"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            System.out.println(\"Changes saved.\");"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public TaskList getList() {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            TaskList list \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            Scanner scanner \u003d new Scanner(this.getFile());"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            while (scanner.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                Matcher matcher \u003d pattern.matcher(scanner.nextLine());"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                if (matcher.find()) {"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    boolean done \u003d matcher.group(2).equals(\"1\");"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    String task \u003d matcher.group(3);"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    String date \u003d matcher.group(4);"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    LocalDate localDate \u003d null;"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    if (date !\u003d null \u0026\u0026 !date.equals(\"null\")) {"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                        localDate \u003d LocalDate.parse(date);"
       },
       {
         "lineNumber": 85,
@@ -603,290 +2173,136 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                } else {"
+        "content": "                    switch (matcher.group(1)) {"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    throw new DukeException(\"Please write an event, with \\\"event \u003ctask\u003e /at \u003cdate\u003e\\\"\");"
+        "content": "                        case (\"T\"):"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                }"
+        "content": "                            list.addItem(new Todo(task, done));"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            default:"
+        "content": "                            break;"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                return null;"
+        "content": "                        case (\"D\"):"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        }"
+        "content": "                            list.addItem(new Deadline(task, done, localDate));"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "                            break;"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "                        case (\"E\"):"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    private String processList(String com, String index) throws DukeException {"
+        "content": "                            list.addItem(new Event(task, done, localDate));"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "                            break;"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        switch(com) {"
+        "content": "                    }"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            case(\"done\"):"
+        "content": "                }"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                if (!index.equals(\"\")) {"
+        "content": "            }"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    return list.markDone(Integer.parseInt(index) - 1);"
+        "content": "            return list;"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                } else {"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                    throw new DukeException(\"Please choose a task to mark as done, with \\\"done \u003ctask number\u003e\\\"\");"
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                }"
+        "content": "            return new TaskList();"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            case(\"undo\"):"
+        "content": "        }"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "                if (!index.equals(\"\")) {"
+        "content": "    }"
       },
       {
         "lineNumber": 105,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    return list.revertDone(Integer.parseInt(index) - 1);"
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    throw new DukeException(\"Please choose a task to undo, with \\\"undo \u003ctask number\u003e\\\"\");"
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            case(\"delete\"):"
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                if (!index.equals(\"\")) {"
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    return list.deleteItem(Integer.parseInt(index) - 1);"
-      },
-      {
-        "lineNumber": 112,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 113,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    throw new DukeException(\"Please choose a task to delete, with \\\"delete \u003ctask number\u003e\\\"\");"
-      },
-      {
-        "lineNumber": 114,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 115,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            default:"
-      },
-      {
-        "lineNumber": 116,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                return null;"
-      },
-      {
-        "lineNumber": 117,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 118,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 119,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 120,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private static LocalDate convertDate(String date) throws DateTimeParseException {"
-      },
-      {
-        "lineNumber": 121,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (date \u003d\u003d null) {"
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return null;"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"dd/MM/yyyy\");"
-      },
-      {
-        "lineNumber": 125,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return LocalDate.parse(date, formatter);"
-      },
-      {
-        "lineNumber": 126,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 127,
         "author": {
           "gitId": "pangpuncake"
         },
@@ -894,11 +2310,11 @@
       }
     ],
     "authorContributionMap": {
-      "pangpuncake": 127
+      "pangpuncake": 105
     }
   },
   {
-    "path": "src/main/java/Deadline.java",
+    "path": "src/main/java/duke/task/Deadline.java",
     "fileType": "java",
     "lines": [
       {
@@ -906,161 +2322,415 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "package duke.task;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.time.format.FormatStyle;"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "import java.time.format.FormatStyle;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "public class Deadline extends Task {"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "public class Deadline extends Task {"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    LocalDate date;"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    LocalDate date;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    Deadline(String task, LocalDate date) {"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        super(task);"
+        "content": "    public Deadline(String task, LocalDate date) {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.date \u003d date;"
+        "content": "        super(task);"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        this.date \u003d date;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    Deadline(String task, boolean done, LocalDate date) {"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        super(task, done);"
+        "content": "    public Deadline(String task, boolean done, LocalDate date) {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.date \u003d date;"
+        "content": "        super(task, done);"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        this.date \u003d date;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    String getSaveString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return \"[D] \" + super.getSaveString() + \" /by \" + this.date;"
+        "content": "    public String getSaveString() {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        return \"[D] \" + super.getSaveString() + \" /by \" + this.date;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "pangpuncake"
         },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "pangpuncake"
+        },
         "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        String dateString \u003d \"No date set\";"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (this.date !\u003d null) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            DateTimeFormatter formatters \u003d DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            dateString \u003d this.date.format(formatters);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return \"[Deadline] \" + super.toString() + \" (by: \" + dateString + \")\";"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "pangpuncake": 35
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.time.format.FormatStyle;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    LocalDate date;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public Event(String task, LocalDate date) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        super(task);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.date \u003d date;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public Event(String task, boolean done, LocalDate date) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        super(task, done);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.date \u003d date;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String getSaveString() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return \"[D] \" + super.getSaveString() + \" /at \" + this.date;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
       },
       {
         "lineNumber": 24,
@@ -1123,7 +2793,7 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return \"[Deadline] \" + super.toString() + \" (by: \" + dateString + \")\";"
+        "content": "        return \"[Event] \" + super.toString() + \" (at: \" + dateString + \")\";"
       },
       {
         "lineNumber": 33,
@@ -1145,7 +2815,7 @@
     }
   },
   {
-    "path": "src/main/java/Duke.java",
+    "path": "src/main/java/duke/task/Task.java",
     "fileType": "java",
     "lines": [
       {
@@ -1153,1992 +2823,415 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "import java.util.Scanner;"
+        "content": "package duke.task;"
       },
       {
         "lineNumber": 2,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "public class Duke {"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        String logo \u003d \" ____        _\\n\""
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"|  _ \\\\ _   _| | _____\\n\""
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        System.out.println("
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                \"____________________________________________________________\\nHello from\\n\" +"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        logo + \"\\nWhat can I do for you?\" +"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        \"\\n____________________________________________________________\");"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        Scanner scanner \u003d new Scanner(System.in);"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        FileHandler fileHandler \u003d new FileHandler();"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        DukeList list \u003d fileHandler.getList();"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        Command system \u003d new Command(list);"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        boolean running \u003d true;"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        while (running \u0026\u0026 scanner.hasNextLine()) {"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            String command \u003d scanner.nextLine();"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            if (command.equals(\"bye\")) {"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                running \u003d false;"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                fileHandler.updateFile(list);"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                System.out.println("
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        \"____________________________________________________________\\n\" +"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                                \"Bye! Hope to see you again soon!\" +"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                                \"\\n____________________________________________________________\\n\");"
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            } else {"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                String result;"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                try {"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    result \u003d system.processCommand(command);"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                } catch (Exception e) {"
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    result \u003d e.getMessage();"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                System.out.println("
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        \"____________________________________________________________\\n\" +"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                                result +"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                                \"\\n____________________________________________________________\\n\");"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        scanner.close();"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "}"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      }
-    ],
-    "authorContributionMap": {
-      "pangpuncake": 39,
-      "-": 9
-    }
-  },
-  {
-    "path": "src/main/java/DukeException.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "public class DukeException extends Exception {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    DukeException(String message) {"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        super(message);"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "pangpuncake": 5
-    }
-  },
-  {
-    "path": "src/main/java/DukeList.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.util.ArrayList;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.util.List;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "public class DukeList {"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    List\u003cTask\u003e list;"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    int activeTasks;"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    int completedTasks;"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    DukeList() {"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        this.list \u003d new ArrayList\u003c\u003e();"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        this.activeTasks \u003d 0;"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        this.completedTasks \u003d 0;"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public List\u003cTask\u003e getList() {"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return this.list;"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public String addItem(Task item) {"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        this.list.add(item);"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (item.done) {"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            this.completedTasks +\u003d 1;"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        } else {"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            this.activeTasks +\u003d 1;"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return \"added: \" + item + \"\\nActive Tasks: \" +"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public String deleteItem(int index) {"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (index \u003e\u003d this.list.size() || index \u003c 0) {"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return \"Please choose a valid task to delete\";"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        Task deletedTask \u003d this.list.remove(index);"
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (deletedTask.done) this.completedTasks -\u003d 1; else this.activeTasks -\u003d 1;"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return \"Noted. I have deleted the following task: \\n\""
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                + deletedTask + \"\\nActive Tasks: \" +"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public String markDone(int index) {"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (index \u003e\u003d this.list.size() || index \u003c 0) {"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return \"Please choose a valid task to mark as done\";"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (!this.list.get(index).done) {"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            this.activeTasks -\u003d 1;"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            this.completedTasks +\u003d 1;"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return this.list.get(index).markDone() + \"\\nActive Tasks: \" +"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return \"The task is already done!\";"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public String revertDone(int index) {"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (index \u003e\u003d this.list.size() || index \u003c 0) {"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return \"Please choose a valid task to mark as not done\";"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (this.list.get(index).done) {"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            this.activeTasks +\u003d 1;"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            this.completedTasks -\u003d 1;"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return this.list.get(index).revertDone() + \"\\nActive Tasks: \" +"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return \"The task is not yet done!\";"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (this.list.size() \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return \"There are currently no tasks.\";"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        String result \u003d \"Current tasks:\\n\";"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        for (int i \u003d 1; i \u003c\u003d this.list.size(); i++) {"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            result +\u003d i + \". \" + this.list.get(i - 1) + \"\\n\";"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        result +\u003d \"\\nActive Tasks: \" +"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return result;"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "pangpuncake": 81
-    }
-  },
-  {
-    "path": "src/main/java/Event.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.time.LocalDate;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.time.format.DateTimeFormatter;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.time.format.FormatStyle;"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "public class Event extends Task {"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    LocalDate date;"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    Event(String task, LocalDate date) {"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        super(task);"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        this.date \u003d date;"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    Event(String task, boolean done, LocalDate date) {"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        super(task, done);"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        this.date \u003d date;"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    String getSaveString() {"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return \"[D] \" + super.getSaveString() + \" /at \" + this.date;"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        String dateString \u003d \"No date set\";"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (this.date !\u003d null) {"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            DateTimeFormatter formatters \u003d DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            dateString \u003d this.date.format(formatters);"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return \"[Event] \" + super.toString() + \" (at: \" + dateString + \")\";"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "pangpuncake": 33
-    }
-  },
-  {
-    "path": "src/main/java/FileHandler.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.io.File;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.io.FileWriter;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.io.IOException;"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.nio.file.Path;"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.nio.file.Files;"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.nio.file.Paths;"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.time.LocalDate;"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.util.Scanner;"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.util.regex.Matcher;"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "import java.util.regex.Pattern;"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "public class FileHandler {"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private String currentDir \u003d System.getProperty(\"user.dir\");"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private Path dataDir \u003d Paths.get(currentDir, \"src\", \"main\", \"data\");"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private Path fileDir \u003d Paths.get(currentDir, \"src\", \"main\", \"data\", \"list.txt\");"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private static final Pattern pattern \u003d Pattern.compile(\"\\\\[([TDE])]\\\\s\\\\[(1|0)]\\\\s(.*?)\\\\s?/(?:.*?\\\\s(.*+))?\");"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private boolean dirExists() {"
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return Files.exists(dataDir);"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private boolean fileExists() {"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return Files.exists(fileDir);"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private File createFile() {"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        File newFile \u003d new File(dataDir.toString(), \"list.txt\");"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        System.out.println(\"Creating File...\");"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            newFile.createNewFile();"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return newFile;"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        return null;"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    private File getFile() {"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        if (fileExists()) {"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return fileDir.toFile();"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        } else if (dirExists()) {"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return createFile();"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        } else {"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            dataDir.toFile().mkdirs();"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return createFile();"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public boolean updateFile(DukeList list) {"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            System.out.println(\"Saving changes...\");"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            File file \u003d getFile();"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            FileWriter writer \u003d new FileWriter(file);"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            for (Task t : list.getList()) {"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                writer.write(t.getSaveString());"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                writer.write(\"\\n\");"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            writer.close();"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            System.out.println(\"Changes saved.\");"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return true;"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return false;"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    public DukeList getList() {"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            DukeList list \u003d new DukeList();"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            Scanner scanner \u003d new Scanner(this.getFile());"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            while (scanner.hasNextLine()) {"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                Matcher matcher \u003d pattern.matcher(scanner.nextLine());"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                if (matcher.find()) {"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    boolean done \u003d matcher.group(2).equals(\"1\");"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    String task \u003d matcher.group(3);"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    String date \u003d matcher.group(4);"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    LocalDate localDate \u003d null;"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    if (date !\u003d null \u0026\u0026 !date.equals(\"null\")) {"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        localDate \u003d LocalDate.parse(date);"
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    switch (matcher.group(1)) {"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        case (\"T\"):"
-      },
-      {
-        "lineNumber": 85,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                            list.addItem(new Todo(task, done));"
-      },
-      {
-        "lineNumber": 86,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        case (\"D\"):"
-      },
-      {
-        "lineNumber": 88,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                            list.addItem(new Deadline(task, done, localDate));"
-      },
-      {
-        "lineNumber": 89,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                        case (\"E\"):"
-      },
-      {
-        "lineNumber": 91,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                            list.addItem(new Event(task, done, localDate));"
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                            break;"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return list;"
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "            return new DukeList();"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "pangpuncake": 102
-    }
-  },
-  {
-    "path": "src/main/java/Task.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
         "author": {
           "gitId": "pangpuncake"
         },
         "content": "public abstract class Task {"
       },
       {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "pangpuncake"
-        },
-        "content": ""
-      },
-      {
         "lineNumber": 3,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    boolean done;"
+        "content": ""
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    String task;"
+        "content": "    boolean done;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    String task;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    Task(String task) {"
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.done \u003d false;"
+        "content": "    Task(String task) {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.task \u003d task;"
+        "content": "        this.done \u003d false;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pangpuncake"
         },
+        "content": "        this.task \u003d task;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pangpuncake"
+        },
         "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    Task(String task, boolean done) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.done \u003d done;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.task \u003d task;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    String markDone() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.done \u003d true;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return \"Great job, keep it up!\\n\" + this.toString();"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    String revertDone() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        this.done \u003d false;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return \"Guess you made a mistake huh?\\n\" + this.toString();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String getSaveString() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        String result \u003d \"\";"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (this.done) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            result +\u003d \"[1] \";"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            result +\u003d \"[0] \";"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        result +\u003d this.task;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return result;"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        String result \u003d \"\";"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (this.done) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            result +\u003d \"[\\u2713] \";"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            result +\u003d \"[\\u2718] \";"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        result +\u003d this.task;"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return result;"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "pangpuncake": 49
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    List\u003cTask\u003e list;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    int activeTasks;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    int completedTasks;"
       },
       {
         "lineNumber": 10,
@@ -3152,56 +3245,56 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    Task(String task, boolean done) {"
+        "content": "    public TaskList() {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.done \u003d done;"
+        "content": "        this.list \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.task \u003d task;"
+        "content": "        this.activeTasks \u003d 0;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        this.completedTasks \u003d 0;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    String markDone() {"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.done \u003d true;"
+        "content": "    public List\u003cTask\u003e getList() {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return \"Great job, keep it up!\\n\" + this.toString();"
+        "content": "        return this.list;"
       },
       {
         "lineNumber": 19,
@@ -3222,192 +3315,430 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    String revertDone() {"
+        "content": "    public String addItem(Task item) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        this.done \u003d false;"
+        "content": "        this.list.add(item);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return \"Guess you made a mistake huh?\\n\" + this.toString();"
+        "content": "        if (item.done) {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "            this.completedTasks +\u003d 1;"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "        } else {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    String getSaveString() {"
+        "content": "            this.activeTasks +\u003d 1;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        String result \u003d \"\";"
+        "content": "        }"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        if (this.done) {"
+        "content": "        return \"added: \" + item + \"\\nActive Tasks: \" +"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            result +\u003d \"[1] \";"
+        "content": "                this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        } else {"
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            result +\u003d \"[0] \";"
+        "content": ""
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        }"
+        "content": "    public String deleteItem(int index) {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        result +\u003d this.task;"
+        "content": "        if (index \u003e\u003d this.list.size() || index \u003c 0) {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return result;"
+        "content": "            return \"Please choose a valid task to delete\";"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "        Task deletedTask \u003d this.list.remove(index);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    @Override"
+        "content": "        if (deletedTask.done) this.completedTasks -\u003d 1; else this.activeTasks -\u003d 1;"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    public String toString() {"
+        "content": "        return \"Noted. I have deleted the following task: \\n\""
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        String result \u003d \"\";"
+        "content": "                + deletedTask + \"\\nActive Tasks: \" +"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        if (this.done) {"
+        "content": "                this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            result +\u003d \"[\\u2713] \";"
+        "content": "    }"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        } else {"
+        "content": ""
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "            result +\u003d \"[\\u2718] \";"
+        "content": "    public String markDone(int index) {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        }"
+        "content": "        if (index \u003e\u003d this.list.size() || index \u003c 0) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        result +\u003d this.task;"
+        "content": "            return \"Please choose a valid task to mark as done\";"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return result;"
+        "content": "        }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        if (!this.list.get(index).done) {"
       },
       {
         "lineNumber": 48,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            this.activeTasks -\u003d 1;"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            this.completedTasks +\u003d 1;"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return this.list.get(index).markDone() + \"\\nActive Tasks: \" +"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return \"The task is already done!\";"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String revertDone(int index) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (index \u003e\u003d this.list.size() || index \u003c 0) {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return \"Please choose a valid task to mark as not done\";"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (this.list.get(index).done) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            this.activeTasks +\u003d 1;"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            this.completedTasks -\u003d 1;"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return this.list.get(index).revertDone() + \"\\nActive Tasks: \" +"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                    this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return \"The task is not yet done!\";"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        if (this.list.size() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            return \"There are currently no tasks.\";"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        String result \u003d \"Current tasks:\\n\";"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        for (int i \u003d 1; i \u003c\u003d this.list.size(); i++) {"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "            result +\u003d i + \". \" + this.list.get(i - 1) + \"\\n\";"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        result +\u003d \"\\nActive Tasks: \" +"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "                this.activeTasks + \"\\nCompleted Tasks: \" + this.completedTasks;"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "        return result;"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 82,
         "author": {
           "gitId": "pangpuncake"
         },
@@ -3415,11 +3746,11 @@
       }
     ],
     "authorContributionMap": {
-      "pangpuncake": 48
+      "pangpuncake": 82
     }
   },
   {
-    "path": "src/main/java/Todo.java",
+    "path": "src/main/java/duke/task/Todo.java",
     "fileType": "java",
     "lines": [
       {
@@ -3427,122 +3758,129 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "public class Todo extends Task {"
+        "content": "package duke.task;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "public class Todo extends Task {"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    Todo(String task) {"
+        "content": ""
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        super(task);"
+        "content": "    public Todo(String task) {"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        super(task);"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    Todo(String task, boolean done) { super(task, done);}"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    public Todo(String task, boolean done) { super(task, done);}"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    String getSaveString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return \"[T] \" + super.getSaveString()  + \"/\";"
+        "content": "    public String getSaveString() {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        return \"[T] \" + super.getSaveString();"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    public String toString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "        return \"[Todo] \" + super.toString();"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "    }"
+        "content": "        return \"[Todo] \" + super.toString();"
       },
       {
         "lineNumber": 18,
+        "author": {
+          "gitId": "pangpuncake"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
         "author": {
           "gitId": "pangpuncake"
         },
@@ -3550,7 +3888,7 @@
       }
     ],
     "authorContributionMap": {
-      "pangpuncake": 18
+      "pangpuncake": 19
     }
   },
   {
@@ -3994,7 +4332,7 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "../src/main/java/Command.java"
+        "content": "../src/main/java/Parser.java"
       },
       {
         "lineNumber": 2,
@@ -4036,7 +4374,7 @@
         "author": {
           "gitId": "pangpuncake"
         },
-        "content": "../src/main/java/DukeList.java"
+        "content": "../src/main/java/TaskList.java"
       },
       {
         "lineNumber": 8,

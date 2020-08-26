@@ -1,6 +1,6 @@
 [
   {
-    "path": "src/main/java/Deadline.java",
+    "path": "src/main/java/duke/Deadline.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,42 +8,42 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    private String dateAndTime;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": ""
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public Deadline(String description) {"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        super(description.split(\"/by \")[0]);"
+        "content": "import java.text.SimpleDateFormat;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        this.dateAndTime \u003d description.split(\"/by \")[1];"
+        "content": "import java.util.Date;"
       },
       {
         "lineNumber": 7,
@@ -57,35 +57,35 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "public class Deadline extends Task {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": ""
+        "content": "    private LocalDate date;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public String dateAndTimeBracket() {"
+        "content": "    private Date time \u003d null;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        return String.format(\"(by: %s)\", this.dateAndTime);"
+        "content": "    SimpleDateFormat timeFormatter \u003d new SimpleDateFormat(\"h:mm a\");"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "    private DateTimeFormatter dateFormatter \u003d DateTimeFormatter.ofPattern(\"MMM d yyyy\");"
       },
       {
         "lineNumber": 13,
@@ -99,38 +99,199 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    @Override"
+        "content": "    public Deadline(String description) throws DukeException {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public String toString() {"
+        "content": "        super(description.split(\"/by \")[0]);"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        return String.format(\"[D][%s] %s %s\","
+        "content": "        try {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                this.getStatusIcon(), this.description, this.dateAndTimeBracket());"
+        "content": "            String[] dateAndTime \u003d description.split(\"/by \")[1].split(\" \");"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "            this.date \u003d LocalDate.parse(dateAndTime[0]);"
       },
       {
         "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            if (dateAndTime.length \u003d\u003d 2) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                SimpleDateFormat parseFormat \u003d new SimpleDateFormat(\"hh:mm\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                this.time \u003d parseFormat.parse(dateAndTime[1]);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            throw new DukeException(\"Please input a valid date and time in the format yyyy-mm-dd HH:MM\");"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String dateAndTimeBracket() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if (this.time \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            return String.format(\"(by: %s)\", this.date.format(dateFormatter));"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            return String.format(\"(by: %s, %s)\", this.date.format(dateFormatter), timeFormatter.format(this.time));"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return String.format(\"[D][%s] %s %s\","
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                this.getStatusIcon(), this.description, this.dateAndTimeBracket());"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
         "author": {
           "gitId": "tnsyn"
         },
@@ -138,11 +299,11 @@
       }
     ],
     "authorContributionMap": {
-      "tnsyn": 19
+      "tnsyn": 42
     }
   },
   {
-    "path": "src/main/java/Duke.java",
+    "path": "src/main/java/duke/Duke.java",
     "fileType": "java",
     "lines": [
       {
@@ -150,28 +311,28 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "import java.util.Scanner;"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "import java.util.ArrayList;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": ""
+        "content": "import java.util.Scanner;"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "-"
+          "gitId": "tnsyn"
         },
-        "content": "public class Duke {"
+        "content": "import java.nio.file.Path;"
       },
       {
         "lineNumber": 5,
@@ -185,7 +346,452 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    private static ArrayList\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+        "content": "public class Duke {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    private Storage storage;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    private TaskList tasks;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    private Parser parser;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public Duke(Path filePath) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.storage \u003d new Storage(filePath);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.tasks \u003d new TaskList(storage.load());"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.parser \u003d new Parser();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void run() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        Ui.welcome();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        Scanner sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        while (sc.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String userInput \u003d sc.nextLine();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            parser.parse(userInput);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            switch(parser.getSplitUserInput()[0].toLowerCase()) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"dismiss\":"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    sc.close();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    Ui.dismiss();"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"scroll\":"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    tasks.printAllTasks();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"conquer\":"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    int conquerIndex \u003d tasks.conquerTask(parser.getSplitUserInput());"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    storage.overwriteInFile(conquerIndex);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"delete\":"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    int deleteIndex \u003d tasks.deleteTask(parser.getSplitUserInput());"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    storage.removeFromFile(deleteIndex);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"assist\":"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    Ui.assist();"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    Task t \u003d tasks.addTask(parser.getSanitisedUserInput());"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    storage.writeToFile(t, parser.getSanitisedUserInput());"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        String workingDir \u003d System.getProperty(\"user.dir\");"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        java.nio.file.Path path \u003d java.nio.file.Paths.get(workingDir, \"storage\", \"data.txt\");"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        new Duke(path).run();"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 54
+    }
+  },
+  {
+    "path": "src/main/java/duke/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public DukeException(String err) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        super(err);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.text.SimpleDateFormat;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.util.Date;"
       },
       {
         "lineNumber": 7,
@@ -199,553 +805,1068 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static void init() {"
+        "content": "public class Event extends Task {"
       },
       {
         "lineNumber": 9,
         "author": {
-          "gitId": "-"
+          "gitId": "tnsyn"
         },
-        "content": "        String logo \u003d \" ____        _        \\n\""
+        "content": "    private LocalDate date;"
       },
       {
         "lineNumber": 10,
         "author": {
-          "gitId": "-"
+          "gitId": "tnsyn"
         },
-        "content": "                + \"|  _ \\\\ _   _| | _____ \\n\""
+        "content": "    private Date time \u003d null;"
       },
       {
         "lineNumber": 11,
         "author": {
-          "gitId": "-"
+          "gitId": "tnsyn"
         },
-        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
+        "content": "    SimpleDateFormat timeFormatter \u003d new SimpleDateFormat(\"h:mm a\");"
       },
       {
         "lineNumber": 12,
         "author": {
-          "gitId": "-"
+          "gitId": "tnsyn"
         },
-        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
+        "content": "    private DateTimeFormatter dateFormatter \u003d DateTimeFormatter.ofPattern(\"MMM d yyyy\");"
       },
       {
         "lineNumber": 13,
         "author": {
-          "gitId": "-"
+          "gitId": "tnsyn"
         },
-        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\n Always at your service, \\n\" + logo + \"\\n\");"
+        "content": "    public Event(String description) throws DukeException{"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"Your Majesty, I am your loyal Duke.\");"
+        "content": "        super(description.split(\"/on \")[0]);"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"I offer a range of administrative services. Do type \u0027assist\u0027 to see the comprehensive list.\");"
+        "content": "        try {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println();"
+        "content": "            String[] dateAndTime \u003d description.split(\"/on \")[1].split(\" \");"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "            this.date \u003d LocalDate.parse(dateAndTime[0]);"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": ""
+        "content": "            if (dateAndTime.length \u003d\u003d 2) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static String dashedLineBreak() {"
+        "content": "                SimpleDateFormat parseFormat \u003d new SimpleDateFormat(\"hh:mm\");"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        String dashedLine \u003d \"- \";"
+        "content": "                this.time \u003d parseFormat.parse(dateAndTime[1]);"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        return dashedLine.repeat(32);"
+        "content": "            }"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "        } catch (Exception e) {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    "
+        "content": "            throw new DukeException(\"Please input a valid date and time in the format yyyy-mm-dd HH:MM\");"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static void assist() {"
+        "content": "        }"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(dashedLineBreak());"
+        "content": ""
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"Greetings, Your Majesty. \\n\");"
+        "content": "    }"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"Use any of the commands on the left to access my quality services:\");"
+        "content": ""
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\ttodo [TASK]: Adds a todo to your scroll\");"
+        "content": "    public String dateAndTimeBracket() {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\tdeadline [TASK] /by [DATE AND/OR TIME]: Adds a deadline to your scroll\");"
+        "content": "        if (this.time \u003d\u003d null) {"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\tevent [TASK] /on [DATE AND/OR TIME]: Adds an event to your scroll\");"
+        "content": "            return String.format(\"(by: %s)\", this.date.format(dateFormatter));"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\tscroll: Displays your scroll - your list of tasks\");"
+        "content": "        } else {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\tconquer [NUMBER]: Marks the particular item on your scroll as DONE\");"
+        "content": "            return String.format(\"(by: %s, %s)\", this.date.format(dateFormatter), timeFormatter.format(this.time));"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\tdelete [NUMBER]: Deletes the particular item from your scroll\");"
+        "content": "        }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"\\tdismiss: This will be my cue to leave.\");"
+        "content": "    }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println();"
+        "content": ""
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(\"Now, how may I serve you?\");"
+        "content": "    @Override"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(dashedLineBreak() + \"\\n\");"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "        return String.format(\"[E][%s] %s %s\","
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    "
+        "content": "                this.getStatusIcon(), this.description, this.dateAndTimeBracket());"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    // Handles cases where user enters empty input"
+        "content": "    }"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static void validateScannerInput(String input) throws DukeException {"
-      },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 42
+    }
+  },
+  {
+    "path": "src/main/java/duke/Parser.java",
+    "fileType": "java",
+    "lines": [
       {
-        "lineNumber": 43,
+        "lineNumber": 1,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        if (input.trim().length() \u003d\u003d 0) {"
+        "content": "package duke;"
       },
       {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            throw new DukeException(\"Come again, Your Majesty?\");"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    "
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    // Handles cases where user does not enter a valid description for tasks"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public static void validateAdd(String[] task) throws DukeException {"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        if ((task.length \u003d\u003d 1 || task[1].trim().length() \u003d\u003d 0) \u0026\u0026"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                (task[0].equalsIgnoreCase(\"todo\") ||"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                        task[0].equalsIgnoreCase(\"event\") ||"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                        task[0].equalsIgnoreCase(\"deadline\"))"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        ) {"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            throw new DukeException(\"Do give me more details about this \" + task[0] + \", Your Majesty.\");"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    "
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    // Handles cases where user does not enter the correct / commands (i.e. /by for deadlines, /on for events)"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public static void validateSlashCommands(String[] task) throws DukeException {"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        if(task[0].equalsIgnoreCase(\"deadline\") \u0026\u0026 task[1].split(\"/by \", 2).length \u003d\u003d 1){"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            throw new DukeException(\"Use /by for deadlines, Your Majesty.\");"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        } else if (task[0].equalsIgnoreCase(\"event\") \u0026\u0026  task[1].split(\"/on \", 2).length \u003d\u003d 1){"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            throw new DukeException(\"Use /on for events, Your Majesty.\");"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    "
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    // Handles cases where user enters a number that does not correspond to an existing task"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public static void validateIndex(int taskNumber) throws DukeException{"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        if(taskNumber \u003e tasks.size() || taskNumber \u003c\u003d 0) {"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            throw new DukeException(\"Your Majesty, there\u0027s no such agenda in my detailed records.\");"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 74,
+        "lineNumber": 2,
         "author": {
           "gitId": "tnsyn"
         },
         "content": ""
       },
       {
-        "lineNumber": 75,
+        "lineNumber": 3,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    // Handles cases where user does not input a valid number after conquer/delete commands"
+        "content": "public class Parser {"
       },
       {
-        "lineNumber": 76,
+        "lineNumber": 4,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static void validateConquerDelete(String[] command) throws DukeException {"
+        "content": "    private String sanitisedUserInput \u003d \"\";"
       },
       {
-        "lineNumber": 77,
+        "lineNumber": 5,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        try {"
+        "content": "    private String[] splitUserInput \u003d new String[0];"
       },
       {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            Integer.parseInt(sanitiseInput(command[1]));"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        } catch (Exception err) {"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            throw new DukeException(\"Please enter valid numbers after your command, Your Majesty.\");"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        } "
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 83,
+        "lineNumber": 6,
         "author": {
           "gitId": "tnsyn"
         },
         "content": "    "
       },
       {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public Parser() {}"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String sanitiseInput(String input) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return input.stripLeading();"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void parse(String userInput) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.splitUserInput \u003d userInput.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.sanitisedUserInput \u003d userInput;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if (this.splitUserInput[0].isBlank()) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            this.sanitisedUserInput \u003d sanitiseInput(userInput);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            this.splitUserInput \u003d this.sanitisedUserInput.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String getSanitisedUserInput() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return this.sanitisedUserInput;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String[] getSplitUserInput() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return this.splitUserInput;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 29
+    }
+  },
+  {
+    "path": "src/main/java/duke/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.nio.file.Path;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.FileReader;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.BufferedReader;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.nio.file.Files;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.nio.file.Paths;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.nio.file.StandardCopyOption;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    private static int globalIndex \u003d 1;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public Storage(Path filePath) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            if (!java.nio.file.Files.exists(filePath)) { "
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                File newDir \u003d new File(\"storage\" + File.separator + \"data.txt\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                newDir.getParentFile().mkdirs();"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                newDir.createNewFile();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            System.out.println(e);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public ArrayList\u003cTask\u003e load() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ArrayList\u003cTask\u003e storedTasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String filePath \u003d \"storage\" + File.separator + \"data.txt\";"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            FileReader fr \u003d new FileReader(filePath);"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            BufferedReader br \u003d new BufferedReader(fr);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String currentLine;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            while ((currentLine \u003d br.readLine()) !\u003d null) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                String task[] \u003d currentLine.split(\"\\\\|\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                if (task.length !\u003d 0 \u0026\u0026 !task[0].equals(\"\")) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    switch(task[1]) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                        case \"T\":"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            ToDo todo \u003d new ToDo(task[3]);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            if (Integer.parseInt(task[2]) \u003d\u003d 1) todo.markAsDone();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            storedTasks.add(todo);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            break;"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                        case \"D\":"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            Deadline deadline \u003d new Deadline(task[3]);"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            if (Integer.parseInt(task[2]) \u003d\u003d 1) deadline.markAsDone();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            storedTasks.add(deadline);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            break;"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                        case \"E\":"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            Event event \u003d new Event(task[3]);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            if (Integer.parseInt(task[2]) \u003d\u003d 1) event.markAsDone();"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            storedTasks.add(event);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                            break;"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            System.out.println(e);"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return storedTasks;"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void writeToFile(Task t, String input) {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        String splitTask[] \u003d input.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if (t !\u003d null) {"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String type \u003d \"\";"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            int done \u003d 0;"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                if (t instanceof ToDo) {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    type \u003d \"T\";"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                } else if (t instanceof Deadline) {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    type \u003d \"D\";"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                } else if (t instanceof Event) {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    type \u003d \"E\";"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                if (t.isDone()) done \u003d 1;"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                FileWriter fw \u003d new FileWriter(\"storage\" + File.separator + \"data.txt\", true);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                fw.write(globalIndex + \"|\" + type + \"|\" + done + \"|\" + splitTask[1] + \"\\n\");"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                globalIndex++;"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                fw.close();"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                System.out.println(e);"
+      },
+      {
         "lineNumber": 84,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    // Removes leading whitespaces in a String"
+        "content": "            }"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static String sanitiseInput(String input) {"
+        "content": "        }"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        return input.stripLeading();"
+        "content": "        "
       },
       {
         "lineNumber": 87,
@@ -766,933 +1887,456 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static void printAllTasks() {"
+        "content": "    public void removeFromFile(int taskIndex) {"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        if (tasks.size() \u003d\u003d 0) {"
+        "content": "        try {"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            System.out.println(\"Your scroll is currently empty, Your Majesty.\");"
+        "content": "            if (taskIndex !\u003d -1) {"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        } else {"
+        "content": "                int index \u003d 1;"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            System.out.println(dashedLineBreak());"
+        "content": "                String tempFilePath \u003d \"storage\" + File.separator + \"temp.txt\";"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            System.out.println(\"Your current scroll, Your Majesty:\");"
+        "content": "                String oldFilePath \u003d \"storage\" + File.separator + \"data.txt\";"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            for (Task task : tasks) {"
+        "content": "                File tempFile \u003d new File(tempFilePath);"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.printf(\"\\t%s.%s\", tasks.indexOf(task) + 1, task);"
+        "content": "                FileReader fr \u003d new FileReader(oldFilePath);"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.println();"
+        "content": "                BufferedReader br \u003d new BufferedReader(fr);"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            }"
+        "content": "                String currentLine;"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        }"
+        "content": "                String[] task;"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println(dashedLineBreak());"
+        "content": "                FileWriter fw \u003d new FileWriter(tempFile, true);"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        System.out.println();"
+        "content": ""
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "                while ((currentLine \u003d br.readLine()) !\u003d null) {"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    "
+        "content": "                    task \u003d currentLine.split(\"\\\\|\");"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    "
+        "content": "                    if (Integer.parseInt(task[0]) !\u003d taskIndex) {"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static void addTask(String task) {"
+        "content": "                        fw.write(index + \"|\" + task[1] + \"|\" + task[2] + \"|\" + task[3] + \"\\n\");"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        try {"
+        "content": "                        index++;"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            "
+        "content": "                    }"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            validateScannerInput(task);"
+        "content": "                }"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            "
+        "content": "                globalIndex \u003d index;"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            String splitTask[] \u003d task.split(\" \", 2);"
+        "content": "                fw.close();"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            Task newTask;"
+        "content": "                fr.close();"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            validateAdd(splitTask);"
+        "content": "                br.close();"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            validateSlashCommands(splitTask);"
+        "content": "                Files.copy(Paths.get(tempFilePath), Paths.get(oldFilePath), StandardCopyOption.REPLACE_EXISTING);"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            "
+        "content": "                Files.delete(Paths.get(tempFilePath));"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            switch(splitTask[0].toLowerCase()) {"
+        "content": "            }"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                case \"todo\":"
+        "content": "        } catch (Exception err) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                    newTask \u003d new ToDo(splitTask[1]);"
+        "content": "            System.out.println(err);"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                    break;"
+        "content": "        }"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                case \"deadline\":"
+        "content": "    }"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                    newTask \u003d new Deadline(splitTask[1]);"
+        "content": ""
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                    break;"
+        "content": "    public void overwriteInFile(int taskIndex) {"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                case \"event\":"
+        "content": "        try {"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                    newTask \u003d new Event(splitTask[1]);"
+        "content": "            if (taskIndex !\u003d -1) {"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                    break;"
+        "content": "                String tempFilePath \u003d \"storage\" + File.separator + \"temp.txt\";"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                default:"
+        "content": "                String oldFilePath \u003d \"storage\" + File.separator + \"data.txt\";"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                    throw new DukeException(\"I\u0027m afraid I do not understand that command, Your Majesty.\");"
+        "content": "                File tempFile \u003d new File(tempFilePath);"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            }"
+        "content": "                FileReader fr \u003d new FileReader(oldFilePath);"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            if (newTask !\u003d null) {"
+        "content": "                BufferedReader br \u003d new BufferedReader(fr);"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                tasks.add(newTask);"
+        "content": "                String currentLine;"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.println(dashedLineBreak());"
+        "content": "                String[] task;"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.println(\"Your Majesty, I\u0027ve added the writing:\");"
+        "content": "                FileWriter fw \u003d new FileWriter(tempFile, true);"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.println(\"\\t\" + newTask);"
+        "content": ""
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.printf(\"You have %s writing(s) on your scroll as of now. \\n\", tasks.size());"
+        "content": "                while ((currentLine \u003d br.readLine()) !\u003d null) {"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.println(dashedLineBreak());"
+        "content": "                    task \u003d currentLine.split(\"\\\\|\");"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "                System.out.println();"
+        "content": "                    if (Integer.parseInt(task[0]) !\u003d taskIndex) {"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            }"
+        "content": "                        fw.write(currentLine + \"\\n\");"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        } catch (DukeException err) {"
+        "content": "                    } else {"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            System.out.println(err.getMessage());"
+        "content": "                        fw.write(taskIndex + \"|\" + task[1] + \"|\" + 1 + \"|\" + task[3] + \"\\n\");"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            System.out.println(dashedLineBreak());"
+        "content": "                    }"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            System.out.println();"
+        "content": "                }"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        }"
+        "content": "                fw.close();"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "                fr.close();"
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    "
+        "content": "                br.close();"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": ""
+        "content": "                Files.copy(Paths.get(tempFilePath), Paths.get(oldFilePath), StandardCopyOption.REPLACE_EXISTING);"
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public static void conquerTask(String[] command) {"
+        "content": "                Files.delete(Paths.get(tempFilePath));"
       },
       {
         "lineNumber": 146,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        try {"
+        "content": "            }"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            validateConquerDelete(command);"
+        "content": "        } catch (Exception err) {"
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            int taskNumber \u003d Integer.parseInt(sanitiseInput(command[1]));"
+        "content": "            System.out.println(err);"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            validateIndex(taskNumber);"
+        "content": "        }"
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            "
+        "content": "    }"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            tasks.get(taskNumber - 1).markAsDone();"
+        "content": "    "
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "            System.out.println(dashedLineBreak());"
-      },
-      {
-        "lineNumber": 153,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(\"As you wish, Your Majesty. I have marked this as conquered.\");"
-      },
-      {
-        "lineNumber": 154,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(\"\\t\" + tasks.get(taskNumber - 1));"
-      },
-      {
-        "lineNumber": 155,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(dashedLineBreak());"
-      },
-      {
-        "lineNumber": 156,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        } catch (DukeException err) {"
-      },
-      {
-        "lineNumber": 157,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(err.getMessage());"
-      },
-      {
-        "lineNumber": 158,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(dashedLineBreak());"
-      },
-      {
-        "lineNumber": 159,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 160,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        System.out.println();"
-      },
-      {
-        "lineNumber": 161,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 162,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    "
-      },
-      {
-        "lineNumber": 163,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public static void deleteTask(String[] command) {"
-      },
-      {
-        "lineNumber": 164,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 165,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            validateConquerDelete(command);"
-      },
-      {
-        "lineNumber": 166,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            int taskNumber \u003d Integer.parseInt(sanitiseInput(command[1]));"
-      },
-      {
-        "lineNumber": 167,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            validateIndex(taskNumber);"
-      },
-      {
-        "lineNumber": 168,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            "
-      },
-      {
-        "lineNumber": 169,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            Task deletedTask \u003d tasks.get(taskNumber - 1);"
-      },
-      {
-        "lineNumber": 170,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            tasks.remove(taskNumber - 1);"
-      },
-      {
-        "lineNumber": 171,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(dashedLineBreak());"
-      },
-      {
-        "lineNumber": 172,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(\"As you wish, Your Majesty. I have removed this writing.\");"
-      },
-      {
-        "lineNumber": 173,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(\"\\t\" + deletedTask);"
-      },
-      {
-        "lineNumber": 174,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.printf(\"You have %s writing(s) on your scroll as of now. \\n\", tasks.size());"
-      },
-      {
-        "lineNumber": 175,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(dashedLineBreak());"
-      },
-      {
-        "lineNumber": 176,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        } catch (DukeException err) {"
-      },
-      {
-        "lineNumber": 177,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(err.getMessage());"
-      },
-      {
-        "lineNumber": 178,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            System.out.println(dashedLineBreak());"
-      },
-      {
-        "lineNumber": 179,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 180,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        System.out.println();"
-      },
-      {
-        "lineNumber": 181,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 182,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 183,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
-        "lineNumber": 184,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        init();"
-      },
-      {
-        "lineNumber": 185,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
-      },
-      {
-        "lineNumber": 186,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        while(sc.hasNextLine()) {"
-      },
-      {
-        "lineNumber": 187,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            String userInput \u003d sc.nextLine();"
-      },
-      {
-        "lineNumber": 188,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            String[] splitUserInput \u003d userInput.split(\" \", 2);"
-      },
-      {
-        "lineNumber": 189,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            "
-      },
-      {
-        "lineNumber": 190,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            // Handle cases where there are leading whitespaces in user input"
-      },
-      {
-        "lineNumber": 191,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            if (splitUserInput[0].isBlank()) { "
-      },
-      {
-        "lineNumber": 192,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                userInput \u003d sanitiseInput(userInput);"
-      },
-      {
-        "lineNumber": 193,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                splitUserInput \u003d userInput.split(\" \", 2);"
-      },
-      {
-        "lineNumber": 194,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 195,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 196,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            switch(splitUserInput[0].toLowerCase()) {"
-      },
-      {
-        "lineNumber": 197,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                case \"dismiss\":"
-      },
-      {
-        "lineNumber": 198,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    System.out.println(dashedLineBreak());"
-      },
-      {
-        "lineNumber": 199,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    System.out.println(\"Your wish is my command, Your Majesty. Till I see you again. \\n\");"
-      },
-      {
-        "lineNumber": 200,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    sc.close();"
-      },
-      {
-        "lineNumber": 201,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    System.exit(0);"
-      },
-      {
-        "lineNumber": 202,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 203,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                case \"scroll\":"
-      },
-      {
-        "lineNumber": 204,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    printAllTasks();"
-      },
-      {
-        "lineNumber": 205,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 206,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                case \"conquer\":"
-      },
-      {
-        "lineNumber": 207,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    conquerTask(splitUserInput);"
-      },
-      {
-        "lineNumber": 208,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 209,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                case \"delete\":"
-      },
-      {
-        "lineNumber": 210,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    deleteTask(splitUserInput);"
-      },
-      {
-        "lineNumber": 211,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 212,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                case \"assist\":"
-      },
-      {
-        "lineNumber": 213,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    assist();"
-      },
-      {
-        "lineNumber": 214,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 215,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                default:"
-      },
-      {
-        "lineNumber": 216,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                    addTask(userInput);"
-      },
-      {
-        "lineNumber": 217,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 218,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 219,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 220,
-        "author": {
-          "gitId": "-"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "tnsyn": 212,
-      "-": 8
+      "tnsyn": 152
     }
   },
   {
-    "path": "src/main/java/DukeException.java",
+    "path": "src/main/java/duke/Task.java",
     "fileType": "java",
     "lines": [
       {
@@ -1700,207 +2344,226 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "public class DukeException extends Exception {"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public DukeException(String err) {"
+        "content": ""
       },
       {
         "lineNumber": 3,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        super(err);"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "tnsyn": 5
-    }
-  },
-  {
-    "path": "src/main/java/Event.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "public class Event extends Task {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    private String dateAndTime;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public Event(String description) {"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        super(description.split(\"/on \")[0]);"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        this.dateAndTime \u003d description.split(\"/on \")[1];"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public String dateAndTimeBracket() {"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        "
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        return String.format(\"(on: %s)\", this.dateAndTime);"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "        return String.format(\"[E][%s] %s %s\","
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "                this.getStatusIcon(), this.description, this.dateAndTimeBracket());"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "tnsyn"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "tnsyn": 19
-    }
-  },
-  {
-    "path": "src/main/java/Task.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
         "author": {
           "gitId": "tnsyn"
         },
         "content": "public class Task {"
       },
       {
-        "lineNumber": 2,
+        "lineNumber": 4,
         "author": {
           "gitId": "tnsyn"
         },
         "content": "    protected boolean isDone;"
       },
       {
-        "lineNumber": 3,
+        "lineNumber": 5,
         "author": {
           "gitId": "tnsyn"
         },
         "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void markAsDone() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.isDone \u003d true;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return this.isDone ? \"\\u2713\" : \"\\u2718\";"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public boolean isDone() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return this.isDone;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return String.format(\"[%s] %s\", this.getStatusIcon(), this.description);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 28
+    }
+  },
+  {
+    "path": "src/main/java/duke/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.util.ArrayList;"
       },
       {
         "lineNumber": 4,
@@ -1914,21 +2577,1054 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public Task(String description) {"
+        "content": "public class TaskList {"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        this.description \u003d description;"
+        "content": "    private ArrayList\u003cTask\u003e storedTasks;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        this.isDone \u003d false;"
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public TaskList(ArrayList\u003cTask\u003e storedTasks) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        this.storedTasks \u003d storedTasks;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    // Handles cases where user enters empty input"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void validateScannerInput(String input) throws DukeException {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if (input.trim().length() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            throw new DukeException(\"Come again, Your Majesty?\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    // Handles cases where user does not enter a valid description for tasks"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void validateAdd(String[] task) throws DukeException {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if ((task.length \u003d\u003d 1 || task[1].trim().length() \u003d\u003d 0) \u0026\u0026"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                (task[0].equalsIgnoreCase(\"todo\") ||"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                        task[0].equalsIgnoreCase(\"event\") ||"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                        task[0].equalsIgnoreCase(\"deadline\"))"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            throw new DukeException(\"Do give me more details about this \" + task[0] + \", Your Majesty.\");"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    // Handles cases where user does not enter the correct / commands (i.e. /by for deadlines, /on for events)"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void validateSlashCommands(String[] task) throws DukeException {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if(task[0].equalsIgnoreCase(\"deadline\") \u0026\u0026 task[1].split(\"/by \", 2).length \u003d\u003d 1){"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            throw new DukeException(\"Use /by for deadlines, Your Majesty.\");"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } else if (task[0].equalsIgnoreCase(\"event\") \u0026\u0026  task[1].split(\"/on \", 2).length \u003d\u003d 1){"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            throw new DukeException(\"Use /on for events, Your Majesty.\");"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    // Handles cases where user enters a number that does not correspond to an existing task"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void validateIndex(int taskNumber) throws DukeException{"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if(taskNumber \u003e storedTasks.size() || taskNumber \u003c\u003d 0) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            throw new DukeException(\"Your Majesty, there\u0027s no such agenda in my detailed records.\");"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    // Handles cases where user does not input a valid number after conquer/delete commands"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void validateConquerDelete(String[] command) throws DukeException {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Integer.parseInt(sanitiseInput(command[1]));"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (Exception err) {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            throw new DukeException(\"Please enter valid numbers after your command, Your Majesty.\");"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    // Removes leading whitespaces in a String"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String sanitiseInput(String input) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return input.stripLeading();"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void printAllTasks() {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        Ui.printAllTasksUi(storedTasks);"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public Task addTask(String task) {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        Task toBeReturned \u003d null;"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            validateScannerInput(task);"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String splitTask[] \u003d task.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Task newTask \u003d null;"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            validateAdd(splitTask);"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            validateSlashCommands(splitTask);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            switch(splitTask[0].toLowerCase()) {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"todo\":"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    newTask \u003d new ToDo(splitTask[1]);"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"deadline\":"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    newTask \u003d new Deadline(splitTask[1]);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                case \"event\":"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    newTask \u003d new Event(splitTask[1]);"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                    throw new DukeException(\"I\u0027m afraid I do not understand that command, Your Majesty.\");"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            if (newTask !\u003d null) {"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                storedTasks.add(newTask);"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                Ui.addedMessage(newTask, storedTasks.size());"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            toBeReturned \u003d newTask;"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (DukeException err) {"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Ui.dukeErrorMessage(err);"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return toBeReturned;"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public int conquerTask(String[] command) {"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        int indexToBeReturned \u003d -1;"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            validateConquerDelete(command);"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            int taskNumber \u003d Integer.parseInt(sanitiseInput(command[1]));"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            validateIndex(taskNumber);"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            storedTasks.get(taskNumber - 1).markAsDone();"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            indexToBeReturned \u003d taskNumber;"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Ui.conqueredMessage(storedTasks.get(taskNumber - 1));"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (DukeException err) {"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Ui.dukeErrorMessage(err);"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return indexToBeReturned;"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public int deleteTask(String[] command) {"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        int indexToBeReturned \u003d -1;"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            validateConquerDelete(command);"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            int taskNumber \u003d Integer.parseInt(sanitiseInput(command[1]));"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            validateIndex(taskNumber);"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Task deletedTask \u003d storedTasks.get(taskNumber - 1);"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            storedTasks.remove(deletedTask);"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            indexToBeReturned \u003d taskNumber;"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Ui.deletedMessage(deletedTask, storedTasks.size());"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (DukeException err) {"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Ui.dukeErrorMessage(err);"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return indexToBeReturned;"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public ArrayList\u003cTask\u003e getStoredTasks() {"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return this.storedTasks;"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 133
+    }
+  },
+  {
+    "path": "src/main/java/duke/ToDo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "public class ToDo extends Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public ToDo(String description) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        return String.format(\"[T][%s] %s\", this.getStatusIcon(), this.description);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 12
+    }
+  },
+  {
+    "path": "src/main/java/duke/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public Ui() {"
       },
       {
         "lineNumber": 8,
@@ -1942,28 +3638,709 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": ""
+        "content": "    "
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public void markAsDone() {"
+        "content": "    public static void welcome() {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        this.isDone \u003d true;"
+        "content": "        String logo \u003d \" ____        _        \\n\""
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "tnsyn"
         },
+        "content": "                + \"|  _ \\\\ _   _| | _____ \\n\""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\n Always at your service, \\n\" + logo + \"\\n\");"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"Your Majesty, I am your loyal Duke.\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"I offer a range of administrative services. Do type \u0027assist\u0027 to see the comprehensive list.\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
         "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void dashedLineBreak() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        String dashedLine \u003d \"- \";"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(dashedLine.repeat(32));"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void assist() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"Greetings, Your Majesty. \\n\");"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"Use any of the commands on the left to access my quality services:\");"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\ttodo [TASK]: Adds a todo to your scroll\");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\tdeadline [TASK] /by [DATE AND/OR TIME]: Adds a deadline to your scroll\");"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\tevent [TASK] /on [DATE AND/OR TIME]: Adds an event to your scroll\");"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\tscroll: Displays your scroll - your list of tasks\");"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\tconquer [NUMBER]: Marks the particular item on your scroll as DONE\");"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\tdelete [NUMBER]: Deletes the particular item from your scroll\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\tdismiss: This will be my cue to leave.\");"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"Now, how may I serve you?\");"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void dismiss() {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"Your wish is my command, Your Majesty. Till I see you again. \\n\");"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.exit(0);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void dukeErrorMessage(DukeException e) {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(e.getMessage());"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void conqueredMessage(Task t) {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"As you wish, Your Majesty. I have marked this as conquered.\");"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\t\" + t);"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void deletedMessage(Task t, int size) {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"As you wish, Your Majesty. I have removed this writing.\");"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\t\" + t);"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.printf(\"You have %s writing(s) on your scroll as of now. \\n\", size);"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void addedMessage(Task t, int size) {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"Your Majesty, I\u0027ve added the writing:\");"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println(\"\\t\" + t);"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.printf(\"You have %s writing(s) on your scroll as of now. \\n\",size);"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void printAllTasksUi(ArrayList\u003cTask\u003e storedTasks) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        if (storedTasks.size() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            System.out.println(\"Your scroll is currently empty, Your Majesty.\");"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            dashedLineBreak();"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            System.out.println(\"Your current scroll, Your Majesty:\");"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            for (Task task : storedTasks) {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                System.out.printf(\"\\t%s.%s\", storedTasks.indexOf(task) + 1, task);"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                System.out.println();"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        dashedLineBreak();"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.out.println();"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 96
+    }
+  },
+  {
+    "path": "src/test/java/duke/StorageTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import org.junit.jupiter.api.AfterAll;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.BufferedReader;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.FileReader;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.nio.file.Files;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.io.FileWriter;"
       },
       {
         "lineNumber": 13,
@@ -1977,59 +4354,528 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public String getStatusIcon() {"
+        "content": "public class StorageTest {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        return this.isDone ? \"\\u2713\" : \"\\u2718\";"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "    @Test"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": ""
+        "content": "    public void testStorageCreation() {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    @Override"
+        "content": "        String workingDir \u003d System.getProperty(\"user.dir\");"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public String toString() {"
+        "content": "        java.nio.file.Path path \u003d java.nio.file.Paths.get(workingDir, \"storage\", \"data.txt\");"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        return String.format(\"[%s] %s\", this.getStatusIcon(), this.description);"
+        "content": "        Storage s \u003d new Storage(path);"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "        assertEquals(true, Files.exists(path));"
       },
       {
         "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void testWriteToFile() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String workingDir \u003d System.getProperty(\"user.dir\");"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            java.nio.file.Path path \u003d java.nio.file.Paths.get(workingDir, \"storage\", \"data.txt\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Storage s \u003d new Storage(path);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            ToDo dummyToDo \u003d new ToDo(\"test\");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String dummyInput \u003d \"todo test\";"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            s.writeToFile(dummyToDo, dummyInput);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            FileReader fr \u003d new FileReader(\"storage\" + File.separator + \"data.txt\");"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            BufferedReader br \u003d new BufferedReader(fr);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String lineToCheck \u003d br.readLine();"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            br.close();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            fr.close();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            assertEquals(\"1|T|0|test\", lineToCheck);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            System.out.println(e);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void testLoadToArray() {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String workingDir \u003d System.getProperty(\"user.dir\");"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            java.nio.file.Path path \u003d java.nio.file.Paths.get(workingDir, \"mockstorage\", \"mockdata.txt\");"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Storage s \u003d new Storage(path);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            ToDo dummyToDo \u003d new ToDo(\"test\");"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            ArrayList\u003cTask\u003e loadedTasks \u003d s.load();"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            assertEquals(dummyToDo.toString(), loadedTasks.get(0).toString());"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            System.out.println(e);"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @AfterAll"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public static void resetDir() {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String workingDir \u003d System.getProperty(\"user.dir\");"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            if (java.nio.file.Files.exists(java.nio.file.Paths.get(workingDir, \"storage\", \"data.txt\"))) {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                java.nio.file.Path pathToTxt \u003d java.nio.file.Paths.get(workingDir, \"storage\", \"data.txt\");"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                Files.delete(pathToTxt);"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                java.nio.file.Path pathToDir \u003d java.nio.file.Paths.get(workingDir, \"storage\");"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "                Files.delete(pathToDir);"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            "
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            String mockDir \u003d System.getProperty(\"user.dir\");"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            java.nio.file.Path pathToMockTxt \u003d java.nio.file.Paths.get(workingDir, \"mockstorage\", \"mockdata.txt\");"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Files.delete(pathToMockTxt);"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            java.nio.file.Path pathToMockDir \u003d java.nio.file.Paths.get(workingDir, \"mockstorage\");"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            Files.delete(pathToMockDir);"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            File newDir \u003d new File(\"mockstorage\" + File.separator + \"mockdata.txt\");"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            newDir.getParentFile().mkdirs();"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            newDir.createNewFile();"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            FileWriter fw \u003d new FileWriter(\"mockstorage\" + File.separator + \"mockdata.txt\", true);"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            fw.write(\"1|T|0|test\");"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "            System.out.println(e);"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 89,
         "author": {
           "gitId": "tnsyn"
         },
@@ -2037,11 +4883,11 @@
       }
     ],
     "authorContributionMap": {
-      "tnsyn": 22
+      "tnsyn": 89
     }
   },
   {
-    "path": "src/main/java/ToDo.java",
+    "path": "src/test/java/duke/TaskTest.java",
     "fileType": "java",
     "lines": [
       {
@@ -2049,66 +4895,437 @@
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "public class ToDo extends Task {"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public ToDo(String description) {"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        super(description);"
+        "content": "import org.junit.jupiter.api.Test;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    "
+        "content": "import org.junit.jupiter.api.BeforeEach;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    public String toString() {"
+        "content": "import java.io.PrintStream;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "        return String.format(\"[T][%s] %s\", this.getStatusIcon(), this.description);"
+        "content": "import java.io.ByteArrayOutputStream;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "tnsyn"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 10,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "public class TaskTest {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    private final PrintStream standardOut \u003d System.out;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    private final ByteArrayOutputStream outputStreamCaptor \u003d new ByteArrayOutputStream();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @BeforeEach"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void setUp() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        System.setOut(new PrintStream(outputStreamCaptor));"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Test "
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void testInitialisation() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ArrayList\u003cTask\u003e loadedList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        loadedList.add(new ToDo(\"test\"));"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        TaskList list \u003d new TaskList(loadedList);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        assertEquals(1, list.getStoredTasks().size());"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Test "
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void testAddTask() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ArrayList\u003cTask\u003e loadedList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        TaskList list \u003d new TaskList(loadedList);"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        String input \u003d \"todo test\";"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ToDo dummyToDo \u003d new ToDo(\"test\");"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        list.addTask(input);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        assertEquals(dummyToDo.toString(), list.getStoredTasks().get(0).toString());"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Test "
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void testConquerTask() {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ArrayList\u003cTask\u003e loadedList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ToDo dummyToDo \u003d new ToDo(\"test\");"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        loadedList.add(dummyToDo);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        TaskList list \u003d new TaskList(loadedList);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        String input \u003d \"conquer 1\";"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        list.conquerTask(input.split(\" \", 2));"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        assertEquals(\"[T][✓] test\", list.getStoredTasks().get(0).toString());"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    @Test "
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    public void testDeleteTask() {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ArrayList\u003cTask\u003e loadedList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        ToDo dummyToDo \u003d new ToDo(\"test\");"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        loadedList.add(dummyToDo);"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        TaskList list \u003d new TaskList(loadedList);"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        assertEquals(1, list.getStoredTasks().size());"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        String input \u003d \"delete 1\";"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        list.deleteTask(input.split(\" \", 2));"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "        assertEquals(0, list.getStoredTasks().size());"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 63,
         "author": {
           "gitId": "tnsyn"
         },
@@ -2116,7 +5333,23 @@
       }
     ],
     "authorContributionMap": {
-      "tnsyn": 10
+      "tnsyn": 63
+    }
+  },
+  {
+    "path": "src/test/mockstorage/mockdata.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "tnsyn"
+        },
+        "content": "1|T|0|test"
+      }
+    ],
+    "authorContributionMap": {
+      "tnsyn": 1
     }
   },
   {

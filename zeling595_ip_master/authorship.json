@@ -1,6 +1,29 @@
 [
   {
-    "path": "src/main/java/Chatbot.java",
+    "path": "data/duke.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "T | 0 | borrow book"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "E | 0 | project meeting | Oct 15 2020"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 2
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/Duke.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,84 +31,84 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "package main.java.seedu.duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "public class Chatbot {"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    private int lengthOfLine \u003d 55;"
+        "content": "import main.java.seedu.duke.commands.Command;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    ArrayList\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "zeling595"
         },
-        "content": ""
+        "content": "/**"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public String getHorizontalLine() {"
+        "content": " * Represents the main Duke who acts as the user\u0027s personal assistant."
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        String line \u003d \"\";"
+        "content": " */"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        for (int i \u003d 0; i \u003c lengthOfLine; i++) {"
+        "content": "public class Duke {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            line \u003d line + \"-\";"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        }"
+        "content": "    private Storage storage;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        return line;"
+        "content": "    private TaskList tasks;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "    private Ui ui;"
       },
       {
         "lineNumber": 13,
@@ -99,322 +122,2382 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public String[] parseStringBySpace(String str) throws DukeException {"
+        "content": "    public Duke() {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        String[] split1 \u003d str.split(\" \", 2);"
+        "content": "        this.tasks \u003d new TaskList();"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        if (split1.length \u003c 2 || split1[1].equals(\"\")) {"
+        "content": "        this.storage \u003d new Storage(this.tasks);"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            if (split1[0].equals(\"list\")) {"
+        "content": "        this.ui \u003d new Ui();"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                String[] res \u003d {split1[0]};"
+        "content": "    }"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                return res;"
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            } else if (split1[0].equals(\"done\")) {"
+        "content": "        ui.greet();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                throw new DukeException(\"Please tell me the task number that you have completed.\");"
+        "content": "        storage.readFile();"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            } else if (split1[0].equals(\"delete\")) {"
+        "content": "        boolean isExit \u003d false;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                throw new DukeException(\"Please tell me the task number that you want to delete.\");"
+        "content": "        while (!isExit) {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            } else if (split1[0].equals(\"todo\")) {"
+        "content": "            try {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                throw new DukeException(\"OOPS!!! The description of a todo cannot be empty.\");"
+        "content": "                String fullCommand \u003d ui.readCommand();"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            } else if (split1[0].equals(\"deadline\")) {"
+        "content": "                ui.showLine();"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                throw new DukeException(\"OOPS!!! The description of a deadline cannot be empty.\");"
+        "content": "                Command c \u003d Parser.parse(fullCommand);"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            } else if (split1[0].equals(\"event\")) {"
+        "content": "                c.execute(tasks, ui, storage);"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                throw new DukeException(\"OOPS!!! The description of a event cannot be empty.\");"
+        "content": "                isExit \u003d c.isExit();"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            } else {"
+        "content": "            } catch (DukeException e) {"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                throw new DukeException(\"OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\");"
+        "content": "                ui.showError(e.getMessage());"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            }"
+        "content": "            } finally {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        } else {"
+        "content": "                ui.showLine();"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            String type \u003d split1[0];"
+        "content": "            }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            String temp \u003d split1[1];"
+        "content": "        }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            if (temp.contains(\"/\")) {"
+        "content": "    }"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                // deadline, event"
+        "content": ""
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                String[] split2;"
+        "content": "    public static void main(String[] args) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                if (temp.contains(\"/by\")) {"
+        "content": "        new Duke().run();"
       },
       {
         "lineNumber": 40,
         "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                    split2 \u003d temp.split(\" /by\", 2);"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                    split2 \u003d temp.split(\" /at\", 2);"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                String taskDescription \u003d split2[0];"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                String time \u003d split2[1];"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                String[] res \u003d {type, taskDescription, time};"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                return res;"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "            } else {"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                // todo"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                String taskDescription \u003d temp;"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                String[] res \u003d {type, taskDescription};"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "                return res;"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "zeling595"
+          "gitId": "-"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 56,
+        "lineNumber": 41,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "-": 2,
+      "zeling595": 39
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke;"
+      },
+      {
+        "lineNumber": 2,
         "author": {
           "gitId": "zeling595"
         },
         "content": ""
       },
       {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Encapsulates all exceptions that are related to Duke."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    DukeException(String errorMessage) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(errorMessage);"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "// consider exception when 2022-9-15 is given instead of 2022-09-15"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "// index out of bound exception"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 13
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.util.regex.Pattern;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.commands.*;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Deadline;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Event;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Todo;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Task;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Used for parsing strings for Duke project."
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private static DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"MMM d yyyy\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns corresponding command specified in the input string."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param str The input string."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return Command."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @throws DukeException If the input is incomplete."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public static Command parse(String str) throws DukeException {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String[] split1 \u003d str.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String commandWord \u003d split1[0].toLowerCase();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (split1.length \u003c 2 || split1[1].equals(\"\")) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // one word command"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            if (commandWord.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                return new ListCommand();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"bye\")) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                return new ExitCommand();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"done\")) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                throw new DukeException(\"Please tell me the task number that you have completed.\");"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"date\")) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                throw new DukeException(\"Please provide a date.\");"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"delete\")) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                throw new DukeException(\"Please tell me the task number that you want to delete.\");"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"todo\")) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                throw new DukeException(\"OOPS!!! The description of a todo cannot be empty.\");"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"deadline\")) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                throw new DukeException(\"OOPS!!! The description of a deadline cannot be empty.\");"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"event\")) {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                throw new DukeException(\"OOPS!!! The description of a event cannot be empty.\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                throw new DukeException(\"OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // more than one word command"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String commandBody \u003d split1[1].trim();"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            if (commandWord.equals(\"done\")) {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                // create done command: \"done 1\""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                return new DoneCommand(Integer.parseInt(commandBody));"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"delete\")) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                // delete 2"
+      },
+      {
         "lineNumber": 57,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public void listTasks() throws DukeException {"
+        "content": "                return new DeleteCommand(Integer.parseInt(commandBody));"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        if (tasks.size() \u003c\u003d 0) {"
+        "content": "            } else if (commandWord.equals(\"date\")) {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "zeling595"
         },
+        "content": "                // create date command: \"date 2020-09-24\""
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                LocalDate time \u003d LocalDate.parse(commandBody);"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                return new DateCommand(time);"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else if (commandWord.equals(\"find\")) {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                return new FindCommand(commandBody);"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                // add command"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                Task newTask \u003d Parser.parseTask(str);"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                return new AddCommand(newTask);"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns a task corresponding to the task string from storage file."
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param taskStr The task string from storage file."
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return Task."
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public static Task parseTaskFromStorage(String taskStr) {"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        Task savedTask;"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String[] split \u003d taskStr.split(Pattern.quote(\" | \"));"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String description \u003d split[2];"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        boolean isDone \u003d (Integer.parseInt(split[1]) \u003d\u003d 1);"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (split[0].equals(\"T\")) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // create a todo"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            savedTask \u003d new Todo(description, isDone);"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } else if (split[0].equals(\"D\")) {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // create a deadline"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String dateStr \u003d split[3];"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            LocalDate date \u003d LocalDate.parse(dateStr, formatter);"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            savedTask \u003d new Deadline(description, isDone, date);"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // create an event"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String dateStr \u003d split[3];"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            LocalDate date \u003d LocalDate.parse(dateStr, formatter);"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            savedTask \u003d new Event(description, isDone, date);"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return savedTask;"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns a task corresponding to the task string from command line input."
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param taskStr The task string from storage file."
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return Task."
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public static Task parseTask(String taskStr) {"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String[] splits \u003d taskStr.split(\" \",2);"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String taskType \u003d splits[0].toLowerCase();"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String taskBody \u003d splits[1];"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        Task newTask;"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (taskType.equals(\"todo\")) {"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // todo borrow book"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            newTask \u003d new Todo(taskBody.trim());"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } else if (taskType.equals(\"deadline\")) {"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // deadline return book /by 2020-12-15"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String[] splits1 \u003d taskBody.split(\"/by\", 2);"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String description \u003d splits1[0].trim();"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String timeStr \u003d Parser.standardizeTimeString(splits1[1]);"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            LocalDate time \u003d LocalDate.parse(timeStr);"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            newTask \u003d new Deadline(description, time);"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            // event project meeting /at 2020-10-15"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String[] splits1 \u003d taskBody.split(\"/at\", 2);"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String description \u003d splits1[0].trim();"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            String timeStr \u003d Parser.standardizeTimeString(splits1[1]);"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            LocalDate time \u003d LocalDate.parse(timeStr);"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            newTask \u003d new Event(description, time);"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return newTask;"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public static String standardizeTimeString(String timeStr) {"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return timeStr.replaceAll(\" \",\"\").replaceAll(\"/\", \"-\").trim();"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 135
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Task;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents a storage. Allow Duke to read and write to local disk."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private static final String DIRECTORY_PATH \u003d \"data\";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private static final String FILE_PATH \u003d DIRECTORY_PATH + \"/duke.txt\";"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private TaskList taskList;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Storage(TaskList taskList) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.taskList \u003d taskList;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Reads files from local disk and print out the content."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void readFile() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        // load the file first"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        File directory \u003d new File(DIRECTORY_PATH);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (!directory.exists()) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            directory.mkdir();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        File f \u003d new File(FILE_PATH);"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            if (f.createNewFile()) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                // file does not exist"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                System.out.println(\"A data file has been created for you\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                // file exist"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                System.out.println(\"Here are your existing tasks\");"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                Scanner s \u003d new Scanner(f);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                while (s.hasNext()) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                    String taskStr \u003d s.nextLine();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                    System.out.println(taskStr);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                    // load the task"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                    Task savedTask \u003d Parser.parseTaskFromStorage(taskStr);"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                    taskList.tasks.add(savedTask);"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            System.out.println(\"What do you want to do today?\");"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            System.out.println(e.getMessage());"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Saves tasks to local disk."
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param taskList The task list that is to be saved."
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void saveTasks(TaskList taskList) {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (taskList.tasks.size() \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            return;"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            writeToFile(FILE_PATH, taskList.tasks.get(0).getData());"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            for (int i \u003d 1; i \u003c taskList.tasks.size(); i++) {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                String taskData \u003d taskList.tasks.get(i).getData();"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                appendToFile(FILE_PATH, taskData);"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Append text to local file at filePath."
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param filePath The relative path of the file."
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param textToAdd The text to be added."
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void appendToFile(String filePath, String textToAdd) {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            FileWriter fw \u003d new FileWriter(filePath, true);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            fw.write(textToAdd + System.lineSeparator());"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            System.out.println(e.getMessage());"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Write text to local file at filePath. This overwrites the whole file."
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param filePath The relative path of the file."
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param textToAdd The text to be added."
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void writeToFile(String filePath, String textToAdd) {"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            FileWriter fw \u003d new FileWriter(filePath);"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            fw.write(textToAdd + System.lineSeparator());"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            System.out.println(e.getMessage());"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 100
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents a list of tasks. A task list supports various modifications of the task list."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    ArrayList\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"MMM d yyyy\");"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Lists out all the tasks in the list."
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @throws DukeException"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void listTasks() throws DukeException {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (tasks.size() \u003c\u003d 0) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
         "content": "            throw new DukeException(\"You don\u0027t have any tasks.\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        System.out.println(\"Here are the tasks in your list:\");"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            int taskNo \u003d i + 1;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            Task task \u003d tasks.get(i);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            System.out.println(taskNo + \".\" + task);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Lists out all the tasks on a specific date."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param date The specific date."
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @throws DukeException If there is no task on that day."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void listTasksOn(LocalDate date) throws DukeException {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (tasks.size() \u003c\u003d 0) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            throw new DukeException(\"You don\u0027t have any tasks.\");"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        for (Task task: tasks) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            LocalDate taskDate \u003d task.getDate();"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            if (taskDate !\u003d null) {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                if (taskDate.isEqual(date)) {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                    taskList.add(task);"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        if (taskList.size() \u003e 0) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            System.out.println(\"Here are the tasks happening on: \" + date.format(formatter));"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            for (int i \u003d 0; i \u003c taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                int taskNo \u003d i + 1;"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                Task task \u003d taskList.get(i);"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                System.out.println(taskNo + \".\" + task);"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "            System.out.println(\"You don\u0027t have anything on: \" + date.format(formatter) + \" :)))\");"
       },
       {
         "lineNumber": 60,
@@ -428,161 +2511,161 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\"Here are the tasks in your list:\");"
+        "content": "    }"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+        "content": ""
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            int taskNo \u003d i + 1;"
+        "content": "    /**"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            Task task \u003d tasks.get(i);"
+        "content": "     * Marks the task as done."
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            System.out.println(taskNo + \".\" + task);"
+        "content": "     * @param taskNo The task number in the list."
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        }"
+        "content": "     */"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "    public void doneTask(int taskNo) {"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "zeling595"
         },
-        "content": ""
+        "content": "        System.out.println(\"Nice! I\u0027ve marked this task as done:\");"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public void doneTasks(int taskNo) {"
+        "content": "        Task completedTask \u003d tasks.get(taskNo - 1);"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\"Nice! I\u0027ve marked this task as done:\");"
+        "content": "        completedTask.markAsDone();"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        Task completedTask \u003d tasks.get(taskNo - 1);"
+        "content": "        System.out.println(\" \" + \" \" +"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        completedTask.markAsDone();"
+        "content": "                \"[\" + completedTask.getStatusIcon() + \"] \" +"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\" \" + \" \" +"
+        "content": "                completedTask.getDescription());"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"[\" + completedTask.getStatusIcon() + \"] \" +"
+        "content": "    }"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                completedTask.description);"
+        "content": ""
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "zeling595"
         },
-        "content": ""
+        "content": "     * Adds a task to the task list."
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public void addTask(String type, String description) {"
+        "content": "     * @param newTask The new task to add."
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        // todo"
+        "content": "     */"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        Todo newTodo \u003d new Todo(description);"
+        "content": "    public void addTask(Task newTask) {"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        tasks.add(newTodo);"
+        "content": "        System.out.println(\"Got it. I\u0027ve added this task:\");"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\"Got it. I\u0027ve added this task:\");"
+        "content": "        tasks.add(newTask);"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(newTodo);"
+        "content": "        System.out.println(newTask);"
       },
       {
         "lineNumber": 84,
@@ -610,344 +2693,316 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public void addTask(String type, String description, String time) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        // deadline and event"
+        "content": "     * Deletes a task on the task list."
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        Task newTask;"
+        "content": "     * @param taskNo The task number of the to be deleted task on the list."
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        if (type.equals(\"deadline\")) {"
+        "content": "     * @throws DukeException If there is nothing to delete and the task number exceeds total number of tasks."
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            newTask \u003d new Deadline(description, time);"
+        "content": "     */"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        } else {"
+        "content": "    public void deleteTask(int taskNo) throws DukeException {"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            newTask \u003d new Event(description, time);"
+        "content": "        if (tasks.size() \u003c\u003d 0) {"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        }"
+        "content": "            throw new DukeException(\"Nothing to delete.\");"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        tasks.add(newTask);"
+        "content": "        } else if (taskNo \u003e tasks.size()) {"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\"Got it. I\u0027ve added this task:\");"
+        "content": "            throw new DukeException(\"Please provide a correct task number.\");"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(newTask);"
+        "content": "        } else {"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\"Now you have \" + tasks.size() + \" tasks in the list.\");"
+        "content": "            System.out.println(\"Noted. I\u0027ve removed this task:\");"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "            Task taskToBeDeleted \u003d tasks.get(taskNo - 1);"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "zeling595"
         },
-        "content": ""
+        "content": "            tasks.remove(taskNo - 1);"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public void deleteTask(int taskNo) throws DukeException {"
+        "content": "            System.out.println(\" \" + \" \" +"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        if (tasks.size() \u003c\u003d 0) {"
+        "content": "                    \"[\" + taskToBeDeleted.getStatusIcon() + \"] \" +"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            throw new DukeException(\"Nothing to delete.\");"
+        "content": "                    taskToBeDeleted.getDescription());"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        }"
+        "content": "            System.out.println(\"Now you have \" + tasks.size() + \" tasks in the list.\");"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\"Noted. I\u0027ve removed this task:\");"
+        "content": "        }"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        Task taskToBeDeleted \u003d tasks.get(taskNo - 1);"
+        "content": "    }"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        tasks.remove(taskNo - 1);"
+        "content": ""
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\" \" + \" \" +"
+        "content": "    public void searchKeyword(String keyword) throws DukeException {"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"[\" + taskToBeDeleted.getStatusIcon() + \"] \" +"
+        "content": "        if (tasks.size() \u003c\u003d 0) {"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                taskToBeDeleted.description);"
+        "content": "            throw new DukeException(\"You don\u0027t have any tasks.\");"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        System.out.println(\"Now you have \" + tasks.size() + \" tasks in the list.\");"
+        "content": "        }"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "        ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "zeling595"
         },
-        "content": ""
+        "content": "        for (Task task: tasks) {"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public void greet() {"
+        "content": "            if (task.getDescription().contains(keyword)) {"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        String logo \u003d"
+        "content": "                taskList.add(task);"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"                 .   ,\\n\" +"
+        "content": "            }"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"               .\u0027;_.\u0027;\\n\" +"
+        "content": "        }"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"                    _   \\\\\\n\" +"
+        "content": ""
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"             .     (.) (.)--._\\n\" +"
+        "content": "        if (taskList.size() \u003e 0) {"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"            .       \\\"   \\\"     `.\\n\" +"
+        "content": "            System.out.println(\"Here are the matching tasks in your list:\");"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"           .                   :\\n\" +"
+        "content": "            for (int i \u003d 0; i \u003c taskList.size(); i++) {"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"          .           `\\\"-.___.\\\"\\n\" +"
+        "content": "                int taskNo \u003d i + 1;"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"         .   .         `.\\n\" +"
+        "content": "                Task task \u003d taskList.get(i);"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"         .    .  `.      .\\n\" +"
+        "content": "                System.out.println(taskNo + \".\" + task);"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \",,.      .      ` . `.    .\\n\" +"
+        "content": "            }"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"\\\\W;      .         \\\"`     .\\n\" +"
+        "content": "        } else {"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"   `--\u0027    ,    __,..-   \u0027  .\\n\" +"
+        "content": "            System.out.println(\"You don\u0027t have anything related to \" + \"\\\"\"+ keyword + \"\\\"\");"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"          .   .\u0027     `.   `\u0027 ;\\n\" +"
+        "content": "        }"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"          `.   `,      `.  .\u0027\\n\" +"
+        "content": "    }"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                \"            \\\"._.\u0027        `\u0027\";"
-      },
-      {
-        "lineNumber": 131,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "        System.out.println(\"Hello from Moomin\\n\" + logo);"
-      },
-      {
-        "lineNumber": 132,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "        System.out.println(\"What can I do for you?\");"
-      },
-      {
-        "lineNumber": 133,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 134,
-        "author": {
-          "gitId": "zeling595"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "zeling595": 134
+      "zeling595": 130
     }
   },
   {
-    "path": "src/main/java/Deadline.java",
+    "path": "src/main/java/seedu/duke/Ui.java",
     "fileType": "java",
     "lines": [
       {
@@ -955,457 +3010,357 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "package main.java.seedu.duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    protected String by;"
+        "content": ""
       },
       {
         "lineNumber": 3,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "    public Deadline(String description, String by) {"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "        this.by \u003d by;"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "        return \"[D]\" + super.toString() + \" (by:\" + by + \")\";"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "zeling595": 13
-    }
-  },
-  {
-    "path": "src/main/java/Duke.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
         "author": {
           "gitId": "zeling595"
         },
         "content": "import java.util.Scanner;"
       },
       {
-        "lineNumber": 2,
+        "lineNumber": 4,
         "author": {
           "gitId": "zeling595"
         },
         "content": ""
       },
       {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "public class Duke {"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
         "lineNumber": 5,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        Chatbot bot \u003d new Chatbot();"
+        "content": "/**"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        String line \u003d bot.getHorizontalLine();"
+        "content": " * Provides user interaction for Duke."
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        bot.greet();"
+        "content": " */"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
+        "content": "public class Ui {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        while (sc.hasNextLine()) {"
+        "content": "    private int lengthOfLine \u003d 55;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            System.out.println(line);"
+        "content": "    private String line;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            String str \u003d sc.nextLine();"
+        "content": "    private Scanner sc;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            try {"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                String[] res \u003d bot.parseStringBySpace(str);"
+        "content": "    public Ui() {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                if (res[0].equals(\"bye\")) {"
+        "content": "        this.line \u003d getHorizontalLine();"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    // exit"
+        "content": "        this.sc \u003d new Scanner(System.in);"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    System.out.println(\"Bye. Hope to see you again soon!\");"
+        "content": "    }"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    System.out.println(line);"
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    sc.close();"
+        "content": "    /**"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    return;"
+        "content": "     * Outputs a horizontal line."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                } else if (res[0].equals(\"list\")) {"
+        "content": "     * @return An horizontal line in a string."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    // list all tasks"
+        "content": "     */"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    bot.listTasks();"
+        "content": "    public String getHorizontalLine() {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    System.out.println(line);"
+        "content": "        String line \u003d \"\";"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                } else if(res[0].equals(\"done\")) {"
+        "content": "        for (int i \u003d 0; i \u003c lengthOfLine; i++) {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    // mark as done"
+        "content": "            line \u003d line + \"-\";"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    String numStr \u003d res[1].replaceAll(\" \", \"\");"
+        "content": "        }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    int taskNo \u003d Integer.parseInt(numStr);"
+        "content": "        return line;"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    bot.doneTasks(taskNo);"
+        "content": "    }"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    System.out.println(line);"
+        "content": ""
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                } else if (res[0].equals(\"delete\")) {"
+        "content": "    public void showError(String errorMessage) {"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    // delete"
+        "content": "        System.out.println(errorMessage);"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    String numStr \u003d res[1].replaceAll(\" \", \"\");"
+        "content": "    }"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    int taskNo \u003d Integer.parseInt(numStr);"
+        "content": ""
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    bot.deleteTask(taskNo);"
+        "content": "    public void closeScanner() {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    System.out.println(line);"
+        "content": "        sc.close();"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                } else {"
+        "content": "    }"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    // add tasks"
+        "content": ""
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    String taskType \u003d res[0];"
+        "content": "    public void showLine() {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    String taskDescription \u003d res[1];"
+        "content": "        System.out.println(line);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    if (res.length \u003d\u003d 2) {"
+        "content": "    }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                        bot.addTask(taskType, taskDescription);"
+        "content": ""
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    } else {"
+        "content": "    /**"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                        String time \u003d res[2];"
+        "content": "     * Reads command line inputs from the user."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                        bot.addTask(taskType, taskDescription, time);"
+        "content": "     * @return The user input."
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    }"
+        "content": "     * @throws DukeException If there is no more input when user press \u0027Enter\u0027."
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                    System.out.println(line);"
+        "content": "     */"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                }"
+        "content": "    public String readCommand() throws DukeException {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            } catch (DukeException e) {"
+        "content": "        if (sc.hasNextLine()) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                System.out.println(e.getMessage());"
+        "content": "            return sc.nextLine();"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "                System.out.println(line);"
+        "content": "        } else {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "            }"
+        "content": "            throw new DukeException(\"There is no next line\");"
       },
       {
         "lineNumber": 52,
@@ -1417,119 +3372,249 @@
       {
         "lineNumber": 53,
         "author": {
-          "gitId": "-"
+          "gitId": "zeling595"
         },
         "content": "    }"
       },
       {
         "lineNumber": 54,
         "author": {
-          "gitId": "-"
+          "gitId": "zeling595"
         },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "-": 4,
-      "zeling595": 50
-    }
-  },
-  {
-    "path": "src/main/java/DukeException.java",
-    "fileType": "java",
-    "lines": [
+        "content": ""
+      },
       {
-        "lineNumber": 1,
+        "lineNumber": 55,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "public class DukeException extends Exception {"
+        "content": "    public void showByeMessage() {"
       },
       {
-        "lineNumber": 2,
+        "lineNumber": 56,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    DukeException(String errorMessage) {"
+        "content": "        System.out.println(\"Bye. Hope to see you again soon!\");"
       },
       {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "        super(errorMessage);"
-      },
-      {
-        "lineNumber": 4,
+        "lineNumber": 57,
         "author": {
           "gitId": "zeling595"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "zeling595": 5
-    }
-  },
-  {
-    "path": "src/main/java/Event.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "public class Event extends Task {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "zeling595"
-        },
-        "content": "    protected String at;"
-      },
-      {
-        "lineNumber": 3,
+        "lineNumber": 58,
         "author": {
           "gitId": "zeling595"
         },
         "content": ""
       },
       {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void greet() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String logo \u003d"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                \"                 .   ,\\n\" +"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"               .\u0027;_.\u0027;\\n\" +"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"                    _   \\\\\\n\" +"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"             .     (.) (.)--._\\n\" +"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"            .       \\\"   \\\"     `.\\n\" +"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"           .                   :\\n\" +"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"          .           `\\\"-.___.\\\"\\n\" +"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"         .   .         `.\\n\" +"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"         .    .  `.      .\\n\" +"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \",,.      .      ` . `.    .\\n\" +"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"\\\\W;      .         \\\"`     .\\n\" +"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"   `--\u0027    ,    __,..-   \u0027  .\\n\" +"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"          .   .\u0027     `.   `\u0027 ;\\n\" +"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"          `.   `,      `.  .\u0027\\n\" +"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "                        \"            \\\"._.\u0027        `\u0027\";"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        System.out.println(\"Hello from Moomin\\n\" + logo);"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        System.out.println(\"I\u0027m your personal assistant.\");"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 79
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/commands/AddCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.DukeException;"
+      },
+      {
         "lineNumber": 4,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public Event(String description, String at) {"
+        "content": "import main.java.seedu.duke.todo.Task;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        super(description);"
+        "content": "import main.java.seedu.duke.TaskList;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        this.at \u003d at;"
+        "content": "import main.java.seedu.duke.Ui;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "import main.java.seedu.duke.Storage;"
       },
       {
         "lineNumber": 8,
@@ -1543,43 +3628,197 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    @Override"
+        "content": "/**"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public String toString() {"
+        "content": " * Represents the command to add task."
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        return \"[E]\" + super.toString() + \" (at:\" + at + \")\";"
+        "content": " */"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "public class AddCommand extends Command {"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "zeling595"
         },
+        "content": "    private Task newTask;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public AddCommand(Task newTask) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(\"add\");"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.newTask \u003d newTask;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Executes the command to add task to task list."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param tasks The task list that is involved."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param ui The UI of Duke."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param storage The storage of Duke."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        tasks.addTask(newTask);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "zeling595": 13
+      "zeling595": 35
     }
   },
   {
-    "path": "src/main/java/Task.java",
+    "path": "src/main/java/seedu/duke/commands/Command.java",
     "fileType": "java",
     "lines": [
       {
@@ -1587,84 +3826,84 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "public class Task {"
+        "content": "package main.java.seedu.duke.commands;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    protected String description;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    protected boolean isDone;"
+        "content": "import main.java.seedu.duke.DukeException;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "zeling595"
         },
-        "content": ""
+        "content": "import main.java.seedu.duke.Storage;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public Task(String description) {"
+        "content": "import main.java.seedu.duke.TaskList;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        this.description \u003d description;"
+        "content": "import main.java.seedu.duke.Ui;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        this.isDone \u003d false;"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "/**"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "zeling595"
         },
-        "content": ""
+        "content": " * Represents the command given by the user."
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public String getStatusIcon() {"
+        "content": " */"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+        "content": "public abstract class Command {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "    protected String commandName;"
       },
       {
         "lineNumber": 13,
@@ -1678,14 +3917,14 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public void markAsDone() {"
+        "content": "    public Command(String commandName) {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        isDone \u003d true;"
+        "content": "        this.commandName \u003d commandName;"
       },
       {
         "lineNumber": 16,
@@ -1706,31 +3945,73 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    @Override"
+        "content": "    /**"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public String toString() {"
+        "content": "     * Executes the command. This is an abstract method."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        return \"[\" + this.getStatusIcon() + \"] \" + this.description;"
+        "content": "     * @param tasks The task list that is involved."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    }"
+        "content": "     * @param ui The UI of Duke."
       },
       {
         "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param storage The storage of Duke."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @throws DukeException Depends on the actual command."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public abstract boolean isExit();"
+      },
+      {
+        "lineNumber": 28,
         "author": {
           "gitId": "zeling595"
         },
@@ -1738,11 +4019,11 @@
       }
     ],
     "authorContributionMap": {
-      "zeling595": 22
+      "zeling595": 28
     }
   },
   {
-    "path": "src/main/java/Todo.java",
+    "path": "src/main/java/seedu/duke/commands/DateCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -1750,7 +4031,7 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "public class Todo extends Task {"
+        "content": "package main.java.seedu.duke.commands;"
       },
       {
         "lineNumber": 2,
@@ -1764,21 +4045,825 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public Todo(String description) {"
+        "content": "import main.java.seedu.duke.DukeException;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        super(description);"
+        "content": "import main.java.seedu.duke.Storage;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "zeling595"
         },
+        "content": "import main.java.seedu.duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents the command to list out tasks on a specific date."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class DateCommand extends Command {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private LocalDate time;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public DateCommand(LocalDate time) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(\"done\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.time \u003d time;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
         "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Executes the command to list out tasks on a specific date."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param tasks The task list that is involved."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param ui The UI of Duke."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param storage The storage of Duke."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @throws DukeException If there is no date provided."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        tasks.listTasksOn(time);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 37
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/commands/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.TaskList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Ui;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Storage;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents the command to delete task."
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private int taskNo;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public DeleteCommand(int taskNo) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(\"delete\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.taskNo \u003d taskNo;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Executes the command to delete a task."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param tasks The task list that is involved."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param ui The UI of Duke."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param storage The storage of Duke."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @throws DukeException If there is the task number does not exist."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        tasks.deleteTask(taskNo);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 35
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/commands/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents the command to mark a task as done."
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class DoneCommand extends Command {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private int taskNo;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public DoneCommand(int taskNo) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(\"done\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.taskNo \u003d taskNo;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Executes the command to mark a task as done."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param tasks The task list that is involved."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param ui The UI of Duke."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param storage The storage of Duke."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "\u003c\u003c\u003c\u003c\u003c\u003c\u003c HEAD"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        tasks.doneTasks(taskNo);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "\u003d\u003d\u003d\u003d\u003d\u003d\u003d"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        tasks.doneTask(taskNo);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        // ui.showDoneMessage();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "\u003e\u003e\u003e\u003e\u003e\u003e\u003e branch-A-CodingStandard"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 39
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/commands/ExitCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.TaskList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Storage;"
       },
       {
         "lineNumber": 6,
@@ -1792,21 +4877,1769 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    @Override"
+        "content": "/**"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "    public String toString() {"
+        "content": " * Represents the command to exit the program."
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "        return \"[T]\" + super.toString();"
+        "content": " */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class ExitCommand extends Command {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public ExitCommand() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(\"exit\");"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Executes the command to exit the program."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param tasks The task list that is involved."
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param ui The UI of Duke."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param storage The storage of Duke."
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        storage.saveTasks(tasks);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        ui.closeScanner();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        ui.showByeMessage();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 33
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/commands/FindCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class FindCommand extends Command{"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    private String keyword;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public FindCommand(String keyword) {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(\"find\");"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.keyword \u003d keyword;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        tasks.searchKeyword(keyword);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 24
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/commands/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.TaskList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Ui;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Storage;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.DukeException;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents the command to list out all the task."
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public ListCommand() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(\"list\");"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Executes the command to list out tasks."
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param tasks The task list that is involved."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param ui The UI of Duke."
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @param storage The storage of Duke."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @throws DukeException If the task list is empty."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        tasks.listTasks();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 32
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/todo/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.todo;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents a deadline which is due by a particular day."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    protected LocalDate by;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Deadline(String description, LocalDate by) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Deadline(String description, boolean isDone, LocalDate by) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the date of the deadline."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return the date of the deadline."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public LocalDate getDate() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return by;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\")) + \")\";"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the data representation of the deadline for storage."
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return the data representation of the deadline."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String getData() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"D \" + super.getData() + \" | \" + this.by.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\"));"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 44
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/todo/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.todo;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents an event happening at a particular time."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    protected LocalDate at;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Event(String description, LocalDate at) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.at \u003d at;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Event(String description, boolean isDone, LocalDate at) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.at \u003d at;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the date of the event."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return the date of the event."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public LocalDate getDate() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return at;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (at: \" + at.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\")) + \")\";"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the data representation of the event."
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return the data representation of the event."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String getData() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"E \" + super.getData() + \" | \" + this.at.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\"));"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 44
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/todo/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.todo;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represents the task. A Task consist of a description and a marker of whether it is done."
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class Task {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Task(String description, boolean isDone) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        this.isDone \u003d isDone;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String getDescription() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return this.description;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the corresponding status icon depending on whether the task is completed."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return A tick if the task is completed and a cross if the task is incomplete."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Marks the task as done."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void markAsDone() {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        isDone \u003d true;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the date of the task."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return null for task of type Task that has no date."
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public LocalDate getDate() {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return null;"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"[\" + this.getStatusIcon() + \"] \" + this.description;"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public int getDataStatus() {"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return (isDone ? 1 : 0);"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the data representation of the task."
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return the data representation of the task."
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String getData() {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"| \" + getDataStatus() + \" | \" + this.description;"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 65
+    }
+  },
+  {
+    "path": "src/main/java/seedu/duke/todo/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package main.java.seedu.duke.todo;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " * Represent a todo item."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class Todo extends Task {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Todo(String description) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(description);"
       },
       {
         "lineNumber": 10,
@@ -1820,11 +6653,458 @@
         "author": {
           "gitId": "zeling595"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public Todo(String description, boolean isDone) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * Returns the date of the todo for storage."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     * @return the date of todo event."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public String getData() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        return \"T \" + super.getData();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "zeling595"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "zeling595": 11
+      "zeling595": 29
+    }
+  },
+  {
+    "path": "src/test/java/seedu/duke/ParserTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package seedu.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.Parser;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Task;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class ParserTest {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void parseTest(){"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String input \u003d \"todo borrow book\";"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        Task newTask \u003d Parser.parseTask(input);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String description \u003d newTask.getDescription();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String expected \u003d \"borrow book\";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        assertEquals(expected, description);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Test void standardizeTimeStringTest() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String input \u003d \"2000/ 12/ 20\";"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String output \u003d Parser.standardizeTimeString(input);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        String expected \u003d \"2000-12-20\";"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        assertEquals(expected, output);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 24
+    }
+  },
+  {
+    "path": "src/test/java/seedu/duke/TaskTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "package seedu.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Todo;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import main.java.seedu.duke.todo.Task;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "public class TaskTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    public void markAsDoneTest(){"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        Task task \u003d new Todo(\"borrow book\");"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        assertEquals(\"\\u2718\", task.getStatusIcon()); // cross"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        task.markAsDone();"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "        assertEquals(\"\\u2713\", task.getStatusIcon()); // tick"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 17
+    }
+  },
+  {
+    "path": "text-ui-test/data/duke.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "[T][✘] borrow book[T][✘] borrow book[D][✘] return book (by: Sunday)[T][✘] borrow book[D][✘] return book (by: Sunday)[E][✘] project meeting (at: Mon 2-4pm)[T][✘] borrow book[D][✘] return book (by: Sunday)[E][✘] project meeting (at: Mon 2-4pm)[T][✓] borrow book[D][✘] return book (by: Sunday)[E][✘] project meeting (at: Mon 2-4pm)[T][✓] borrow book[D][✓] return book (by: Sunday)[E][✘] project meeting (at: Mon 2-4pm)[T][✓] borrow book[D][✓] return book (by: Sunday)[E][✘] project meeting (at: Mon 2-4pm)[T][✓] borrow book[E][✘] project meeting (at: Mon 2-4pm)[T][✓] borrow book[E][✘] project meeting (at: Mon 2-4pm)"
+      }
+    ],
+    "authorContributionMap": {
+      "zeling595": 1
     }
   },
   {
@@ -1843,14 +7123,14 @@
         "author": {
           "gitId": "zeling595"
         },
-        "content": "deadline return book /by Sunday"
+        "content": "deadline return book /by 2020-12-15"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "zeling595"
         },
-        "content": "event project meeting /at Mon 2-4pm"
+        "content": "event project meeting /at 2020-10-15"
       },
       {
         "lineNumber": 4,
@@ -1893,10 +7173,38 @@
           "gitId": "zeling595"
         },
         "content": "list"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "todo exercise"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "deadline LCC essay /by 2020/09/24"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "event judo competition /at 2020-11-23"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "zeling595"
+        },
+        "content": "date 2020-09-24"
       }
     ],
     "authorContributionMap": {
-      "zeling595": 9
+      "zeling595": 13
     }
   },
   {

@@ -1,5 +1,28 @@
 [
   {
+    "path": "output/production/ip/data/duke.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "T\u003e1\u003et2"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "D\u003e0\u003ed1\u003e20/12/2020 1200"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 2
+    }
+  },
+  {
     "path": "src/main/java/Duke.java",
     "fileType": "java",
     "lines": [
@@ -8,1080 +31,303 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "import Task.*;"
+        "content": "import command.Command;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import exception.DukeException;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "import parser.Parser;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
+        "content": "import storage.Storage;"
       },
       {
         "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
         "author": {
           "gitId": "-"
         },
         "content": "public class Duke {"
       },
       {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static final String LINE \u003d \"_______________________________________\\n\";"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
         "lineNumber": 9,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public static void main(String[] args) throws DukeException {"
+        "content": "    public static Storage storage;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        // Opening"
+        "content": "    public static TaskList taskList;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        String open \u003d \"_______________________________________ \\n\""
+        "content": "    public static Ui ui;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                + \"Hello! I\u0027m Duke \\n\""
+        "content": "    public static boolean exit;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                + \"What can I do for you? \\n\""
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                + \"You can type \u0027help\u0027 to view commands \\n\""
+        "content": "    public Duke(String filePath){"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                + \"_______________________________________ \\n\";"
+        "content": "        this.ui \u003d new Ui();"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        System.out.println(open);"
+        "content": "        this.storage \u003d new Storage(filePath);"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
+        "content": "        try {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        Scanner scanner \u003d new Scanner(System.in);"
+        "content": "            this.taskList \u003d new TaskList(this.storage.load());"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        boolean running \u003d true;"
+        "content": "        } catch (DukeException e) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        while(running) {"
+        "content": "            this.taskList \u003d new TaskList();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            String userInput \u003d scanner.nextLine();"
+        "content": "        }"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            String[] inputSplit \u003d userInput.split(\" \", 2);"
+        "content": "    }"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            String userCommand \u003d inputSplit[0];"
+        "content": "    "
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            try {"
+        "content": "        ui.welcome();"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                if (userCommand.equals(\"bye\")) {  // For exiting the program"
+        "content": "        this.exit \u003d false;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                    running \u003d false;"
+        "content": "        while(!exit) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                } else if (userCommand.equals(\"list\")) {  // For viewing items in to do list"
+        "content": "            try {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                    handleList();"
+        "content": "                String userInput \u003d ui.getUserInput();"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                } else if (userCommand.equals(\"done\")) {  // For marking items in the to do list as done"
+        "content": "                Command command \u003d Parser.parse(userInput);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                    try {"
+        "content": "                command.execute(this.taskList, this.ui, this.storage);"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                        handleDone(inputSplit[1]);"
+        "content": "                this.exit \u003d command.isExit();"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                    } catch (ArrayIndexOutOfBoundsException e) {"
+        "content": "            } catch (DukeException e) {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                        System.out.println(LINE + \"Invalid input! Please specify which task you have completed! \\n\" + LINE);"
+        "content": "                System.out.println(e.getMessage());"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                    }"
+        "content": "            }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                } else if (userCommand.equals(\"todo\")) { // Add new to do task"
+        "content": "        }"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                    try {"
+        "content": "    }"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                        handleTodo(inputSplit[1]);"
+        "content": ""
       },
       {
         "lineNumber": 39,
         "author": {
-          "gitId": "chshen1998"
+          "gitId": "-"
         },
-        "content": "                    } catch (ArrayIndexOutOfBoundsException e) {"
+        "content": "    public static void main(String[] args) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "                        System.out.println(LINE + \"Invalid input! Please specify your todo description! \\n\" + LINE);"
+        "content": "        new Duke(\"data/duke.txt\").run();"
       },
       {
         "lineNumber": 41,
         "author": {
-          "gitId": "chshen1998"
+          "gitId": "-"
         },
-        "content": "                    }"
+        "content": "    }"
       },
       {
         "lineNumber": 42,
         "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                } else if (userCommand.equals(\"deadline\")) { // Add new deadline"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    try {"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                        handleDeadline(inputSplit[1]);"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    } catch (ArrayIndexOutOfBoundsException e) {"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                        System.out.println(LINE + \"Invalid input! Please specify your deadline description and details! \\n\" + LINE);"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                } else if (userCommand.equals(\"event\")) { // Add new event"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    try {"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                        handleEvent(inputSplit[1]);"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    } catch (ArrayIndexOutOfBoundsException e) {"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                        System.out.println(LINE + \"Invalid input! Please specify your event description and details! \\n\" + LINE);"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                } else if (userCommand.equals(\"delete\")) { // Delete task"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    try {"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                        handleDelete(inputSplit[1]);"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    } catch (ArrayIndexOutOfBoundsException e) {"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                        System.out.println(LINE + \"Invalid input! Please specify which task you want to delete! \\n\" + LINE);"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                } else if (userCommand.equals(\"help\")) { // Additional help feature"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    handleHelp();"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    System.out.println(LINE + \"Invalid input! Please try again! \\n\" + LINE);"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            } catch (DukeException e) {"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                System.out.println(e.getMessage());"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        // Closing"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        scanner.close();"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String close \u003d \"_______________________________________ \\n\""
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"Goodbye! See you soon! \\n\""
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"_______________________________________ \\n\";"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        System.out.println(close);"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static void handleList() {"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String output \u003d \"\";"
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        for (int i \u003d 1; i \u003c\u003d taskList.size(); i++) {"
-      },
-      {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            output \u003d output + i + \". \" + taskList.get(i - 1) + \"\\n\";"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 85,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        System.out.println(LINE + \"Here are the tasks in your list: \\n\" + output + LINE);"
-      },
-      {
-        "lineNumber": 86,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 88,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static void handleDone(String taskIdString) throws DukeException {"
-      },
-      {
-        "lineNumber": 89,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        int taskId \u003d Integer.parseInt(taskIdString);"
-      },
-      {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        if (taskId \u003c\u003d 0 || taskId \u003e taskList.size()) {"
-      },
-      {
-        "lineNumber": 91,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            throw new DukeException(LINE + \"Invalid input! That task does not exist! \\n\" + LINE);"
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        } else {"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            taskList.get(taskId - 1).setCompleted();"
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            System.out.println(LINE + \"Nice! I\u0027ve marked this task as done: \\n\""
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    + taskList.get(taskId - 1) + \"\\n\" + LINE);"
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static void handleDelete(String taskIdString) {"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        int taskId \u003d Integer.parseInt(taskIdString);"
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        if (taskId \u003c\u003d0 || taskId \u003e taskList.size()) {"
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            System.out.println(LINE + \"Invalid input! That task does not exist! \\n\" + LINE);"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        } else {"
-      },
-      {
-        "lineNumber": 104,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            int new_size \u003d taskList.size() - 1;"
-      },
-      {
-        "lineNumber": 105,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            System.out.println(LINE + \"Noted! I\u0027ve deleted this task: \\n\""
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    + taskList.get(taskId - 1) + \"\\n\""
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    + \"Now you have \" + new_size + \" tasks in the list.\""
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                    + \"\\n\" + LINE);"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            taskList.remove(taskId - 1);"
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 112,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 113,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static void handleTodo(String todoDescription) {"
-      },
-      {
-        "lineNumber": 114,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        taskList.add(new ToDo(todoDescription));"
-      },
-      {
-        "lineNumber": 115,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String output \u003d LINE + \"Got it. I\u0027ve added this task: \\n\""
-      },
-      {
-        "lineNumber": 116,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + taskList.get(taskList.size() - 1) + \"\\n\""
-      },
-      {
-        "lineNumber": 117,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"Now you have \" + taskList.size() + \" tasks in the list.\""
-      },
-      {
-        "lineNumber": 118,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"\\n\" + LINE;"
-      },
-      {
-        "lineNumber": 119,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        System.out.println(output);"
-      },
-      {
-        "lineNumber": 120,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 121,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static void handleDeadline(String deadlineDetails) {"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String[] details \u003d deadlineDetails.split(\" /by \", 2);"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        taskList.add(new Deadline(details[0], details[1]));"
-      },
-      {
-        "lineNumber": 125,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String output \u003d LINE + \"Got it. I\u0027ve added this task: \\n\""
-      },
-      {
-        "lineNumber": 126,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + taskList.get(taskList.size() - 1) + \"\\n\""
-      },
-      {
-        "lineNumber": 127,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"Now you have \" + taskList.size() + \" tasks in the list.\""
-      },
-      {
-        "lineNumber": 128,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"\\n\" + LINE;"
-      },
-      {
-        "lineNumber": 129,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        System.out.println(output);"
-      },
-      {
-        "lineNumber": 130,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 131,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 132,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static void handleEvent(String eventDetails) {"
-      },
-      {
-        "lineNumber": 133,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String[] details \u003d eventDetails.split(\" /at \", 2);"
-      },
-      {
-        "lineNumber": 134,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        taskList.add(new Event(details[0], details[1]));"
-      },
-      {
-        "lineNumber": 135,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String output \u003d LINE + \"Got it. I\u0027ve added this task: \\n\""
-      },
-      {
-        "lineNumber": 136,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + taskList.get(taskList.size() - 1) + \"\\n\""
-      },
-      {
-        "lineNumber": 137,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"Now you have \" + taskList.size() + \" tasks in the list.\""
-      },
-      {
-        "lineNumber": 138,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"\\n\" + LINE;"
-      },
-      {
-        "lineNumber": 139,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        System.out.println(output);"
-      },
-      {
-        "lineNumber": 140,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 141,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 142,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public static void handleHelp() {"
-      },
-      {
-        "lineNumber": 143,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String output \u003d LINE  + \"These are my available commands: \\n\""
-      },
-      {
-        "lineNumber": 144,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"list: View entire list of task \\n\""
-      },
-      {
-        "lineNumber": 145,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"todo \u003cdesciption\u003e: Add new todo to list \\n\""
-      },
-      {
-        "lineNumber": 146,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"deadline \u003cdescription\u003e /by \u003cdate/time\u003e: Add new deadline to list \\n\""
-      },
-      {
-        "lineNumber": 147,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"event \u003cdescription\u003e /at \u003cdate/time\u003e: Add new event to list \\n\""
-      },
-      {
-        "lineNumber": 148,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"done \u003ctask id\u003e: Sets task as completed \\n\""
-      },
-      {
-        "lineNumber": 149,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"delete \u003ctask id\u003e: Deletes task from list \\n\""
-      },
-      {
-        "lineNumber": 150,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "                + \"bye: Exits program \\n\" + LINE;"
-      },
-      {
-        "lineNumber": 151,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        System.out.println(output);"
-      },
-      {
-        "lineNumber": 152,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 153,
-        "author": {
           "gitId": "-"
         },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "chshen1998": 149,
+      "chshen1998": 38,
       "-": 4
     }
   },
   {
-    "path": "src/main/java/DukeException.java",
+    "path": "src/main/java/command/ByeCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -1089,79 +335,28 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "public class DukeException extends Exception {"
+        "content": "package command;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
+        "content": "import tasklist.TaskList;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public DukeException(String errorMessage) {"
+        "content": "import ui.Ui;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        super(errorMessage);"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "chshen1998": 6
-    }
-  },
-  {
-    "path": "src/main/java/Task/Deadline.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "package Task;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "public class Deadline extends Task {"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    protected String by;"
+        "content": "import storage.Storage;"
       },
       {
         "lineNumber": 5,
@@ -1175,101 +370,87 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public Deadline(String description, String by) {"
+        "content": "public class ByeCommand extends Command {"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        super(description);"
+        "content": "    public ByeCommand(){}"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        this.by \u003d by;"
+        "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    }"
+        "content": "    @Override"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public String toString() {"
+        "content": "        ui.goodbye();"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        String icon;"
+        "content": "    }"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        if (this.completed) {"
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            icon \u003d \"[\" + \"\\u2713\" + \"]\";"
+        "content": "    @Override"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        } else {"
+        "content": "    public boolean isExit() {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            icon \u003d \"[\" + \"\\u2718\" + \"]\";"
+        "content": "        return true;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        return \"[D]\" + icon + \" \" + this.description + \" (by: \" + this.by + \")\";"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "chshen1998"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 20,
+        "lineNumber": 18,
         "author": {
           "gitId": "chshen1998"
         },
@@ -1277,11 +458,11 @@
       }
     ],
     "authorContributionMap": {
-      "chshen1998": 20
+      "chshen1998": 18
     }
   },
   {
-    "path": "src/main/java/Task/Event.java",
+    "path": "src/main/java/command/Command.java",
     "fileType": "java",
     "lines": [
       {
@@ -1289,184 +470,35 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "package Task;"
+        "content": "package command;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
+        "content": "import exception.DukeException;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "public class Event extends Task {"
+        "content": "import tasklist.TaskList;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    protected String at;"
+        "content": "import ui.Ui;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public Event(String description, String at) {"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        this.at \u003d at;"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        String icon;"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        if (this.completed) {"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            icon \u003d \"[\" + \"\\u2713\" + \"]\";"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        } else {"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "            icon \u003d \"[\" + \"\\u2718\" + \"]\";"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "        return \"[E]\" + icon + \" \" + this.description + \" (at: \" + this.at + \")\";"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "chshen1998": 20
-    }
-  },
-  {
-    "path": "src/main/java/Task/Task.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "package Task;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "public class Task {"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    protected String description;"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "chshen1998"
-        },
-        "content": "    protected boolean completed;"
+        "content": "import storage.Storage;"
       },
       {
         "lineNumber": 6,
@@ -1480,28 +512,28 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public Task(String description) {"
+        "content": "public abstract class Command {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        this.description \u003d description;"
+        "content": "    public Command(){}"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        this.completed \u003d false;"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    }"
+        "content": "    public abstract void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException;"
       },
       {
         "lineNumber": 11,
@@ -1515,84 +547,1573 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public String toString() {"
+        "content": "    public abstract boolean isExit();"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        String icon;"
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 13
+    }
+  },
+  {
+    "path": "src/main/java/command/DeadlineCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import storage.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import task.Deadline;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class DeadlineCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String deadlineDetails;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public DeadlineCommand(String deadlineDetails) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.deadlineDetails \u003d deadlineDetails;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        if (completed) {"
+        "content": "    }"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            icon \u003d \"[\" + \"\\u2713\" + \"]\";"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        } else {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            icon \u003d \"[\" + \"\\u2718\" + \"]\";"
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        }"
+        "content": "        try {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        return icon + \" \" + description;"
+        "content": "            String[] details \u003d this.deadlineDetails.split(\" /by \", 2);"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    }"
+        "content": "            Deadline newDeadline \u003d new Deadline(details[0], details[1], false);"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": ""
+        "content": "            taskList.add(newDeadline);"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public void setCompleted() {"
+        "content": "            String output \u003d ui.LINE + \"Got it. I\u0027ve added this task: \\n\""
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        this.completed \u003d true;"
+        "content": "                    + taskList.get(taskList.size() - 1) + \"\\n\""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + \"Now you have \" + taskList.size() + \" tasks in the list.\""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + \"\\n\" + ui.LINE;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            System.out.println(output);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            storage.save(taskList);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(ui.LINE + \"Invalid input! Please specify your deadline description and details! \\n\" + ui.LINE);        }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 36
+    }
+  },
+  {
+    "path": "src/main/java/command/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import storage.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String taskIdString;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public DeleteCommand(String taskIdString) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.taskIdString \u003d taskIdString;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            int taskId \u003d Integer.parseInt(taskIdString);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            if (taskId \u003c\u003d 0 || taskId \u003e taskList.size()) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                System.out.println(ui.LINE + \"Invalid input! That task does not exist! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                int new_size \u003d taskList.size() - 1;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                System.out.println(ui.LINE + \"Noted! I\u0027ve deleted this task: \\n\""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        + taskList.get(taskId - 1) + \"\\n\""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        + \"Now you have \" + new_size + \" tasks in the list.\""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        + \"\\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                taskList.delete(taskId - 1);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            storage.save(taskList);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(ui.LINE + \"Invalid input! Please specify which task you want to delete! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 39
+    }
+  },
+  {
+    "path": "src/main/java/command/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import storage.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class DoneCommand extends Command {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String taskIdString;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public DoneCommand(String taskIdString) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.taskIdString \u003d taskIdString;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            int taskId \u003d Integer.parseInt(this.taskIdString);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            if (taskId \u003c\u003d 0 || taskId \u003e taskList.size()) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                throw new DukeException(ui.LINE + \"Invalid input! That task does not exist! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                taskList.get(taskId - 1).setCompleted();"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                System.out.println(ui.LINE + \"Nice! I\u0027ve marked this task as done: \\n\""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        + taskList.get(taskId - 1) + \"\\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            storage.save(taskList);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(ui.LINE + \"Invalid input! Please specify which task you have completed! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 36
+    }
+  },
+  {
+    "path": "src/main/java/command/EventCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import storage.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import task.Event;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class EventCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String eventDetails;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public EventCommand(String eventDetails) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.eventDetails \u003d eventDetails;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            String[] details \u003d this.eventDetails.split(\" /at \", 2);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            Event newEvent \u003d new Event(details[0], details[1], false);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            taskList.add(newEvent);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            String output \u003d ui.LINE + \"Got it. I\u0027ve added this task: \\n\""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + taskList.get(taskList.size() - 1) + \"\\n\""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + \"Now you have \" + taskList.size() + \" tasks in the list.\""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + \"\\n\" + ui.LINE;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            System.out.println(output);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            storage.save(taskList);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(ui.LINE + \"Invalid input! Please specify your event description and details! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 37
+    }
+  },
+  {
+    "path": "src/main/java/command/FilterCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import storage.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class FilterCommand extends Command {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String date;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public FilterCommand(String date) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.date \u003d date;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            String output \u003d \"\";"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            String[] dateSplit \u003d date.split(\"/\", 3);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            String reformatedDate \u003d dateSplit[2] + \"-\" + dateSplit[1] + \"-\" + dateSplit[0];"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            LocalDate filterDate \u003d LocalDate.parse(reformatedDate);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            for (int i \u003d 1; i \u003c\u003d taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                if (taskList.get(i - 1).isDate(filterDate)) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    output \u003d output + i + \". \" + taskList.get(i - 1) + \"\\n\";"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            System.out.println(ui.LINE + \"Here are your task due on \""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + filterDate.format(DateTimeFormatter.ofPattern(\"MMM d yyy\")) + \": \\n\" + output + ui.LINE);"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(ui.LINE + \"Invalid input! Please enter a valid date! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(ui.LINE + \"Invalid input! Please specify which date you want to filter! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 44
+    }
+  },
+  {
+    "path": "src/main/java/command/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import command.Command;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import storage.Storage;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public ListCommand() {}"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String output \u003d \"\";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        for (int i \u003d 1; i \u003c\u003d taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            output \u003d output + i + \". \" + taskList.get(i - 1) + \"\\n\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        System.out.println(ui.LINE + \"Here are the tasks in your list: \\n\" + output + ui.LINE);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
       },
       {
         "lineNumber": 24,
@@ -1614,7 +2135,7 @@
     }
   },
   {
-    "path": "src/main/java/Task/ToDo.java",
+    "path": "src/main/java/command/TodoCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -1622,7 +2143,7 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "package Task;"
+        "content": "package command;"
       },
       {
         "lineNumber": 2,
@@ -1636,7 +2157,1892 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "import Task.Task;"
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import storage.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import task.ToDo;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import ui.Ui;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class TodoCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String todoDetails;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public TodoCommand(String todoDetails) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.todoDetails \u003d todoDetails;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            ToDo newToDo \u003d new ToDo(this.todoDetails, false);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            taskList.add(newToDo);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            String output \u003d ui.LINE + \"Got it. I\u0027ve added this task: \\n\""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + taskList.get(taskList.size() - 1) + \"\\n\""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + \"Now you have \" + taskList.size() + \" tasks in the list.\""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + \"\\n\" + ui.LINE;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            System.out.println(output);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            storage.save(taskList);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(ui.LINE + \"Invalid input! Please specify your todo description! \\n\" + ui.LINE);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 35
+    }
+  },
+  {
+    "path": "src/main/java/data/duke.txt",
+    "fileType": "txt",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "T\u003e1\u003et2"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "D\u003e0\u003ed1\u003e20/12/2020 1200"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 2
+    }
+  },
+  {
+    "path": "src/main/java/exception/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package exception;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public DukeException(String errorMessage) {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        super(errorMessage);"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 8
+    }
+  },
+  {
+    "path": "src/main/java/parser/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package parser;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import command.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public static final String LINE \u003d \"_______________________________________\\n\";"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public static Command parse(String userInput) throws DukeException {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String[] inputSplit \u003d userInput.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String userCommand \u003d inputSplit[0];"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        if (userCommand.equals(\"bye\")) {  // For exiting the program"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return new ByeCommand();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else if (userCommand.equals(\"list\")) {  // For viewing items in to do list"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return new ListCommand();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else if (userCommand.equals(\"done\")) {  // For marking items in the to do list as done"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return new DoneCommand(inputSplit[1]);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else if (userCommand.equals(\"todo\")) { // Add new to do task"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return new TodoCommand(inputSplit[1]);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else if (userCommand.equals(\"deadline\")) { // Add new deadline"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return new DeadlineCommand(inputSplit[1]);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else if (userCommand.equals(\"event\")) { // Add new event"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return new EventCommand(inputSplit[1]);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else if (userCommand.equals(\"delete\")) { // Delete task"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return new DeleteCommand(inputSplit[1]);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else if (userCommand.equals(\"filter\")) { // Filter taskList"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                return new FilterCommand(inputSplit[1]);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(LINE + \"Invalid command! \\n\" + LINE);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 32
+    }
+  },
+  {
+    "path": "src/main/java/storage/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package storage;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import exception.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import task.*;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import tasklist.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public static File file;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public Storage(String filePath) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        file \u003d new File(\"src/main/java/data/duke.txt\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public ArrayList\u003cTask\u003e load() throws DukeException {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        ArrayList\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            if (!file.exists()) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                file.getParentFile().mkdirs();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                file.createNewFile();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                Scanner fileScanner \u003d new Scanner(file);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                while (fileScanner.hasNext()) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    String task \u003d fileScanner.nextLine();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    String[] taskSplit \u003d task.split(\"\u003e\", 4);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    String taskType \u003d taskSplit[0];"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    boolean taskIsDone \u003d taskSplit[1].equals(\"1\") ? true : false;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    String taskDescription \u003d taskSplit[2];"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    if (taskType.equals(\"T\")) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        taskList.add(new ToDo(taskDescription, taskIsDone));"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    } else if (taskType.equals(\"D\")) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        String taskBy \u003d taskSplit[3];"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        taskList.add(new Deadline(taskDescription, taskBy, taskIsDone));"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    } else {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        String taskAt \u003d taskSplit[3];"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                        taskList.add(new Event(taskDescription, taskAt, taskIsDone));"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                fileScanner.close();"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(\"Error loading file!\");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return taskList;"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void save(TaskList taskList) throws DukeException {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            FileWriter writer \u003d new FileWriter(file);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            for (int i \u003d 0; i \u003c taskList.size(); i++) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                Task task \u003d taskList.get(i);"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                writer.write(task.toEncoding() + System.lineSeparator());"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            writer.close();"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            throw new DukeException(\"Error saving file!\");"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 64
+    }
+  },
+  {
+    "path": "src/main/java/task/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    protected String by;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    protected LocalDateTime byDateTime;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public Deadline(String description, String by, boolean isDone) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            this.byDateTime \u003d LocalDateTime.parse(reformatedDateTime());"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            System.out.println(\"Invalid input! Enter appropriate date and time format\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String icon \u003d this.completed ? \"[\" + \"\\u2713\" + \"]\" : \"[\" + \"\\u2718\" + \"]\";"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        if (this.byDateTime \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return \"[D]\" + icon + \" \" + this.description + \" (by: \" + this.by + \")\";"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return \"[D]\" + icon + \" \" + this.description + \" (by: \""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + this.byDateTime.format(DateTimeFormatter.ofPattern(\"MMM d yyy HH:mm\")) + \")\";"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public String toEncoding() {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        int completedBinary \u003d this.completed ? 1 : 0;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return \"D\u003e\" + completedBinary + \"\u003e\" + this.description + \"\u003e\" + this.by;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String reformatedDateTime() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String[] bySplit \u003d this.by.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String date \u003d bySplit[0];"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String[] dateSplit \u003d date.split(\"/\", 3);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String time \u003d bySplit[1];"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String hour \u003d time.substring(0, 2);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String minute \u003d time.substring(2);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return dateSplit[2] + \"-\" + dateSplit[1] + \"-\" + dateSplit[0] + \"T\" + hour + \":\" + minute + \":00\";"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isDate(LocalDate dateFilter) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return this.byDateTime.toLocalDate().equals(dateFilter);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 49
+    }
+  },
+  {
+    "path": "src/main/java/task/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.format.DateTimeParseException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    protected String at;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    protected LocalDateTime atDateTime;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public Event(String description, String at, boolean isDone) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.at \u003d at;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            this.atDateTime \u003d LocalDateTime.parse(reformatedDateTime());"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            System.out.println(\"Invalid input! Enter appropriate date and time format\");"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String icon \u003d this.completed ? \"[\" + \"\\u2713\" + \"]\" : \"[\" + \"\\u2718\" + \"]\";"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        if (atDateTime \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return \"[E]\" + icon + \" \" + this.description + \" (at: \" + this.at + \")\";"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "            return \"[E]\" + icon + \" \" + this.description + \" (at: \""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                    + this.atDateTime.format(DateTimeFormatter.ofPattern(\"MMM d yyyy HH:mm\")) + \")\";"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public String toEncoding() {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        int completedBinary \u003d this.completed ? 1 : 0;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return \"E\u003e\" + completedBinary + \"\u003e\" + this.description + \"\u003e\" + this.at;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private String reformatedDateTime() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String[] bySplit \u003d this.at.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String date \u003d bySplit[0];"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String[] dateSplit \u003d date.split(\"/\", 3);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String time \u003d bySplit[1];"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String hour \u003d time.substring(0, 2);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String minute \u003d time.substring(2);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return dateSplit[2] + \"-\" + dateSplit[1] + \"-\" + dateSplit[0] + \"T\" + hour + \":\" + minute + \":00\";"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isDate(LocalDate dateFilter) {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return this.atDateTime.toLocalDate().equals(dateFilter);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 49
+    }
+  },
+  {
+    "path": "src/main/java/task/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public abstract class Task {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    protected boolean completed;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public Task(String description, boolean isDone) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.completed \u003d isDone;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void setCompleted() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.completed \u003d true;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public abstract String toEncoding();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public abstract boolean isDate(LocalDate dateFilter);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 20
+    }
+  },
+  {
+    "path": "src/main/java/task/ToDo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 4,
@@ -1664,14 +4070,14 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "    public ToDo(String description) {"
+        "content": "    public ToDo(String description, boolean isDone) {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        super(description);"
+        "content": "        super(description, isDone);"
       },
       {
         "lineNumber": 9,
@@ -1699,49 +4105,49 @@
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        String icon;"
+        "content": "        String icon \u003d this.completed ? \"[\" + \"\\u2713\" + \"]\" : \"[\" + \"\\u2718\" + \"]\";"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        if (this.completed) {"
+        "content": "        return \"[T]\" + icon + \" \" + this.description;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            icon \u003d \"[\" + \"\\u2713\" + \"]\";"
+        "content": "    }"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        } else {"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "            icon \u003d \"[\" + \"\\u2718\" + \"]\";"
+        "content": "    public String toEncoding() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        }"
+        "content": "        int completedBinary \u003d this.completed ? 1 : 0;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "chshen1998"
         },
-        "content": "        return \"[T]\" + icon + \" \" + this.description;"
+        "content": "        return \"T\u003e\" + completedBinary + \"\u003e\" + this.description;"
       },
       {
         "lineNumber": 19,
@@ -1755,11 +4161,505 @@
         "author": {
           "gitId": "chshen1998"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public boolean isDate(LocalDate dateFilter) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "chshen1998": 20
+      "chshen1998": 24
+    }
+  },
+  {
+    "path": "src/main/java/tasklist/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package tasklist;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import task.Task;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public ArrayList\u003cTask\u003e taskList;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public TaskList() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.taskList \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public TaskList(ArrayList\u003cTask\u003e taskList) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.taskList \u003d taskList;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void add(Task newTask) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.taskList.add(newTask);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void delete(int taskId) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.taskList.remove(taskId);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public Task get(int taskId) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return this.taskList.get(taskId);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public int size() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return this.taskList.size();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 33
+    }
+  },
+  {
+    "path": "src/main/java/ui/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "package ui;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public static final String LINE \u003d \"_______________________________________\\n\";"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    private Scanner scanner;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public Ui() {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.scanner \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public String getUserInput() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        return this.scanner.nextLine();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void welcome() {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String open \u003d \"_______________________________________ \\n\""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                + \"Hello! I\u0027m Duke \\n\""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                + \"What can I do for you? \\n\""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                + \"_______________________________________ \\n\";"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        System.out.println(open);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    public void goodbye() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        String close \u003d \"_______________________________________ \\n\""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                + \"Goodbye! See you soon! \\n\""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "                + \"_______________________________________ \\n\";"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        System.out.println(close);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "        this.scanner.close();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "chshen1998"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "chshen1998": 31
     }
   },
   {

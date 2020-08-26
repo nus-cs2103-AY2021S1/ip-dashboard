@@ -8,1319 +8,1781 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "import java.time.format.DateTimeFormatterBuilder;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "public class Alice {"
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private static final String PROMPT \u003d \" \u003e \";"
+        "content": "import java.time.temporal.ChronoField;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private static final String DIVIDER \u003d \"____________________________________________________________\\n\";"
+        "content": "import java.util.*;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private final ArrayList\u003cTask\u003e tasks;"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "public class Alice {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public Alice() {"
+        "content": "    private static final String PROMPT \u003d \" \u003e \";"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        tasks \u003d new ArrayList\u003c\u003e();"
+        "content": "    private static final String DIVIDER \u003d \"____________________________________________________________\\n\";"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "    private ArrayList\u003cTask\u003e tasks;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    private final Storage storage;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public boolean canContinue(String input) {"
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        String[] arr \u003d input.split(\" \", 2);"
+        "content": "    public Alice(String filePath) {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        try {"
+        "content": "        storage \u003d new Storage(filePath);"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            Command cmd \u003d Command.getCommandType(arr[0]);"
+        "content": "        try {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            if (cmd \u003d\u003d Command.BYE) {"
+        "content": "            // Read stored data"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                System.out.println(sayGoodbye());"
+        "content": "            tasks \u003d storage.load();"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                return false;"
+        "content": "        } catch (AliceException ex) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            }"
+        "content": "            tasks \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            if (arr.length \u003d\u003d 1) {"
+        "content": "            System.out.print(ex.getMessage() + \"\\n\" + DIVIDER);"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                System.out.print(frameOutput(processCommand(cmd, \"\")) + PROMPT);"
+        "content": "        } finally {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                return true;"
+        "content": "            System.out.print(greet());"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            }"
+        "content": "        }"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            System.out.print(frameOutput(processCommand(cmd, arr[1])) + PROMPT);"
+        "content": "    }"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return true;"
+        "content": ""
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } catch (AliceException ex) {"
+        "content": "    public boolean canContinue(String input) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            System.out.print(frameOutput(ex.getMessage()) + PROMPT);"
+        "content": "        String[] arr \u003d input.split(\" \", 2);"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return true;"
+        "content": "        try {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "            Command cmd \u003d Command.getCommandType(arr[0]);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "            if (cmd \u003d\u003d Command.BYE) {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "                System.out.println(sayGoodbye());"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String processCommand(Command cmd, String params) throws AliceException {"
+        "content": "                return false;"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        if (cmd \u003d\u003d Command.LIST \u0026\u0026 params.isBlank()) {"
+        "content": "            }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Display task list"
+        "content": "            if (arr.length \u003d\u003d 1) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return getTaskList();"
+        "content": "                System.out.print(frameOutput(processCommand(cmd, \"\")) + PROMPT);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (cmd \u003d\u003d Command.HELP) {"
+        "content": "                return true;"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Get help"
+        "content": "            }"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return Command.getCommandList();"
+        "content": "            System.out.print(frameOutput(processCommand(cmd, arr[1])) + PROMPT);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (cmd \u003d\u003d Command.DONE) {"
+        "content": "            return true;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Mark as done"
+        "content": "        } catch (AliceException ex) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return markTaskAsDone(params);"
+        "content": "            System.out.print(frameOutput(ex.getMessage()) + PROMPT);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (cmd \u003d\u003d Command.DELETE) {"
+        "content": "            return true;"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Delete"
+        "content": "        }"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return deleteTask(params);"
+        "content": "    }"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (cmd \u003d\u003d Command.TODO) {"
+        "content": ""
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Add to-do"
+        "content": "    private String processCommand(Command cmd, String params) throws AliceException {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return addTodo(params);"
+        "content": "        if (cmd \u003d\u003d Command.LIST \u0026\u0026 params.isBlank()) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (cmd \u003d\u003d Command.DEADLINE) {"
+        "content": "            // Display task list"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Add deadline"
+        "content": "            return getTaskList();"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return addDeadline(params);"
+        "content": "        } else if (cmd \u003d\u003d Command.CLEAR) {"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (cmd \u003d\u003d Command.EVENT) {"
+        "content": "            // clear tasklist"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Add event"
+        "content": "            tasks.clear();"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return addEvent(params);"
+        "content": "            storage.save(tasks);"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (cmd \u003d\u003d Command.EMPTY) {"
+        "content": "            return \"Task list successfully cleared!\";"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Empty command"
+        "content": "        } else if (cmd \u003d\u003d Command.HELP) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"Please give me something to do. T_T\");"
+        "content": "            // Get help"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else {"
+        "content": "            return Command.getCommandList();"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Invalid command"
+        "content": "        } else if (cmd \u003d\u003d Command.DONE) {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"That command is not in my dictionary!\");"
+        "content": "            // Mark as done"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "            return markTaskAsDone(params);"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "        } else if (cmd \u003d\u003d Command.DELETE) {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "            // Delete"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String markTaskAsDone(String s_index) throws AliceException {"
+        "content": "            return deleteTask(params);"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        try {"
+        "content": "        } else if (cmd \u003d\u003d Command.TODO) {"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            int index \u003d Integer.parseInt(s_index) - 1;"
+        "content": "            // Add to-do"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            tasks.get(index).markAsDone();"
+        "content": "            return addTodo(params);"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return \"Great work! I\u0027ve marked this task as done:\\n    \" + tasks.get(index);"
+        "content": "        } else if (cmd \u003d\u003d Command.DEADLINE) {"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } catch (NumberFormatException e) {"
+        "content": "            // Add deadline"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"That is not a valid number.\");"
+        "content": "            return addDeadline(params);"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": "        } else if (cmd \u003d\u003d Command.EVENT) {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"That task number is not in the list.\");"
+        "content": "            // Add event"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "            return addEvent(params);"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "        } else if (cmd \u003d\u003d Command.EMPTY) {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "            // Empty command"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String deleteTask(String s_index) throws AliceException {"
+        "content": "            throw new AliceException(\"Please give me something to do. T_T\");"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        try {"
+        "content": "        } else {"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            int index \u003d Integer.parseInt(s_index) - 1;"
+        "content": "            // Invalid command"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            Task removed \u003d tasks.remove(index);"
+        "content": "            throw new AliceException(\"That command is not in my dictionary!\");"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return \"Roger. I\u0027ve removed this task from your list:\\n    \""
+        "content": "        }"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                    + removed"
+        "content": "    }"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                    + \"\\nNow you have \" + tasks.size() + \" task in your list\";"
+        "content": ""
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } catch (NumberFormatException e) {"
+        "content": "    private String markTaskAsDone(String s_index) throws AliceException {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"That is not a valid number.\");"
+        "content": "        try {"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": "            int index \u003d Integer.parseInt(s_index) - 1;"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"That task number is not in the list.\");"
+        "content": "            tasks.get(index).markAsDone();"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "            storage.save(tasks);"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "            return \"Great work! I\u0027ve marked this task as done:\\n    \" + tasks.get(index);"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "        } catch (NumberFormatException e) {"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String addTodo(String details) throws AliceException {"
+        "content": "            throw new AliceException(\"That is not a valid number.\");"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        if (!details.isBlank()) {"
+        "content": "        } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return addTask(new Todo(details));"
+        "content": "            throw new AliceException(\"That task number is not in the list.\");"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else {"
+        "content": "        }"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"The todo description cannot be left empty.\");"
+        "content": "    }"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "    private String deleteTask(String s_index) throws AliceException {"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "        try {"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String addDeadline(String details) throws AliceException {"
+        "content": "            int index \u003d Integer.parseInt(s_index) - 1;"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        String[] desc_date \u003d details.split(\" /by \", 2);"
+        "content": "            Task removed \u003d tasks.remove(index);"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        if (desc_date.length \u003d\u003d 2 \u0026\u0026 !desc_date[1].isBlank()) {"
+        "content": "            storage.save(tasks);"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return addTask(new Deadline(desc_date[0], desc_date[1]));"
+        "content": "            return \"Roger. I\u0027ve removed this task from your list:\\n    \""
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (details.isBlank()) {"
+        "content": "                    + removed"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Empty description"
+        "content": "                    + \"\\nNow you have \" + tasks.size() + \" task in your list\";"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"The deadline description cannot be left empty.\");"
+        "content": "        } catch (NumberFormatException e) {"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (details.endsWith(\"/by\")) {"
+        "content": "            throw new AliceException(\"That is not a valid number.\");"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Empty date"
+        "content": "        } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"You cannot create an deadline without the date.\");"
+        "content": "            throw new AliceException(\"That task number is not in the list.\");"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else {"
+        "content": "        }"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // No /by marker"
+        "content": "    }"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"I can\u0027t find the date. Did you forget to add \u0027/by\u0027?\");"
+        "content": ""
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "    private static final List\u003cDateTimeFormatter\u003e KNOWN_FORMATS \u003d createDateFormats();"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    private static List\u003cDateTimeFormatter\u003e createDateFormats() {"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String addEvent(String details) throws AliceException {"
+        "content": "        // List of acceptable date time format with optional time/year"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        String[] desc_date \u003d details.split(\" /at \", 2);"
+        "content": "        List\u003cString\u003e knownPatterns \u003d Arrays.asList("
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        if (desc_date.length \u003d\u003d 2 \u0026\u0026 !desc_date[1].isBlank()) {"
+        "content": "                \"d/M[/uuuu][ HHmm]\", \"d-M[-uuuu][ HHmm]\","
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return addTask(new Event(desc_date[0], desc_date[1]));"
+        "content": "                \"M/d[/uuuu][ HHmm]\", \"M-d[-uuuu][ HHmm]\","
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (details.isBlank()) {"
+        "content": "                \"uuuu/M/d[ HHmm]\", \"uuuu-M-d[ HHmm]\","
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Empty event description"
+        "content": "                \"d-MMM[-uuuu][ HHmm]\", \"d MMM[ HHmm]\""
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"The event description cannot be left empty.\");"
+        "content": "        );"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else if (details.endsWith(\"/at\")) {"
+        "content": ""
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // Empty start-end time"
+        "content": "        List\u003cDateTimeFormatter\u003e knownFormats \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"You cannot create an event without the start and end time.\");"
+        "content": "        for (int i \u003d 0; i \u003c knownPatterns.size(); i++) {"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else {"
+        "content": "            knownFormats.add("
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            // No /at marker"
+        "content": "                    new DateTimeFormatterBuilder()"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            throw new AliceException(\"I can\u0027t find the start/end time. Did you forget to add \u0027/at\u0027?\");"
+        "content": "                            .appendPattern(knownPatterns.get(i))"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "                            .parseDefaulting(ChronoField.YEAR, LocalDateTime.now().getYear())"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "                            .parseDefaulting(ChronoField.HOUR_OF_DAY, 0)"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "                            .parseDefaulting(ChronoField.MINUTE_OF_HOUR, 0)"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String addTask(Task t) {"
+        "content": "                            .parseDefaulting(ChronoField.SECOND_OF_MINUTE, 0)"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        tasks.add(t);"
+        "content": "                            .toFormatter()"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return \"Roger. I\u0027ve added the task to your list:\\n    \" + t"
+        "content": "            );"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                + \"\\nNow you have \" + tasks.size() + \" task in your list\";"
+        "content": "        }"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "        return knownFormats;"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String frameOutput(String s) {"
+        "content": ""
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return DIVIDER + s + \"\\n\" + DIVIDER;"
+        "content": "    private LocalDateTime parseDateTime(String dateTimeString) throws AliceException {"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "        for (int i \u003d 0; i \u003c KNOWN_FORMATS.size(); i++) {"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "            try {"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String getTaskList() {"
+        "content": "                return LocalDateTime.parse(dateTimeString, KNOWN_FORMATS.get(i));"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        if (tasks.isEmpty()) {"
+        "content": "            } catch (DateTimeParseException ex) {"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return \"You have no tasks at the moment.\";"
+        "content": "                // ignore"
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        StringBuilder s \u003d new StringBuilder(\"Here are the tasks in your list:\\n\");"
+        "content": ""
       },
       {
         "lineNumber": 146,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+        "content": "        throw new AliceException(\"Invalid datetime! Please use 24h format for time\");"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            s.append(i + 1).append(\". \").append(tasks.get(i));"
+        "content": "    }"
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            if (i \u003c tasks.size() - 1) {"
+        "content": ""
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                s.append(\"\\n\");"
+        "content": "    private String addTodo(String details) throws AliceException {"
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            }"
+        "content": "        if (!details.isBlank()) {"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "            return addTask(new Todo(details));"
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return s.toString();"
+        "content": "        } else {"
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "            throw new AliceException(\"The todo description cannot be left empty.\");"
       },
       {
         "lineNumber": 154,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 155,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public String greet() {"
+        "content": "    }"
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        String logo \u003d \" _____  _     _____ _____  _____\\n\" +"
+        "content": ""
       },
       {
         "lineNumber": 157,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                \"/  _  \\\\| |   |_   _/  __ \\\\|  ___|\\n\" +"
+        "content": "    private String addDeadline(String details) throws AliceException {"
       },
       {
         "lineNumber": 158,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                \"| |_| || |     | | | /  \\\\/| |__\\n\" +"
+        "content": "        String[] desc_date \u003d details.split(\" /by \", 2);"
       },
       {
         "lineNumber": 159,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                \"|  _  || |     | | | |    |  __|\\n\" +"
+        "content": "        if (desc_date.length \u003d\u003d 2 \u0026\u0026 !desc_date[1].isBlank()) {"
       },
       {
         "lineNumber": 160,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                \"| | | || |_____| |_| \\\\__/\\\\| |___\\n\" +"
+        "content": "            String description \u003d desc_date[0];"
       },
       {
         "lineNumber": 161,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                \"\\\\_| |_/\\\\_____/\\\\___/ \\\\____/\\\\____/\\n\";"
+        "content": "            String dateTime \u003d desc_date[1];"
       },
       {
         "lineNumber": 162,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "            LocalDateTime deadlineDt \u003d parseDateTime(dateTime);"
       },
       {
         "lineNumber": 163,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return logo +"
+        "content": "            return addTask(new Deadline(description, deadlineDt));"
       },
       {
         "lineNumber": 164,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                \"\\nHello! I\u0027m Alice\\n\" +"
+        "content": "        } else if (details.isBlank()) {"
       },
       {
         "lineNumber": 165,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                \"How can I help you today?\\n\" +"
+        "content": "            // Empty description"
       },
       {
         "lineNumber": 166,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                DIVIDER + PROMPT;"
+        "content": "            throw new AliceException(\"The deadline description cannot be left empty.\");"
       },
       {
         "lineNumber": 167,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "        } else if (details.endsWith(\"/by\")) {"
       },
       {
         "lineNumber": 168,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "            // Empty date"
       },
       {
         "lineNumber": 169,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public String sayGoodbye() {"
+        "content": "            throw new AliceException(\"You cannot create an deadline without the date.\");"
       },
       {
         "lineNumber": 170,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return frameOutput(\"Goodbye. Hope to see you again soon!\");"
+        "content": "        } else {"
       },
       {
         "lineNumber": 171,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "            // No /by marker"
       },
       {
         "lineNumber": 172,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "            throw new AliceException(\"I can\u0027t find the date. Did you forget to add \u0027/by\u0027?\");"
       },
       {
         "lineNumber": 173,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public static void main(String[] args) {"
+        "content": "        }"
       },
       {
         "lineNumber": 174,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        Alice alice \u003d new Alice();"
+        "content": "    }"
       },
       {
         "lineNumber": 175,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        System.out.print(alice.greet());"
+        "content": ""
       },
       {
         "lineNumber": 176,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    private String addEvent(String details) throws AliceException {"
       },
       {
         "lineNumber": 177,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
+        "content": "        String[] desc_date \u003d details.split(\" /on \", 2);"
       },
       {
         "lineNumber": 178,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "        if (desc_date.length \u003d\u003d 2 \u0026\u0026 !desc_date[1].isBlank()) {"
       },
       {
         "lineNumber": 179,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        String input;"
+        "content": "            String description \u003d desc_date[0];"
       },
       {
         "lineNumber": 180,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        boolean isExiting;"
+        "content": "            String dateTime \u003d desc_date[1];"
       },
       {
         "lineNumber": 181,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        while (sc.hasNextLine()) {"
+        "content": ""
       },
       {
         "lineNumber": 182,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            input \u003d sc.nextLine();"
+        "content": "            LocalDateTime eventDateTime \u003d parseDateTime(dateTime);"
       },
       {
         "lineNumber": 183,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            isExiting \u003d !alice.canContinue(input);"
+        "content": "            return addTask(new Event(description, eventDateTime));"
       },
       {
         "lineNumber": 184,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            if (isExiting) {"
+        "content": "        } else if (details.isBlank()) {"
       },
       {
         "lineNumber": 185,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                return;"
+        "content": "            // Empty event description"
       },
       {
         "lineNumber": 186,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            }"
+        "content": "            throw new AliceException(\"The event description cannot be left empty.\");"
       },
       {
         "lineNumber": 187,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "        } else if (details.endsWith(\"/on\")) {"
       },
       {
         "lineNumber": 188,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "            // Empty start-end time"
       },
       {
         "lineNumber": 189,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"You cannot create an event without the start and end time.\");"
+      },
+      {
+        "lineNumber": 190,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 191,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            // No /on marker"
+      },
+      {
+        "lineNumber": 192,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"I can\u0027t find the date \u0026 time of the event. Did you forget to add \u0027/on\u0027?\");"
+      },
+      {
+        "lineNumber": 193,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 194,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 195,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 196,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private String addTask(Task t) throws AliceException {"
+      },
+      {
+        "lineNumber": 197,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        storage.saveToLastLine(t);"
+      },
+      {
+        "lineNumber": 198,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        tasks.add(t);"
+      },
+      {
+        "lineNumber": 199,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return \"Roger. I\u0027ve added the task to your list:\\n    \" + t"
+      },
+      {
+        "lineNumber": 200,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                + \"\\nNow you have \" + tasks.size() + \" task in your list\";"
+      },
+      {
+        "lineNumber": 201,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 202,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 203,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private String frameOutput(String s) {"
+      },
+      {
+        "lineNumber": 204,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return DIVIDER + s + \"\\n\" + DIVIDER;"
+      },
+      {
+        "lineNumber": 205,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 206,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 207,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private String getTaskList() {"
+      },
+      {
+        "lineNumber": 208,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        if (tasks.isEmpty()) {"
+      },
+      {
+        "lineNumber": 209,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            return \"You have no tasks at the moment.\";"
+      },
+      {
+        "lineNumber": 210,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 211,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 212,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        StringBuilder s \u003d new StringBuilder(\"Here are the tasks in your list:\\n\");"
+      },
+      {
+        "lineNumber": 213,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+      },
+      {
+        "lineNumber": 214,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            s.append(i + 1).append(\". \").append(tasks.get(i));"
+      },
+      {
+        "lineNumber": 215,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            if (i \u003c tasks.size() - 1) {"
+      },
+      {
+        "lineNumber": 216,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                s.append(\"\\n\");"
+      },
+      {
+        "lineNumber": 217,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 218,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 219,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return s.toString();"
+      },
+      {
+        "lineNumber": 220,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 221,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 222,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String greet() {"
+      },
+      {
+        "lineNumber": 223,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        String logo \u003d \" _____  _     _____ _____  _____\\n\" +"
+      },
+      {
+        "lineNumber": 224,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                \"/  _  \\\\| |   |_   _/  __ \\\\|  ___|\\n\" +"
+      },
+      {
+        "lineNumber": 225,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                \"| |_| || |     | | | /  \\\\/| |__\\n\" +"
+      },
+      {
+        "lineNumber": 226,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                \"|  _  || |     | | | |    |  __|\\n\" +"
+      },
+      {
+        "lineNumber": 227,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                \"| | | || |_____| |_| \\\\__/\\\\| |___\\n\" +"
+      },
+      {
+        "lineNumber": 228,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                \"\\\\_| |_/\\\\_____/\\\\___/ \\\\____/\\\\____/\\n\";"
+      },
+      {
+        "lineNumber": 229,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 230,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return logo +"
+      },
+      {
+        "lineNumber": 231,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                \"\\nHello! I\u0027m Alice\\n\" +"
+      },
+      {
+        "lineNumber": 232,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                \"How can I help you today?\\n\" +"
+      },
+      {
+        "lineNumber": 233,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                DIVIDER + PROMPT;"
+      },
+      {
+        "lineNumber": 234,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 235,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 236,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String sayGoodbye() {"
+      },
+      {
+        "lineNumber": 237,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return frameOutput(\"Goodbye. Hope to see you again soon!\");"
+      },
+      {
+        "lineNumber": 238,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 239,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 240,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 241,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        Alice alice \u003d new Alice(\"data/tasks.txt\");"
+      },
+      {
+        "lineNumber": 242,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 243,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        Scanner sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 244,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 245,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        String input;"
+      },
+      {
+        "lineNumber": 246,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        boolean isExiting;"
+      },
+      {
+        "lineNumber": 247,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        while (sc.hasNextLine()) {"
+      },
+      {
+        "lineNumber": 248,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            input \u003d sc.nextLine();"
+      },
+      {
+        "lineNumber": 249,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            isExiting \u003d !alice.canContinue(input);"
+      },
+      {
+        "lineNumber": 250,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            if (isExiting) {"
+      },
+      {
+        "lineNumber": 251,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                return;"
+      },
+      {
+        "lineNumber": 252,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 253,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 254,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 255,
         "author": {
           "gitId": "JinHao-L"
         },
@@ -1328,7 +1790,7 @@
       }
     ],
     "authorContributionMap": {
-      "JinHao-L": 189
+      "JinHao-L": 255
     }
   },
   {
@@ -1412,84 +1874,436 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    DONE(new String[]{\"done\"}, \"Mark a task as done\",\"\u003ctask number\u003e\"),"
+        "content": "    CLEAR(new String[]{\"clear\", \"clr\"}, \"Clear all tasks\", \"\"),"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    DELETE(new String[]{\"delete\"}, \"Delete a task\",\"\u003ctask number\u003e\"),"
+        "content": "    DONE(new String[]{\"done\"}, \"Mark a task as done\",\"\u003ctask number\u003e\"),"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    TODO(new String[]{\"todo\"}, \"Create a todo task\",\"\u003cdesc\u003e\"),"
+        "content": "    DELETE(new String[]{\"delete\"}, \"Delete a task\",\"\u003ctask number\u003e\"),"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    DEADLINE(new String[]{\"deadline\"}, \"Create a task with a deadline\",\"\u003cdesc\u003e /by \u003cdatetime\u003e\"),"
+        "content": "    TODO(new String[]{\"todo\"}, \"Create a todo task\",\"\u003cdesc\u003e\"),"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    EVENT(new String[]{\"event\"}, \"Create an event\",\"\u003cdesc\u003e /at \u003cdatetime\u003e\"),"
+        "content": "    DEADLINE(new String[]{\"deadline\"}, \"Create a task with a deadline\",\"\u003cdesc\u003e /by \u003cdatetime\u003e\"),"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    HELP(new String[]{\"help\"}, \"Gets the list of commands\", \"\"),"
+        "content": "    EVENT(new String[]{\"event\"}, \"Create an event\",\"\u003cdesc\u003e /on \u003cdatetime\u003e\"),"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    BYE(new String[]{\"bye\", \"exit\"}, \"Exits the program\", \"\"),"
+        "content": "    HELP(new String[]{\"help\"}, \"Gets the list of commands\", \"\"),"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    EMPTY(new String[]{\"\"}, null, null);"
+        "content": "    BYE(new String[]{\"bye\", \"exit\"}, \"Exits the program\", \"\"),"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    EMPTY(new String[]{\"\"}, null, null);"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private final String[] names;"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private final String desc;"
+        "content": "    private final String[] names;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "JinHao-L"
         },
+        "content": "    private final String desc;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "JinHao-L"
+        },
         "content": "    private final String useCase;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    Command(String[] names, String desc, String useCase) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        this.names \u003d names;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        this.desc \u003d desc;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        this.useCase \u003d useCase;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public static Command getCommandType(String input) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        if (input.isBlank()) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            return EMPTY;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        for (Command c : Command.values()) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            for (String name : c.names) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                if (name.equals(input)) {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    return c;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return null;"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public static String getCommandList() {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        StringBuilder output \u003d new StringBuilder(\"These are the commands in my dictionary:\\n\");"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        for (Command c : Command.values()) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            if (c !\u003d EMPTY) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                output.append(String.format(\"    %-35s%s\\n\", Arrays.toString(c.names) + \" \" + c.useCase, c.desc));"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        output.setLength(output.length() - 1);"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return output.toString();"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "JinHao-L": 49
+    }
+  },
+  {
+    "path": "src/main/java/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private final LocalDateTime by;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private static final DateTimeFormatter D_DATETIME_FORMAT \u003d DateTimeFormatter.ofPattern(\"EEEE, MMM dd uuuu, ha\");"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public Deadline(String description, LocalDateTime by) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public Deadline(boolean isDone, String description, LocalDateTime by) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        super(isDone, description);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        this.by \u003d by;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
       },
       {
         "lineNumber": 17,
@@ -1503,321 +2317,172 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    Command(String[] names, String desc, String useCase) {"
+        "content": "    public String getDeadlineDateTime() {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        this.names \u003d names;"
+        "content": "        return by.format(D_DATETIME_FORMAT);"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        this.desc \u003d desc;"
+        "content": "    }"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        this.useCase \u003d useCase;"
+        "content": ""
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "    public static Deadline decode(String saved) throws AliceException {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "        String[] inputs \u003d saved.split(\" \\\\| \");"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public static Command getCommandType(String input) {"
+        "content": "        boolean isDone \u003d inputs[0].equals(\"1\");"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        if (input.isBlank()) {"
+        "content": "        if (inputs.length \u003d\u003d 3) {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return EMPTY;"
+        "content": "            return new Deadline(isDone, inputs[1], LocalDateTime.parse(inputs[2]));"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "        } else {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        for (Command c : Command.values()) {"
+        "content": "            throw new AliceException(\"Corrupted deadline data\");"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            for (String name : c.names) {"
+        "content": "        }"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                if (name.equals(input)) {"
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                    return c;"
+        "content": ""
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "                }"
+        "content": "    @Override"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            }"
+        "content": "    public String encode() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "        return \"D | \" + super.encode() + \" | \" + by.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return null;"
+        "content": "    }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public static String getCommandList() {"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        StringBuilder output \u003d new StringBuilder(\"These are the commands in my dictionary:\\n\");"
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + getDeadlineDateTime() + \")\";"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        for (Command c : Command.values()) {"
+        "content": "    }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            if (c !\u003d EMPTY) {"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "                output.append(String.format(\"    %-35s%s\\n\", Arrays.toString(c.names) + \" \" + c.useCase, c.desc));"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        output.setLength(output.length() - 1);"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        return output.toString();"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "JinHao-L"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "JinHao-L": 48
-    }
-  },
-  {
-    "path": "src/main/java/Deadline.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "public class Deadline extends Task {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    private final String by;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    public Deadline(String description, String by) {"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        this.by \u003d by;"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by + \")\";"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "JinHao-L": 13
+      "JinHao-L": 41
     }
   },
   {
@@ -1829,14 +2494,14 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "public class Event extends Task {"
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private final String at;"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 3,
@@ -1850,66 +2515,262 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public Event(String description, String at) {"
+        "content": "public class Event extends Task {"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        super(description);"
+        "content": "    private final LocalDateTime on;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        this.at \u003d at;"
+        "content": "    private static final DateTimeFormatter E_DATETIME_FORMAT \u003d DateTimeFormatter.ofPattern(\"EEEE, MMM dd uuuu, ha\");"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    public Event(String description, LocalDateTime on) {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    @Override"
+        "content": "        super(description);"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public String toString() {"
+        "content": "        this.on \u003d on;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return \"[E]\" + super.toString() + \" (at: \" + at + \")\";"
+        "content": "    }"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 13,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String getEventDateTime() {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return on.format(E_DATETIME_FORMAT);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public Event(boolean isDone, String description, LocalDateTime on) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        super(isDone, description);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        this.on \u003d on;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public static Event decode(String saved) throws AliceException {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        String[] inputs \u003d saved.split(\" \\\\| \");"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        boolean isDone \u003d inputs[0].equals(\"1\");"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        if (inputs.length \u003d\u003d 3) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            return new Event(isDone, inputs[1], LocalDateTime.parse(inputs[2]));"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"Corrupted Event data\");"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String encode() {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return \"E | \" + super.encode() + \" | \" + on.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (on: \" + getEventDateTime() + \")\";"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
         "author": {
           "gitId": "JinHao-L"
         },
@@ -1917,7 +2778,674 @@
       }
     ],
     "authorContributionMap": {
-      "JinHao-L": 13
+      "JinHao-L": 41
+    }
+  },
+  {
+    "path": "src/main/java/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.io.BufferedWriter;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.nio.file.Files;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.nio.file.Path;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.nio.file.Paths;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.nio.file.StandardOpenOption;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "public class Storage {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private final Path filePath;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public Storage(String filePath) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        this.filePath \u003d Paths.get(filePath);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public ArrayList\u003cTask\u003e load() throws AliceException {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        boolean fileExists \u003d Files.exists(filePath);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        if (fileExists) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            return readFile();"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            // Create data file and directory"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            createFile();"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            return new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private ArrayList\u003cTask\u003e readFile() throws AliceException {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            List\u003cString\u003e allLines \u003d Files.readAllLines(filePath);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            ArrayList\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            for (int i \u003d 0; i \u003c allLines.size(); i++) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                String currTask \u003d allLines.get(i);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                String[] typeAndDetails \u003d currTask.split(\" \\\\| \", 2);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                if (typeAndDetails.length !\u003d 2) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    throw new AliceException(\"Corrupted save file\");"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                switch (typeAndDetails[0]) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                case \"T\":"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    tasks.add(Todo.decode(typeAndDetails[1]));"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                case \"D\":"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    tasks.add(Deadline.decode(typeAndDetails[1]));"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                case \"E\":"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    tasks.add(Event.decode(typeAndDetails[1]));"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    throw new AliceException(\"Corrupted save file\");"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            return tasks;"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } catch (IOException ex) {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"Save file is corrupted!\");"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private void createFile() throws AliceException {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            Files.createDirectories(filePath.getParent());"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            Files.createFile(filePath);"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } catch (IOException ex) {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"Problem occurred creating file!\");"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public void save(ArrayList\u003cTask\u003e tasks) throws AliceException {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            BufferedWriter writer \u003d Files.newBufferedWriter(filePath);"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                writer.write(tasks.get(i).encode());"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                writer.newLine();"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            writer.flush();"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            writer.close();"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } catch (IOException ex) {"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"File save error!\");"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public void saveToLastLine(Task taskToAdd) throws AliceException {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            Files.write(filePath,"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    (taskToAdd.encode() + \"\\n\").getBytes(),"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "                    StandardOpenOption.APPEND);"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } catch (IOException ex) {"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"File save error!\");"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "JinHao-L": 94
     }
   },
   {
@@ -1929,7 +3457,7 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "public class Task {"
+        "content": "public abstract class Task {"
       },
       {
         "lineNumber": 2,
@@ -1992,105 +3520,394 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public boolean markAsDone() {"
+        "content": "    public Task(boolean isDone, String description) {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        if (!isDone) {"
+        "content": "        this.description \u003d description;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            isDone \u003d true;"
+        "content": "        this.isDone \u003d isDone;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return true;"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        } else {"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "            return false;"
+        "content": "    public boolean markAsDone() {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        }"
+        "content": "        if (!isDone) {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "            isDone \u003d true;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "            return true;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    public String getDescription() {"
+        "content": "        } else {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return description;"
+        "content": "            return false;"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "    private String getStatusIcon() {"
+        "content": ""
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return isDone ? \"✓\" : \"✘\";"
+        "content": "    public String getDescription() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return description;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return isDone ? \"O\" : \"X\";"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String encode() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return (isDone ? \"1\" : \"0\") + \" | \" + description;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "JinHao-L": 40
+    }
+  },
+  {
+    "path": "src/main/java/Todo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "import javax.swing.*;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "public class Todo extends Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public Todo(String description) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    private Todo(boolean isDone, String description) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        super(isDone, description);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public static Todo decode(String saved) throws AliceException {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        String[] inputs \u003d saved.split(\" \\\\| \");"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        boolean isDone \u003d inputs[0].equals(\"1\");"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        if (inputs.length \u003d\u003d 2) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            return new Todo(isDone, inputs[1]);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "            throw new AliceException(\"Corrupted Todo data\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "    public String encode() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "        return \"T | \" + super.encode();"
       },
       {
         "lineNumber": 25,
@@ -2125,7 +3942,7 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
+        "content": "        return \"[T]\" + super.toString();"
       },
       {
         "lineNumber": 30,
@@ -2147,85 +3964,6 @@
     }
   },
   {
-    "path": "src/main/java/Todo.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "public class Todo extends Task {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    public Todo(String description) {"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "        return \"[T]\" + super.toString();"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "JinHao-L"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "JinHao-L": 10
-    }
-  },
-  {
     "path": "text-ui-test/input.txt",
     "fileType": "txt",
     "lines": [
@@ -2234,178 +3972,199 @@
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "todo borrow book"
+        "content": "clear"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "deadline return book /by Sunday"
+        "content": "todo borrow book"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "event project meeting /at Mon 2-4pm"
+        "content": "deadline return book /by 14-Dec 1200"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "list"
+        "content": "event project meeting /on 03/12/2019 0200"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "done 3"
+        "content": "deadline homework /by 02-Aug-2020 2359"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "done 1"
+        "content": "list"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "blah"
+        "content": "done 3"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": ""
+        "content": "done 1"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "done 4"
+        "content": "blah"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "done -1"
+        "content": ""
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "done one"
+        "content": "done 4"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "todo"
+        "content": "done -1"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "deadline"
+        "content": "done one"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "deadline fake deadline /by"
+        "content": "todo"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "deadline hello"
+        "content": "deadline"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "event"
+        "content": "deadline fake deadline /by"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "event fake event /at"
+        "content": "deadline unrecognised datetime /by Monday"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "event hello"
+        "content": "deadline hello"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "list"
+        "content": "event"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "todo return book"
+        "content": "event fake event /at"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "ls"
+        "content": "event hello"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "help"
+        "content": "list"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "delete 1"
+        "content": "todo return book"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "delete one"
+        "content": "ls"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "JinHao-L"
         },
-        "content": "list"
+        "content": "help"
       },
       {
         "lineNumber": 26,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "delete 1"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "delete one"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "JinHao-L"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 29,
         "author": {
           "gitId": "JinHao-L"
         },
@@ -2413,7 +4172,7 @@
       }
     ],
     "authorContributionMap": {
-      "JinHao-L": 26
+      "JinHao-L": 29
     }
   },
   {
