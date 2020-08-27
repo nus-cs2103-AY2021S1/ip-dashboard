@@ -22,28 +22,28 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import java.util.List;"
+        "content": "import duke.UI.UI;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import duke.command.Command;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import duke.UI.UI;"
+        "content": "import duke.command.DukeRunTimeException;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import duke.storage.DukeIOException;"
+        "content": "import duke.parser.Parser;"
       },
       {
         "lineNumber": 7,
@@ -232,7 +232,7 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Prints the list of tasks."
+        "content": "     * Bot introduces and gets input from user."
       },
       {
         "lineNumber": 34,
@@ -246,420 +246,1132 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void printList() {"
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        System.out.println(\"\\tHere are the tasks in your list:\");"
+        "content": "        ui.showIntro();"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        for(int i \u003d 0; i \u003c tasks.size(); i++) {"
+        "content": "        boolean isExit \u003d false;"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            System.out.println(String.format(\"\\t%d. %s\", i + 1, tasks.get(i)));"
+        "content": "        while (!isExit) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "            String fullCommand \u003d ui.readCommand();"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "            Command c \u003d Parser.parse(fullCommand);"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "            c.execute(tasks, storage);"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "            isExit \u003d c.isExit();"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Marks task with task index in taskInfo as done."
+        "content": "        }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param taskInfo  Description of task."
+        "content": ""
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void markTaskDone(String taskInfo) throws DukeIndexOutOfBoundsException{"
+        "content": "     * Gets file path based on user\u0027s system."
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (taskInfo.length() \u003c\u003d 5) {"
+        "content": "     */"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to mark is invalid\");"
+        "content": "    public static String getFilePath() {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "        String home \u003d System.getProperty(\"user.home\");"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        taskInfo \u003d taskInfo.replace(\"done\", \"\").trim();"
+        "content": "        Path path \u003d Paths.get(home, \"Duke\", \"data\", \"tasks.text\");"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        int taskNo;"
+        "content": "        return path.toString();"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        try {"
+        "content": "    }"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            taskNo \u003d Integer.parseInt(taskInfo);"
+        "content": ""
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        } catch (NumberFormatException err){"
+        "content": "    /**"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to mark is invalid\");"
+        "content": "     * Executes all the operations stated."
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "     *"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (taskNo \u003c 1 || taskNo \u003e tasks.size()) {"
+        "content": "     * @param args  String arrays of operations."
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to mark is invalid\");"
+        "content": "     */"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "    public static void main(String[] args) throws DukeRunTimeException {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        System.out.println(\"\\tNice! I\u0027ve marked this task as done:\");"
+        "content": "        new Duke(getFilePath()).run();"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        int index \u003d taskNo - 1;"
+        "content": "        /*String logo \u003d \" ____        _        \\n\""
       },
       {
         "lineNumber": 63,
         "author": {
-          "gitId": "CodingCookieRookie"
+          "gitId": "-"
         },
-        "content": "        Task task \u003d tasks.remove(index).doneTask();"
+        "content": "                + \"|  _ \\\\ _   _| | _____ \\n\""
       },
       {
         "lineNumber": 64,
         "author": {
-          "gitId": "CodingCookieRookie"
+          "gitId": "-"
         },
-        "content": "        System.out.println(\"\\t\" + task);"
+        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
       },
       {
         "lineNumber": 65,
         "author": {
-          "gitId": "CodingCookieRookie"
+          "gitId": "-"
         },
-        "content": "        tasks.add(index, task);"
+        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
       },
       {
         "lineNumber": 66,
         "author": {
-          "gitId": "CodingCookieRookie"
+          "gitId": "-"
         },
-        "content": "    }"
+        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        System.out.println(\"Hello from\\n\" + logo);*/"
       },
       {
         "lineNumber": 68,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "CodingCookieRookie": 62,
+      "-": 7
+    }
+  },
+  {
+    "path": "src/main/java/duke/UI/UI.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "package duke.UI;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * The class UI denotes the interface user will use."
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * @author Alvin Chee"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "public class UI {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    private Scanner sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 13,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "    /**"
       },
       {
-        "lineNumber": 69,
+        "lineNumber": 14,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Adds todos task to list of tasks."
+        "content": "     * Prints out the bot\u0027s introduction."
       },
       {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * @param taskInfo  Description of todos task."
-      },
-      {
-        "lineNumber": 72,
+        "lineNumber": 15,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "     */"
       },
       {
-        "lineNumber": 73,
+        "lineNumber": 16,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void handleToDo(String taskInfo) throws DukeInvalidCommandException{"
+        "content": "    public void showIntro() {"
       },
       {
-        "lineNumber": 74,
+        "lineNumber": 17,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (taskInfo.trim().equals(\"todo\")) {"
+        "content": "        System.out.println(\"\\tHi handsome! My name is Duck. What can I do for you?\");"
       },
       {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "            throw new DukeInvalidCommandException(\"The command is incomplete handsome :D\");"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        taskInfo \u003d taskInfo.replace(\"todo\", \"\").trim();"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        tasks.addTask(new ToDos(taskInfo));"
-      },
-      {
-        "lineNumber": 79,
+        "lineNumber": 18,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 80,
+        "lineNumber": 19,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": ""
       },
       {
-        "lineNumber": 81,
+        "lineNumber": 20,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "    /**"
       },
       {
-        "lineNumber": 82,
+        "lineNumber": 21,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Adds deadline task to list of tasks."
+        "content": "     * Reads command given by user."
       },
       {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * @param taskInfo  Description of deadline task."
-      },
-      {
-        "lineNumber": 85,
+        "lineNumber": 22,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "     */"
       },
       {
-        "lineNumber": 86,
+        "lineNumber": 23,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void handleDeadLine(String taskInfo) throws DukeInvalidCommandException, DukeDateTimeParseException{"
+        "content": "    public String readCommand() {"
       },
       {
-        "lineNumber": 87,
+        "lineNumber": 24,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        taskInfo \u003d taskInfo.replace(\"deadline\", \"\");"
+        "content": "        String task \u003d \"\";"
       },
       {
-        "lineNumber": 88,
+        "lineNumber": 25,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        String[] stringArr \u003d taskInfo.split(\"/by\", 2);"
+        "content": "        if (sc.hasNextLine()) {"
       },
       {
-        "lineNumber": 89,
+        "lineNumber": 26,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (stringArr.length !\u003d 2) {"
+        "content": "            task \u003d sc.nextLine();"
       },
       {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "            throw new DukeInvalidCommandException(\"The command is incomplete handsome :D\");"
-      },
-      {
-        "lineNumber": 91,
+        "lineNumber": 27,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "        }"
       },
       {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        return task;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "CodingCookieRookie": 30
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import duke.storage.DukeIOException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import duke.storage.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import duke.task.*;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * The class Command denotes a command object."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * @author Alvin Chee"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "public class Command {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    private CommandType commandType;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    private String taskInfo;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    private boolean isExit;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * Constructs a command"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param commandType  Type of command."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param taskInfo  Description of task."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    public Command(CommandType commandType, String taskInfo) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        this.commandType \u003d commandType;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        this.taskInfo \u003d taskInfo;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * Executes a command"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param tasks  The list of tasks for user."
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param storage   Storage object to store task list."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    public void execute(TaskList tasks, Storage storage) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            switch (commandType) {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            case BYE:"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                isExit \u003d true;"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            case PRINT:"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                printList(tasks);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            case MARKTASKDONE:"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                markTaskDone(tasks, taskInfo);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                storage.saveTaskList();"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            case HANDLETODO:"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                handleToDo(tasks, taskInfo);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            case HANDLEDEADLINE:"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                handleDeadLine(tasks, taskInfo);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            case HANDLEVENT:"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                handleEvent(tasks, taskInfo);"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            case DELETETASK:"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                tasks.deleteTask(taskInfo);"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            default :"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                isExit \u003d false;"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                if (!foundMatchingTasks(tasks, taskInfo)) {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    throw new DukeInvalidCommandException(\"Sorry handsome but I\u0027m not sure about this command :)\");"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                break;"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            storage.saveTaskList();"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        }  catch (DukeInvalidCommandException err) {"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            System.out.println(\"\\t\" + err.getMessage());"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        } catch (DukeIndexOutOfBoundsException err) {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            System.out.println(\"\\t\" + err.getMessage());"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        } catch (DukeIncompleteCommandException err) {"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            System.out.println(\"\\t\" + err.getMessage());"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        } catch (DukeIOException err) {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            System.out.println(\"\\t\" + err.getMessage());"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        } catch (DukeDateTimeParseException err) {"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            System.out.println(\"\\t\" + err.getMessage());"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        } catch (DukeNumberFormatException err) {"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            System.out.println(\"\\t\" + err.getMessage());"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * Exits Duke programme."
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @return True if BYE command is called."
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        if (isExit) {"
+      },
+      {
         "lineNumber": 92,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        taskInfo \u003d stringArr[0].trim();"
+        "content": "            System.out.print(\"\\tBye. Hope to see you again soon!\");"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        String by \u003d stringArr[1].trim();"
+        "content": "        }"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        tasks.addTask(new Deadlines(taskInfo, by));"
+        "content": "        return isExit;"
       },
       {
         "lineNumber": 95,
@@ -687,7 +1399,7 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Adds event task to list of tasks."
+        "content": "     * Prints the list of tasks."
       },
       {
         "lineNumber": 99,
@@ -701,7 +1413,7 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param taskInfo  Description of event task."
+        "content": "     * @param tasks  List of tasks to print."
       },
       {
         "lineNumber": 101,
@@ -715,807 +1427,729 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void handleEvent(String taskInfo) throws DukeInvalidCommandException, DukeDateTimeParseException{"
+        "content": "    public void printList(TaskList tasks) {"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        taskInfo \u003d taskInfo.replace(\"event\", \"\");"
+        "content": "        System.out.println(\"\\tHere are the tasks in your list:\");"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        String[] stringArr \u003d taskInfo.split(\"/at\", 2);"
+        "content": "        for(int i \u003d 0; i \u003c tasks.size(); i++) {"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (stringArr.length !\u003d 2) {"
+        "content": "            System.out.println(String.format(\"\\t%d. %s\", i + 1, tasks.get(i)));"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            throw new DukeInvalidCommandException(\"The command is incomplete handsome :D\");"
+        "content": "        }"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        taskInfo \u003d stringArr[0].trim();"
+        "content": ""
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        String at \u003d stringArr[1].trim();"
+        "content": "    /**"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        tasks.addTask(new Events(taskInfo, at));"
+        "content": "     * Marks task with task index in taskInfo as done."
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "     * @param tasks  List of user\u0027s tasks."
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "     * @param taskInfo  Description of task."
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Prints out the task if user input matches any word from task."
+        "content": "     */"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    public void markTaskDone(TaskList tasks, String taskInfo) throws DukeIndexOutOfBoundsException{"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param taskInfo  Description of todos task."
+        "content": "        if (taskInfo.length() \u003c\u003d 5) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @return True if user input matches any word from any task in tasks list."
+        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to mark is invalid\");"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "        }"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public boolean foundMatchingTasks(String taskInfo) {"
+        "content": "        taskInfo \u003d taskInfo.replace(\"done\", \"\").trim();"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        boolean matched \u003d false;"
+        "content": "        int taskNo;"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        String[] taskInfos \u003d taskInfo.trim().split(\" \");"
+        "content": "        try {"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        List\u003cTask\u003e matchList \u003d tasks.returnMatchingTasks(taskInfos);"
+        "content": "            taskNo \u003d Integer.parseInt(taskInfo);"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        for(int i \u003d 0; i \u003c matchList.size(); i++) {"
+        "content": "        } catch (NumberFormatException err){"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            if (i \u003d\u003d 0) {"
+        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to mark is invalid\");"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                System.out.println(\"\\tHere are the matching tasks in your list:\");"
+        "content": "        }"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            }"
+        "content": "        if (taskNo \u003c 1 || taskNo \u003e tasks.size()) {"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            System.out.println(String.format(\"\\t%d. %s\", i + 1, matchList.get(i)));"
+        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to mark is invalid\");"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            matched \u003d true;"
+        "content": "        }"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "        System.out.println(\"\\tNice! I\u0027ve marked this task as done:\");"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        return matched;"
+        "content": "        int index \u003d taskNo - 1;"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "        Task task \u003d tasks.remove(index).doneTask();"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        System.out.println(\"\\t\" + task);"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "        tasks.add(index, task);"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Adds task to list of tasks based on type specified."
+        "content": "    }"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": ""
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param task  Description of task."
+        "content": "    /**"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     * Adds todos task to list of tasks."
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void handleTask(String task) {"
+        "content": "     *"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        switch(task) {"
+        "content": "     * @param tasks  List of user\u0027s tasks."
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        case \"bye\" :"
+        "content": "     * @param taskInfo  Description of todos task."
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            System.out.print(\"\\tBye. Hope to see you again soon!\");"
+        "content": "     */"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            return;"
+        "content": "    public void handleToDo(TaskList tasks, String taskInfo) throws DukeInvalidCommandException{"
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        case \"list\" :"
+        "content": "        if (taskInfo.trim().equals(\"todo\")) {"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            printList();"
+        "content": "            throw new DukeInvalidCommandException(\"The command is incomplete handsome :D\");"
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            break;"
+        "content": "        }"
       },
       {
         "lineNumber": 146,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        default :"
+        "content": "        taskInfo \u003d taskInfo.replace(\"todo\", \"\").trim();"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            try {"
+        "content": "        tasks.addTask(new ToDos(taskInfo));"
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                if (task.startsWith(\"done\")) {"
+        "content": "    }"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    markTaskDone(task);"
+        "content": ""
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                } else if (task.startsWith(\"todo\")) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    handleToDo(task);"
+        "content": "     * Adds deadline task to list of tasks."
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                } else if (task.startsWith(\"deadline\")) {"
+        "content": "     *"
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    handleDeadLine(task);"
+        "content": "     * @param tasks  List of user\u0027s tasks."
       },
       {
         "lineNumber": 154,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                } else if (task.startsWith(\"event\")) {"
+        "content": "     * @param taskInfo  Description of deadline task."
       },
       {
         "lineNumber": 155,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    handleEvent(task);"
+        "content": "     */"
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                } else if (task.startsWith(\"delete\")) {"
+        "content": "    public void handleDeadLine(TaskList tasks, String taskInfo) throws DukeInvalidCommandException, DukeDateTimeParseException{"
       },
       {
         "lineNumber": 157,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    tasks.deleteTask(task);"
+        "content": "        taskInfo \u003d taskInfo.replace(\"deadline\", \"\");"
       },
       {
         "lineNumber": 158,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                } else {"
+        "content": "        String[] stringArr \u003d taskInfo.split(\"/by\", 2);"
       },
       {
         "lineNumber": 159,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    if (!foundMatchingTasks(task)) {"
+        "content": "        if (stringArr.length !\u003d 2) {"
       },
       {
         "lineNumber": 160,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        throw new DukeInvalidCommandException(\"Sorry handsome but I\u0027m not sure about this command :)\");"
+        "content": "            throw new DukeInvalidCommandException(\"The command is incomplete handsome :D\");"
       },
       {
         "lineNumber": 161,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    }"
+        "content": "        }"
       },
       {
         "lineNumber": 162,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                }"
+        "content": "        taskInfo \u003d stringArr[0].trim();"
       },
       {
         "lineNumber": 163,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                storage.saveTaskList();"
+        "content": "        String by \u003d stringArr[1].trim();"
       },
       {
         "lineNumber": 164,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                break;"
+        "content": "        tasks.addTask(new Deadlines(taskInfo, by));"
       },
       {
         "lineNumber": 165,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            } catch (DukeInvalidCommandException err) {"
+        "content": "    }"
       },
       {
         "lineNumber": 166,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                System.out.println(\"\\t\" + err.getMessage());"
+        "content": ""
       },
       {
         "lineNumber": 167,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            } catch (DukeIndexOutOfBoundsException err) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 168,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                System.out.println(\"\\t\" + err.getMessage());"
+        "content": "     * Adds event task to list of tasks."
       },
       {
         "lineNumber": 169,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            } catch (DukeIncompleteCommandException err) {"
+        "content": "     *"
       },
       {
         "lineNumber": 170,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                System.out.println(\"\\t\" + err.getMessage());"
+        "content": "     * @param tasks  List of user\u0027s tasks."
       },
       {
         "lineNumber": 171,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            } catch (DukeIOException err) {"
+        "content": "     * @param taskInfo  Description of event task."
       },
       {
         "lineNumber": 172,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                System.out.println(\"\\t\" + err.getMessage());"
+        "content": "     */"
       },
       {
         "lineNumber": 173,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            } catch (DukeDateTimeParseException err) {"
+        "content": "    public void handleEvent(TaskList tasks, String taskInfo) throws DukeInvalidCommandException, DukeDateTimeParseException{"
       },
       {
         "lineNumber": 174,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                System.out.println(\"\\t\" + err.getMessage());"
+        "content": "        taskInfo \u003d taskInfo.replace(\"event\", \"\");"
       },
       {
         "lineNumber": 175,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            }"
+        "content": "        String[] stringArr \u003d taskInfo.split(\"/at\", 2);"
       },
       {
         "lineNumber": 176,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "        if (stringArr.length !\u003d 2) {"
       },
       {
         "lineNumber": 177,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "            throw new DukeInvalidCommandException(\"The command is incomplete handsome :D\");"
       },
       {
         "lineNumber": 178,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 179,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "        taskInfo \u003d stringArr[0].trim();"
       },
       {
         "lineNumber": 180,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Bot introduces and gets input from user."
+        "content": "        String at \u003d stringArr[1].trim();"
       },
       {
         "lineNumber": 181,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "        tasks.addTask(new Events(taskInfo, at));"
       },
       {
         "lineNumber": 182,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void run() {"
+        "content": "    }"
       },
       {
         "lineNumber": 183,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
+        "content": ""
       },
       {
         "lineNumber": 184,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        ui.showIntro();"
+        "content": "    /**"
       },
       {
         "lineNumber": 185,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        while (sc.hasNextLine()) {"
+        "content": "     * Prints out the task if user input matches any word from task."
       },
       {
         "lineNumber": 186,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            String task \u003d sc.nextLine();"
+        "content": "     *"
       },
       {
         "lineNumber": 187,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            handleTask(task);"
+        "content": "     * @param tasks  List of user\u0027s tasks."
       },
       {
         "lineNumber": 188,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "     * @param taskInfo  Description of todos task."
       },
       {
         "lineNumber": 189,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        sc.close();"
+        "content": "     * @return True if user input matches any word from any task in tasks list."
       },
       {
         "lineNumber": 190,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 191,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "    public boolean foundMatchingTasks(TaskList tasks, String taskInfo) {"
       },
       {
         "lineNumber": 192,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "        boolean matched \u003d false;"
       },
       {
         "lineNumber": 193,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Gets file path based on user\u0027s system."
+        "content": "        String[] taskInfos \u003d taskInfo.trim().split(\" \");"
       },
       {
         "lineNumber": 194,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "        List\u003cTask\u003e matchList \u003d tasks.returnMatchingTasks(taskInfos);"
       },
       {
         "lineNumber": 195,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public static String getFilePath() {"
+        "content": "        for(int i \u003d 0; i \u003c matchList.size(); i++) {"
       },
       {
         "lineNumber": 196,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        String home \u003d System.getProperty(\"user.home\");"
+        "content": "            if (i \u003d\u003d 0) {"
       },
       {
         "lineNumber": 197,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        Path path \u003d Paths.get(home, \"Duke\", \"data\", \"tasks.text\");"
+        "content": "                System.out.println(\"\\tHere are the matching tasks in your list:\");"
       },
       {
         "lineNumber": 198,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        return path.toString();"
+        "content": "            }"
       },
       {
         "lineNumber": 199,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "            System.out.println(String.format(\"\\t%d. %s\", i + 1, matchList.get(i)));"
       },
       {
         "lineNumber": 200,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "            matched \u003d true;"
       },
       {
         "lineNumber": 201,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 202,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Executes all the operations stated."
+        "content": "        return matched;"
       },
       {
         "lineNumber": 203,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 204,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param args  String arrays of operations."
-      },
-      {
-        "lineNumber": 205,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 206,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    public static void main(String[] args) throws DukeRunTimeException {"
-      },
-      {
-        "lineNumber": 207,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        new Duke(getFilePath()).run();"
-      },
-      {
-        "lineNumber": 208,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        /*String logo \u003d \" ____        _        \\n\""
-      },
-      {
-        "lineNumber": 209,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"|  _ \\\\ _   _| | _____ \\n\""
-      },
-      {
-        "lineNumber": 210,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"| | | | | | | |/ / _ \\\\\\n\""
-      },
-      {
-        "lineNumber": 211,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"| |_| | |_| |   \u003c  __/\\n\""
-      },
-      {
-        "lineNumber": 212,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + \"|____/ \\\\__,_|_|\\\\_\\\\___|\\n\";"
-      },
-      {
-        "lineNumber": 213,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        System.out.println(\"Hello from\\n\" + logo);*/"
-      },
-      {
-        "lineNumber": 214,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 215,
-        "author": {
-          "gitId": "-"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "CodingCookieRookie": 208,
-      "-": 7
+      "CodingCookieRookie": 204
     }
   },
   {
-    "path": "src/main/java/duke/UI/UI.java",
+    "path": "src/main/java/duke/command/CommandType.java",
     "fileType": "java",
     "lines": [
       {
@@ -1523,7 +2157,142 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "package duke.UI;"
+        "content": "package"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        duke.command;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * The enum CommandType denotes the type of command."
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * @author Alvin Chee"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "public enum CommandType {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        BYE,"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        PRINT,"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        MARKTASKDONE,"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        HANDLETODO,"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        HANDLEDEADLINE,"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        HANDLEVENT,"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        DELETETASK,"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        FINDMATCHINGTASK;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "CodingCookieRookie": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DukeIncompleteCommandException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "package duke.command;"
       },
       {
         "lineNumber": 2,
@@ -1544,7 +2313,7 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": " * The class UI denotes the interface user will use."
+        "content": " * The class DukeIncompleteCommandException denotes a Duke IncompleteCommandException."
       },
       {
         "lineNumber": 5,
@@ -1572,7 +2341,7 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "public class UI {"
+        "content": "public class DukeIncompleteCommandException extends DukeRunTimeException {"
       },
       {
         "lineNumber": 9,
@@ -1586,38 +2355,52 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Prints out the bot\u0027s introduction."
+        "content": "     * Constructs a DukeIncompleteCommandException"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void showIntro() {"
+        "content": "     * @param errorMessage  Error message of the exception."
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        System.out.println(\"\\tHi handsome! My name is Duck. What can I do for you?\");"
+        "content": "     */"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "    public DukeIncompleteCommandException(String errorMessage) {"
       },
       {
         "lineNumber": 15,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        super(errorMessage);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
         "author": {
           "gitId": "CodingCookieRookie"
         },
@@ -1625,7 +2408,659 @@
       }
     ],
     "authorContributionMap": {
-      "CodingCookieRookie": 15
+      "CodingCookieRookie": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DukeIndexOutOfBoundsException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * The class DukeIndexOutOfBoundsException denotes a Duke IndexOutOfBoundsException."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * @author Alvin Chee"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "public class DukeIndexOutOfBoundsException extends DukeRunTimeException {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * Constructs a DukeIndexOutOfBoundsException"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param errorMessage  Error message of the exception."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    public DukeIndexOutOfBoundsException(String errorMessage) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        super(errorMessage);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "CodingCookieRookie": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DukeInvalidCommandException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * The class DukeInvalidCommandException denotes a Duke InvalidCommandException."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * @author Alvin Chee"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "public class DukeInvalidCommandException extends DukeRunTimeException {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * Constructs a DukeInvalidCommandException"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param errorMessage  Error message of the exception."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    public DukeInvalidCommandException(String errorMessage) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        super(errorMessage);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "CodingCookieRookie": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DukeRunTimeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * The class DukeRunTimeException denotes a Duke RunTimeException."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " * @author Alvin Chee"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "public class DukeRunTimeException extends RuntimeException {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * Constructs a DukeRunTimeException"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param errorMessage  Error message of the exception."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    public DukeRunTimeException(String errorMessage) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        super(errorMessage);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "CodingCookieRookie": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/parser/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "package duke.parser;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import duke.command.Command;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import duke.command.CommandType;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import duke.storage.DukeIOException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * Adds task to list of tasks based on type specified."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     * @param taskInfo  Description of task."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    public static Command parse(String taskInfo) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        switch(taskInfo) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        case \"bye\" :"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            return new Command(CommandType.BYE, taskInfo);"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        case \"list\" :"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            return new Command(CommandType.PRINT, taskInfo);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        default :"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                if (taskInfo.startsWith(\"done\")) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    return new Command(CommandType.MARKTASKDONE, taskInfo);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                } else if (taskInfo.startsWith(\"todo\")) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    return new Command(CommandType.HANDLETODO, taskInfo);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                } else if (taskInfo.startsWith(\"deadline\")) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    return new Command(CommandType.HANDLEDEADLINE, taskInfo);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                } else if (taskInfo.startsWith(\"event\")) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    return new Command(CommandType.HANDLEVENT, taskInfo);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                } else if (taskInfo.startsWith(\"delete\")) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    return new Command(CommandType.DELETETASK, taskInfo);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                } else {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                   return new Command(CommandType.FINDMATCHINGTASK, taskInfo);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "CodingCookieRookie": 37
     }
   },
   {
@@ -1970,675 +3405,808 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "public class Storage {"
+        "content": "/**"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    private String filePath;"
+        "content": " * The class Storage denotes a storage object."
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": " *"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public Storage(String filePath) {"
+        "content": " * @author Alvin Chee"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        this.filePath \u003d filePath;"
+        "content": " */"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "public class Storage {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "    private String filePath;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void addDirIfRequired() {"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        String home \u003d System.getProperty(\"user.home\");"
+        "content": "    /**"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        Path path \u003d Paths.get(home, \"Duke\");"
+        "content": "     * Constructs a storage"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        boolean dukeDirectoryExists \u003d Files.exists(path);"
+        "content": "     *"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (!dukeDirectoryExists) {"
+        "content": "     * @param filePath  file path where data file is stored"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            File dir \u003d new File(path.toString());"
+        "content": "     */"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            dir.mkdir();"
+        "content": "    public Storage(String filePath) {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "        this.filePath \u003d filePath;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        path \u003d Paths.get(home, \"Duke\", \"data\");"
+        "content": "    }"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        boolean dataDirectoryExists \u003d Files.exists(path);"
+        "content": ""
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (!dataDirectoryExists) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            File dir \u003d new File(path.toString());"
+        "content": "     * Adds the respective directories if required."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            dir.mkdir();"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "    public void addDirIfRequired() {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "        String home \u003d System.getProperty(\"user.home\");"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        Path path \u003d Paths.get(home, \"Duke\");"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public List\u003cTask\u003e load() {"
+        "content": "        boolean dukeDirectoryExists \u003d Files.exists(path);"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        List\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
+        "content": "        if (!dukeDirectoryExists) {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        try {"
+        "content": "            File dir \u003d new File(path.toString());"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            File file \u003d new File(filePath);"
+        "content": "            dir.mkdir();"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            FileInputStream fis \u003d new FileInputStream(file);"
+        "content": "        }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            Scanner sc \u003d new Scanner(fis);"
+        "content": "        path \u003d Paths.get(home, \"Duke\", \"data\");"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            while (sc.hasNextLine()) {"
+        "content": "        boolean dataDirectoryExists \u003d Files.exists(path);"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                String nextLine \u003d sc.nextLine();"
+        "content": "        if (!dataDirectoryExists) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                if (nextLine \u003d\u003d \"\") {"
+        "content": "            File dir \u003d new File(path.toString());"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    return taskList;"
+        "content": "            dir.mkdir();"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                } else {"
+        "content": "        }"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    String[] strArr \u003d nextLine.split(\":\");"
+        "content": "    }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    String taskType \u003d strArr[0];"
+        "content": ""
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    char taskTypeChar \u003d taskType.charAt(1);"
+        "content": "    /**"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    String doneStatus \u003d strArr[1].trim();"
+        "content": "     * Loads the list of tasks from storage."
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    String taskInfo \u003d strArr[2].trim();"
+        "content": "     */"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    String when \u003d strArr.length \u003e 3 ? strArr[3].trim() : \"\";"
+        "content": "    public List\u003cTask\u003e load() {"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    switch (taskTypeChar) {"
+        "content": "        List\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    case \u0027T\u0027 :"
+        "content": "        try {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        ToDos todo \u003d Integer.parseInt(doneStatus) \u003d\u003d Task.doneNo ?"
+        "content": "            File file \u003d new File(filePath);"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                                new ToDos(taskInfo).doneTask() : new ToDos(taskInfo);"
+        "content": "            FileInputStream fis \u003d new FileInputStream(file);"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        taskList.add(todo);"
+        "content": "            Scanner sc \u003d new Scanner(fis);"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        break;"
+        "content": "            while (sc.hasNextLine()) {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    case \u0027D\u0027 :"
+        "content": "                String nextLine \u003d sc.nextLine();"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        Deadlines deadline \u003d Integer.parseInt(doneStatus) \u003d\u003d Task.doneNo ?"
+        "content": "                if (nextLine \u003d\u003d \"\") {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                                new Deadlines(taskInfo, when).doneTask() : new Deadlines(taskInfo, when);"
+        "content": "                    return taskList;"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        taskList.add(deadline);"
+        "content": "                } else {"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        break;"
+        "content": "                    String[] strArr \u003d nextLine.split(\":\");"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    case \u0027E\u0027 :"
+        "content": "                    String taskType \u003d strArr[0];"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        Events event \u003d Integer.parseInt(doneStatus) \u003d\u003d Task.doneNo ?"
+        "content": "                    char taskTypeChar \u003d taskType.charAt(1);"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                                new Events(taskInfo, when).doneTask() : new Events(taskInfo, when);"
+        "content": "                    String doneStatus \u003d strArr[1].trim();"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        taskList.add(event);"
+        "content": "                    String taskInfo \u003d strArr[2].trim();"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        break;"
+        "content": "                    String when \u003d strArr.length \u003e 3 ? strArr[3].trim() : \"\";"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    }"
+        "content": "                    switch (taskTypeChar) {"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                }"
+        "content": "                    case \u0027T\u0027 :"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            }"
+        "content": "                        ToDos todo \u003d Integer.parseInt(doneStatus) \u003d\u003d Task.doneNo ?"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "                                new ToDos(taskInfo).doneTask() : new ToDos(taskInfo);"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            /*A new file will be created when updatelist*/"
+        "content": "                        taskList.add(todo);"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "                        break;"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        return taskList;"
+        "content": "                    case \u0027D\u0027 :"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "                        Deadlines deadline \u003d Integer.parseInt(doneStatus) \u003d\u003d Task.doneNo ?"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "                                new Deadlines(taskInfo, when).doneTask() : new Deadlines(taskInfo, when);"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void saveTaskList() throws DukeIOException{"
+        "content": "                        taskList.add(deadline);"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        try {"
+        "content": "                        break;"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            File file \u003d new File(filePath);"
+        "content": "                    case \u0027E\u0027 :"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            FileWriter fw \u003d new FileWriter(file.getAbsoluteFile());"
+        "content": "                        Events event \u003d Integer.parseInt(doneStatus) \u003d\u003d Task.doneNo ?"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            BufferedWriter bw \u003d new BufferedWriter(fw);"
+        "content": "                                new Events(taskInfo, when).doneTask() : new Events(taskInfo, when);"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            for (int i \u003d 0; i \u003c TaskList.taskList.size(); i++) {"
+        "content": "                        taskList.add(event);"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                Task task \u003d TaskList.taskList.get(i);"
+        "content": "                        break;"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                TaskType taskType \u003d task.returnTaskType();"
+        "content": "                    }"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                char taskTypeChar \u003d taskType.toString().charAt(1);"
+        "content": "                }"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                int status \u003d task.returnDoneStatus();"
+        "content": "            }"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                String taskInfo \u003d task.returnTaskInfo();"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                String when \u003d \"\";"
+        "content": "            /*A new file will be created when updatelist*/"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                switch(taskTypeChar) {"
+        "content": "        }"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                case \u0027D\u0027 :"
+        "content": "        return taskList;"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    Deadlines deadline \u003d (Deadlines)TaskList.taskList.get(i);"
+        "content": "    }"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    when \u003d \" : \" + deadline.returnTime().trim();"
+        "content": ""
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    break;"
+        "content": "    /**"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                case \u0027E\u0027 :"
+        "content": "     * Saves lists of tasks into storage."
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    Events event \u003d (Events)TaskList.taskList.get(i);"
+        "content": "     */"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    when \u003d \" : \" + event.returnTime().trim();"
+        "content": "    public void saveTaskList() throws DukeIOException{"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    break;"
+        "content": "        try {"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                }"
+        "content": "            File file \u003d new File(filePath);"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                String toWrite \u003d taskType.toString().trim() + \" : \" + status + \" : \" + taskInfo.trim() + when;"
+        "content": "            FileWriter fw \u003d new FileWriter(file.getAbsoluteFile());"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                bw.write(toWrite);"
+        "content": "            BufferedWriter bw \u003d new BufferedWriter(fw);"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                bw.newLine();"
+        "content": "            for (int i \u003d 0; i \u003c TaskList.taskList.size(); i++) {"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            }"
+        "content": "                Task task \u003d TaskList.taskList.get(i);"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            bw.close();"
+        "content": "                TaskType taskType \u003d task.returnTaskType();"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "                char taskTypeChar \u003d taskType.toString().charAt(1);"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            throw new DukeIOException(\"Sorry handsome but file is not found.\");"
+        "content": "                int status \u003d task.returnDoneStatus();"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "                String taskInfo \u003d task.returnTaskInfo();"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "                String when \u003d \"\";"
       },
       {
         "lineNumber": 108,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                switch(taskTypeChar) {"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                case \u0027D\u0027 :"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    Deadlines deadline \u003d (Deadlines)TaskList.taskList.get(i);"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    when \u003d \" : \" + deadline.returnTime().trim();"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                case \u0027E\u0027 :"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    Events event \u003d (Events)TaskList.taskList.get(i);"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    when \u003d \" : \" + event.returnTime().trim();"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                String toWrite \u003d taskType.toString().trim() + \" : \" + status + \" : \" + taskInfo.trim() + when;"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                bw.write(toWrite);"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                bw.newLine();"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            bw.close();"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            throw new DukeIOException(\"Sorry handsome but file is not found.\");"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 127,
         "author": {
           "gitId": "CodingCookieRookie"
         },
@@ -2646,7 +4214,7 @@
       }
     ],
     "authorContributionMap": {
-      "CodingCookieRookie": 108
+      "CodingCookieRookie": 127
     }
   },
   {
@@ -3094,101 +4662,115 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "/**"
+        "content": "import duke.command.DukeRunTimeException;"
       },
       {
         "lineNumber": 4,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 6,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": " * The class DukeDateTimeParseException denotes a Duke DateTimeParseException."
       },
       {
-        "lineNumber": 5,
+        "lineNumber": 7,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": " *"
       },
       {
-        "lineNumber": 6,
+        "lineNumber": 8,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": " * @author Alvin Chee"
       },
       {
-        "lineNumber": 7,
+        "lineNumber": 9,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": " */"
       },
       {
-        "lineNumber": 8,
+        "lineNumber": 10,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "public class DukeDateTimeParseException extends DukeRunTimeException {"
       },
       {
-        "lineNumber": 9,
+        "lineNumber": 11,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "    /**"
       },
       {
-        "lineNumber": 10,
+        "lineNumber": 12,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "     * Constructs a DukeDateTimeParseException"
       },
       {
-        "lineNumber": 11,
+        "lineNumber": 13,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "     *"
       },
       {
-        "lineNumber": 12,
+        "lineNumber": 14,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "     * @param errorMessage  Error message of the exception."
       },
       {
-        "lineNumber": 13,
+        "lineNumber": 15,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "     */"
       },
       {
-        "lineNumber": 14,
+        "lineNumber": 16,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "   public DukeDateTimeParseException(String errorMessage) {"
       },
       {
-        "lineNumber": 15,
+        "lineNumber": 17,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "        super(errorMessage);"
       },
       {
-        "lineNumber": 16,
+        "lineNumber": 18,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 17,
+        "lineNumber": 19,
         "author": {
           "gitId": "CodingCookieRookie"
         },
@@ -3196,11 +4778,11 @@
       }
     ],
     "authorContributionMap": {
-      "CodingCookieRookie": 17
+      "CodingCookieRookie": 19
     }
   },
   {
-    "path": "src/main/java/duke/task/DukeIncompleteCommandException.java",
+    "path": "src/main/java/duke/task/DukeNumberFormatException.java",
     "fileType": "java",
     "lines": [
       {
@@ -3222,229 +4804,115 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "/**"
+        "content": "import duke.command.DukeRunTimeException;"
       },
       {
         "lineNumber": 4,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " * The class DukeIncompleteCommandException denotes a Duke IncompleteCommandException."
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " *"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " * @author Alvin Chee"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " */"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "public class DukeIncompleteCommandException extends DukeRunTimeException {"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * Constructs a DukeIncompleteCommandException"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * @param errorMessage  Error message of the exception."
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    public DukeIncompleteCommandException(String errorMessage) {"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        super(errorMessage);"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "CodingCookieRookie": 17
-    }
-  },
-  {
-    "path": "src/main/java/duke/task/DukeIndexOutOfBoundsException.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "package duke.task;"
-      },
-      {
-        "lineNumber": 2,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": ""
       },
       {
-        "lineNumber": 3,
+        "lineNumber": 5,
         "author": {
           "gitId": "CodingCookieRookie"
         },
         "content": "/**"
       },
       {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " * The class DukeIndexOutOfBoundsException denotes a Duke IndexOutOfBoundsException."
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " *"
-      },
-      {
         "lineNumber": 6,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": " * @author Alvin Chee"
+        "content": " * The class DukeNumberFormatException denotes a Duke DateTimeParseException."
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": " */"
+        "content": " *"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "public class DukeIndexOutOfBoundsException extends DukeRunTimeException {"
+        "content": " * @author Alvin Chee"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": " */"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Constructs a DukeIndexOutOfBoundsException"
+        "content": "public class DukeNumberFormatException extends DukeRunTimeException {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param errorMessage  Error message of the exception."
+        "content": "     * Constructs a DukeNumberFormatException"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public DukeIndexOutOfBoundsException(String errorMessage) {"
+        "content": "     * @param errorMessage  Error message of the exception."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        super(errorMessage);"
+        "content": "     */"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "    public DukeNumberFormatException(String errorMessage) {"
       },
       {
         "lineNumber": 17,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        super(errorMessage);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
         "author": {
           "gitId": "CodingCookieRookie"
         },
@@ -3452,263 +4920,7 @@
       }
     ],
     "authorContributionMap": {
-      "CodingCookieRookie": 17
-    }
-  },
-  {
-    "path": "src/main/java/duke/task/DukeInvalidCommandException.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "package duke.task;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "/**"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " * The class DukeInvalidCommandException denotes a Duke InvalidCommandException."
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " *"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " * @author Alvin Chee"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " */"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "public class DukeInvalidCommandException extends DukeRunTimeException {"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * Constructs a DukeInvalidCommandException"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * @param errorMessage  Error message of the exception."
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    public DukeInvalidCommandException(String errorMessage) {"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        super(errorMessage);"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "CodingCookieRookie": 17
-    }
-  },
-  {
-    "path": "src/main/java/duke/task/DukeRunTimeException.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "package duke.task;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "/**"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " * The class DukeRunTimeException denotes a Duke RunTimeException."
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " *"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " * @author Alvin Chee"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": " */"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "public class DukeRunTimeException extends RuntimeException {"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * Constructs a DukeRunTimeException"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     * @param errorMessage  Error message of the exception."
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    public DukeRunTimeException(String errorMessage) {"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "        super(errorMessage);"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "CodingCookieRookie"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "CodingCookieRookie": 17
+      "CodingCookieRookie": 19
     }
   },
   {
@@ -4641,759 +5853,815 @@
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "import duke.command.DukeIndexOutOfBoundsException;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import java.util.List;"
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import java.util.regex.Matcher;"
+        "content": "import java.util.ArrayList;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "import java.util.regex.Pattern;"
+        "content": "import java.util.List;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "import java.util.regex.Matcher;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "public class TaskList {"
+        "content": "import java.util.regex.Pattern;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * The class TaskList denotes a task list."
+        "content": "public class TaskList {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @author Alvin Chee"
+        "content": "     * The class TaskList denotes a task list."
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public static List\u003cTask\u003e taskList;"
+        "content": "     * @author Alvin Chee"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "    public static List\u003cTask\u003e taskList;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Constructs a TaskList."
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param taskList  An ArrayList of tasks to emulate."
+        "content": "     * Constructs a TaskList."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public TaskList(List\u003cTask\u003e taskList) {"
+        "content": "     * @param taskList  An ArrayList of tasks to emulate."
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        this.taskList \u003d taskList;"
+        "content": "     */"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "    public TaskList(List\u003cTask\u003e taskList) {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        this.taskList \u003d taskList;"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Returns size of taskList."
+        "content": ""
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @return Size of taskList."
+        "content": "     * Returns size of taskList."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public int size() {"
+        "content": "     * @return Size of taskList."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        return taskList.size();"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "    public int size() {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        return taskList.size();"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Gets the task based on index."
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param index  Index of task in taskList."
+        "content": "     * Gets the task based on index."
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @return Task that is retrieved."
+        "content": "     *"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     * @param index  Index of task in taskList."
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public Task get(int index) {"
+        "content": "     * @return Task that is retrieved."
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        return taskList.get(index);"
+        "content": "     */"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "    public Task get(int index) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        return taskList.get(index);"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Removes the task based on index."
+        "content": ""
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param index  Index of task in taskList."
+        "content": "     * Removes the task based on index."
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @return Task that is removed."
+        "content": "     *"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     * @param index  Index of task in taskList."
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public Task remove(int index) {"
+        "content": "     * @return Task that is removed."
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        return taskList.remove(index);"
+        "content": "     */"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "    public Task remove(int index) {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        return taskList.remove(index);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Adds the task based at specified index."
+        "content": ""
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param index  Index of task in taskList."
+        "content": "     * Adds the task based at specified index."
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param task  Task to be added to taskList."
+        "content": "     *"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     * @param index  Index of task in taskList."
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void add(int index, Task task) {"
+        "content": "     * @param task  Task to be added to taskList."
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        taskList.add(index, task);"
+        "content": "     */"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "    public void add(int index, Task task) {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        taskList.add(index, task);"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Adds the task based at last index"
+        "content": ""
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param task  Task to be added to taskList."
+        "content": "     * Adds the task based at last index"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void addTask(Task task) {"
+        "content": "     * @param task  Task to be added to taskList."
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        taskList.add(task);"
+        "content": "     */"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\" + \"\\n\\t\\t\" + task);"
+        "content": "    public void addTask(Task task) {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        System.out.println(String.format(\"\\tNow you have %d tasks in the list.\", taskList.size()));"
+        "content": "        taskList.add(task);"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "        System.out.println(\"\\tGot it. I\u0027ve added this task:\" + \"\\n\\t\\t\" + task);"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        System.out.println(String.format(\"\\tNow you have %d tasks in the list.\", taskList.size()));"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * Deletes the task based on index in taskInfo"
+        "content": ""
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     * @param taskInfo  Task information with task index information."
+        "content": "     * Deletes the task based on index in taskInfo"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public void deleteTask(String taskInfo) throws DukeIndexOutOfBoundsException{"
+        "content": "     * @param taskInfo  Task information with task index information."
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (taskInfo.length() \u003c\u003d 7) {"
+        "content": "     */"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to delete is invalid\");"
+        "content": "    public void deleteTask(String taskInfo) throws DukeIndexOutOfBoundsException {"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "        if (taskInfo.length() \u003c\u003d 7) {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        int taskNo \u003d Character.getNumericValue(taskInfo.charAt(7));"
+        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to delete is invalid\");"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        if (taskNo \u003c 1 || taskNo \u003e taskList.size()) {"
+        "content": "        }"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to delete is invalid\");"
+        "content": "        String taskNoString \u003d taskInfo.replace(\"delete\", \"\").trim();"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "        int taskNo;"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        int index \u003d taskNo - 1;"
+        "content": "        try {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        Task t \u003d taskList.remove(index);"
+        "content": "            taskNo \u003d Integer.parseInt(taskNoString);"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        System.out.println(\"\\tNoted. I\u0027ve removed this task:\" + \"\\n\\t\\t\" + t);"
+        "content": "        } catch (NumberFormatException err){"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        System.out.println(String.format(\"\\tNow you have %d tasks in the list.\", taskList.size()));"
+        "content": "            throw new DukeNumberFormatException(\"Please input a number for the task you want to delete.\");"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": ""
+        "content": "        if (taskNo \u003c 1 || taskNo \u003e taskList.size()) {"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    public List\u003cTask\u003e returnMatchingTasks(String[] matchWords) {"
+        "content": "            throw new DukeIndexOutOfBoundsException(\"The task you want to delete is invalid\");"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        List\u003cTask\u003e matchList \u003d new ArrayList\u003c\u003e();"
+        "content": "        }"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        for (int i \u003d 0; i \u003c taskList.size(); i++) {"
+        "content": "        int index \u003d taskNo - 1;"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            for (int j \u003d 0; j \u003c matchWords.length; j++) {"
+        "content": "        Task t \u003d taskList.remove(index);"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    if (matchWords[j].equals(\"\")) {"
+        "content": "        System.out.println(\"\\tNoted. I\u0027ve removed this task:\" + \"\\n\\t\\t\" + t);"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        continue;   //In case of having alot of spaces in between two words."
+        "content": "        System.out.println(String.format(\"\\tNow you have %d tasks in the list.\", taskList.size()));"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    }"
+        "content": "    }"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    String pattern \u003d \"\\\\b\" + matchWords[j] + \"\\\\b\";"
+        "content": ""
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    Pattern p \u003d Pattern.compile(pattern);"
+        "content": "    public List\u003cTask\u003e returnMatchingTasks(String[] matchWords) {"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    Matcher m \u003d p.matcher(taskList.get(i).toString());"
+        "content": "        List\u003cTask\u003e matchList \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    if (m.find()) {"
+        "content": "        for (int i \u003d 0; i \u003c taskList.size(); i++) {"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                        matchList.add(taskList.get(i));"
+        "content": "            for (int j \u003d 0; j \u003c matchWords.length; j++) {"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "                    }"
+        "content": "                    if (matchWords[j].equals(\"\")) {"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "            }"
+        "content": "                        continue;   //In case of having alot of spaces in between two words."
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        }"
+        "content": "                    }"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "        return matchList;"
+        "content": "                    String pattern \u003d \"\\\\b\" + matchWords[j] + \"\\\\b\";"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "CodingCookieRookie"
         },
-        "content": "    }"
+        "content": "                    Pattern p \u003d Pattern.compile(pattern);"
       },
       {
         "lineNumber": 111,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    Matcher m \u003d p.matcher(taskList.get(i).toString());"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    if (m.find()) {"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                        matchList.add(taskList.get(i));"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "        return matchList;"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "CodingCookieRookie"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 119,
         "author": {
           "gitId": "CodingCookieRookie"
         },
@@ -5401,7 +6669,7 @@
       }
     ],
     "authorContributionMap": {
-      "CodingCookieRookie": 111
+      "CodingCookieRookie": 119
     }
   },
   {

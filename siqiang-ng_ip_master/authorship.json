@@ -1,6 +1,6 @@
 [
   {
-    "path": "src/main/java/BotHandler.java",
+    "path": "src/main/java/duckie/Duckie.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,126 +8,126 @@
         "author": {
           "gitId": "-"
         },
-        "content": "import java.io.FileWriter;"
+        "content": "package duckie;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "-"
         },
-        "content": "import java.io.IOException;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "import java.io.File;"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "import java.time.LocalDateTime;"
+        "content": "import java.io.IOException;"
       },
       {
         "lineNumber": 5,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": "import java.nio.file.Path;"
       },
       {
         "lineNumber": 6,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "import java.util.ArrayList;"
+        "content": "import java.nio.file.Paths;"
       },
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
         "content": "import java.util.Scanner;"
       },
       {
         "lineNumber": 8,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
         "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class BotHandler {"
+        "content": "import duckie.command.Command;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "-"
         },
-        "content": "    private final static ArrayList\u003cTask\u003e lst \u003d new ArrayList\u003c\u003e();"
+        "content": "import duckie.exception.DuckieException;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "import duckie.task.TaskList;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "-"
         },
-        "content": "    private static void displayList() throws DuckieException{"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "-"
         },
-        "content": "        if (lst.size() \u003d\u003d 0) {"
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "            throw new DuckieNoListException();"
+        "content": "public class Duckie {"
       },
       {
         "lineNumber": 15,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 16,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": ""
       },
       {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    private Storage storage;"
+      },
+      {
         "lineNumber": 17,
         "author": {
           "gitId": "-"
         },
-        "content": "        BotResponses.displayListReply(lst);"
+        "content": "    private TaskList tasks;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "    private Ui ui;"
       },
       {
         "lineNumber": 19,
@@ -141,392 +141,787 @@
         "author": {
           "gitId": "-"
         },
-        "content": "    private static void addTask(String input, String type) throws IOException, DuckieException {"
+        "content": "    public Duckie(String filePath) {"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "-"
         },
-        "content": "        Task t1 \u003d null;"
+        "content": "        ui \u003d new Ui();"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "-"
         },
-        "content": "        try {"
+        "content": "        ui.showIntro();"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "-"
         },
-        "content": "            if (is_word(input)) {"
+        "content": "        storage \u003d new Storage(filePath);"
       },
       {
         "lineNumber": 24,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "                throw new DuckieInsufficientInfoException();"
+        "content": "        try {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "-"
         },
-        "content": "            }"
+        "content": "            tasks \u003d new TaskList(storage.load());"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "        } catch (DuckieException e) {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "-"
         },
-        "content": "            if (type.equals(\"todo\")) {"
+        "content": "            ui.showError(e.getMessage());"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "-"
         },
-        "content": "                String todo \u003d input.split(\" \", 2)[1];"
+        "content": "            tasks \u003d new TaskList();"
       },
       {
         "lineNumber": 29,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "                t1 \u003d new Todo(todo);"
+        "content": "        }"
       },
       {
         "lineNumber": 30,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "            } else {"
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "-"
         },
-        "content": "                String[] splitted \u003d input.split(\"/\");"
+        "content": ""
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "-"
         },
-        "content": "                String time \u003d splitted[1].split(\" \", 2)[1];"
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "-"
         },
-        "content": "                String description \u003d splitted[0].split(\" \", 2)[1];"
+        "content": "        boolean isExit \u003d false;"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "-"
         },
-        "content": "                if (type.equals(\"deadline\")) {"
+        "content": "        while (!isExit) {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "-"
         },
-        "content": "                    DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"d MMM yyyy\");"
+        "content": "            try {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "-"
         },
-        "content": "                    LocalDate date \u003d LocalDate.parse(time, formatter);"
+        "content": "                String fullCommand \u003d ui.readCommand();"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "-"
         },
-        "content": "                    t1 \u003d new Deadline(description, date);"
+        "content": "                ui.showLine();"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "-"
         },
-        "content": "                } else { //This will be Event task."
+        "content": "                Command c \u003d Parser.parse(fullCommand);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "-"
         },
-        "content": "                    DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"d MMM yyyy hh:mm a\");"
+        "content": "                c.execute(tasks, ui, storage);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "-"
         },
-        "content": "                    LocalDateTime dateTime \u003d LocalDateTime.parse(time, formatter);"
+        "content": "                isExit \u003d c.isExit();"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "-"
         },
-        "content": "                    t1 \u003d new Event(description, dateTime);"
+        "content": "            } catch (DuckieException e) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "-"
         },
-        "content": "                }"
+        "content": "                ui.showError(e.getMessage());"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "-"
         },
-        "content": "            }"
+        "content": "            } finally {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "-"
         },
-        "content": "            lst.add(t1);"
+        "content": "                ui.showLine();"
       },
       {
         "lineNumber": 45,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "            writeToFile();"
+        "content": "            }"
       },
       {
         "lineNumber": 46,
         "author": {
-          "gitId": "-"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            throw e;"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
         "content": "        }"
       },
       {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
         "lineNumber": 49,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "        BotResponses.addTaskReply(t1, lst);"
+        "content": "    public static void main(String[] args) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "        String cwd \u003d System.getProperty(\"user.dir\");"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "        Path dirPath \u003d Paths.get(cwd, \"data\");"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "-"
         },
-        "content": "    private static void checkTask(int ind) throws IOException {"
+        "content": "        Path filePath \u003d Paths.get(cwd, \"data\", \"duckie.txt\");"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "-"
         },
-        "content": "        Task t1 \u003d lst.get(ind - 1);"
+        "content": "        new Duckie(String.valueOf(filePath)).run();"
       },
       {
         "lineNumber": 54,
         "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "siqiang-ng": 18,
+      "-": 37
+    }
+  },
+  {
+    "path": "src/main/java/duckie/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
           "gitId": "-"
         },
-        "content": "        t1.checked();"
+        "content": "package duckie;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "import duckie.task.Task;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    private final static String INDENT \u003d \"\\t\";"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    private final static String horizL \u003d INDENT +"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            \"____________________________________________________________\";"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    private final static String logo \u003d INDENT"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            + \"           ____                   _      _\\n\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            + INDENT + \"    __    |  _ \\\\   _   _    ___  | | _  (_)  ___     __\\n\""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            + INDENT + \"___( o)\u003e  | | | | | | | | /  __| | |/ / | | / _ \\\\  \u003c(o )___ \\n\""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            + INDENT + \"\\\\ \u003c_. )   | |_| | | | | | | (__  |   \u003c  | | | __/   ( ._\u003e /\\n\""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            + INDENT + \" `---\u0027    |____/  \\\\___,_|  \\\\ __| |_|\\\\_\\\\ |_| \\\\___|    `___\u0027 \\n\";"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    private Scanner sc;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public Ui() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    public static String getHorizL() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        return horizL;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void showLine() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        System.out.println(horizL);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void showIntro() {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        System.out.println(horizL + \"\\n\" + logo + \"\\n\" +"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                INDENT + \"Quack. Duckie is here to remember your tasks!\" );"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        showLoading();"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void showEnding() {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        System.out.println(INDENT +"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "                \"Quack! Hope to see you again!\");"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    public static void addTaskReply(Task t1, ArrayList\u003cTask\u003e lst) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        System.out.println(INDENT + \"Quack! Added: \" + t1);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        System.out.println(INDENT + \"Now you have \" + lst.size() + \" task(s) in the list.\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    public static void displayListReply(ArrayList\u003cTask\u003e lst) {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        int index \u003d 1;"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        System.out.println(INDENT + \"Quack! You have these in your list currently: \");"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        for (Task task : lst) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            System.out.println(INDENT + index + \". \" + task);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            index++;"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        }"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "-"
         },
-        "content": "        writeToFile();"
+        "content": "    }"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "-"
         },
-        "content": "        BotResponses.checkTaskReply(t1);"
+        "content": ""
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "    public static void displayNoListReply() {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "        System.out.println(INDENT + \"Quack. You have no tasks in the list currently\");"
       },
       {
         "lineNumber": 59,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    public static void deleteTask(int ind) throws IOException {"
+        "content": "        System.out.println(horizL);"
       },
       {
         "lineNumber": 60,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "        Task t1 \u003d lst.get(ind - 1);"
+        "content": "    }"
       },
       {
         "lineNumber": 61,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "        lst.remove(ind - 1);"
+        "content": ""
       },
       {
         "lineNumber": 62,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "        writeToFile();"
+        "content": "    public static void checkTaskReply(Task t1) {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "-"
         },
-        "content": "        BotResponses.deleteTaskReply(t1);"
+        "content": "        System.out.println(INDENT"
       },
       {
         "lineNumber": 64,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    }"
+        "content": "                + \"Quack! I\u0027ve marked this task as done: \\n\""
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "                + INDENT + t1);"
       },
       {
         "lineNumber": 66,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    public static void deleteAllTasks() throws IOException {"
+        "content": "    }"
       },
       {
         "lineNumber": 67,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "        lst.clear();"
+        "content": ""
       },
       {
         "lineNumber": 68,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "        writeToFile();"
+        "content": "    public static void deleteTaskReply(Task t1) {"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "-"
         },
-        "content": "        BotResponses.deleteAllReply();"
+        "content": "        System.out.println(INDENT + \"Quack! I\u0027ve remove this task: \\n\" +"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "                INDENT + t1);"
       },
       {
         "lineNumber": 71,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "-"
         },
-        "content": "    public static void processData(Scanner sc) throws DuckieException {"
+        "content": ""
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "-"
         },
-        "content": "        while(sc.hasNextLine()) {"
+        "content": "    public static void deleteAllReply() {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "-"
         },
-        "content": "            String task \u003d sc.nextLine();"
+        "content": "        System.out.println(INDENT + \"Quack! All tasks are cleared in the list!\");"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "-"
         },
-        "content": "            String[] taskBreakdown \u003d task.split(\"\\\\|\");"
+        "content": "    }"
       },
       {
         "lineNumber": 76,
@@ -540,1237 +935,114 @@
         "author": {
           "gitId": "-"
         },
-        "content": "            String type \u003d taskBreakdown[0].strip();"
+        "content": "    public static void showError(String msg) {"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "-"
         },
-        "content": "            String isDone \u003d taskBreakdown[1].strip();"
+        "content": "        System.out.println(INDENT + \"Oh no! \" + msg);"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "-"
         },
-        "content": "            String description \u003d taskBreakdown[2].strip();"
+        "content": "    }"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "-"
         },
-        "content": "            if (type.equals(\"T\")) {"
+        "content": ""
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "-"
         },
-        "content": "                Todo taskToDo \u003d new Todo(description);"
+        "content": "    public String readCommand() {"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "-"
         },
-        "content": "                if (isDone.equals(\"1\")) {"
+        "content": "        String input \u003d sc.nextLine();"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "-"
         },
-        "content": "                    taskToDo.checked();"
+        "content": "        System.out.println(input);"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "-"
         },
-        "content": "                }"
+        "content": "        return input;"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "-"
         },
-        "content": "                lst.add(taskToDo);"
+        "content": "    }"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "-"
         },
-        "content": "            } else if (type.equals(\"D\")) {"
+        "content": ""
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "-"
         },
-        "content": "                String date \u003d taskBreakdown[3].strip();"
+        "content": "    public static void showLoading() {"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "-"
         },
-        "content": "                DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"E, MMM dd yyyy\");"
+        "content": "        System.out.println(INDENT + \"Loading tasks...\");"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "-"
         },
-        "content": "                LocalDate d1 \u003d LocalDate.parse(date, formatter);"
+        "content": "        System.out.println(horizL);"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "-"
         },
-        "content": "                Deadline taskD \u003d new Deadline(description, d1);"
+        "content": "    }"
       },
       {
         "lineNumber": 91,
         "author": {
-          "gitId": "-"
-        },
-        "content": "                if (isDone.equals(\"1\")) {"
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    taskD.checked();"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                lst.add(taskD);"
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            } else {"
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                String dateTime \u003d taskBreakdown[3].strip();"
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                DateTimeFormatter formatter \u003d DateTimeFormatter.ofPattern(\"E, MMM dd yyyy hh:mm a\");"
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                LocalDateTime d1 \u003d LocalDateTime.parse(dateTime, formatter);"
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                Event taskE \u003d new Event(description, d1);"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                if (isDone.equals(\"1\")) {"
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    taskE.checked();"
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                lst.add(taskE);"
-      },
-      {
-        "lineNumber": 104,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 105,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        System.out.println(\"\\t\" + \"Loading tasks...\");"
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        displayList();"
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    private static void writeToFile() throws IOException {"
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        String cwd \u003d System.getProperty(\"user.dir\");"
-      },
-      {
-        "lineNumber": 112,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        String dukeFile \u003d cwd + \"/data/duckie.txt\";"
-      },
-      {
-        "lineNumber": 113,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        System.out.println(dukeFile);"
-      },
-      {
-        "lineNumber": 114,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        FileWriter fw \u003d new FileWriter(dukeFile);"
-      },
-      {
-        "lineNumber": 115,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        String toWrite \u003d \"\";"
-      },
-      {
-        "lineNumber": 116,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        for (Task t1: lst) {"
-      },
-      {
-        "lineNumber": 117,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            toWrite +\u003d (t1.getType() + (t1.isCompleted() ? \" | 1 | \" : \" | 0 | \")"
-      },
-      {
-        "lineNumber": 118,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        + t1.getDescription())"
-      },
-      {
-        "lineNumber": 119,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        + (t1.getDate() !\u003d null ? \"| \" + t1.getDate() : \"\")"
-      },
-      {
-        "lineNumber": 120,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        + System.lineSeparator();"
-      },
-      {
-        "lineNumber": 121,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        fw.write(toWrite);"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        fw.close();"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }//Check if a String only"
-      },
-      {
-        "lineNumber": 125,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    private static boolean is_word(String s) {"
-      },
-      {
-        "lineNumber": 126,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        return (s.length() \u003e 0 \u0026\u0026 s.split(\"\\\\s+\").length \u003d\u003d 1);"
-      },
-      {
-        "lineNumber": 127,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 128,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 129,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public static void serve() {"
-      },
-      {
-        "lineNumber": 130,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
-      },
-      {
-        "lineNumber": 131,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        while (sc.hasNextLine()) {"
-      },
-      {
-        "lineNumber": 132,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            try {"
-      },
-      {
-        "lineNumber": 133,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                String initialInput \u003d sc.nextLine();"
-      },
-      {
-        "lineNumber": 134,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                String input \u003d initialInput.strip();"
-      },
-      {
-        "lineNumber": 135,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                System.out.println(input);"
-      },
-      {
-        "lineNumber": 136,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                if (input.equalsIgnoreCase(\"bye\")) {"
-      },
-      {
-        "lineNumber": 137,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    System.out.print(BotResponses.getHorizL());"
-      },
-      {
-        "lineNumber": 138,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 139,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                } else if (input.equalsIgnoreCase(\"list\")) {"
-      },
-      {
-        "lineNumber": 140,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    displayList();"
-      },
-      {
-        "lineNumber": 141,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                } else if (input.toLowerCase().indexOf(\"done\") \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 142,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    if (lst.size() \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 143,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        throw new DuckieNoListException();"
-      },
-      {
-        "lineNumber": 144,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    } else if (is_word(input)) {"
-      },
-      {
-        "lineNumber": 145,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        throw new DuckieInsufficientInfoException();"
-      },
-      {
-        "lineNumber": 146,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 147,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    int ind \u003d Integer.parseInt(input.split(\" \")[1]);"
-      },
-      {
-        "lineNumber": 148,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 149,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    if (lst.size() \u003c ind) {"
-      },
-      {
-        "lineNumber": 150,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        throw new DuckieNoIndexException();"
-      },
-      {
-        "lineNumber": 151,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 152,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 153,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    checkTask(ind);"
-      },
-      {
-        "lineNumber": 154,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                } else if (input.toLowerCase().indexOf(\"delete\") \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 155,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    if (lst.size() \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 156,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        throw new DuckieNoListException();"
-      },
-      {
-        "lineNumber": 157,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    } else if (is_word(input)) {"
-      },
-      {
-        "lineNumber": 158,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        throw new DuckieInsufficientInfoException();"
-      },
-      {
-        "lineNumber": 159,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 160,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 161,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    String description \u003d input.split(\" \")[1].strip();"
-      },
-      {
-        "lineNumber": 162,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 163,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    if (description.toLowerCase().equals(\"all\")) {"
-      },
-      {
-        "lineNumber": 164,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        deleteAllTasks();"
-      },
-      {
-        "lineNumber": 165,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    } else {"
-      },
-      {
-        "lineNumber": 166,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        int ind \u003d Integer.parseInt(description);"
-      },
-      {
-        "lineNumber": 167,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        if (lst.size() \u003c ind) {"
-      },
-      {
-        "lineNumber": 168,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                            throw new DuckieNoIndexException();"
-      },
-      {
-        "lineNumber": 169,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 170,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                        deleteTask(ind);"
-      },
-      {
-        "lineNumber": 171,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 172,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                } else if (input.toLowerCase().indexOf(\"todo\") \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 173,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    addTask(input, \"todo\");"
-      },
-      {
-        "lineNumber": 174,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                } else if (input.toLowerCase().indexOf(\"deadline\") \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 175,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    addTask(input, \"deadline\");"
-      },
-      {
-        "lineNumber": 176,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                } else if (input.toLowerCase().indexOf(\"event\") \u003d\u003d 0) {"
-      },
-      {
-        "lineNumber": 177,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    addTask(input, \"event\");"
-      },
-      {
-        "lineNumber": 178,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 179,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    throw new DuckieInvalidCommandException();"
-      },
-      {
-        "lineNumber": 180,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 181,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            } catch (DuckieException e) {"
-      },
-      {
-        "lineNumber": 182,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                System.out.println(e.getMessage());"
-      },
-      {
-        "lineNumber": 183,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 184,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                e.printStackTrace();"
-      },
-      {
-        "lineNumber": 185,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 186,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 187,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 188,
-        "author": {
           "gitId": "siqiang-ng"
         },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "siqiang-ng": 3,
-      "-": 185
+      "siqiang-ng": 41,
+      "-": 50
     }
   },
   {
-    "path": "src/main/java/BotResponses.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "import java.lang.reflect.Array;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "import java.util.ArrayList;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "public class BotResponses {"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    private final static String INDENT \u003d \"\\t\";"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    private final static String horizL \u003d INDENT +"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            \"____________________________________________________________\";"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    private final static String logo \u003d INDENT"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            + \"           ____                   _      _\\n\""
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            + INDENT + \"    __    |  _ \\\\   _   _    ___  | | _  (_)  ___     __\\n\""
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            + INDENT + \"___( o)\u003e  | | | | | | | | /  __| | |/ / | | / _ \\\\  \u003c(o )___ \\n\""
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            + INDENT + \"\\\\ \u003c_. )   | |_| | | | | | | (__  |   \u003c  | | | __/   ( ._\u003e /\\n\""
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            + INDENT + \" `---\u0027    |____/  \\\\___,_|  \\\\ __| |_|\\\\_\\\\ |_| \\\\___|    `___\u0027 \\n\";"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static String getHorizL() {"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        return horizL;"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static void intro() {"
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(horizL + \"\\n\" + logo + \"\\n\" +"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                INDENT + \"Quack. Duckie is here to remember your tasks!\");"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static void ending() {"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(\"\\n\" + INDENT +"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                \"Quack! Hope to see you again!\\n\" + horizL);"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static void addTaskReply(Task t1, ArrayList\u003cTask\u003e lst) {"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(horizL);"
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(INDENT + \"Quack! Added: \" + t1);"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(INDENT + \"Now you have \" + lst.size() + \" task(s) in the list.\");"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(horizL);"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static void displayListReply(ArrayList\u003cTask\u003e lst) {"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        int index \u003d 1;"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(horizL);"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        System.out.println(INDENT + \"Quack! You have these in your list currently: \");"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        for (Task task : lst) {"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            System.out.println(INDENT + index + \". \" + task);"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            index++;"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(horizL);"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static void checkTaskReply(Task t1) {"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(horizL + \"\\n\" + INDENT"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                + \"Quack! I\u0027ve marked this task as done: \\n\""
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                + INDENT + t1 + \"\\n\" + horizL);"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static void deleteTaskReply(Task t1) {"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        System.out.println(horizL + \"\\n\" + INDENT + \"Quack! I\u0027ve remove this task: \\n\" +"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                INDENT + t1 + \"\\n\" + horizL);"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public static void deleteAllReply() {"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        System.out.println(horizL + \"\\n\" + INDENT + \"Quack! All tasks are cleared in the list!\\n\""
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                + horizL);"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "siqiang-ng": 54,
-      "-": 8
-    }
-  },
-  {
-    "path": "src/main/java/Deadline.java",
+    "path": "src/main/java/duckie/exception/DuckieException.java",
     "fileType": "java",
     "lines": [
       {
@@ -1778,42 +1050,42 @@
         "author": {
           "gitId": "-"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "package duckie.exception;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "-"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": ""
+        "content": "public class DuckieException extends Exception {"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "    public DuckieException(String message) {"
       },
       {
         "lineNumber": 5,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    protected final static DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, MMM dd yyyy\");"
+        "content": "        super(message);"
       },
       {
         "lineNumber": 6,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    protected LocalDate deadline;"
+        "content": "    }"
       },
       {
         "lineNumber": 7,
@@ -1825,138 +1097,33 @@
       {
         "lineNumber": 8,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    public Deadline(String description, LocalDate deadline) {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 9,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        this.deadline \u003d deadline;"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public String getType() {"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        return \"D\";"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public String getDate() {"
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        return dtf.format(this.deadline);"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 24,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    public String toString() {"
       },
       {
-        "lineNumber": 25,
+        "lineNumber": 10,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "        return \"[D]\" + super.toString() + \"(by: \" + dtf.format(this.deadline) + \")\";"
+        "content": "        return getMessage();"
       },
       {
-        "lineNumber": 26,
+        "lineNumber": 11,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 27,
+        "lineNumber": 12,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -1965,500 +1132,40 @@
     ],
     "authorContributionMap": {
       "siqiang-ng": 9,
-      "-": 18
+      "-": 3
     }
   },
   {
-    "path": "src/main/java/Duckie.java",
+    "path": "src/main/java/duckie/exception/DuckieInsufficientInfoException.java",
     "fileType": "java",
     "lines": [
       {
         "lineNumber": 1,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "import java.io.File;"
+        "content": "package duckie.exception;"
       },
       {
         "lineNumber": 2,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "import java.io.IOException;"
+        "content": ""
       },
       {
         "lineNumber": 3,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "import java.nio.file.Path;"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "import java.nio.file.Paths;"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "import java.util.Scanner;"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "public class Duckie {"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static File openFile() {"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        String cwd \u003d System.getProperty(\"user.dir\");"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        Path dirPath \u003d Paths.get(cwd, \"data\");"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        Path filePath \u003d Paths.get(cwd, \"data\", \"duckie.txt\");"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            File duckieFile \u003d new File(String.valueOf(filePath));"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            if (!duckieFile.exists()) {"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                File dir \u003d new File(String.valueOf(dirPath));"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                if (!dir.exists()) {"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    if (dir.mkdirs() \u0026\u0026 duckieFile.createNewFile()) {"
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                        System.out.println(\"Memory File created successfully!\");"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                    } else {"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                        System.out.println(\"Quack! Unable to create file!\");"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "                    if (duckieFile.createNewFile()) {"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                        System.out.println(\"Memory File created successfully!\");"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                    } else {"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                        System.out.println(\"Quack! Unable to create file!\");"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            return duckieFile;"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            System.out.println(\"Quack! Encounter problem while loading data!\");"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        return null;"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        BotResponses.intro();"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        File duckieFile \u003d openFile();"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            BotHandler.processData(new Scanner(duckieFile));"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        } catch (IOException e) {"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            System.out.println(\"Quack! Encounter problem while loading data!\");"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        } catch (DuckieException e ) {"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "            System.out.println(e.getMessage());"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        BotHandler.serve();"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        BotResponses.ending();"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "siqiang-ng": 36,
-      "-": 17
-    }
-  },
-  {
-    "path": "src/main/java/DuckieException.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "public class DuckieException extends Exception {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    DuckieException(String message) {"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        super(message);"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        return getMessage();"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "siqiang-ng": 10
-    }
-  },
-  {
-    "path": "src/main/java/DuckieInsufficientInfoException.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
         "author": {
           "gitId": "-"
         },
         "content": "public class DuckieInsufficientInfoException extends DuckieException {"
       },
       {
-        "lineNumber": 2,
+        "lineNumber": 4,
         "author": {
           "gitId": "-"
         },
         "content": "    protected final static String INDENT \u003d \"\\t\";"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    protected final static String horizL \u003d INDENT +"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            \"____________________________________________________________\";"
       },
       {
         "lineNumber": 5,
@@ -2477,33 +1184,19 @@
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "        super(horizL + \"\\n\" + INDENT"
+        "content": "        super(INDENT + \"Duckie needs more description after the first word.\");"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "                + \"Duckie needs more description after the first word.\\n\""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                + horizL);"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 11,
+        "lineNumber": 9,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -2511,41 +1204,41 @@
       }
     ],
     "authorContributionMap": {
-      "siqiang-ng": 8,
-      "-": 3
+      "siqiang-ng": 3,
+      "-": 6
     }
   },
   {
-    "path": "src/main/java/DuckieInvalidCommandException.java",
+    "path": "src/main/java/duckie/exception/DuckieInvalidCommandException.java",
     "fileType": "java",
     "lines": [
       {
         "lineNumber": 1,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class DuckieInvalidCommandException extends DuckieException {"
+        "content": "package duckie.exception;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "-"
         },
-        "content": "    protected final static String INDENT \u003d \"\\t\";"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "    protected final static String horizL \u003d INDENT +"
+        "content": "public class DuckieInvalidCommandException extends DuckieException {"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "            \"____________________________________________________________\";"
+        "content": "    protected final static String INDENT \u003d \"\\t\";"
       },
       {
         "lineNumber": 5,
@@ -2564,40 +1257,26 @@
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "        super(horizL + \"\\n\" + INDENT"
+        "content": "        super(INDENT + \"Sorry, Duckie does not understand what you are trying to do.\");"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "                + \"Sorry, Duckie does not know what you are trying to do.\\n\""
+        "content": "    }"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "                + horizL);"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
         "content": ""
       },
       {
-        "lineNumber": 12,
+        "lineNumber": 10,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -2605,41 +1284,41 @@
       }
     ],
     "authorContributionMap": {
-      "siqiang-ng": 11,
-      "-": 1
+      "siqiang-ng": 6,
+      "-": 4
     }
   },
   {
-    "path": "src/main/java/DuckieNoIndexException.java",
+    "path": "src/main/java/duckie/exception/DuckieNoIndexException.java",
     "fileType": "java",
     "lines": [
       {
         "lineNumber": 1,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class DuckieNoIndexException extends DuckieException {"
+        "content": "package duckie.exception;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "-"
         },
-        "content": "    protected final static String INDENT \u003d \"\\t\";"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "    protected final static String horizL \u003d INDENT +"
+        "content": "public class DuckieNoIndexException extends DuckieException {"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "            \"____________________________________________________________\";"
+        "content": "    protected final static String INDENT \u003d \"\\t\";"
       },
       {
         "lineNumber": 5,
@@ -2658,33 +1337,19 @@
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "        super(horizL + \"\\n\" + INDENT"
+        "content": "        super(INDENT + \"Quack. The input index is not found in the list.\");"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "                + \"Quack. The input index is not found in the list.\\n\""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                + horizL);"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 11,
+        "lineNumber": 9,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -2692,41 +1357,41 @@
       }
     ],
     "authorContributionMap": {
-      "siqiang-ng": 10,
-      "-": 1
+      "siqiang-ng": 5,
+      "-": 4
     }
   },
   {
-    "path": "src/main/java/DuckieNoListException.java",
+    "path": "src/main/java/duckie/exception/DuckieNoListException.java",
     "fileType": "java",
     "lines": [
       {
         "lineNumber": 1,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class DuckieNoListException extends DuckieException {"
+        "content": "package duckie.exception;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "-"
         },
-        "content": "    protected final static String INDENT \u003d \"\\t\";"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "    protected final static String horizL \u003d INDENT +"
+        "content": "public class DuckieNoListException extends DuckieException {"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "            \"____________________________________________________________\";"
+        "content": "    protected final static String INDENT \u003d \"\\t\";"
       },
       {
         "lineNumber": 5,
@@ -2745,33 +1410,19 @@
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "        super(horizL + \"\\n\" + INDENT"
+        "content": "        super(INDENT + \"Quack. You have no tasks in the list currently.\");"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "                + \"Quack. You have no tasks in the list currently.\\n\""
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "                + horizL);"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 11,
+        "lineNumber": 9,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -2779,12 +1430,12 @@
       }
     ],
     "authorContributionMap": {
-      "siqiang-ng": 10,
-      "-": 1
+      "siqiang-ng": 5,
+      "-": 4
     }
   },
   {
-    "path": "src/main/java/Event.java",
+    "path": "src/main/java/duckie/task/Deadline.java",
     "fileType": "java",
     "lines": [
       {
@@ -2792,185 +1443,199 @@
         "author": {
           "gitId": "-"
         },
-        "content": "import java.time.LocalDateTime;"
+        "content": "package duckie.task;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "-"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class Event extends Task{"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "-"
         },
-        "content": "    protected final static DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, MMM dd yyyy hh:mm a\");"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    protected LocalDateTime dateTime;"
+        "content": "public class Deadline extends Task {"
       },
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": ""
+        "content": "    protected final static DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, MMM dd yyyy\");"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "-"
         },
-        "content": "    public Event(String description, LocalDateTime dateTime) {"
+        "content": "    protected LocalDate deadline;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "        super(description);"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "-"
         },
-        "content": "        this.dateTime \u003d dateTime;"
+        "content": "    public Deadline(String description, LocalDate deadline) {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "    }"
+        "content": "        super(description);"
       },
       {
         "lineNumber": 12,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": ""
+        "content": "        this.deadline \u003d deadline;"
       },
       {
         "lineNumber": 13,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    public String getType() {"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "-"
         },
-        "content": "        return \"E\";"
+        "content": "    @Override"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "    public String getType() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "        return \"D\";"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "-"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "-"
         },
-        "content": "    public String getDate() {"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "-"
         },
-        "content": "        return dtf.format(this.dateTime);"
+        "content": "    @Override"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "    public String getDate() {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "        return dtf.format(this.deadline);"
       },
       {
         "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    @Override"
       },
       {
-        "lineNumber": 24,
+        "lineNumber": 26,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    public String toString() {"
       },
       {
-        "lineNumber": 25,
+        "lineNumber": 27,
         "author": {
           "gitId": "-"
         },
-        "content": "        return \"[E]\" + super.toString() + \"(at: \" + dtf.format(this.dateTime) + \")\";"
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + dtf.format(this.deadline) + \")\";"
       },
       {
-        "lineNumber": 26,
+        "lineNumber": 28,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 27,
+        "lineNumber": 29,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -2979,11 +1644,11 @@
     ],
     "authorContributionMap": {
       "siqiang-ng": 9,
-      "-": 18
+      "-": 20
     }
   },
   {
-    "path": "src/main/java/Task.java",
+    "path": "src/main/java/duckie/task/Event.java",
     "fileType": "java",
     "lines": [
       {
@@ -2991,7 +1656,7 @@
         "author": {
           "gitId": "-"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "package duckie.task;"
       },
       {
         "lineNumber": 2,
@@ -3003,107 +1668,107 @@
       {
         "lineNumber": 3,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class Task {"
+        "content": "import java.time.LocalDateTime;"
       },
       {
         "lineNumber": 4,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    protected String description;"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 5,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    protected boolean isDone;"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": ""
+        "content": "public class Event extends Task{"
       },
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    public Task(String description) {"
+        "content": "    protected final static DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, MMM dd yyyy hh:mm a\");"
       },
       {
         "lineNumber": 8,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "        this.description \u003d description;"
+        "content": "    protected LocalDateTime dateTime;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "        isDone \u003d false;"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    }"
+        "content": "    public Event(String description, LocalDateTime dateTime) {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": ""
+        "content": "        super(description);"
       },
       {
         "lineNumber": 12,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    public void checked() {"
+        "content": "        this.dateTime \u003d dateTime;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "        this.isDone \u003d true;"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "-"
         },
-        "content": "    public boolean isCompleted() {"
+        "content": "    public String getType() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "-"
         },
-        "content": "        return this.isDone;"
+        "content": "        return \"E\";"
       },
       {
         "lineNumber": 18,
@@ -3124,157 +1789,384 @@
         "author": {
           "gitId": "-"
         },
-        "content": "    public String getDescription() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "-"
         },
-        "content": "        return this.description;"
+        "content": "    public String getDate() {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "        return dtf.format(this.dateTime);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "-"
         },
-        "content": "    public String getType() {"
+        "content": ""
       },
       {
         "lineNumber": 25,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        return null;"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    public String getDate() {"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "        return null;"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "-"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 32,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    @Override"
       },
       {
-        "lineNumber": 33,
+        "lineNumber": 26,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    public String toString() {"
       },
       {
-        "lineNumber": 34,
+        "lineNumber": 27,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "        String tick \u003d \"✔\";"
+        "content": "        return \"[E]\" + super.toString() + \" (at: \" + dtf.format(this.dateTime) + \")\";"
       },
       {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        String cross \u003d \"✘\";"
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        if (isDone) {"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            return \"[\" + tick + \"] \" + this.description;"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        } else {"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "            return \"[\" + cross + \"] \" + this.description;"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "siqiang-ng"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 41,
+        "lineNumber": 28,
         "author": {
           "gitId": "siqiang-ng"
         },
         "content": "    }"
       },
       {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "siqiang-ng": 9,
+      "-": 20
+    }
+  },
+  {
+    "path": "src/main/java/duckie/task/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "package duckie.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "public class Task {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        isDone \u003d false;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    public void checked() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        this.isDone \u003d true;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public boolean isCompleted() {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        return this.isDone;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public String getDescription() {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        return this.description;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public String getType() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        return null;"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public String getDate() {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "        return null;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "-"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        String tick \u003d \"✔\";"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        String cross \u003d \"✘\";"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        if (isDone) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            return \"[\" + tick + \"] \" + this.description;"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "            return \"[\" + cross + \"] \" + this.description;"
+      },
+      {
         "lineNumber": 42,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -3283,113 +2175,127 @@
     ],
     "authorContributionMap": {
       "siqiang-ng": 24,
-      "-": 18
+      "-": 20
     }
   },
   {
-    "path": "src/main/java/Todo.java",
+    "path": "src/main/java/duckie/task/Todo.java",
     "fileType": "java",
     "lines": [
       {
         "lineNumber": 1,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "public class Todo extends Task {"
+        "content": "package duckie.task;"
       },
       {
         "lineNumber": 2,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    public Todo(String description) {"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "        super(description);"
+        "content": "public class Todo extends Task {"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "    }"
+        "content": "    public Todo(String description) {"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": ""
+        "content": "        super(description);"
       },
       {
         "lineNumber": 6,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 7,
         "author": {
-          "gitId": "-"
+          "gitId": "siqiang-ng"
         },
-        "content": "    public String getType() {"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "-"
         },
-        "content": "        return \"T\";"
+        "content": "    @Override"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "-"
         },
-        "content": "    }"
+        "content": "    public String getType() {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "-"
         },
-        "content": ""
+        "content": "        return \"T\";"
       },
       {
         "lineNumber": 11,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 12,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "    public String toString() {"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "        return \"[T]\" + super.toString();"
+        "content": "    @Override"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "siqiang-ng"
         },
-        "content": "    }"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 15,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "siqiang-ng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
         "author": {
           "gitId": "siqiang-ng"
         },
@@ -3398,7 +2304,7 @@
     ],
     "authorContributionMap": {
       "siqiang-ng": 10,
-      "-": 5
+      "-": 7
     }
   },
   {
@@ -3593,9 +2499,9 @@
       {
         "lineNumber": 12,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "javac -cp \"%MY_PATH%\\src\\main\\java\" -Xlint:none -d \"%MY_PATH%\\bin\" \"%MY_PATH%\\src\\main\\java\\*.java\""
+        "content": "javac -cp \"%MY_PATH%\\src\\main\\java\" -Xlint:none -d \"%MY_PATH%\\bin\" \"%MY_PATH%\\src\\main\\java\\duckie\\*.java\""
       },
       {
         "lineNumber": 13,
@@ -3649,9 +2555,9 @@
       {
         "lineNumber": 20,
         "author": {
-          "gitId": "siqiang-ng"
+          "gitId": "-"
         },
-        "content": "java -classpath \"%MY_PATH%\\bin\" Duckie \u003c input.txt \u003e ACTUAL.TXT"
+        "content": "java -classpath \"%MY_PATH%\\bin\" duckie.Duckie \u003c input.txt \u003e ACTUAL.TXT"
       },
       {
         "lineNumber": 21,
@@ -3690,8 +2596,8 @@
       }
     ],
     "authorContributionMap": {
-      "siqiang-ng": 7,
-      "-": 18
+      "siqiang-ng": 5,
+      "-": 20
     }
   }
 ]
