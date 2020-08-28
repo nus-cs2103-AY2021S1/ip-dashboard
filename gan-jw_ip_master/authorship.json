@@ -22,696 +22,297 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "import main.java.duke.tasks.Task;"
+        "content": "import main.java.duke.command.Command;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "import main.java.duke.tasks.Deadline;"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "import main.java.duke.tasks.Todo;"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "import main.java.duke.tasks.Event;"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "gan-jw"
-        },
         "content": ""
       },
       {
-        "lineNumber": 8,
+        "lineNumber": 5,
         "author": {
           "gitId": "-"
         },
         "content": "public class Duke {"
       },
       {
-        "lineNumber": 9,
+        "lineNumber": 6,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "    private Storage storage;"
       },
       {
-        "lineNumber": 10,
+        "lineNumber": 7,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "    private TaskList tasks;"
       },
       {
-        "lineNumber": 11,
+        "lineNumber": 8,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "    private Ui ui;"
       },
       {
-        "lineNumber": 12,
+        "lineNumber": 9,
         "author": {
           "gitId": "gan-jw"
         },
         "content": ""
       },
       {
-        "lineNumber": 13,
+        "lineNumber": 10,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "    public Duke(String filePath) {"
       },
       {
-        "lineNumber": 14,
+        "lineNumber": 11,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "        ui \u003d new Ui();"
       },
       {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "        storage \u003d new Storage(filePath);"
-      },
-      {
-        "lineNumber": 16,
+        "lineNumber": 12,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "        try {"
       },
       {
-        "lineNumber": 17,
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            storage \u003d new Storage(filePath);"
+      },
+      {
+        "lineNumber": 14,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "            tasks \u003d new TaskList(storage.load());"
       },
       {
-        "lineNumber": 18,
+        "lineNumber": 15,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "        } catch (DukeException e) {"
       },
       {
-        "lineNumber": 19,
+        "lineNumber": 16,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "            ui.showLoadingError();"
+        "content": "            ui.showError(e.toString());"
       },
       {
-        "lineNumber": 20,
+        "lineNumber": 17,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "            tasks \u003d new TaskList();"
       },
       {
-        "lineNumber": 21,
+        "lineNumber": 18,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "        }"
       },
       {
-        "lineNumber": 22,
+        "lineNumber": 19,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 23,
+        "lineNumber": 20,
         "author": {
           "gitId": "gan-jw"
         },
         "content": ""
       },
       {
-        "lineNumber": 24,
+        "lineNumber": 21,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "    public void run() {"
       },
       {
-        "lineNumber": 25,
+        "lineNumber": 22,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "        ui.showWelcome();"
       },
       {
-        "lineNumber": 26,
+        "lineNumber": 23,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "        boolean isExit \u003d false;"
       },
       {
-        "lineNumber": 27,
+        "lineNumber": 24,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "        while (!isExit) {"
       },
       {
-        "lineNumber": 28,
+        "lineNumber": 25,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "            try {"
       },
       {
-        "lineNumber": 29,
+        "lineNumber": 26,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "                String fullCommand \u003d ui.readCommand();"
       },
       {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                ui.showLine();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                Command c \u003d Parser.parse(fullCommand);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                c.execute(tasks, ui, storage);"
+      },
+      {
         "lineNumber": 30,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                String arr[] \u003d fullCommand.split(\" \", 2);"
+        "content": "                isExit \u003d c.isExit();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                String command \u003d arr[0];"
+        "content": "            } catch (DukeException e) {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                if (command.equals(\"list\")) {"
+        "content": "                ui.showError(e.toString());"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                    ui.printInBorder(tasks.listAllTasks());"
+        "content": "            } finally {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                } else if (command.equals(\"done\") || command.equals(\"delete\")) {"
+        "content": "                ui.showLine();"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                    if (arr.length \u003c 2) {"
+        "content": "            }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                        throw new DukeException(\"Please specify a task number!\");"
+        "content": "        }"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                    }"
+        "content": "    }"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                    int taskNum \u003d Integer.parseInt(arr[1]);"
+        "content": ""
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                    if (command.equals(\"done\")) {"
+        "content": ""
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                        Task task \u003d tasks.doneTask(taskNum);"
+        "content": "    public static void main(String[] args) {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                        storage.editTaskList(task.saveToString(), taskNum, false);"
+        "content": "        new Duke(\"data/tasks.txt\").run();"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                        ui.printInBorder(\"Nice I\u0027ve digested the following:\\n\""
+        "content": "    }"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                                + task.toString() + \"\\n\" + \"Now I\u0027m hungry again! FEED ME MORE :3\");"
+        "content": ""
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                    } else {"
+        "content": ""
       },
       {
         "lineNumber": 45,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        Task task \u003d tasks.removeTask(taskNum);"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        storage.editTaskList(\"\", taskNum, true);"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        ui.printInBorder(\"Nooo you can\u0027t take away what you\u0027ve already given me...\\n\""
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                                + \"Okay fine. It\u0027s in my stomach tho... ASDFGUUVHHH!!\\n\""
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                                + \"The following has been removed:\\n\""
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                                + task.toString() + \"\\n\" + \"Now I\u0027m feeling sick :( there\u0027s \" + tasks.getTaskCount()"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                                + \" thing(s) in my belly now...HUNGRY!\");"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                } else if (command.equals(\"uwu\")) {"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    ui.printInBorder(\"owo\");"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                } else if (command.equals(\"owo\")) {"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    ui.printInBorder(\"uwu\");"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                } else if (command.equals(\"exit\")) {"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    ui.printInBorder(\"bb cya again!\");"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    isExit \u003d true;"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                } else if (command.equals(\"todo\") || command.equals(\"deadline\") || command.equals(\"event\")) {"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    if (arr.length \u003c 2) {"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        throw new DukeException(\"The description of a task cannot be empty!\");"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    Task newTask;"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    if (!command.equals(\"todo\")) {"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        if (command.equals(\"deadline\")) {"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            if (!arr[1].contains(\" /by \")) {"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                                throw new DukeException(\"The date has to be specified!\");"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            }"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            String temp[] \u003d arr[1].split(\" /by \", 2);"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            newTask \u003d new Deadline(temp[0], temp[1].replace(\u0027/\u0027, \u0027-\u0027));"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        } else {"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            if (!arr[1].contains(\" /at \")) {"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                                throw new DukeException(\"The date has to be specified!\");"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            }"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            String temp[] \u003d arr[1].split(\" /at \", 2);"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            newTask \u003d new Event(temp[0], temp[1].replace(\u0027/\u0027, \u0027-\u0027));"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    } else {"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                        newTask \u003d new Todo(arr[1]);"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    }"
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    tasks.addTask(newTask);"
-      },
-      {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    storage.saveTaskList(newTask.saveToString());"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    ui.printInBorder(\"*Gobble gobble* the following has been eated OwO:\\n\""
-      },
-      {
-        "lineNumber": 85,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            + newTask.toString() + \"\\n\""
-      },
-      {
-        "lineNumber": 86,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                            + \"I now have \" + tasks.getTaskCount() + \" thing(s) in my belly\");"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                } else {"
-      },
-      {
-        "lineNumber": 88,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                    throw new DukeException(\"I don\u0027t understand what you\u0027re saying HMM...\");"
-      },
-      {
-        "lineNumber": 89,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "            } catch (DukeException e) {"
-      },
-      {
-        "lineNumber": 91,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "                ui.printInBorder(e.toString());"
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "    public static void main(String[] args) {"
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "        new Duke(\"data/tasks.txt\").run();"
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "gan-jw"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 102,
         "author": {
           "gitId": "-"
         },
@@ -719,7 +320,7 @@
       }
     ],
     "authorContributionMap": {
-      "gan-jw": 100,
+      "gan-jw": 43,
       "-": 2
     }
   },
@@ -814,6 +415,617 @@
     ],
     "authorContributionMap": {
       "gan-jw": 12
+    }
+  },
+  {
+    "path": "src/main/java/duke/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.command.*;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.tasks.Deadline;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.tasks.Todo;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static Command parse(String userInput) throws DukeException {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        String splitCommand[] \u003d userInput.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        String commandWord \u003d splitCommand[0];"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        switch (commandWord) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case ListCommand.COMMAND_WORD:"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return new ListCommand();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case DeleteCommand.COMMAND_WORD:"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            if (checkInputLength(splitCommand, 2)) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return prepareDelete(splitCommand[1]);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case DoneCommand.COMMAND_WORD:"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            if (checkInputLength(splitCommand, 2)) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return prepareDone(splitCommand[1]);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case OwoCommand.COMMAND_WORD:"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return new OwoCommand();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case UwuCommand.COMMAND_WORD:"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return new UwuCommand();"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case AddCommand.COMMAND_WORD_TODO:"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case AddCommand.COMMAND_WORD_DEADLINE:"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case AddCommand.COMMAND_WORD_EVENT:"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            if (checkInputLength(splitCommand, 2)) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                return prepareAdd(commandWord, splitCommand[1]);"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case ExitCommand.COMMAND_WORD:"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return new ExitCommand();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            throw new DukeException(\"I don\u0027t understand what you\u0027re saying HMM...\");"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    private static boolean checkInputLength(String[] input, int len) throws DukeException {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        if (input.length \u003c len) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            throw new DukeException(\"Input is missing some arguments!\");"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    private static Command prepareDelete(String input) {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        int taskNum \u003d Integer.parseInt(input);"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        return new DeleteCommand(taskNum);"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    private static Command prepareDone(String input) {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        int taskNum \u003d Integer.parseInt(input);"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        return new DoneCommand(taskNum);"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    private static Command prepareAdd(String command, String descript) throws DukeException {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        switch (command) {"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case (\"todo\"):"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            return new AddCommand(new Todo(descript));"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case (\"deadline\"):"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            String delete[] \u003d descript.split(\" /by \", 2);"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            if (checkInputLength(delete, 2)) {"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                return new AddCommand(new Deadline(delete[0], delete[1].replace(\u0027/\u0027, \u0027-\u0027)));"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        case (\"event\"):"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            String event[] \u003d descript.split(\" /at \", 2);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            if (checkInputLength(event, 2)) {"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                return new AddCommand(new Deadline(event[0], event[1].replace(\u0027/\u0027, \u0027-\u0027)));"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            throw new DukeException(\"Couldn\u0027t add item..\");"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 86
     }
   },
   {
@@ -958,7 +1170,7 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    public Storage(String filePath) {"
+        "content": "    public Storage(String filePath) throws DukeException {"
       },
       {
         "lineNumber": 21,
@@ -1014,7 +1226,7 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "                e.printStackTrace();"
+        "content": "                throw new DukeException(\"Unable to create file...\");"
       },
       {
         "lineNumber": 29,
@@ -1322,7 +1534,7 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    public void saveTaskList(String taskToAdd) {"
+        "content": "    public void saveTaskList(String taskToAdd) throws DukeException {"
       },
       {
         "lineNumber": 73,
@@ -1364,7 +1576,7 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "            e.printStackTrace();"
+        "content": "            throw new DukeException(\"Error editing file!\");"
       },
       {
         "lineNumber": 79,
@@ -1392,7 +1604,7 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    public void editTaskList(String newTask, int taskNum, boolean delete) {"
+        "content": "    public void editTaskList(String newTask, int taskNum, boolean delete) throws DukeException {"
       },
       {
         "lineNumber": 83,
@@ -1462,7 +1674,7 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "            e.printStackTrace();"
+        "content": "            throw new DukeException(\"Error editing file!\");"
       },
       {
         "lineNumber": 93,
@@ -1949,7 +2161,7 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    private final String BORDER \u003d \"____________________________________________________________\";"
+        "content": "    private static final String BORDER \u003d \"____________________________________________________________\";"
       },
       {
         "lineNumber": 7,
@@ -2040,56 +2252,359 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "        System.out.println(\"Hello I am\\n\" + LOGO + \"\\n\" + \"Feed me some stuff! :3\\n\");"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    }"
+        "content": "        System.out.println(\"Hello I am\\n\" + LOGO + \"\\n\" + \"Feed me some stuff! :3\\n\");"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    public String readCommand() {"
+        "content": ""
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": ""
+        "content": "    public String readCommand() {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "        String command \u003d sc.nextLine();"
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "        return command;"
+        "content": "        String command \u003d sc.nextLine();"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "gan-jw"
         },
+        "content": "        return command;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "gan-jw"
+        },
         "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void showError(String message) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        System.out.println(message);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void showLine() {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        System.out.println(BORDER);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void printMessage(String message) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        System.out.println(String.format(message));"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 42
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/AddCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class AddCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    private Task task;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD_TODO \u003d \"todo\";"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD_DEADLINE \u003d \"deadline\";"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD_EVENT \u003d \"event\";"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_ADD_ACKNOWLEDGEMENT \u003d \"*Gobble gobble* the following has been eated OwO:\";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_ADD_UPDATE \u003d \"Number of thing(s) in my belly has now become \";"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public AddCommand(Task task) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        this.task \u003d task;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        tasks.addTask(task);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        storage.saveTaskList(task.saveToString());"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        ui.printMessage(String.format(\"%s\\n%s\\n%s%d!\", MESSAGE_ADD_ACKNOWLEDGEMENT, task.toString(),"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                MESSAGE_ADD_UPDATE, tasks.getTaskCount()));"
       },
       {
         "lineNumber": 27,
@@ -2110,14 +2625,354 @@
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    public void showLoadingError() {"
+        "content": ""
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "        System.out.println(\"Error loading file!\");"
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 30
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public abstract class Command {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 16
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.DukeException;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD \u003d \"delete\";"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_DELETE_ACKNOWLEDGEMENT \u003d"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "            \"Nooo you can\u0027t take away what you\u0027ve already given me...\\n\""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                    + \"Okay fine. It\u0027s in my stomach tho... ASDFGUUVHHH!!\\n\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                    + \"The following has been removed: \";"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_DELETE_CONTINUED \u003d \"Now I\u0027m feeling sick :( there\u0027s \";"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_DELETE_END \u003d \" thing(s) in my belly now...HUNGRY!\";"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    private int taskNum;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public DeleteCommand(int taskNum) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        this.taskNum \u003d taskNum;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        Task task \u003d tasks.removeTask(taskNum);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        storage.editTaskList(\"\", taskNum, true);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        ui.printMessage(String.format(\"%s\\n%s\\n%s%d%s\", MESSAGE_DELETE_ACKNOWLEDGEMENT,"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                task.toString(), MESSAGE_DELETE_CONTINUED, tasks.getTaskCount(), MESSAGE_DELETE_END));"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
       },
       {
         "lineNumber": 31,
@@ -2131,38 +2986,208 @@
         "author": {
           "gitId": "gan-jw"
         },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 32
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DoneCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
         "content": ""
       },
       {
-        "lineNumber": 33,
+        "lineNumber": 3,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "    public void printInBorder(String message) {"
+        "content": "import main.java.duke.DukeException;"
       },
       {
-        "lineNumber": 34,
+        "lineNumber": 4,
         "author": {
           "gitId": "gan-jw"
         },
-        "content": "        System.out.println(String.format(\"%s\\n%s\\n%s\", BORDER, message, BORDER));"
+        "content": "import main.java.duke.Storage;"
       },
       {
-        "lineNumber": 35,
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class DoneCommand extends Command {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD \u003d \"done\";"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_DONE_ACKNOWLEDGEMENT \u003d \"Nice I\u0027ve digested the following: \";"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_DONE_END \u003d \"Now I\u0027m hungry again! FEED ME MORE :3\";"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    private int taskNum;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public DoneCommand(int taskNum) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        this.taskNum \u003d taskNum;"
+      },
+      {
+        "lineNumber": 17,
         "author": {
           "gitId": "gan-jw"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 36,
+        "lineNumber": 18,
         "author": {
           "gitId": "gan-jw"
         },
         "content": ""
       },
       {
-        "lineNumber": 37,
+        "lineNumber": 19,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        Task task \u003d tasks.doneTask(taskNum);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        storage.editTaskList(task.saveToString(), taskNum, false);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        ui.printMessage(String.format(\"%s\\n%s\\n%s\", MESSAGE_DONE_ACKNOWLEDGEMENT,"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "                task.toString(), MESSAGE_DONE_END));"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
         "author": {
           "gitId": "gan-jw"
         },
@@ -2170,7 +3195,547 @@
       }
     ],
     "authorContributionMap": {
-      "gan-jw": 37
+      "gan-jw": 28
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ExitCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class ExitCommand extends Command {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD \u003d \"exit\";"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_EXIT_ACKNOWLEDGEMENT \u003d \"bb cya again!\";"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public ExitCommand() {}"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        ui.printMessage(MESSAGE_EXIT_ACKNOWLEDGEMENT);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 22
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD \u003d \"list\";"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public ListCommand() {}"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        ui.printMessage(tasks.listAllTasks());"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 16
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/OwoCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class OwoCommand extends Command {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD \u003d \"owo\";"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_OWO_ACKNOWLEDGEMENT \u003d \"uwu\";"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public OwoCommand() {}"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        ui.printMessage(MESSAGE_OWO_ACKNOWLEDGEMENT);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/UwuCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "package main.java.duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Storage;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.TaskList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "import main.java.duke.Ui;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "public class UwuCommand extends Command {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String COMMAND_WORD \u003d \"uwu\";"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public static final String MESSAGE_UWU_ACKNOWLEDGEMENT \u003d \"owo\";"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public UwuCommand() {}"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "        ui.printMessage(MESSAGE_UWU_ACKNOWLEDGEMENT);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "gan-jw"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "gan-jw": 17
     }
   },
   {
