@@ -1409,66 +1409,129 @@
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        } else if (description.equals(\"bye\")) {"
+        "content": "        } else if (description.length() \u003e\u003d 4 \u0026\u0026 description.startsWith((\"time\"))) {"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            return new ByeCommand();"
+        "content": "            if (description.substring(3).split(\" \").length \u003d\u003d 1 || description.substring(3).split(\" \").length \u003e 2) {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        } else if (entered) {"
+        "content": "                throw new DukeException((\"you need to input a legit time for e.g: 18:00, no more and no less.\"));"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            throw new DukeException(\"you gotta put in a correct command.\");"
+        "content": "            }"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        } else {"
+        "content": "            command \u003d Commands.TIME;"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            entered \u003d true;"
+        "content": "            this.description \u003d description.substring(5);"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            throw new DukeException(\"type in \u0027todo\u0027, \u0027deadline\u0027, \u0027event\u0027 to start!\\nAlso, type \u0027date\u0027 and key in a date in YYYY-MM-DD format to search for events/deadlines happening on that date!\");"
+        "content": "            return new TimeCommand(this.description);"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        }"
+        "content": "        } else if (description.equals(\"bye\")) {"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "            return new ByeCommand();"
       },
       {
         "lineNumber": 91,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        } else if (entered) {"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            throw new DukeException(\"you gotta put in a correct command.\");"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            entered \u003d true;"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            throw new DukeException(\"type in \u0027todo\u0027, \u0027deadline\u0027, \u0027event\u0027 to start!\\n\" +"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    \"Also, type \u0027date\u0027 and key in a date in YYYY-MM-DD format to search for events/deadlines happening on that date!\\n\" +"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    \" Or type \u0027time\u0027 and key in time in HH:mm format to search for events/deadline happening on that time!\");"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 100,
         "author": {
           "gitId": "IsaacTin"
         },
@@ -1476,7 +1539,7 @@
       }
     ],
     "authorContributionMap": {
-      "IsaacTin": 91
+      "IsaacTin": 100
     }
   },
   {
@@ -3703,7 +3766,7 @@
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    LIST, DONE, DELETE, TODO, DEADLINE, EVENT, DATE, FIND"
+        "content": "    LIST, DONE, DELETE, TODO, DEADLINE, EVENT, DATE, FIND, TIME"
       },
       {
         "lineNumber": 8,
@@ -5261,6 +5324,372 @@
     }
   },
   {
+    "path": "src/main/java/duke/commands/TimeCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "package duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "import duke.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "import duke.tasks.Deadline;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "import duke.tasks.Event;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "import duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "import duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": " * Command to find tasks by time."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "public class TimeCommand extends Command {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    private String description;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * Constructor to create TimeCommand object."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @param description time being searched"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    public TimeCommand(String description) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * Searches for the time that was keyed in."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @param tasklist list of all the tasks stored in Duke so far."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @param ui prints out messages notifying user of what is being done."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @param storage stores all the tasks being added so far into user\u0027s local storage."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @throws DukeException if tasks with time is not in tasklist."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    public void execute(TaskList tasklist, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        boolean timeExists \u003d false;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        for (Task i : tasklist.getList()) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            if (i instanceof Deadline) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                if(((Deadline) i).hasTime(description)) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    ui.showMessage(i.toString());"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    timeExists \u003d true;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            } else if (i instanceof Event) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                if (((Event) i).hasTime(description)) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    ui.showMessage(i.toString());"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    timeExists \u003d true;"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        if (!timeExists) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            throw new DukeException(\"No events/deadlines with this time!\");"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "IsaacTin": 51
+    }
+  },
+  {
     "path": "src/main/java/duke/tasks/Deadline.java",
     "fileType": "java",
     "lines": [
@@ -5297,556 +5726,808 @@
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "import java.time.LocalTime;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "import java.time.format.DateTimeParseException;"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "/**"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": " * Type of task which includes end date."
+        "content": "/**"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": " */"
+        "content": " * Type of task which includes end date."
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "public class Deadline extends Task {"
+        "content": " */"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    String date;"
+        "content": "public class Deadline extends Task {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "    String date;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Constructor to create Deadline object."
+        "content": "    /**"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "     * Constructor to create Deadline object."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @param description description of the task."
+        "content": "     *"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @param date date of deadline."
+        "content": "     * @param description description of the task."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "     * @param date date of deadline."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public Deadline(String description, String date) {"
+        "content": "     */"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        super(description);"
+        "content": "    public Deadline(String description, String date) {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        this.date \u003d date;"
+        "content": "        super(description);"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "        this.date \u003d date;"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Gets the date of deadline."
+        "content": "    /**"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "     * Gets the date of deadline."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @return date of the deadline."
+        "content": "     *"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "     * @return date of the deadline."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public String getDate() {"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        return date;"
+        "content": "    public String getDate() {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "        return date;"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    private String convertDate() {"
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        String d1 \u003d \"\";"
+        "content": "    private String convertDateAndTime() {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        String[] descriptions \u003d date.split(\" \");"
+        "content": "        String d1 \u003d \"\";"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        for (int i \u003d 0; i \u003c descriptions.length; i++) {"
+        "content": "        String[] descriptions \u003d date.split(\" \");"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            try {"
+        "content": "        for (int i \u003d 0; i \u003c descriptions.length; i++) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                d1 +\u003d \" \" + LocalDate.parse(descriptions[i]).format(DateTimeFormatter.ofPattern(\"MMM dd yyyy\"));"
+        "content": "            try {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            } catch (DateTimeParseException e) {"
+        "content": "                d1 +\u003d \" \" + LocalDate.parse(descriptions[i]).format(DateTimeFormatter.ofPattern(\"MMM dd yyyy\"));"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                d1 +\u003d \" \" + descriptions[i];"
+        "content": "            } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            }"
+        "content": "                try {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        }"
+        "content": "                    String decideAMorPm \u003d LocalTime.parse(descriptions[i]).isAfter(LocalTime.NOON) ? \"pm\" : \"am\";"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        return d1;"
+        "content": "                    d1 +\u003d \" \" + LocalTime.parse(descriptions[i]).format(DateTimeFormatter.ofPattern(\"hh:mm\")) + decideAMorPm;"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "                } catch (DateTimeParseException e2) {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "                    d1 +\u003d \" \" + descriptions[i];"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": "                }"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Checks if the date provided exists in the list."
+        "content": "            }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "        }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @param date date that is being searched for in the list."
+        "content": "        return d1;"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @return true or false if date is in list or not."
+        "content": "    }"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @throws DukeException if description provided does not match format of date."
+        "content": ""
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public boolean hasDate(String date) throws DukeException {"
+        "content": "     * Checks if the date provided exists in the list."
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        try {"
+        "content": "     *"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            LocalDate d1 \u003d LocalDate.parse(date);"
+        "content": "     * @param date date that is being searched for in the list."
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            LocalDate d2 \u003d null;"
+        "content": "     * @return true or false if date is in list or not."
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            String[] descriptions \u003d this.date.split(\" \");"
+        "content": "     * @throws DukeException if description provided does not match format of date."
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            for (int i \u003d 0; i \u003c descriptions.length; i++) {"
+        "content": "     */"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                try {"
+        "content": "    public boolean hasDate(String date) throws DukeException {"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                    d2 \u003d LocalDate.parse(descriptions[i]);"
+        "content": "        try {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                    return d2.equals(d1);"
+        "content": "            LocalDate d1 \u003d LocalDate.parse(date);"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                } catch (DateTimeParseException e) {"
+        "content": "            LocalDate d2 \u003d null;"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                    continue;"
+        "content": "            String[] descriptions \u003d this.date.split(\" \");"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                }"
+        "content": "            for (int i \u003d 0; i \u003c descriptions.length; i++) {"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            }"
+        "content": "                try {"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            return false;"
+        "content": "                    d2 \u003d LocalDate.parse(descriptions[i]);"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        } catch (DateTimeParseException e) {"
+        "content": "                    return d2.equals(d1);"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            throw new DukeException(\"Invalid date.\");"
+        "content": "                } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        }"
+        "content": "                    continue;"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "                }"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "            }"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": "            return false;"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Prints out the task in correct format."
+        "content": "        } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "            throw new DukeException(\"invalid date. Put in format \u0027YYYY MM DD\u0027.\");"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @return task in the form of a string."
+        "content": "        }"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public String toString() {"
+        "content": ""
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        return \"[D][\" + getStatusIcon() + \"] \" + description + \"(by:\" + convertDate() + \")\";"
+        "content": "    /**"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "     * Checks if the time provided exists in the list."
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "}"
+        "content": "     *"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "     * @param time time that is being searched for in the list."
       },
       {
         "lineNumber": 84,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @return true or false if time is in list or not."
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @throws DukeException if description provided does not match format of time."
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    public boolean hasTime(String time) throws DukeException {"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            LocalTime d1 \u003d LocalTime.parse(time);"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            LocalTime d2 \u003d null;"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            String[] descriptions \u003d date.split(\" \");"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            for (int i \u003d 0; i \u003c descriptions.length; i++) {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                try {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    d2 \u003d LocalTime.parse(descriptions[i]);"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    if (d2.equals(d1)) {"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                        return d2.equals(d1);"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    } else {"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                        continue;"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    continue;"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            throw new DukeException(\"invalid Time. Put in format \u0027HH:mm\u0027.\");"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * Prints out the task in correct format."
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @return task in the form of a string."
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        return \"[D][\" + getStatusIcon() + \"] \" + description + \"(by:\" + convertDateAndTime() + \")\";"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "}"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 120,
         "author": {
           "gitId": "IsaacTin"
         },
@@ -5854,7 +6535,7 @@
       }
     ],
     "authorContributionMap": {
-      "IsaacTin": 84
+      "IsaacTin": 120
     }
   },
   {
@@ -5901,535 +6582,787 @@
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": "import java.time.LocalTime;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "import java.time.format.DateTimeParseException;"
+        "content": "import java.time.format.DateTimeFormatter;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "/**"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": " * Type of task which includes date."
+        "content": "/**"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": " */"
+        "content": " * Type of task which includes date."
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "public class Event extends Task {"
+        "content": " */"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    String date;"
+        "content": "public class Event extends Task {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "    String date;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Constructor to create Event object."
+        "content": "    /**"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "     * Constructor to create Event object."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @param description specific details of Event."
+        "content": "     *"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @param date when the Event is taking place."
+        "content": "     * @param description specific details of Event."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "     * @param date when the Event is taking place."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public Event(String description, String date) {"
+        "content": "     */"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        super(description);"
+        "content": "    public Event(String description, String date) {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        this.date \u003d date;"
+        "content": "        super(description);"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "        this.date \u003d date;"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Gets the date of Event."
+        "content": "    /**"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "     * Gets the date of Event."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @return date of the Event."
+        "content": "     *"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "     * @return date of the Event."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public String getDate() {"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        return this.date;"
+        "content": "    public String getDate() {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "        return this.date;"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    private String convertDate() {"
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        String d1 \u003d \"\";"
+        "content": "    private String convertDateAndTime() {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        String[] descriptions \u003d date.split(\" \");"
+        "content": "        String d1 \u003d \"\";"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        for (int i \u003d 0; i \u003c descriptions.length; i++) {"
+        "content": "        String[] descriptions \u003d date.split(\" \");"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            try {"
+        "content": "        for (int i \u003d 0; i \u003c descriptions.length; i++) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                d1 +\u003d \" \" + LocalDate.parse(descriptions[i]).format(DateTimeFormatter.ofPattern(\"MMM dd yyyy\"));"
+        "content": "            try {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            } catch (DateTimeParseException e) {"
+        "content": "                d1 +\u003d \" \" + LocalDate.parse(descriptions[i]).format(DateTimeFormatter.ofPattern(\"MMM dd yyyy\"));"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                d1 +\u003d \" \" + descriptions[i];"
+        "content": "            } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            }"
+        "content": "                try {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        }"
+        "content": "                    String decideAMorPm \u003d LocalTime.parse(descriptions[i]).isAfter(LocalTime.NOON) ? \"pm\" : \"am\";"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        return d1;"
+        "content": "                    d1 +\u003d \" \" + LocalTime.parse(descriptions[i]).format(DateTimeFormatter.ofPattern(\"hh:mm\")) + decideAMorPm;"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "                } catch (DateTimeParseException e2) {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "                    d1 +\u003d \" \" + descriptions[i];"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": "                }"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Checks if the date provided exists in the list."
+        "content": "            }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "        }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @param date date that is being searched for in the list."
+        "content": "        return d1;"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @return true or false if date is in list or not."
+        "content": "    }"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @throws DukeException if description provided does not match format of date."
+        "content": ""
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public boolean hasDate(String date) throws DukeException {"
+        "content": "     * Checks if the date provided exists in the list."
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        try {"
+        "content": "     *"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            LocalDate d1 \u003d LocalDate.parse(date);"
+        "content": "     * @param date date that is being searched for in the list."
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            LocalDate d2 \u003d null;"
+        "content": "     * @return true or false if date is in list or not."
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            String[] descriptions \u003d this.date.split(\" \");"
+        "content": "     * @throws DukeException if description provided does not match format of date."
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            for (int i \u003d 0; i \u003c descriptions.length; i++) {"
+        "content": "     */"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                try {"
+        "content": "    public boolean hasDate(String date) throws DukeException {"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                    d2 \u003d LocalDate.parse(descriptions[i]);"
+        "content": "        try {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                    return d2.equals(d1);"
+        "content": "            LocalDate d1 \u003d LocalDate.parse(date);"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                } catch (DateTimeParseException e) {"
+        "content": "            LocalDate d2 \u003d null;"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                    continue;"
+        "content": "            String[] descriptions \u003d this.date.split(\" \");"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "                }"
+        "content": "            for (int i \u003d 0; i \u003c descriptions.length; i++) {"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            }"
+        "content": "                try {"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            return false;"
+        "content": "                    d2 \u003d LocalDate.parse(descriptions[i]);"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        } catch (DateTimeParseException e) {"
+        "content": "                    return d2.equals(d1);"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "            throw new DukeException(\"Invalid date.\");"
+        "content": "                } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        }"
+        "content": "                    continue;"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "                }"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": ""
+        "content": "            }"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    /**"
+        "content": "            return false;"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * Prints out the task in correct format."
+        "content": "        } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     *"
+        "content": "            throw new DukeException(\"invalid date. Put in format \u0027YYYY MM DD\u0027.\");"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     * @return task in the form of a string."
+        "content": "        }"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    public String toString() {"
+        "content": ""
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "        return \"[E][\" + getStatusIcon() + \"] \" + description + \"(at:\" + convertDate() + \")\";"
+        "content": "    /**"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "IsaacTin"
         },
-        "content": "    }"
+        "content": "     * Checks if the time provided exists in the list."
       },
       {
         "lineNumber": 82,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @param time time that is being searched for in the list."
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @return true or false if time is in list or not."
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @throws DukeException if description provided does not match format of time."
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    public boolean hasTime(String time) throws DukeException {"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            LocalTime d1 \u003d LocalTime.parse(time);"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            LocalTime d2 \u003d null;"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            String[] descriptions \u003d date.split(\" \");"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            for (int i \u003d 0; i \u003c descriptions.length; i++) {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                try {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    d2 \u003d LocalTime.parse(descriptions[i]);"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    if (d2.equals(d1)) {"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                        return d2.equals(d1);"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    } else {"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                        continue;"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                    continue;"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "            throw new DukeException(\"invalid Time. Put in format \u0027HH:mm\u0027.\");"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * Prints out the task in correct format."
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     * @return task in the form of a string."
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "        return \"[E][\" + getStatusIcon() + \"] \" + description + \"(at:\" + convertDateAndTime() + \")\";"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "IsaacTin"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 118,
         "author": {
           "gitId": "IsaacTin"
         },
@@ -6437,7 +7370,7 @@
       }
     ],
     "authorContributionMap": {
-      "IsaacTin": 82
+      "IsaacTin": 118
     }
   },
   {
