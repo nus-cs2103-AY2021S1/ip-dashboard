@@ -1,6 +1,6 @@
 [
   {
-    "path": "src/main/java/Deadline.java",
+    "path": "src/main/java/duke/Duke.java",
     "fileType": "java",
     "lines": [
       {
@@ -8,126 +8,126 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.time.format.DateTimeFormatter;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "import duke.command.Command;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "public class Deadline extends Task {"
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
-          "gitId": "iqbxl"
+          "gitId": "-"
         },
-        "content": "    protected LocalDate by;"
+        "content": "public class Duke {"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "    private Ui ui;           // deals with interactions with the user"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public Deadline(String description, LocalDate by) {"
+        "content": "    private Storage storage; // deals with loading/saving tasks from/in the file"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        super(description);"
+        "content": "    private TaskList tasks;  // contains operations to add/delete tasks in the list"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        this.by \u003d by;"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "    public Duke(String filePath) {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "        ui \u003d new Ui();"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public static Deadline load(String str) {"
+        "content": "        storage \u003d new Storage(filePath);"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        String[] arr \u003d str.split(\"\\\\|\", 4);"
+        "content": "        try {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        Deadline task \u003d new Deadline(arr[2], LocalDate.parse(arr[3]));"
+        "content": "            tasks \u003d new TaskList(storage.load());"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        if (arr[1].equals(\"true\")) {"
+        "content": "        } catch (DukeException e) {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            task.markAsDone();"
+        "content": "            ui.showError(e);"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        }"
+        "content": "            tasks \u003d new TaskList();"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        return task;"
+        "content": "        }"
       },
       {
         "lineNumber": 19,
@@ -148,66 +148,188 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    @Override"
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public String store() {"
+        "content": "        ui.printWelcome();"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        return \"D|\" + super.store() + \"|\" + this.by;"
+        "content": "        boolean isExit \u003d false;"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "        while (!isExit) {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "            try {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    @Override"
+        "content": "                String fullCommand \u003d ui.readCommand();"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public String toString() {"
+        "content": "                Command c \u003d Parser.parse(fullCommand);"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by.format(DateTimeFormatter.ofPattern(\"d MMM uuuu\")) + \")\";"
+        "content": "                c.execute(tasks, ui, storage);"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "                isExit \u003d c.isExit();"
       },
       {
         "lineNumber": 30,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                ui.showError(e);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        new Duke(\"data/tasks.txt\").run();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 36,
+      "-": 3
+    }
+  },
+  {
+    "path": "src/main/java/duke/DukeException.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class DukeException extends Exception {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public DukeException(String message) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
         "author": {
           "gitId": "iqbxl"
         },
@@ -215,11 +337,11 @@
       }
     ],
     "authorContributionMap": {
-      "iqbxl": 30
+      "iqbxl": 7
     }
   },
   {
-    "path": "src/main/java/Duke.java",
+    "path": "src/main/java/duke/Parser.java",
     "fileType": "java",
     "lines": [
       {
@@ -227,77 +349,408 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.io.File;"
+        "content": "package duke;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.io.FileWriter;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.io.IOException;"
+        "content": "import duke.command.*;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import duke.task.*;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.util.ArrayList;"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.util.List;"
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.time.LocalDate;"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "import java.time.format.DateTimeParseException;"
+        "content": "public class Parser { // deals with making sense of the user command"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "    public static Command parse(String fullCommand) throws DukeException {"
       },
       {
         "lineNumber": 10,
         "author": {
-          "gitId": "-"
+          "gitId": "iqbxl"
         },
-        "content": "public class Duke {"
+        "content": "        try {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    private static final List\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+        "content": "            String[] splitCommand \u003d fullCommand.split(\" \", 2); // limit is the result threshold; return 2 strings"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            CommandTypes command \u003d CommandTypes.valueOf(splitCommand[0].toUpperCase());"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            switch (command) { // use switch case for easy scalability"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                case BYE:"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    return new ExitCommand();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                case LIST:"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    return new ListCommand();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                case DONE:"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    return new DoneCommand(Integer.parseInt(splitCommand[1])); // if cannot change to integer,"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                case DELETE:                                                   // catch NumberFormatException"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    return new DeleteCommand(Integer.parseInt(splitCommand[1]));"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                case TODO:"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    ToDo todo \u003d new ToDo(splitCommand[1]);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    return new AddCommand(todo);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                case DEADLINE:"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    String[] splitDeadline \u003d splitCommand[1].split(\" /by \", 2);"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    Deadline deadline \u003d new Deadline(splitDeadline[0], splitDeadline[1]);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    return new AddCommand(deadline);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                case EVENT:"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    String[] splitEvent \u003d splitCommand[1].split(\" /at \", 2);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    Event event \u003d new Event(splitEvent[0], splitEvent[1]);"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    return new AddCommand(event);"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                    throw new IllegalArgumentException();"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } catch (NumberFormatException e) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            throw new DukeException(\"SORRY!!! Task number is not valid.\");"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } catch (IllegalArgumentException e) {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            throw new DukeException(\"SORRY!!! I don\u0027t know what that means :-(\");"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            throw new DukeException(\"SORRY!!! The description of a task cannot be empty.\");"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            throw new DukeException(\"SORRY!!! Wrong date format encountered!\");"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 46
+    }
+  },
+  {
+    "path": "src/main/java/duke/Storage.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.task.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.io.File;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.io.FileWriter;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.io.FileNotFoundException;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.io.IOException;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.util.ArrayList;"
       },
       {
         "lineNumber": 12,
@@ -309,296 +762,1140 @@
       {
         "lineNumber": 13,
         "author": {
-          "gitId": "-"
+          "gitId": "iqbxl"
         },
-        "content": "    public static void main(String[] args) {"
+        "content": "public class Storage {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        initialize();"
+        "content": "    private final File file;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        System.out.println(\"Hello! I\u0027m Duke\\n\" + \"What can I do for you?\");"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        serveClient();"
+        "content": "    public Storage(String filepath) {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "        this.file \u003d new File(filepath);"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "        file.getParentFile().mkdir();"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    private static void initialize() {"
+        "content": "        try {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        File dir \u003d new File(\"./data\");"
+        "content": "            file.createNewFile(); // returns true if filepath does not exist and a new file is created"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        dir.mkdir();"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        File file \u003d new File(\"./data/duke.txt\");"
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        try {"
+        "content": "        }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            if (!file.createNewFile()) {        // createNewFile() returns true if the file path"
+        "content": "    }"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                Scanner sc \u003d new Scanner(file); // does not exist and a new file is created"
+        "content": ""
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                while (sc.hasNext()) {"
+        "content": "    public List\u003cTask\u003e load() throws DukeException {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    String str \u003d sc.nextLine();"
+        "content": "        try {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    Task task;"
+        "content": "            Scanner sc \u003d new Scanner(file);"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    if (str.startsWith(\"T\")) {"
+        "content": "            List\u003cTask\u003e taskList \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                        task \u003d ToDo.load(str);"
+        "content": "            while (sc.hasNextLine()) {"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    } else if (str.startsWith(\"D\")) {"
+        "content": "                String loadTask \u003d sc.nextLine();"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                        task \u003d Deadline.load(str);"
+        "content": "                Task task;"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    } else if (str.startsWith(\"E\")) {"
+        "content": "                if (loadTask.startsWith(\"T\")) {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                        task \u003d Event.load(str);"
+        "content": "                    task \u003d ToDo.load(loadTask);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    } else {"
+        "content": "                } else if (loadTask.startsWith(\"D\")) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                        break;"
+        "content": "                    task \u003d Deadline.load(loadTask);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    }"
+        "content": "                } else if (loadTask.startsWith(\"E\")) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                    tasks.add(task);"
+        "content": "                    task \u003d Event.load(loadTask);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                }"
+        "content": "                } else {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            }"
+        "content": "                    break;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "                }"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            e.printStackTrace();"
+        "content": "                taskList.add(task);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "            return taskList;"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "        } catch (FileNotFoundException e) {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    private static void saveTasks() {"
+        "content": "            throw new DukeException(\"Sorry!!! File not found.\");"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        try {"
+        "content": "        } catch (IllegalArgumentException e) {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            FileWriter fw \u003d new FileWriter(\"./data/duke.txt\");"
+        "content": "            throw new DukeException(\"Sorry!!! Previous tasks not saved properly.\");"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            for (Task task : tasks) {"
+        "content": "        }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                fw.write(task.store() + \"\\n\"); // write the task onto txt with the format"
+        "content": "    }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            }"
+        "content": ""
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            fw.close();"
+        "content": "    public void save(List\u003cTask\u003e tasks) throws DukeException {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "        try {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "iqbxl"
         },
+        "content": "            FileWriter fw \u003d new FileWriter(file);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            for (Task task : tasks) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                int isFinished \u003d task.getIsDone() ? 1 : 0;"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "                fw.write(task.save(isFinished) + \"\\n\"); // write the task onto txt file with the | format"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "iqbxl"
+        },
         "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } catch (IllegalArgumentException e) {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            throw new DukeException(\"Sorry!!! Encountered difficulties when saving tasks.\");"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 66
+    }
+  },
+  {
+    "path": "src/main/java/duke/TaskList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class TaskList {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    private final List\u003cTask\u003e tasks;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public TaskList() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.tasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public TaskList(List\u003cTask\u003e tasks) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.tasks \u003d new ArrayList\u003c\u003e(tasks);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void addTask(Task task) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.tasks.add(task);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public Task deleteTask(int taskNum) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        Task deletedTask \u003d this.tasks.get(taskNum - 1);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.tasks.remove(taskNum - 1);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return deletedTask;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void markAsDone(int taskNum) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.tasks.get(taskNum - 1).markAsDone(); // calling method in Task class"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public Task getTask(int taskNum) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return this.tasks.get(taskNum - 1);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public List\u003cTask\u003e getTasks() {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return this.tasks;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public int getNumOfTasks() {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return this.tasks.size();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        StringBuilder orderedList \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        for (int i \u003d 1; i \u003c\u003d this.tasks.size(); i++) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            orderedList.append(\"\\n\\t\" + i + \".\" + this.tasks.get(i - 1));"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return orderedList.toString();"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 52
+    }
+  },
+  {
+    "path": "src/main/java/duke/Ui.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.util.Scanner;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class Ui {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    private final Scanner sc;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public Ui() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.sc \u003d new Scanner(System.in);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String readCommand() {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return this.sc.nextLine().trim();"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void printWithDivider(String print) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        System.out.println(\"__________________________________________________\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        System.out.println(print);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        System.out.println(\"__________________________________________________\");"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void printWelcome() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        printWithDivider(\"Hello! I\u0027m Duke\\nWhat can I do for you?\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void printExit() {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        printWithDivider(\"Bye. Hope to see you again soon!\");"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void printList(TaskList taskList) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        printWithDivider(\"Here are the tasks in your list:\" + taskList);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void printDoneTask(Task task) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        printWithDivider(\"Nice! I\u0027ve marked this task as done:\\n\\t\" + task);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void printDeleteTask(Task task, TaskList taskList) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        printWithDivider(\"Noted. I\u0027ve removed this task:\\n\\t\" + task + getNumOfTasks(taskList));"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void printAddTask(Task task, TaskList taskList) {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        printWithDivider(\"Got it. I\u0027ve added this task:\\n\\t\" + task + getNumOfTasks(taskList));"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String getNumOfTasks(TaskList taskList) {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        int numOfTasks \u003d taskList.getNumOfTasks();"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        String msg \u003d \"\";"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        if (numOfTasks \u003d\u003d 1) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            msg \u003d String.format(\"\\nNow you have %d task in the list.\", numOfTasks);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            msg \u003d String.format(\"\\nNow you have %d tasks in the list.\", numOfTasks);"
       },
       {
         "lineNumber": 55,
@@ -612,555 +1909,57 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "        return msg;"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    private static void serveClient() {"
+        "content": ""
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
+        "content": "    public void showError(Exception e) {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        while (sc.hasNext()) {"
+        "content": "        printWithDivider(e.getMessage());"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            try {"
+        "content": "    }"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "                String input \u003d sc.nextLine().trim();"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                String[] arr \u003d input.split(\" \", 2); // limit is the result threshold; return 2 strings"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                switch (arr[0]) { // use switch case for easy scalability"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    case \"bye\":"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        System.out.println(\"Bye. Hope to see you again soon!\");"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    case \"list\":"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        System.out.println(\"Here are the tasks in your list:\");"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        for (int i \u003d 1; i \u003c\u003d tasks.size(); i++) {"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            System.out.println(i + \".\" + tasks.get(i - 1));"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    case \"done\":"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        int index \u003d Integer.parseInt(arr[1]) - 1;"
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        Task task \u003d tasks.get(index); // returns the specific task from the list"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        task.markAsDone();"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        System.out.println(\"Nice! I\u0027ve marked this task as done:\\n  \" + task);"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    case \"delete\":"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        index \u003d Integer.parseInt(arr[1]) - 1;"
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        task \u003d tasks.get(index);"
-      },
-      {
-        "lineNumber": 83,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        tasks.remove(index);"
-      },
-      {
-        "lineNumber": 84,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        int size \u003d tasks.size();"
-      },
-      {
-        "lineNumber": 85,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        System.out.println(\"Noted. I\u0027ve removed this task:\\n  \" + task + \"\\nNow you have \" + size + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 86,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    case \"todo\":"
-      },
-      {
-        "lineNumber": 88,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        if (arr.length \u003d\u003d 1 || arr[1].strip().equals(\"\")) {"
-      },
-      {
-        "lineNumber": 89,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            throw new DukeException(\"OOPS!!! The description of a todo cannot be empty.\");"
-      },
-      {
-        "lineNumber": 90,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 91,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        task \u003d new ToDo(arr[1]);"
-      },
-      {
-        "lineNumber": 92,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        tasks.add(task);"
-      },
-      {
-        "lineNumber": 93,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        System.out.println(\"Got it. I\u0027ve added this task:\\n  \" + task + \"\\nNow you have \" + tasks.size() + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 94,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 95,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    case \"deadline\":"
-      },
-      {
-        "lineNumber": 96,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        if (arr.length \u003d\u003d 1 || arr[1].strip().equals(\"\")) {"
-      },
-      {
-        "lineNumber": 97,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            throw new DukeException(\"OOPS!!! The description of a deadline cannot be empty.\");"
-      },
-      {
-        "lineNumber": 98,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 99,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        String[] strings \u003d arr[1].split(\"/by\");"
-      },
-      {
-        "lineNumber": 100,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        try {"
-      },
-      {
-        "lineNumber": 101,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            task \u003d new Deadline(strings[0].strip(), LocalDate.parse(strings[1].strip()));"
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        } catch (DateTimeParseException e) {"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            throw new DukeException(\"OOPS!!! Wrong date format encountered!\");"
-      },
-      {
-        "lineNumber": 104,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 105,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        tasks.add(task);"
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        System.out.println(\"Got it. I\u0027ve added this task:\\n  \" + task + \"\\nNow you have \" + tasks.size() + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    case \"event\":"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        if (arr.length \u003d\u003d 1 || arr[1].strip().equals(\"\")) {"
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            throw new DukeException(\"OOPS!!! The description of an event cannot be empty.\");"
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 112,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        strings \u003d arr[1].split(\"/at\");"
-      },
-      {
-        "lineNumber": 113,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        try {"
-      },
-      {
-        "lineNumber": 114,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            task \u003d new Event(strings[0].strip(), LocalDate.parse(strings[1].strip()));"
-      },
-      {
-        "lineNumber": 115,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        } catch (DateTimeParseException e) {"
-      },
-      {
-        "lineNumber": 116,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                            throw new DukeException(\"OOPS!!! Wrong date format encountered!\");"
-      },
-      {
-        "lineNumber": 117,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        }"
-      },
-      {
-        "lineNumber": 118,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        tasks.add(task);"
-      },
-      {
-        "lineNumber": 119,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        System.out.println(\"Got it. I\u0027ve added this task:\\n  \" + task + \"\\nNow you have \" + tasks.size() + \" tasks in the list.\");"
-      },
-      {
-        "lineNumber": 120,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        break;"
-      },
-      {
-        "lineNumber": 121,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    default:"
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                        throw new DukeException(\"OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\");"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                saveTasks();"
-      },
-      {
-        "lineNumber": 125,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                if (arr[0].equals(\"bye\")) {"
-      },
-      {
-        "lineNumber": 126,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                    break;"
-      },
-      {
-        "lineNumber": 127,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                }"
-      },
-      {
-        "lineNumber": 128,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "            } catch (DukeException e) {"
-      },
-      {
-        "lineNumber": 129,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "                System.out.println(e.getMessage());"
-      },
-      {
-        "lineNumber": 130,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 131,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 132,
-        "author": {
-          "gitId": "-"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 133,
-        "author": {
-          "gitId": "-"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "iqbxl": 129,
-      "-": 4
+      "iqbxl": 62
     }
   },
   {
-    "path": "src/main/java/DukeException.java",
+    "path": "src/main/java/duke/command/AddCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -1168,79 +1967,170 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "public class DukeException extends Exception {"
+        "content": "package duke.command;"
       },
       {
         "lineNumber": 2,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    public DukeException(String message) {"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        super(message);"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "iqbxl": 5
-    }
-  },
-  {
-    "path": "src/main/java/Event.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "import java.time.LocalDate;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "import java.time.format.DateTimeFormatter;"
-      },
-      {
-        "lineNumber": 3,
         "author": {
           "gitId": "iqbxl"
         },
         "content": ""
       },
       {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.*;"
+      },
+      {
         "lineNumber": 4,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "public class Event extends Task {"
+        "content": "import duke.task.Task;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    protected LocalDate at;"
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class AddCommand extends Command {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    private final Task task;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public AddCommand(Task task) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.task \u003d task;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        tasks.addTask(task);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        ui.printAddTask(task, tasks);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        storage.save(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 18
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/Command.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public abstract class Command {"
       },
       {
         "lineNumber": 6,
@@ -1254,28 +2144,28 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public Event(String description, LocalDate at) {"
+        "content": "    public Command() {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        super(description);"
+        "content": "    }"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        this.at \u003d at;"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException;"
       },
       {
         "lineNumber": 11,
@@ -1289,141 +2179,334 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public static Event load(String str) {"
+        "content": "    public boolean isExit() {"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        String[] arr \u003d str.split(\"\\\\|\", 4);"
+        "content": "        return false;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        Event task \u003d new Event(arr[2], LocalDate.parse(arr[3]));"
+        "content": "    }"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        if (arr[1].equals(\"true\")) {"
-      },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 15
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/CommandTypes.java",
+    "fileType": "java",
+    "lines": [
       {
-        "lineNumber": 16,
+        "lineNumber": 1,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "            task.markAsDone();"
+        "content": "package duke.command;"
       },
       {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        return task;"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 20,
+        "lineNumber": 2,
         "author": {
           "gitId": "iqbxl"
         },
         "content": ""
       },
       {
-        "lineNumber": 21,
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public enum CommandTypes {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    BYE(\"bye\"),"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    LIST(\"list\"),"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    DONE(\"done\"),"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    DELETE(\"delete\"),"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    TODO(\"todo\"),"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    DEADLINE(\"deadline\"),"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    EVENT(\"event\");"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    private final String command;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    CommandTypes(String command) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.command \u003d command;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 17
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/DeleteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class DeleteCommand extends Command {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    private final int taskNum;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public DeleteCommand(int taskNum) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.taskNum \u003d taskNum;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
         "author": {
           "gitId": "iqbxl"
         },
         "content": "    @Override"
       },
       {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            Task deletedTask \u003d tasks.deleteTask(taskNum);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            ui.printDeleteTask(deletedTask, tasks);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            storage.save(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            throw new DukeException(\"SORRY!!! Task number is not valid.\");"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
         "lineNumber": 22,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public String store() {"
+        "content": "    }"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        return \"E|\" + super.store() + \"|\" + this.at;"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        return \"[E]\" + super.toString() + \" (at: \" + at.format(DateTimeFormatter.ofPattern(\"d MMM uuuu\")) + \")\";"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "iqbxl"
-        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "iqbxl": 30
+      "iqbxl": 23
     }
   },
   {
-    "path": "src/main/java/Task.java",
+    "path": "src/main/java/duke/command/DoneCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -1431,345 +2514,154 @@
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "public class Task {"
+        "content": "package duke.command;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    protected String description;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    protected boolean isDone;"
+        "content": "import duke.*;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "import duke.task.Task;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public Task(String description) {"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        this.description \u003d description;"
+        "content": "public class DoneCommand extends Command {"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        this.isDone \u003d false;"
+        "content": "    private final int taskNum;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public String getStatusIcon() {"
+        "content": "    public DoneCommand(int taskNum) {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        //return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+        "content": "        this.taskNum \u003d taskNum;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        return (isDone ? \"✓\" : \"✗\");"
+        "content": "    }"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public void markAsDone() {"
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        isDone \u003d true;"
+        "content": "        try {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "            tasks.markAsDone(taskNum);"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "            Task doneTask \u003d tasks.getTask(taskNum);"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    public String store() {"
+        "content": "            ui.printDoneTask(doneTask);"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "        return this.isDone + \"|\" + this.description;"
+        "content": "            storage.save(tasks.getTasks());"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": "    }"
+        "content": "        } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "iqbxl"
         },
-        "content": ""
+        "content": "            throw new DukeException(\"SORRY!!! Task number is not valid.\");"
       },
       {
         "lineNumber": 22,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "iqbxl": 26
-    }
-  },
-  {
-    "path": "src/main/java/ToDo.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "public class ToDo extends Task {"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    public ToDo(String description) {"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        super(description);"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    public static ToDo load(String str) {"
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        String[] arr \u003d str.split(\"\\\\|\", 3);"
-      },
-      {
-        "lineNumber": 8,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        ToDo task \u003d new ToDo(arr[2]);"
-      },
-      {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        if (arr[1].equals(\"true\")) {"
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "            task.markAsDone();"
-      },
-      {
-        "lineNumber": 11,
         "author": {
           "gitId": "iqbxl"
         },
         "content": "        }"
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        return task;"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    public String store() {"
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        return \"T|\" + super.store();"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "iqbxl"
-        },
-        "content": "        return \"[T]\" + super.toString();"
       },
       {
         "lineNumber": 23,
@@ -1788,6 +2680,1152 @@
     ],
     "authorContributionMap": {
       "iqbxl": 24
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ExitCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class ExitCommand extends Command {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public ExitCommand() {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        ui.printExit();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        storage.save(tasks.getTasks());"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 20
+    }
+  },
+  {
+    "path": "src/main/java/duke/command/ListCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import duke.*;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class ListCommand extends Command {"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public ListCommand() {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void execute(TaskList tasks, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        ui.printList(tasks); // don\u0027t have to save tasks when listing"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 14
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/Deadline.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class Deadline extends Task {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    protected LocalDate by;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public Deadline(String description, String by) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.by \u003d LocalDate.parse(by);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public static Deadline load(String loadTask) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        String[] splitTask \u003d loadTask.split(\" \\\\| \", 4);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        Deadline deadline \u003d new Deadline(splitTask[2], splitTask[3]);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        if (splitTask[1].equals(\"1\")) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            deadline.markAsDone();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return deadline;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String save(int isFinished) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return \"D | \" + super.save(isFinished) + \" | \" + this.by;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by.format(DateTimeFormatter.ofPattern(\"d MMM yyyy\")) + \")\";"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 32
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/Event.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class Event extends Task {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    protected LocalDate at;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public Event(String description, String at) {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.at \u003d LocalDate.parse(at);"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public static Event load(String loadTask) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        String[] splitTask \u003d loadTask.split(\" \\\\| \", 4);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        Event event \u003d new Event(splitTask[2], splitTask[3]);"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        if (splitTask[1].equals(\"1\")) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            event.markAsDone();"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return event;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String save(int isFinished) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return \"E | \" + super.save(isFinished) + \" | \" + this.at;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (at: \" + at.format(DateTimeFormatter.ofPattern(\"d MMM yyyy\")) + \")\";"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 32
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/Task.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public abstract class Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        //return (isDone ? \"\\u2713\" : \"\\u2718\"); //return tick or X symbols"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return (isDone ? \"✓\" : \"✗\");"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public void markAsDone() {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        this.isDone \u003d true;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public boolean getIsDone() {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return this.isDone;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String save(int isFinished) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return isFinished + \" | \" + this.description;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 32
+    }
+  },
+  {
+    "path": "src/main/java/duke/task/ToDo.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "package duke.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "public class ToDo extends Task {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public ToDo(String description) {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        super(description);"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public static ToDo load(String loadTask) {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        String[] splitTask \u003d loadTask.split(\" \\\\| \", 3);"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        ToDo todo \u003d new ToDo(splitTask[2]);"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        if (splitTask[1].equals(\"1\")) {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "            todo.markAsDone();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return todo;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String save(int isFinished) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return \"T | \" + super.save(isFinished);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "iqbxl"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "iqbxl": 26
     }
   },
   {
