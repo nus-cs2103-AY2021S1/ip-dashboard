@@ -332,6 +332,560 @@
     }
   },
   {
+    "path": "config/travis/check-eof-newline.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "# Checks that all text files end with a newline."
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "ret\u003d0"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "# Preserve filename with spaces by only splitting on newlines."
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "IFS\u003d\u0027"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "\u0027"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "for filename in $(git grep --cached -I -l -e \u0027\u0027 -- \u0027:/\u0027); do"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    if [ \"$(tail -c 1 \"./$filename\")\" !\u003d \u0027\u0027 ]; then"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        line\u003d\"$(wc -l \"./$filename\" | cut -d\u0027 \u0027 -f1)\""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        echo \"ERROR:$filename:$line: no newline at EOF.\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        ret\u003d1"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    fi"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "done"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "exit $ret"
+      }
+    ],
+    "authorContributionMap": {
+      "pennhanlee": 18
+    }
+  },
+  {
+    "path": "config/travis/check-line-endings.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "# Checks for prohibited line endings."
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "# Prohibited line endings: \\r\\n"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "git grep --cached -I -n --no-color -P \u0027\\r$\u0027 -- \u0027:/\u0027 |"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "awk \u0027"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    BEGIN {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        FS \u003d \":\""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        OFS \u003d \":\""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        ret \u003d 0"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        ret \u003d 1"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        print \"ERROR\", $1, $2, \" prohibited \\\\r\\\\n line ending, use \\\\n instead.\""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    END {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        exit ret"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "\u0027"
+      }
+    ],
+    "authorContributionMap": {
+      "pennhanlee": 19
+    }
+  },
+  {
+    "path": "config/travis/check-trailing-whitespace.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "# Checks for trailing whitespace"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "git grep --cached -I -n --no-color -P \u0027[ \\t]+$\u0027 -- \u0027:/\u0027 |"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "awk \u0027"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    BEGIN {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        FS \u003d \":\""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        OFS \u003d \":\""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        ret \u003d 0"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        # Only warn for markdown files (*.md) to accomodate text editors"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        # which do not properly handle trailing whitespace."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        # (e.g. GitHub web editor)"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        if ($1 ~ /\\.md$/) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            severity \u003d \"WARN\""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            severity \u003d \"ERROR\""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            ret \u003d 1"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        print severity, $1, $2, \" trailing whitespace.\""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    END {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        exit ret"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "\u0027"
+      }
+    ],
+    "authorContributionMap": {
+      "pennhanlee": 26
+    }
+  },
+  {
+    "path": "config/travis/run-checks.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "# Runs all check-* scripts, and returns a non-zero exit code if any of them fail."
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "dir\u003d$(CDPATH\u003d cd -- \"$(dirname -- \"$0\")\" \u0026\u0026 pwd) \u0026\u0026"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "ret\u003d0 \u0026\u0026"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "for checkscript in \"$dir\"/check-*; do"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    if ! \"$checkscript\"; then"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        ret\u003d1"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    fi"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "done"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "exit $ret"
+      }
+    ],
+    "authorContributionMap": {
+      "pennhanlee": 11
+    }
+  },
+  {
     "path": "src/main/java/Duke.java",
     "fileType": "java",
     "lines": [
@@ -340,56 +894,56 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.command.DukeException;"
+        "content": "import java.io.IOException;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.command.Parser;"
+        "content": "import java.util.Scanner;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.storage.Storage;"
+        "content": ""
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.task.TaskList;"
+        "content": "import duke.command.DukeException;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.ui.Ui;"
+        "content": "import duke.command.Parser;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "import duke.storage.Storage;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.io.IOException;"
+        "content": "import duke.task.TaskList;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.util.Scanner;"
+        "content": "import duke.ui.Ui;"
       },
       {
         "lineNumber": 9,
@@ -529,168 +1083,168 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public Duke(String filePath) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        this.taskList \u003d TaskList.createTaskList();"
+        "content": "     * Instantiate a Duke Object with the filepath as that name"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        this.storage \u003d Storage.createDukeFile(filePath);"
+        "content": "     * of the file which the lists will be saved to."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "     * @param filePath"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * Initiates the process of DukeBot that"
+        "content": "    public Duke(String filePath) {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * accepts user commands and processes"
+        "content": "        this.taskList \u003d TaskList.createTaskList();"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * the commands to create the Chatbot Task list."
+        "content": "        this.storage \u003d Storage.createDukeFile(filePath);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @author Lee Penn Han."
+        "content": ""
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void run() {"
+        "content": "     * Initiates the process of DukeBot that"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Ui.welcomeMessage();"
+        "content": "     * accepts user commands and processes"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Scanner sc \u003d new Scanner(System.in);"
+        "content": "     * the commands to create the Chatbot Task list."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        while (sc.hasNext()) {"
+        "content": "     *"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            String cmd \u003d sc.nextLine().trim().toLowerCase();"
+        "content": "     * @author Lee Penn Han."
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            if (!cmd.equals(\"bye\") \u0026\u0026 cmd.length() !\u003d 0) {"
+        "content": "     */"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                try {"
+        "content": "    public void run() {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    Parser.process(cmd, this.taskList, this.storage);"
+        "content": "        Ui.welcomeMessage();"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                } catch (DukeException e) {"
+        "content": "        Scanner sc \u003d new Scanner(System.in);"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    Ui.showError(e.getMessage());"
+        "content": "        while (sc.hasNext()) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                }"
+        "content": "            String cmd \u003d sc.nextLine().trim().toLowerCase();"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            } else {"
+        "content": "            if (!cmd.equals(\"bye\") \u0026\u0026 cmd.length() !\u003d 0) {"
       },
       {
         "lineNumber": 52,
@@ -704,136 +1258,178 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    Ui.showSaving();"
+        "content": "                    Parser.process(cmd, this.taskList, this.storage);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    this.storage.saveToFile();"
+        "content": "                } catch (DukeException e) {"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                } catch (IOException e) {"
+        "content": "                    Ui.showError(e.getMessage());"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    Ui.showError(e.getMessage());"
+        "content": "                }"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                }"
+        "content": "            } else {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                Ui.goodbyeMessage();"
+        "content": "                try {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                break;"
+        "content": "                    Ui.showSaving();"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            }"
+        "content": "                    this.storage.saveToFile();"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        }"
+        "content": "                } catch (IOException e) {"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "                    Ui.showError(e.getMessage());"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "                }"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "                Ui.goodbyeMessage();"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    /**"
+        "content": "                break;"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * This is the main method that makes use of the run method."
+        "content": "            }"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @param args Unused."
+        "content": "        }"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 69,
         "author": {
-          "gitId": "-"
+          "gitId": "pennhanlee"
         },
-        "content": "    public static void main(String[] args) {"
+        "content": "    }"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        new Duke(\"Saved\").run();"
+        "content": ""
       },
       {
         "lineNumber": 71,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * This is the main method that makes use of the run method."
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * @param args Unused."
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "-"
+        },
+        "content": "    public static void main(String[] args) {"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        new Duke(\"Saved\").run();"
+      },
+      {
+        "lineNumber": 77,
         "author": {
           "gitId": "-"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 72,
+        "lineNumber": 78,
         "author": {
           "gitId": "-"
         },
@@ -842,7 +1438,7 @@
     ],
     "authorContributionMap": {
       "-": 4,
-      "pennhanlee": 68
+      "pennhanlee": 74
     }
   },
   {
@@ -933,63 +1529,63 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.storage.Storage;"
+        "content": "import java.time.LocalDate;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.task.Deadline;"
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.task.Event;"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.task.TaskList;"
+        "content": "import duke.storage.Storage;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.task.Todo;"
+        "content": "import duke.task.Deadline;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.ui.Ui;"
+        "content": "import duke.task.Event;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "import duke.task.TaskList;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.time.LocalDate;"
+        "content": "import duke.task.Todo;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.time.format.DateTimeParseException;"
+        "content": "import duke.ui.Ui;"
       },
       {
         "lineNumber": 12,
@@ -1325,465 +1921,444 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    private static void processorFind(TaskList taskList, String key) {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static void processorFind(TaskList taskList, String key) {"
+        "content": "        int counter \u003d 1;"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        int counter \u003d 1;"
+        "content": "        Ui.showCommandMessage(\"Here are the matching tasks in your list:\");"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Ui.showCommandMessage(\"Here are the matching tasks in your list:\");"
+        "content": "        for (int i \u003d 0; i \u003c taskList.getListSize(); i++) {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        for (int i \u003d 0; i \u003c taskList.getListSize(); i++) {"
+        "content": "            if (taskList.getTask(i).getTask().contains(key)) {"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            if (taskList.getTask(i).getTask().contains(key)) {"
+        "content": "                System.out.println(counter + \".\" + taskList.getTask(i).toString());"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                System.out.println(counter + \".\" + taskList.getTask(i).toString());"
+        "content": "                counter++;"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                counter++;"
+        "content": "            }"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            }"
+        "content": "        }"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        }"
+        "content": "        Ui.showLine();"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Ui.showLine();"
+        "content": "    }"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    private static void processorList(TaskList taskList) {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        Ui.showCommandMessage(\"Here are the tasks in your list:\");"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static void processorList(TaskList taskList) {"
+        "content": "        for (int i \u003d 0; i \u003c taskList.getListSize(); i++) {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Ui.showCommandMessage(\"Here are the tasks in your list:\");"
+        "content": "            int index \u003d i + 1;"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        for (int i \u003d 0; i \u003c taskList.getListSize(); i++) {"
+        "content": "            System.out.println(index + \".\" + taskList.getTask(i).toString());"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            int index \u003d i+1;"
+        "content": "        }"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            System.out.println(index + \".\" + taskList.getTask(i).toString());"
+        "content": "        Ui.showLine();"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Ui.showLine();"
+        "content": ""
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "    private static String processorAdd(String cmd, TaskList taskList) throws DukeException {"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        String[] stringarr \u003d cmd.split(\" \", 2);"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        if (stringarr[0].equals(\"todo\")) {"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static String processorAdd(String cmd, TaskList taskList) throws DukeException {"
+        "content": "            if (stringarr.length \u003c\u003d 1) {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        String[] stringarr \u003d cmd.split(\" \", 2);"
+        "content": "                String message \u003d \"The description of a Todo cannot be empty\";"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        if (stringarr[0].equals(\"todo\")) {"
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            if (stringarr.length \u003c\u003d 1) {"
+        "content": "            } else {"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                String message \u003d \"The description of a Todo cannot be empty\";"
+        "content": "                Todo todo \u003d Todo.createTodo(stringarr[1]);"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "                taskList.addTask(todo);"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            } else {"
+        "content": "                return todo.toString();"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                Todo todo \u003d Todo.createTodo(stringarr[1]);"
+        "content": "            }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                taskList.addTask(todo);"
+        "content": "        } else if (stringarr[0].equals(\"deadline\")) {"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                return todo.toString();"
+        "content": "            if (stringarr.length \u003c\u003d 1) {"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            }"
+        "content": "                String message \u003d \"The description of a Deadline cannot be empty\";"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        } else if (stringarr[0].equals(\"deadline\")) {"
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            if (stringarr.length \u003c\u003d 1) {"
+        "content": "            } else {"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                String message \u003d \"The description of a Deadline cannot be empty\";"
+        "content": "                try {"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "                    String[] secondarr \u003d stringarr[1].split(\"/by\", 2);"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            } else {"
+        "content": "                    LocalDate date \u003d LocalDate.parse(secondarr[1].trim());"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                try {"
+        "content": "                    Deadline deadline \u003d Deadline.createDeadline(secondarr[0], date);"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    String[] secondarr \u003d stringarr[1].split(\"/by\", 2);"
+        "content": "                    taskList.addTask(deadline);"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    LocalDate date \u003d LocalDate.parse(secondarr[1].trim());"
+        "content": "                    return deadline.toString();"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    Deadline deadline \u003d Deadline.createDeadline(secondarr[0], date);"
+        "content": "                } catch (DateTimeParseException e) {"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    taskList.addTask(deadline);"
+        "content": "                    String message \u003d \"That does not look like a proper Date. Please input YYYY-MM-DD\";"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    return deadline.toString();"
+        "content": "                    throw new DukeException(message);"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                } catch (DateTimeParseException e) {"
+        "content": "                }"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    String message \u003d \"That does not look like a proper Date. Please input YYYY-MM-DD\";"
+        "content": "            }"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                    throw new DukeException(message);"
+        "content": "        } else if (stringarr[0].equals(\"event\")) {"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                }"
+        "content": "            if (stringarr.length \u003c\u003d 1) {"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            }"
+        "content": "                String message \u003d \"The description of an Event cannot be empty\";"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        } else if (stringarr[0].equals(\"event\")) {"
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            if (stringarr.length \u003c\u003d 1) {"
+        "content": "            } else {"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                String message \u003d \"The description of an Event cannot be empty\";"
+        "content": "                String[] secondarr \u003d stringarr[1].split(\"/at\", 2);"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "                Event event \u003d Event.createEvent(secondarr[0], secondarr[1]);"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            } else {"
+        "content": "                taskList.addTask(event);"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                String[] secondarr \u003d stringarr[1].split(\"/at\", 2);"
+        "content": "                return event.toString();"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                Event event \u003d Event.createEvent(secondarr[0], secondarr[1]);"
+        "content": "            }"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                taskList.addTask(event);"
+        "content": "        } else {"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                return event.toString();"
+        "content": "            String message \u003d \"OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\";"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            }"
+        "content": "            throw new DukeException(message);"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        } else {"
+        "content": "        }"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            String message \u003d \"OOPS!!! I\u0027m sorry, but I don\u0027t know what that means :-(\";"
-      },
-      {
-        "lineNumber": 122,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            throw new DukeException(message);"
-      },
-      {
-        "lineNumber": 123,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 124,
-        "author": {
-          "gitId": "pennhanlee"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 125,
+        "lineNumber": 122,
         "author": {
           "gitId": "pennhanlee"
         },
@@ -1791,7 +2366,7 @@
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 125
+      "pennhanlee": 122
     }
   },
   {
@@ -1817,658 +2392,658 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.io.File;"
+        "content": "import java.io.FileWriter;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.io.FileWriter;"
+        "content": "import java.io.IOException;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.io.IOException;"
+        "content": "import java.util.ArrayList;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.util.ArrayList;"
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "/**"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "/**"
+        "content": " * \u003ch1\u003e Storage Class (Saving Tasks)\u003c/h1\u003e"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * \u003ch1\u003e Storage Class (Saving Tasks)\u003c/h1\u003e"
+        "content": " * Dukefile class is the class that contains the methods"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * Dukefile class is the class that contains the methods"
+        "content": " * that manages the task within the single initialisation of the bot"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * that manages the task within the single initialisation of the bot"
+        "content": " * and extracts the current tasks and stores it in a text file."
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * and extracts the current tasks and stores it in a text file."
+        "content": " *"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " *"
+        "content": " * @author Lee Penn Han."
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @author Lee Penn Han."
+        "content": " * @version 1.0."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @version 1.0."
+        "content": " * @since 2020-25-08."
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @since 2020-25-08."
+        "content": " */"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " */"
+        "content": "public class Storage {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "public class Storage {"
+        "content": "    private String fileName;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    private String fileName;"
+        "content": "    private ArrayList\u003cString\u003e recordArrayLst;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    private ArrayList\u003cString\u003e recordArrayLst;"
+        "content": ""
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    private Storage(String fileName) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    private Storage(String fileName) {"
+        "content": "        this.fileName \u003d fileName;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        this.fileName \u003d fileName;"
+        "content": "        this.recordArrayLst \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        this.recordArrayLst \u003d new ArrayList\u003c\u003e();"
+        "content": "    }"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "     * Saves the current list of task to a textfile."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "//    public File retrieveFile(String filePath) throws IOException {"
+        "content": "     * By iterating through the records Arraylist,"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "//        File file \u003d new File(filePath);"
+        "content": "     * the method will save each element as a single task"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "//        if (!file.exists()) {"
+        "content": "     * in the text file."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "//            file.createNewFile();"
+        "content": "     *"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "//        }"
+        "content": "     * @author Lee Penn Han."
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "//        return file;"
+        "content": "     * @throws IOException on input error."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "//    }"
+        "content": "     */"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    public void saveToFile() throws IOException {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    /**"
+        "content": "        FileWriter fileWriter \u003d new FileWriter(fileName);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * Saves the current list of task to a textfile."
+        "content": "        for (String s : recordArrayLst) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * By iterating through the records Arraylist,"
+        "content": "            fileWriter.write(s + \"\\n\");"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * the method will save each element as a single task"
+        "content": "        }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * in the text file."
+        "content": "        System.out.println(\"Total number of Tasks saved: \" + recordArrayLst.size());"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     *"
+        "content": ""
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @author Lee Penn Han."
+        "content": "        fileWriter.close();"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @throws IOException on input error."
+        "content": "    }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void saveToFile() throws IOException {"
+        "content": "    /**"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        FileWriter fileWriter \u003d new FileWriter(fileName);"
+        "content": "     * Stores the current task (Record) into the arraylist"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        for (String s : recordArrayLst) {"
+        "content": "     * as a String."
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "            fileWriter.write(s + \"\\n\");"
+        "content": "     *"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        }"
+        "content": "     * @author Lee Penn Han."
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        System.out.println(\"Total number of Tasks saved: \" + recordArrayLst.size());"
+        "content": "     * @param record This is the Task to be saved."
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        fileWriter.close();"
+        "content": "    public void saveRecord(String record) {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "        recordArrayLst.add(record);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * Stores the current task (Record) into the arraylist"
+        "content": "    /**"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * as a String."
+        "content": "     * Updates the element in the Record ArrayList by using the"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     *"
+        "content": "     * index from User Input to identify the position."
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @author Lee Penn Han."
+        "content": "     *"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @param record This is the Task to be saved."
+        "content": "     * @author Lee Penn Han."
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     */"
+        "content": "     * @param record Latest Task Status."
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void saveRecord(String record) {"
+        "content": "     * @param index The index of the task in the list."
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        recordArrayLst.add(record);"
+        "content": "     */"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "    public void updateRecord(String record, int index) {"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        int i \u003d index - 1;"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    /**"
+        "content": "        recordArrayLst.set(i, record);"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * Updates the element in the Record ArrayList by using the"
+        "content": "    }"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * index from User Input to identify the position."
+        "content": ""
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @author Lee Penn Han."
+        "content": "     * Deletes the element in the Record ArrayList by using the"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @param record Latest Task Status."
+        "content": "     * index from User Input to identify the position."
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @param index The index of the task in the list."
+        "content": "     *"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     */"
+        "content": "     * @author Lee Penn Han."
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void updateRecord(String record, int index) {"
+        "content": "     * @param index The index of the targeted task in the list."
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        int i \u003d index -1;"
+        "content": "     */"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        recordArrayLst.set(i, record);"
+        "content": "    public void deleteRecord(int index) {"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "        int i \u003d index - 1;"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        recordArrayLst.remove(i);"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * Deletes the element in the Record ArrayList by using the"
+        "content": ""
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * index from User Input to identify the position."
+        "content": "    /**"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     *"
+        "content": "     * Instantiates a Storage object."
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @author Lee Penn Han."
+        "content": "     *"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @param index The index of the targeted task in the list."
+        "content": "     * @author Lee Penn Han."
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     */"
+        "content": "     * @param fileName This is the filename that the tasks will be saved under."
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void deleteRecord(int index) {"
+        "content": "     * @return Storage object."
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        int i \u003d index - 1;"
+        "content": "     */"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        recordArrayLst.remove(i);"
+        "content": "    public static Storage createDukeFile(String fileName) {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "        return new Storage(fileName);"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * Instantiates a Storage object."
+        "content": "    /**"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     *"
+        "content": "     * Gets the arraylist of Records to be saved."
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @author Lee Penn Han."
+        "content": "     *"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @param fileName This is the filename that the tasks will be saved under."
+        "content": "     * @author Lee Penn Han."
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "     * @return Storage object."
+        "content": "     * @return Arraylist of Records to be saved."
       },
       {
         "lineNumber": 97,
@@ -2482,14 +3057,14 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static Storage createDukeFile(String fileName) {"
+        "content": "    public ArrayList\u003cString\u003e getRecords() {"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return new Storage(fileName);"
+        "content": "        return this.recordArrayLst;"
       },
       {
         "lineNumber": 100,
@@ -2503,80 +3078,10 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
-      },
-      {
-        "lineNumber": 102,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "     * Gets the arraylist of Records to be saved."
-      },
-      {
-        "lineNumber": 104,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 105,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "     * @author Lee Penn Han."
-      },
-      {
-        "lineNumber": 106,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "     * @return Arraylist of Records to be saved."
-      },
-      {
-        "lineNumber": 107,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 108,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    public ArrayList\u003cString\u003e getRecords() {"
-      },
-      {
-        "lineNumber": 109,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        return this.recordArrayLst;"
-      },
-      {
-        "lineNumber": 110,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 111,
-        "author": {
-          "gitId": "pennhanlee"
-        },
         "content": "}"
       },
       {
-        "lineNumber": 112,
+        "lineNumber": 102,
         "author": {
           "gitId": "pennhanlee"
         },
@@ -2584,7 +3089,7 @@
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 112
+      "pennhanlee": 102
     }
   },
   {
@@ -2899,248 +3404,241 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.time.LocalDate;"
+        "content": ""
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "/**"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "/**"
+        "content": " * \u003ch1\u003e Event Task class \u003c/h1\u003e"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * \u003ch1\u003e Event Task class \u003c/h1\u003e"
+        "content": " *"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " *"
+        "content": " * The event class is a child class of Task"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * The event class is a child class of Task"
+        "content": " * It contains an extra property: event that indicates"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * It contains an extra property: event that indicates"
+        "content": " * the date that a task is happening."
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * the date that a task is happening."
+        "content": " *"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " *"
+        "content": " * @author Lee Penn Han"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @author Lee Penn Han"
+        "content": " * @version 1.0"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @version 1.0"
+        "content": " * @since 2020-08-25"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @since 2020-08-25"
+        "content": " */"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " */"
+        "content": "public class Event extends Task {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "public class Event extends Task {"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    protected String event;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    protected String event;"
+        "content": ""
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    protected Event(String task, String event) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    protected Event(String task, String event) {"
+        "content": "        super(task);"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        super(task);"
+        "content": "        this.event \u003d event;"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        this.event \u003d event;"
+        "content": "    }"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    private String getEvent() {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    private String getEvent() {"
+        "content": "        return this.event;"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return this.event;"
+        "content": "    }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    public static Event createEvent(String task, String event) {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static Event createEvent(String task, String event) {"
+        "content": "        return new Event(task, event);"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return new Event(task, event);"
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    @Override"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public String toString() {"
+        "content": "        String done \u003d this.done ? \"\\u2713\" : \"\\u2718\";"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        String done \u003d this.done ? \"\\u2713\" : \"\\u2718\";"
+        "content": "        return \"[E][\" + done + \"] \" + this.task + \"(at:\" + this.event + \")\";"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return \"[E][\" + done + \"] \" + this.task + \"(at:\" + this.event + \")\";"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "pennhanlee"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 38,
+        "lineNumber": 37,
         "author": {
           "gitId": "pennhanlee"
         },
@@ -3148,7 +3646,7 @@
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 38
+      "pennhanlee": 37
     }
   },
   {
@@ -3258,14 +3756,14 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    String task;"
+        "content": "    protected String task;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    boolean done;"
+        "content": "    protected boolean done;"
       },
       {
         "lineNumber": 17,
@@ -3666,220 +4164,416 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public String addTask(Task task) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        tasklist.add(task);"
+        "content": "     * Adds a task to the tasklist"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return task.toString();"
+        "content": "     * @param task The task as instantiated from Parser to a Task object"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "     * @return String representation of the Task object that is added"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public String deleteTask(int taskNumber) {"
+        "content": "    public String addTask(Task task) {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        int i \u003d taskNumber - 1;"
+        "content": "        tasklist.add(task);"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Task removed_task \u003d this.tasklist.get(i);"
+        "content": "        return task.toString();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        this.tasklist.remove(i);"
+        "content": "    }"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return removed_task.toString();"
+        "content": ""
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "     * Deletes a task from the tasklist"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public String updateTask(int taskNumber) {"
+        "content": "     * @param taskNumber The index of the task in the tasklist"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        int i \u003d taskNumber - 1;"
+        "content": "     * @return String representation of the Task object that is deleted"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Task updated_task \u003d this.tasklist.get(i);"
+        "content": "     */"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        updated_task.setDone();"
+        "content": "    public String deleteTask(int taskNumber) {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return updated_task.toString();"
+        "content": "        int i \u003d taskNumber - 1;"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "        Task removedTask \u003d this.tasklist.get(i);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        this.tasklist.remove(i);"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public int getListSize() {"
+        "content": "        return removedTask.toString();"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return this.tasklist.size();"
+        "content": "    }"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public Task getTask(int index) {"
+        "content": "     * Updates a task in the tasklist to mark it as done"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return this.tasklist.get(index);"
+        "content": "     * @param taskNumber The index of the task in the tasklist"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "     * @return String representation of the Task object that is updated"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static TaskList createTaskList() {"
+        "content": "    public String updateTask(int taskNumber) {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return new TaskList();"
+        "content": "        int i \u003d taskNumber - 1;"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "        Task updatedTask \u003d this.tasklist.get(i);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        updatedTask.setDone();"
       },
       {
         "lineNumber": 44,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        return updatedTask.toString();"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * Returns the current size of the task list"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * @return Integer value of the size of task list"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public int getListSize() {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        return this.tasklist.size();"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * Returns the task that is indicated by its index in the Tasklist"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * @param index The index of the task in the taskList"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * @return Task object"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public Task getTask(int index) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        return this.tasklist.get(index);"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * Creates a tasklist object"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * @return TaskList Object"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public static TaskList createTaskList() {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        return new TaskList();"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 72,
         "author": {
           "gitId": "pennhanlee"
         },
@@ -3887,7 +4581,7 @@
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 44
+      "pennhanlee": 72
     }
   },
   {
@@ -3913,199 +4607,192 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import java.time.LocalDate;"
+        "content": ""
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "/**"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "/**"
+        "content": " * \u003ch1\u003e Todo Task class \u003c/h1\u003e"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * \u003ch1\u003e Todo Task class \u003c/h1\u003e"
+        "content": " *"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " *"
+        "content": " * The Todo class is a child class of Task"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * The Todo class is a child class of Task"
+        "content": " * It does not have any additional properties"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * It does not have any additional properties"
+        "content": " * from a Task Object"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * from a Task Object"
+        "content": " *"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " *"
+        "content": " * @author Lee Penn Han"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @author Lee Penn Han"
+        "content": " * @version 1.0"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @version 1.0"
+        "content": " * @since 2020-08-25"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " * @since 2020-08-25"
+        "content": " */"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": " */"
+        "content": "public class Todo extends Task {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "public class Todo extends Task{"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    protected Todo(String task) {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    protected Todo(String task) {"
+        "content": "        super(task);"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        super(task);"
+        "content": "    }"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    public static Todo createTodo(String task) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static Todo createTodo(String task) {"
+        "content": "        return new Todo(task);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return new Todo(task);"
+        "content": "    }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    @Override"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public String toString() {"
+        "content": "        String done \u003d this.done ? \"\\u2713\" : \"\\u2718\";"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        String done \u003d this.done ? \"\\u2713\" : \"\\u2718\";"
+        "content": "        return \"[T][\" + done + \"] \" + this.task;"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        return \"[T][\" + done + \"] \" + this.task;"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "pennhanlee"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 31,
+        "lineNumber": 30,
         "author": {
           "gitId": "pennhanlee"
         },
@@ -4113,7 +4800,7 @@
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 31
+      "pennhanlee": 30
     }
   },
   {
@@ -4601,14 +5288,14 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        System.out.println(\"Sorry an error occurred!! :( \\n\" +"
+        "content": "        System.out.println(\"Sorry an error occurred!! :( \\n\""
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                \"_________________________________________\\n\""
+        "content": "                + \"_________________________________________\\n\""
       },
       {
         "lineNumber": 71,
@@ -4643,85 +5330,141 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static void showResponse(String response, String command) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        System.out.println(\"Task: \" + command + \"\\nExecution Success: \\n\" +"
+        "content": "     * Prints a formatted response of a successful Task execution"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                \"_________________________________________\\n\""
+        "content": "     * @param response The String representation of the response from the command input"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                + response"
+        "content": "     * @param command The String command from the command from User Input"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "                + \"\\n_________________________________________\");"
+        "content": "     */"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "    public static void showResponse(String response, String command) {"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        System.out.println(\"Task: \" + command + \"\\nExecution Success: \\n\""
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public static void showSaving() {"
+        "content": "                + \"_________________________________________\\n\""
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        System.out.println(\"Currently saving tasks. Do not Exit!\");"
+        "content": "                + response"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "                + \"\\n_________________________________________\");"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "pennhanlee"
         },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     * Prints a formatted response to inform the user that saving is in progress."
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public static void showSaving() {"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        System.out.println(\"Currently saving tasks. Do not Exit!\");"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "pennhanlee"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 85
+      "pennhanlee": 93
     }
   },
   {
-    "path": "src/test/java/ParserTest.java",
+    "path": "src/test/java/command/ParserTest.java",
     "fileType": "java",
     "lines": [
       {
@@ -4729,431 +5472,30 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.command.DukeException;"
+        "content": "package command;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.command.Parser;"
+        "content": ""
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "import duke.storage.Storage;"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "import duke.task.TaskList;"
-      },
-      {
-        "lineNumber": 5,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "import org.junit.jupiter.api.Test;"
-      },
-      {
-        "lineNumber": 6,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 7,
-        "author": {
-          "gitId": "pennhanlee"
-        },
         "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
       },
       {
-        "lineNumber": 8,
+        "lineNumber": 4,
         "author": {
           "gitId": "pennhanlee"
         },
         "content": "import static org.junit.jupiter.api.Assertions.fail;"
       },
       {
-        "lineNumber": 9,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 10,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "public class ParserTest {"
-      },
-      {
-        "lineNumber": 11,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 12,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    @Test"
-      },
-      {
-        "lineNumber": 13,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    public void dummyTest() {"
-      },
-      {
-        "lineNumber": 14,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        assertEquals(2, 2);"
-      },
-      {
-        "lineNumber": 15,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 16,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 17,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    @Test"
-      },
-      {
-        "lineNumber": 18,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    public void processorAddTodoTest() {"
-      },
-      {
-        "lineNumber": 19,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
-      },
-      {
-        "lineNumber": 20,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        TaskList tasklist \u003d TaskList.createTaskList();"
-      },
-      {
-        "lineNumber": 21,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            Parser.process(\"todo read book\", tasklist, storage);"
-      },
-      {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            assertEquals(\"[T][✘] read book\", tasklist.getTask(0).toString());"
-      },
-      {
-        "lineNumber": 24,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        } catch (DukeException e) {"
-      },
-      {
-        "lineNumber": 25,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            fail(e.getMessage());"
-      },
-      {
-        "lineNumber": 26,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 27,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 28,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    @Test"
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    public void processorDoneTest() {"
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        TaskList tasklist \u003d TaskList.createTaskList();"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            Parser.process(\"todo read book\", tasklist, storage);"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            Parser.process(\"done 1\", tasklist, storage);"
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            assertEquals(\"[T][✓] read book\", tasklist.getTask(0).toString());"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        } catch (DukeException e) {"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            fail(e.getMessage());"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    @Test"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    public void processorDeleteTest() {"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        TaskList tasklist \u003d TaskList.createTaskList();"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            Parser.process(\"todo read book\", tasklist, storage);"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            Parser.process(\"todo read 2nd book\", tasklist, storage);"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            Parser.process(\"delete 1\", tasklist, storage);"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            assertEquals(1, tasklist.getListSize());"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            assertEquals(\"[T][✘] read 2nd book\", tasklist.getTask(0).toString());"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        } catch (DukeException e) {"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "            fail(e.getMessage());"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "}"
-      }
-    ],
-    "authorContributionMap": {
-      "pennhanlee": 56
-    }
-  },
-  {
-    "path": "src/test/java/StorageTest.java",
-    "fileType": "java",
-    "lines": [
-      {
-        "lineNumber": 1,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "import duke.storage.Storage;"
-      },
-      {
-        "lineNumber": 2,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "import org.junit.jupiter.api.Test;"
-      },
-      {
-        "lineNumber": 3,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "pennhanlee"
-        },
-        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
-      },
-      {
         "lineNumber": 5,
         "author": {
           "gitId": "pennhanlee"
@@ -5165,7 +5507,7 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "public class StorageTest {"
+        "content": "import org.junit.jupiter.api.Test;"
       },
       {
         "lineNumber": 7,
@@ -5179,28 +5521,28 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    @Test"
+        "content": "import duke.command.DukeException;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void dummyTest() {"
+        "content": "import duke.command.Parser;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        assertEquals(2, 2);"
+        "content": "import duke.storage.Storage;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "import duke.task.TaskList;"
       },
       {
         "lineNumber": 12,
@@ -5214,35 +5556,35 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    @Test"
+        "content": "public class ParserTest {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void saveRecordTest() {"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
+        "content": "    @Test"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        storage.saveRecord(\"Testing String\");"
+        "content": "    public void dummyTest() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        assertEquals(1, storage.getRecords().size());"
+        "content": "        assertEquals(2, 2);"
       },
       {
         "lineNumber": 18,
@@ -5270,7 +5612,7 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    public void updateRecordTest() {"
+        "content": "    public void processorAddTodoTest() {"
       },
       {
         "lineNumber": 22,
@@ -5284,52 +5626,255 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        storage.saveRecord(\"Testing String\");"
+        "content": "        TaskList tasklist \u003d TaskList.createTaskList();"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        storage.updateRecord(\"Tested String\", 1);"
+        "content": "        try {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        assertEquals(1, storage.getRecords().size());"
+        "content": "            Parser.process(\"todo read book\", tasklist, storage);"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "        assertEquals(\"Tested String\", storage.getRecords().get(0));"
+        "content": "            assertEquals(\"[T][✘] read book\", tasklist.getTask(0).toString());"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "    }"
+        "content": "        } catch (DukeException e) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "            fail(e.getMessage());"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 30,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public void processorDoneTest() {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        TaskList tasklist \u003d TaskList.createTaskList();"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            Parser.process(\"todo read book\", tasklist, storage);"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            Parser.process(\"done 1\", tasklist, storage);"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            assertEquals(\"[T][✓] read book\", tasklist.getTask(0).toString());"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            fail(e.getMessage());"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public void processorDeleteTest() {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        TaskList tasklist \u003d TaskList.createTaskList();"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            Parser.process(\"todo read book\", tasklist, storage);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            Parser.process(\"todo read 2nd book\", tasklist, storage);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            Parser.process(\"delete 1\", tasklist, storage);"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            assertEquals(1, tasklist.getListSize());"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            assertEquals(\"[T][✘] read 2nd book\", tasklist.getTask(0).toString());"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "            fail(e.getMessage());"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 59,
         "author": {
           "gitId": "pennhanlee"
         },
@@ -5337,7 +5882,247 @@
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 30
+      "pennhanlee": 59
+    }
+  },
+  {
+    "path": "src/test/java/storage/StorageTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "package storage;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "import duke.storage.Storage;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "public class StorageTest {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public void dummyTest() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        assertEquals(2, 2);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public void saveRecordTest() {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        storage.saveRecord(\"Testing String\");"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        assertEquals(1, storage.getRecords().size());"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    public void updateRecordTest() {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        Storage storage \u003d Storage.createDukeFile(\"test\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        storage.saveRecord(\"Testing String\");"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        storage.updateRecord(\"Tested String\", 1);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        assertEquals(1, storage.getRecords().size());"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "        assertEquals(\"Tested String\", storage.getRecords().get(0));"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "pennhanlee": 33
     }
   },
   {
@@ -5363,7 +6148,7 @@
         "author": {
           "gitId": "pennhanlee"
         },
-        "content": "deadline return book /by Sunday"
+        "content": "deadline return book /by 2020-02-10"
       },
       {
         "lineNumber": 4,
@@ -5412,11 +6197,25 @@
         "author": {
           "gitId": "pennhanlee"
         },
+        "content": "deadline return book /by wrongdate"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "pennhanlee"
+        },
+        "content": "list"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "pennhanlee"
+        },
         "content": "bye"
       }
     ],
     "authorContributionMap": {
-      "pennhanlee": 10
+      "pennhanlee": 12
     }
   },
   {
