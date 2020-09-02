@@ -199,14 +199,14 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        ui \u003d new Ui();"
+        "content": "        this.ui \u003d new Ui();"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        storage \u003d new Storage(filepath);"
+        "content": "        this.storage \u003d new Storage(filepath);"
       },
       {
         "lineNumber": 16,
@@ -220,7 +220,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            tasks \u003d new TaskList(storage.load());"
+        "content": "            this.tasks \u003d new TaskList(storage.loadFile());"
       },
       {
         "lineNumber": 18,
@@ -248,7 +248,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            tasks \u003d new TaskList();"
+        "content": "            this.tasks \u003d new TaskList();"
       },
       {
         "lineNumber": 22,
@@ -304,7 +304,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            String input \u003d ui.receive();"
+        "content": "            String input \u003d ui.receiveInput();"
       },
       {
         "lineNumber": 30,
@@ -318,7 +318,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "                Parser.process(input, ui, tasks, storage);"
+        "content": "                Parser.parseInput(input, ui, tasks, storage);"
       },
       {
         "lineNumber": 32,
@@ -647,245 +647,245 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "import java.time.format.DateTimeParseException;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "public class Parser {"
+        "content": ""
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "public class Parser {"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public static void process(String input, Ui ui, TaskList tasks, Storage storage) throws DukeException, IOException {"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        String[] parsed \u003d input.split(\" \", 2);"
+        "content": "    public static void parseInput(String input, Ui ui, TaskList tasks, Storage storage) throws DukeException, IOException {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        String keyword \u003d parsed[0];"
+        "content": "        String[] parsed \u003d input.split(\" \", 2);"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        String body \u003d \"\";"
+        "content": "        String keyword \u003d parsed[0];"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        if (parsed.length \u003e 1) body \u003d parsed[1];"
+        "content": "        String body \u003d \"\";"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        switch (keyword) {"
+        "content": "        if (parsed.length \u003e 1) {"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"list\":"
+        "content": "            body \u003d parsed[1];"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            tasks.printList(ui);"
+        "content": "        }"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            break;"
+        "content": "        switch (keyword) {"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"done\":"
+        "content": "        case \"list\":"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            if (isValidSize(body, tasks)) tasks.done(getNumber(body), ui);"
+        "content": "            tasks.printList(ui);"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            else throw new DukeException(\"Invalid number\");"
+        "content": "            break;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            break;"
+        "content": "        case \"done\":"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"delete\":"
+        "content": "            if (isValidSize(body, tasks)) {"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            if (isValidSize(body, tasks)) tasks.delete(getNumber(body), ui);"
+        "content": "                tasks.markTaskDone(getNumber(body), ui);"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            else throw new DukeException(\"Invalid number\");"
+        "content": "            } else {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            break;"
+        "content": "                throw new DukeException(\"Invalid number\");"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"todo\":"
+        "content": "            }"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            if (isValidTFormat(body)) tasks.addTask(new Todo(body), ui);"
+        "content": "            break;"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            else throw new DukeException(\"Invalid task format\");"
+        "content": "        case \"delete\":"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            break;"
+        "content": "            if (isValidSize(body, tasks)) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"deadline\":"
+        "content": "                tasks.deleteTask(getNumber(body), ui);"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            if (isValidDFormat(body)) tasks.addTask(new Deadline(desc(body), deadline(body)), ui);"
+        "content": "            } else {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            else throw new DukeException(\"Invalid task format\");"
+        "content": "                throw new DukeException(\"Invalid number\");"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            break;"
+        "content": "            }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"event\":"
+        "content": "            break;"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            if (isValidEFormat(body)) tasks.addTask(new Event(desc(body), eventTime(body)), ui);"
+        "content": "        case \"todo\":"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            else throw new DukeException(\"Invalid task format\");"
+        "content": "            if (isValidFormat(body, Task.Type.TODO)) {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            break;"
+        "content": "                tasks.addTask(new Todo(body), ui);"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"find\":"
+        "content": "            } else {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            tasks.findTask(body, ui);"
+        "content": "                throw new DukeException(\"Invalid task format\");"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        case \"bye\":"
+        "content": "            }"
       },
       {
         "lineNumber": 39,
@@ -899,392 +899,392 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        default:"
+        "content": "        case \"deadline\":"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            throw new DukeException(\"Invalid command\");"
+        "content": "            if (isValidFormat(body, Task.Type.DEADLINE) \u0026\u0026 isValidTime(body, Task.Type.DEADLINE)) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        }"
+        "content": "                tasks.addTask(new Deadline(getDescription(body), getTime(body, Task.Type.DEADLINE)), ui);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        storage.write(tasks);"
+        "content": "            } else {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "                throw new DukeException(\"Invalid task format\");"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "            }"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static boolean isValidSize(String body, TaskList tasks) {"
+        "content": "            break;"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        if (body.length() \u003e 0) {"
+        "content": "        case \"event\":"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            String num \u003d body;"
+        "content": "            if (isValidFormat(body, Task.Type.EVENT) \u0026\u0026 isValidTime(body, Task.Type.EVENT)) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            try {"
+        "content": "                tasks.addTask(new Event(getDescription(body), getTime(body, Task.Type.EVENT)), ui);"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "                int number \u003d Integer.parseInt(num);"
+        "content": "            } else {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "                return tasks.size() \u003e\u003d number \u0026\u0026 number \u003e 0;"
+        "content": "                throw new DukeException(\"Invalid task format\");"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            } catch (NumberFormatException e) {"
+        "content": "            }"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "                return false;"
+        "content": "            break;"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            }"
+        "content": "        case \"find\":"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        } else {"
+        "content": "            tasks.findTask(body, ui);"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            return false;"
+        "content": "        case \"bye\":"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        }"
+        "content": "            break;"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "        default:"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "            throw new DukeException(\"Invalid command\");"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static int getNumber(String body) {"
+        "content": "        }"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        String num \u003d body.split(\" \", 2)[0];"
+        "content": "        storage.writeFile(tasks);"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        return Integer.parseInt(num);"
+        "content": "    }"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "    private static boolean isValidSize(String body, TaskList tasks) {"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static String desc(String body) {"
+        "content": "        if (body.length() \u003e 0) {"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        return body.split(\" /\", 2)[0];"
+        "content": "            String num \u003d body;"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "            try {"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "                int number \u003d Integer.parseInt(num);"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static boolean isValidTFormat(String body) {"
+        "content": "                return tasks.getListSize() \u003e\u003d number \u0026\u0026 number \u003e 0;"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        return !body.equals(\"\");"
+        "content": "            } catch (NumberFormatException e) {"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "                return false;"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "            }"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static boolean isValidDFormat(String body) {"
+        "content": "        } else {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        return body.split(\" /by \", 2).length \u003d\u003d 2;"
+        "content": "            return false;"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static String deadline(String body) {"
+        "content": ""
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        String time \u003d body.split(\" /by \", 2)[1];"
+        "content": "    private static int getNumber(String body) {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        if (time.equals(\"now\")) {"
+        "content": "        String num \u003d body.split(\" \", 2)[0];"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            return LocalDate.now().format(DateTimeFormatter.ofPattern(\"d MMM yyyy\"));"
+        "content": "        return Integer.parseInt(num);"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        } else {"
+        "content": "    }"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            return LocalDate.parse(time).format(DateTimeFormatter.ofPattern(\"d MMM yyyy\"));"
+        "content": ""
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        }"
+        "content": "    private static String getDescription(String body) {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "        return body.split(\" /\", 2)[0];"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static boolean isValidEFormat(String body) {"
+        "content": ""
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        return body.split(\" /at \", 2).length \u003d\u003d 2;"
+        "content": "    private static boolean isValidFormat(String body, Task.Type type) {"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "        if (type \u003d\u003d Task.Type.TODO) {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "            return !body.equals(\"\");"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    private static String eventTime(String body) {"
+        "content": "        }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        String time \u003d body.split(\" /at \", 2)[1];"
+        "content": "        if (type \u003d\u003d Task.Type.DEADLINE) {"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        if (time.equals(\"now\")) {"
+        "content": "            return body.split(\" /by \", 2).length \u003d\u003d 2;"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            return LocalDate.now().format(DateTimeFormatter.ofPattern(\"d MMM yyyy\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        } else {"
+        "content": "        if (type \u003d\u003d Task.Type.EVENT) {"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "            return LocalDate.parse(time).format(DateTimeFormatter.ofPattern(\"d MMM yyyy\"));"
+        "content": "            return body.split(\" /at \", 2).length \u003d\u003d 2;"
       },
       {
         "lineNumber": 96,
@@ -1298,38 +1298,283 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "        return false;"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public static boolean isBye(String input){"
+        "content": ""
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        return input.split(\" \", 2)[0].equals(\"bye\");"
+        "content": "    private static boolean isValidTime(String body, Task.Type type) throws DateTimeParseException {"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    }"
+        "content": "        String time \u003d \"\";"
       },
       {
         "lineNumber": 102,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        if (type \u003d\u003d Task.Type.DEADLINE) {"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            time \u003d body.split(\" /by \", 2)[1];"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        if (type \u003d\u003d Task.Type.EVENT) {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            time \u003d body.split(\" /at \", 2)[1];"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        if (time.equals(\"now\")) {"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            LocalDate.parse(time);"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "    private static String getTime(String body, Task.Type type) {"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        String time \u003d \"\";"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        if (type \u003d\u003d Task.Type.DEADLINE) {"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            time \u003d body.split(\" /by \", 2)[1];"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        if (type \u003d\u003d Task.Type.EVENT) {"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            time \u003d body.split(\" /at \", 2)[1];"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        if (time.equals(\"now\")) {"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            return LocalDate.now().format(DateTimeFormatter.ofPattern(\"d MMM yyyy\"));"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "            return LocalDate.parse(time).format(DateTimeFormatter.ofPattern(\"d MMM yyyy\"));"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "    public static boolean isBye(String input){"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "        return input.split(\" \", 2)[0].equals(\"bye\");"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "hyngkng"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 137,
         "author": {
           "gitId": "hyngkng"
         },
@@ -1337,7 +1582,7 @@
       }
     ],
     "authorContributionMap": {
-      "hyngkng": 102
+      "hyngkng": 137
     }
   },
   {
@@ -1454,7 +1699,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public ArrayList\u003cTask\u003e load() throws FileNotFoundException, DukeException {"
+        "content": "    public ArrayList\u003cTask\u003e loadFile() throws FileNotFoundException, DukeException {"
       },
       {
         "lineNumber": 17,
@@ -1545,7 +1790,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public void write(TaskList tasks) throws IOException {"
+        "content": "    public void writeFile(TaskList tasks) throws IOException {"
       },
       {
         "lineNumber": 30,
@@ -1834,21 +2079,21 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        description \u003d desc;"
+        "content": "        this.description \u003d desc;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        isDone \u003d false;"
+        "content": "        this.isDone \u003d false;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        type \u003d Type.NONE;"
+        "content": "        this.type \u003d Type.NONE;"
       },
       {
         "lineNumber": 14,
@@ -2361,7 +2606,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public void done(int number, Ui ui) {"
+        "content": "    public void markTaskDone(int number, Ui ui) {"
       },
       {
         "lineNumber": 36,
@@ -2410,7 +2655,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public void delete(int number, Ui ui) {"
+        "content": "    public void deleteTask(int number, Ui ui) {"
       },
       {
         "lineNumber": 43,
@@ -2445,7 +2690,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        ui.say(\"You have \" + size() + \" items in your task list now.\");"
+        "content": "        ui.say(\"You have \" + getListSize() + \" items in your task list now.\");"
       },
       {
         "lineNumber": 48,
@@ -2480,7 +2725,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        ui.say(\"You have \" + size() + \" items in your task list now.\");"
+        "content": "        ui.say(\"You have \" + getListSize() + \" items in your task list now.\");"
       },
       {
         "lineNumber": 53,
@@ -2613,7 +2858,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public int size() {"
+        "content": "    public int getListSize() {"
       },
       {
         "lineNumber": 72,
@@ -2685,7 +2930,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        time \u003d when;"
+        "content": "        this.time \u003d when;"
       },
       {
         "lineNumber": 7,
@@ -2892,7 +3137,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "        scanner \u003d new Scanner(System.in);"
+        "content": "        this.scanner \u003d new Scanner(System.in);"
       },
       {
         "lineNumber": 8,
@@ -2913,7 +3158,7 @@
         "author": {
           "gitId": "hyngkng"
         },
-        "content": "    public String receive() {"
+        "content": "    public String receiveInput() {"
       },
       {
         "lineNumber": 11,
