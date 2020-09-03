@@ -629,6 +629,560 @@
     }
   },
   {
+    "path": "config/travis/check-eof-newline.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "# Checks that all text files end with a newline."
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "ret\u003d0"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "# Preserve filename with spaces by only splitting on newlines."
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "IFS\u003d\u0027"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "\u0027"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "for filename in $(git grep --cached -I -l -e \u0027\u0027 -- \u0027:/\u0027); do"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    if [ \"$(tail -c 1 \"./$filename\")\" !\u003d \u0027\u0027 ]; then"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        line\u003d\"$(wc -l \"./$filename\" | cut -d\u0027 \u0027 -f1)\""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        echo \"ERROR:$filename:$line: no newline at EOF.\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        ret\u003d1"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    fi"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "done"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "exit $ret"
+      }
+    ],
+    "authorContributionMap": {
+      "seanjyjy": 18
+    }
+  },
+  {
+    "path": "config/travis/check-line-endings.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "# Checks for prohibited line endings."
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "# Prohibited line endings: \\r\\n"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "git grep --cached -I -n --no-color -P \u0027\\r$\u0027 -- \u0027:/\u0027 |"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "awk \u0027"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    BEGIN {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        FS \u003d \":\""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        OFS \u003d \":\""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        ret \u003d 0"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        ret \u003d 1"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        print \"ERROR\", $1, $2, \" prohibited \\\\r\\\\n line ending, use \\\\n instead.\""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    END {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        exit ret"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "\u0027"
+      }
+    ],
+    "authorContributionMap": {
+      "seanjyjy": 19
+    }
+  },
+  {
+    "path": "config/travis/check-trailing-whitespace.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "# Checks for trailing whitespace"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "git grep --cached -I -n --no-color -P \u0027[ \\t]+$\u0027 -- \u0027:/\u0027 |"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "awk \u0027"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    BEGIN {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        FS \u003d \":\""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        OFS \u003d \":\""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        ret \u003d 0"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    {"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        # Only warn for markdown files (*.md) to accomodate text editors"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        # which do not properly handle trailing whitespace."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        # (e.g. GitHub web editor)"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        if ($1 ~ /\\.md$/) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "            severity \u003d \"WARN\""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "            severity \u003d \"ERROR\""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "            ret \u003d 1"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        print severity, $1, $2, \" trailing whitespace.\""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    END {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        exit ret"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "\u0027"
+      }
+    ],
+    "authorContributionMap": {
+      "seanjyjy": 26
+    }
+  },
+  {
+    "path": "config/travis/run-checks.sh",
+    "fileType": "sh",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "#!/bin/sh"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "# Runs all check-* scripts, and returns a non-zero exit code if any of them fail."
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "dir\u003d$(CDPATH\u003d cd -- \"$(dirname -- \"$0\")\" \u0026\u0026 pwd) \u0026\u0026"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "ret\u003d0 \u0026\u0026"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "for checkscript in \"$dir\"/check-*; do"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    if ! \"$checkscript\"; then"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        ret\u003d1"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    fi"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "done"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "exit $ret"
+      }
+    ],
+    "authorContributionMap": {
+      "seanjyjy": 11
+    }
+  },
+  {
     "path": "src/main/java/duke/DialogBox.java",
     "fileType": "java",
     "lines": [
@@ -1185,7 +1739,7 @@
         "author": {
           "gitId": "-"
         },
-        "content": "public class Duke  {"
+        "content": "public class Duke {"
       },
       {
         "lineNumber": 18,
@@ -1290,339 +1844,325 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    "
+        "content": "    //@@ Oleg Mikhailov"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    //@@ Oleg Mikhailov"
+        "content": "    //Reused https://stackoverflow.com/questions/26311470/what-is-the-equivalent-of-javascript-settimeout-in-java"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    //Reused https://stackoverflow.com/questions/26311470/what-is-the-equivalent-of-javascript-settimeout-in-java"
+        "content": "    public static void setTimeout(Runnable runnable, int delay) {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public static void setTimeout(Runnable runnable, int delay){"
+        "content": "        new Thread(() -\u003e {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        new Thread(() -\u003e {"
+        "content": "            try {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            try {"
+        "content": "                Thread.sleep(delay);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                Thread.sleep(delay);"
+        "content": "                runnable.run();"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                runnable.run();"
+        "content": "            } catch (Exception e) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "                System.err.println(e);"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            catch (Exception e){"
+        "content": "            }"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                System.err.println(e);"
+        "content": "        }).start();"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "    }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }).start();"
+        "content": ""
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "    public String getResponse(String input) {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        try {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public String getResponse(String input) {"
+        "content": "            Command c \u003d Parser.parse(input);"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        try {"
+        "content": "            String reply \u003d c.execute(tasks, ui, storage);"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Command c \u003d Parser.parse(input);"
+        "content": "            if (reply.equals(ui.goodBye())) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            String reply \u003d c.execute(tasks, ui, storage);"
+        "content": "                setTimeout(()-\u003e {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (reply.equals(ui.goodBye())) {"
+        "content": "                    Platform.exit();"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                setTimeout(()-\u003e {"
+        "content": "                    System.exit(0);"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    Platform.exit();"
+        "content": "                }, 1000);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    System.exit(0);"
+        "content": "            }"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                }, 1000);"
+        "content": "            return reply;"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "        } catch (DukeException e) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return reply;"
+        "content": "            return e.getMessage();"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } catch (DukeException e) {"
+        "content": "        }"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return e.getMessage();"
+        "content": "    }"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "     * Activates the duke bot."
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Activates the duke bot."
+        "content": "    public void echo() {"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "        ui.greetings();"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public void echo() {"
+        "content": "        isExit \u003d false;"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        ui.greetings();"
+        "content": "        while (!isExit) {"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        isExit \u003d false;"
+        "content": "            try {"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        while (!isExit) {"
+        "content": "                String input \u003d ui.readCommand();"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            try {"
+        "content": "                Command c \u003d Parser.parse(input);"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                String input \u003d ui.readCommand();"
+        "content": "                c.execute(tasks, ui, storage);"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                Command c \u003d Parser.parse(input);"
+        "content": "                isExit \u003d c.getExitStatus();"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                c.execute(tasks, ui, storage);"
+        "content": "            } catch (DukeException e) {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                isExit \u003d c.getExitStatus();"
+        "content": "                ui.printException(e.getMessage());"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            } catch (DukeException e) {"
+        "content": "            }"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                ui.printException(e.getMessage());"
+        "content": "        }"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "seanjyjy"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "seanjyjy"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 80,
+        "lineNumber": 78,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -1631,7 +2171,7 @@
     ],
     "authorContributionMap": {
       "-": 1,
-      "seanjyjy": 79
+      "seanjyjy": 77
     }
   },
   {
@@ -2384,56 +2924,56 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import javafx.fxml.FXML;"
+        "content": "import java.io.IOException;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import javafx.fxml.FXMLLoader;"
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import javafx.scene.control.Label;"
+        "content": "import javafx.fxml.FXML;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import javafx.scene.image.Image;"
+        "content": "import javafx.fxml.FXMLLoader;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import javafx.scene.image.ImageView;"
+        "content": "import javafx.scene.control.Label;"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import javafx.scene.layout.VBox;"
+        "content": "import javafx.scene.image.Image;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "import javafx.scene.image.ImageView;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import java.io.IOException;"
+        "content": "import javafx.scene.layout.VBox;"
       },
       {
         "lineNumber": 11,
@@ -2447,21 +2987,21 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "public class OpeningBox extends VBox {"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    @FXML"
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private Label openingMessage;"
+        "content": "public class OpeningBox extends VBox {"
       },
       {
         "lineNumber": 15,
@@ -2475,7 +3015,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private Label greetingMessage;"
+        "content": "    private Label openingMessage;"
       },
       {
         "lineNumber": 17,
@@ -2489,119 +3029,119 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private ImageView displayPicture;"
+        "content": "    private Label greetingMessage;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    @FXML"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private OpeningBox(String openingText, String greetingText, Image img) {"
+        "content": "    private ImageView displayPicture;"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        try {"
+        "content": ""
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            FXMLLoader fxmlLoader \u003d new FXMLLoader(MainWindow.class.getResource(\"/view/OpeningBox.fxml\"));"
+        "content": "    private OpeningBox(String openingText, String greetingText, Image img) {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            fxmlLoader.setController(this);"
+        "content": "        try {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            fxmlLoader.setRoot(this);"
+        "content": "            FXMLLoader fxmlLoader \u003d new FXMLLoader(MainWindow.class.getResource(\"/view/OpeningBox.fxml\"));"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            fxmlLoader.load();"
+        "content": "            fxmlLoader.setController(this);"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "            fxmlLoader.setRoot(this);"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            e.printStackTrace();"
+        "content": "            fxmlLoader.load();"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        openingMessage.setText(openingText);"
+        "content": "        }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        greetingMessage.setText(greetingText);"
+        "content": "        openingMessage.setText(openingText);"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        displayPicture.setImage(img);"
+        "content": "        greetingMessage.setText(greetingText);"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "        displayPicture.setImage(img);"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    "
+        "content": "    }"
       },
       {
         "lineNumber": 35,
@@ -2630,10 +3170,17 @@
           "gitId": "seanjyjy"
         },
         "content": "}"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": ""
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 38
+      "seanjyjy": 39
     }
   },
   {
@@ -2806,7 +3353,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 25,
@@ -2925,7 +3472,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 42,
@@ -2960,213 +3507,220 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatDeadlineException Throws an exception when the format of \u0027message\u0027 is wrong."
+        "content": "     * @return A string message showing the information of the task that has been added."
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatEventException Throws an exception when the format of \u0027message\u0027 is wrong."
+        "content": "     * @throws InvalidFormatDeadlineException Throws an exception when the format of \u0027message\u0027 is wrong."
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatDateException Throws an exception when the format of \u0027message\u0027 is wrong."
+        "content": "     * @throws InvalidFormatEventException Throws an exception when the format of \u0027message\u0027 is wrong."
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "     * @throws InvalidFormatDateException Throws an exception when the format of \u0027message\u0027 is wrong."
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private String addTask(String type, String message, Ui ui, TaskList tasks) throws InvalidFormatDeadlineException, "
+        "content": "     */"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            InvalidFormatEventException, InvalidFormatDateException {"
+        "content": "    private String addTask(String type, String message, Ui ui, TaskList tasks) throws InvalidFormatDeadlineException,"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        Task task;"
+        "content": "            InvalidFormatEventException, InvalidFormatDateException {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String[] dateTime;"
+        "content": "        Task task;"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (Parser.isToDo(type)) {"
+        "content": "        String[] dateTime;"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            task \u003d new ToDo(message);"
+        "content": "        if (Parser.isToDo(type)) {"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else if (Parser.isDeadline(type)) {"
+        "content": "            task \u003d new ToDo(message);"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            dateTime \u003d message.split(\" /by \", 2);"
+        "content": "        } else if (Parser.isDeadline(type)) {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // checking if the input is valid"
+        "content": "            dateTime \u003d message.split(\" /by \", 2);"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (dateTime.length \u003d\u003d 1) {"
+        "content": "            // checking if the input is valid"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatDeadlineException();"
+        "content": "            if (dateTime.length \u003d\u003d 1) {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "                throw new InvalidFormatDeadlineException();"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            task \u003d new Deadline(dateTime[0], Parser.formatDateTime(dateTime[1]));"
+        "content": "            }"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else if (Parser.isEvent(type)) {"
+        "content": "            task \u003d new Deadline(dateTime[0], Parser.formatDateTime(dateTime[1]));"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            dateTime \u003d message.split(\" /at \", 2);"
+        "content": "        } else if (Parser.isEvent(type)) {"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // checking if the input is valid"
+        "content": "            dateTime \u003d message.split(\" /at \", 2);"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (dateTime.length \u003d\u003d 1) {"
+        "content": "            // checking if the input is valid"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatEventException();"
+        "content": "            if (dateTime.length \u003d\u003d 1) {"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "                throw new InvalidFormatEventException();"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            task \u003d new Event(dateTime[0], Parser.formatDateTime(dateTime[1]));"
+        "content": "            }"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else {"
+        "content": "            task \u003d new Event(dateTime[0], Parser.formatDateTime(dateTime[1]));"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return \"\";"
+        "content": "        } else {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "            return \"\";"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        tasks.add(task);"
+        "content": "        }"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return ui.messageFormatter(ADDED_NOTIFICATION, task.toString(), printNumTask(tasks));"
+        "content": "        tasks.add(task);"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "        return ui.messageFormatter(ADDED_NOTIFICATION, task.toString(), printNumTask(tasks));"
       },
       {
         "lineNumber": 76,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 77,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -3174,7 +3728,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 76
+      "seanjyjy": 77
     }
   },
   {
@@ -3284,7 +3838,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 16,
@@ -3354,38 +3908,122 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String bye \u003d ui.goodBye();"
+        "content": "        return endProgram(tasks, ui, storage);"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        storage.record(tasks);"
+        "content": "    }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        setExitStatus(true);"
+        "content": ""
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return bye;"
+        "content": "    /**"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "     * Save and store the relevant information into local storage."
       },
       {
         "lineNumber": 30,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "     * @param tasks Object contains the task list."
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "     * @param ui Object that deals with interactions with the user."
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "     * @param storage Object that contains the saved list of tasks."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "     * @return A String message that informs the user that the program will be ending."
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    public String endProgram(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        String bye \u003d ui.goodBye();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        storage.record(tasks);"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        setExitStatus(true);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        return bye;"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -3393,7 +4031,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 30
+      "seanjyjy": 42
     }
   },
   {
@@ -3545,7 +4183,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 22,
@@ -3622,7 +4260,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 33,
@@ -3685,7 +4323,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 42,
@@ -3797,7 +4435,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 58,
@@ -3860,7 +4498,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 67,
@@ -3895,7 +4533,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws UnknownCommandException, "
+        "content": "    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws UnknownCommandException,"
       },
       {
         "lineNumber": 72,
@@ -4065,7 +4703,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 22,
@@ -4177,7 +4815,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 38,
@@ -4205,73 +4843,80 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "     * @return A string message notifying which task has been deleted"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private String deleteTask(int pos, Ui ui, TaskList tasks) {"
+        "content": "     */"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (pos \u003c\u003d 0 || pos \u003e tasks.size()) {"
+        "content": "    private String deleteTask(int pos, Ui ui, TaskList tasks) {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(INVALID_INPUT);"
+        "content": "        if (pos \u003c\u003d 0 || pos \u003e tasks.size()) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else {"
+        "content": "            return ui.messageFormatter(INVALID_INPUT);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Task task \u003d tasks.get(pos - 1);"
+        "content": "        } else {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            tasks.remove(pos - 1);"
+        "content": "            Task task \u003d tasks.get(pos - 1);"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(DELETE_NOTIFICATION, task.toString(),printNumTask(tasks));"
+        "content": "            tasks.remove(pos - 1);"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "            return ui.messageFormatter(DELETE_NOTIFICATION, task.toString(), printNumTask(tasks));"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 51,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 52,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -4279,7 +4924,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 51
+      "seanjyjy": 52
     }
   },
   {
@@ -4424,7 +5069,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 21,
@@ -4522,21 +5167,21 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Mark the task at that index \u0027pos\u0027 of the list. If the index \u0027pos\u0027 less than of equals to 0 or greater than the "
+        "content": "     * Marks the task at that index \u0027pos\u0027 of the list. If the index \u0027pos\u0027 is less than or equals to 0 or greater than"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * size of the list, a message will printed, notifying the user of the invalid input."
+        "content": "     * the size of the list, a message will printed, notifying the user of the invalid input."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 37,
@@ -4564,66 +5209,73 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "     * @return A String message that this particular task is marked or has been marked before."
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private String marking(int pos, Ui ui, TaskList tasks) {"
+        "content": "     */"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (pos \u003c\u003d 0 || tasks.size() \u003c pos) {"
+        "content": "    private String marking(int pos, Ui ui, TaskList tasks) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(INVALID_INPUT);"
+        "content": "        if (pos \u003c\u003d 0 || tasks.size() \u003c pos) {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else {"
+        "content": "            return ui.messageFormatter(INVALID_INPUT);"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Task task \u003d tasks.get(pos - 1);"
+        "content": "        } else {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(task.markAsDone());"
+        "content": "            Task task \u003d tasks.get(pos - 1);"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "            return ui.messageFormatter(task.markAsDone());"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 49,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -4631,7 +5283,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 49
+      "seanjyjy": 50
     }
   },
   {
@@ -4853,7 +5505,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 32,
@@ -4874,129 +5526,143 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "     * @return A String message stating all the tasks that contains the particular keyword that"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public String findTasks(TaskList tasks, String keyword, Ui ui) {"
+        "content": "     * the user has keyed in."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        StringBuilder s \u003d new StringBuilder();"
+        "content": "     */"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+        "content": "    public String findTasks(TaskList tasks, String keyword, Ui ui) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Task task \u003d tasks.get(i);"
+        "content": "        StringBuilder s \u003d new StringBuilder();"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            String description \u003d task.getDescription().toLowerCase();"
+        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (description.contains(keyword.toLowerCase())) {"
+        "content": "            Task task \u003d tasks.get(i);"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                s.append(task.toString()).append(\"\\n\");"
+        "content": "            String description \u003d task.getDescription().toLowerCase();"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            if (description.contains(keyword.toLowerCase())) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "                s.append(task.toString()).append(\"\\n\");"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        // this means no available search"
+        "content": "            }"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (s.toString().equals(\"\")) {"
+        "content": "        }"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            String noTask \u003d String.format(\"No available task matches %s\\n\", keyword);"
+        "content": "        // this means no available search"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(noTask);"
+        "content": "        if (s.toString().equals(\"\")) {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else {"
+        "content": "            String noTask \u003d String.format(\"No available task matches %s\\n\", keyword);"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(FIND_SUCCESS, s.toString());"
+        "content": "            return ui.messageFormatter(noTask);"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "        } else {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "            return ui.messageFormatter(FIND_SUCCESS, s.toString());"
       },
       {
         "lineNumber": 52,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -5004,7 +5670,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 52
+      "seanjyjy": 54
     }
   },
   {
@@ -5121,7 +5787,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 17,
@@ -5226,7 +5892,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 32,
@@ -5247,94 +5913,101 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "     * @return A string representing the information of the list of tasks."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private String showListTasks(TaskList tasks, Ui ui) {"
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (tasks.size() \u003d\u003d 0) {"
+        "content": "    private String showListTasks(TaskList tasks, Ui ui) {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(EMPTY_MSG);"
+        "content": "        if (tasks.size() \u003d\u003d 0) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else {"
+        "content": "            return ui.messageFormatter(EMPTY_MSG);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            String[] listMessage \u003d new String[tasks.size() + 1];"
+        "content": "        } else {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            listMessage[0] \u003d SHOW_TASK;"
+        "content": "            String[] listMessage \u003d new String[tasks.size() + 1];"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            for (int i \u003d 1; i \u003c\u003d tasks.size(); i++) {"
+        "content": "            listMessage[0] \u003d SHOW_TASK;"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                listMessage[i] \u003d i + \". \" + tasks.get(i - 1).toString();"
+        "content": "            for (int i \u003d 1; i \u003c\u003d tasks.size(); i++) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "                listMessage[i] \u003d i + \". \" + tasks.get(i - 1).toString();"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return ui.messageFormatter(listMessage);"
+        "content": "            }"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "            return ui.messageFormatter(listMessage);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 47,
+        "author": {
+          "gitId": "seanjyjy"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -5342,7 +6015,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 47
+      "seanjyjy": 48
     }
   },
   {
@@ -5480,7 +6153,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 20,
@@ -6526,1543 +7199,1536 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "import duke.exception.EmptyTextException;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.exception.EmptyTextException;"
+        "content": "import duke.exception.InvalidFormatByeException;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.exception.InvalidFormatByeException;"
+        "content": "import duke.exception.InvalidFormatDateException;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.exception.InvalidFormatDateException;"
+        "content": "import duke.exception.InvalidFormatDeleteException;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.exception.InvalidFormatDeleteException;"
+        "content": "import duke.exception.InvalidFormatDoneException;"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.exception.InvalidFormatDoneException;"
+        "content": "import duke.exception.InvalidFormatFindException;"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.exception.InvalidFormatFindException;"
+        "content": "import duke.exception.InvalidFormatListException;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.exception.InvalidFormatListException;"
+        "content": ""
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "/**"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "/**"
+        "content": " * Class that simulates reading the user\u0027s input and making sense of it."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": " * Class that simulates reading the user\u0027s input and making sense of it."
+        "content": " */"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": " */"
+        "content": ""
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "public class Parser {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "public class Parser {"
+        "content": "    private static final String KEYWORD_BYE \u003d \"bye\";"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_BYE \u003d \"bye\";"
+        "content": "    private static final String KEYWORD_LIST \u003d \"list\";"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_LIST \u003d \"list\";"
+        "content": "    private static final String KEYWORD_DONE \u003d \"done\";"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_DONE \u003d \"done\";"
+        "content": "    private static final String KEYWORD_TODO \u003d \"todo\";"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_TODO \u003d \"todo\";"
+        "content": "    private static final String KEYWORD_EVENT \u003d \"event\";"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_EVENT \u003d \"event\";"
+        "content": "    private static final String KEYWORD_DEADLINE \u003d \"deadline\";"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_DEADLINE \u003d \"deadline\";"
+        "content": "    private static final String KEYWORD_DELETE \u003d \"delete\";"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_DELETE \u003d \"delete\";"
+        "content": "    private static final String KEYWORD_FIND \u003d \"find\";"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String KEYWORD_FIND \u003d \"find\";"
+        "content": ""
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the user\u0027s string input is a number."
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the user\u0027s string input is a number."
+        "content": "     *"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param str the inputted user\u0027s index for tasks."
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param str the inputted user\u0027s index for tasks."
+        "content": "     * @return boolean value of true if user\u0027s string input is a number, false otherwise."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return boolean value of true if user\u0027s string input is a number, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private static boolean isNumber(String str) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static boolean isNumber(String str) {"
+        "content": "        try {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        try {"
+        "content": "            int num \u003d parseInt(str);"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            int num \u003d parseInt(str);"
+        "content": "            return true;"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return true;"
+        "content": "        } catch (NumberFormatException e) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } catch (NumberFormatException e) {"
+        "content": "            return false;"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return false;"
+        "content": "        }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type todo."
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type todo."
+        "content": "     *"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return Boolean value of true if user\u0027s inputted type is todo, false otherwise."
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return Boolean value of true if user\u0027s inputted type is todo, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public static boolean isToDo(String type) {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public static boolean isToDo(String type) {"
+        "content": "        return type.equals(KEYWORD_TODO);"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_TODO);"
+        "content": "    }"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type deadline."
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type deadline."
+        "content": "     *"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return Boolean value of true if user\u0027s inputted type is deadline, false otherwise."
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return Boolean value of true if user\u0027s inputted type is deadline, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public static boolean isDeadline(String type) {"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public static boolean isDeadline(String type) {"
+        "content": "        return type.equals(KEYWORD_DEADLINE);"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_DEADLINE);"
+        "content": "    }"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type event."
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type event."
+        "content": "     *"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return Boolean value of true if user\u0027s inputted type is event, false otherwise."
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return Boolean value of true if user\u0027s inputted type is event, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public static boolean isEvent(String type) {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public static boolean isEvent(String type) {"
+        "content": "        return type.equals(KEYWORD_EVENT);"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_EVENT);"
+        "content": "    }"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type done."
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type done."
+        "content": "     *"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return boolean value of true if user\u0027s inputted type is done, false otherwise."
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return boolean value of true if user\u0027s inputted type is done, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private static boolean isValidDone(String type) {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static boolean isValidDone(String type) {"
+        "content": "        return type.equals(KEYWORD_DONE);"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_DONE);"
+        "content": "    }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type bye."
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type bye."
+        "content": "     *"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return boolean value of true if user\u0027s inputted type is bye, false otherwise."
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return boolean value of true if user\u0027s inputted type is bye, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private static boolean isBye(String type) {"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static boolean isBye(String type) {"
+        "content": "        return type.equals(KEYWORD_BYE);"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_BYE);"
+        "content": "    }"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type list."
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type list."
+        "content": "     *"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return boolean value of true if user\u0027s inputted type is list, false otherwise."
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return boolean value of true if user\u0027s inputted type is list, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private static boolean isList(String type) {"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static boolean isList(String type) {"
+        "content": "        return type.equals(KEYWORD_LIST);"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_LIST);"
+        "content": "    }"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type task(deadline or todo or event)."
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type task(deadline or todo or event)."
+        "content": "     *"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return boolean value of true if user\u0027s inputted type is task, false otherwise."
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return boolean value of true if user\u0027s inputted type is task, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private static boolean isTask(String type) {"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static boolean isTask(String type) {"
+        "content": "        return isDeadline(type) || isToDo(type) || isEvent(type);"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return isDeadline(type) || isToDo(type) || isEvent(type);"
+        "content": "    }"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type delete."
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type delete."
+        "content": "     *"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return boolean value of true if user\u0027s inputted type is delete, false otherwise."
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return boolean value of true if user\u0027s inputted type is delete, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private static boolean isDelete(String type) {"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static boolean isDelete(String type) {"
+        "content": "        return type.equals(KEYWORD_DELETE);"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_DELETE);"
+        "content": "    }"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if the type of command is of type find."
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if the type of command is of type find."
+        "content": "     *"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     *"
+        "content": "     * @param type The inputted user\u0027s type."
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param type The inputted user\u0027s type."
+        "content": "     * @return boolean value of true if user\u0027s inputted type is find, false otherwise."
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return boolean value of true if user\u0027s inputted type is find, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private static boolean isFind(String type) {"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static boolean isFind(String type) {"
+        "content": "        return type.equals(KEYWORD_FIND);"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return type.equals(KEYWORD_FIND);"
+        "content": "    }"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Formats the user\u0027s input timing into a LocalDateTime format."
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Formats the user\u0027s input timing into a LocalDateTime format."
+        "content": "     *"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param dateAndTime The inputted user\u0027s timing."
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param s The inputted user\u0027s timing."
+        "content": "     * @return A LocalDateTime object that contains the information of the timing."
       },
       {
         "lineNumber": 146,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return A LocalDateTime object that contains the information of the timing."
+        "content": "     * @throws InvalidFormatDateException If the inputted user\u0027s timing is not of the correct format,"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatDateException If the inputted user\u0027s timing is not of the correct format,"
+        "content": "     * YYYY-MM-DD HHMM or YYYY-MM-DD HMMM, an exception will be thrown to notify the user."
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * YYYY-MM-DD HHMM or YYYY-MM-DD HMMM, an exception will be thrown to notify the user."
+        "content": "     */"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public static LocalDateTime formatDateTime(String dateAndTime) throws InvalidFormatDateException {"
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public static LocalDateTime formatDateTime(String dateAndTime) throws InvalidFormatDateException {"
+        "content": "        String[] dateFormat \u003d dateAndTime.split(\" \", 2);"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String[] dateFormat \u003d dateAndTime.split(\" \", 2);"
+        "content": "        String[] date \u003d dateFormat[0].split(\"-\");"
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String[] date \u003d dateFormat[0].split(\"-\");"
+        "content": "        String time;"
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String time;"
+        "content": "        if (dateFormat.length \u003d\u003d 1) {"
       },
       {
         "lineNumber": 154,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (dateFormat.length \u003d\u003d 1) {"
+        "content": "            // case where he nvr input in the time"
       },
       {
         "lineNumber": 155,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // case where he nvr input in the time"
+        "content": "            time \u003d \"2359\";"
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            time \u003d \"2359\";"
+        "content": "            if (date.length !\u003d 3) {"
       },
       {
         "lineNumber": 157,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (date.length !\u003d 3) {"
+        "content": "                throw new InvalidFormatDateException();"
       },
       {
         "lineNumber": 158,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatDateException();"
+        "content": "            }"
       },
       {
         "lineNumber": 159,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "        } else {"
       },
       {
         "lineNumber": 160,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else {"
+        "content": "            time \u003d dateFormat[1];"
       },
       {
         "lineNumber": 161,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            time \u003d dateFormat[1];"
+        "content": "            // case where he inputs in the time"
       },
       {
         "lineNumber": 162,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // case where he inputs in the time"
+        "content": "            if (date.length !\u003d 3 || time.length() !\u003d 4) {"
       },
       {
         "lineNumber": 163,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (date.length !\u003d 3 || time.length() !\u003d 4) {"
+        "content": "                throw new InvalidFormatDateException();"
       },
       {
         "lineNumber": 164,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatDateException();"
+        "content": "            }"
       },
       {
         "lineNumber": 165,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "        }"
       },
       {
         "lineNumber": 166,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "        try {"
       },
       {
         "lineNumber": 167,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        try {"
+        "content": "            int year \u003d Integer.parseInt(date[0]);"
       },
       {
         "lineNumber": 168,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            int year \u003d Integer.parseInt(date[0]);"
+        "content": "            int month \u003d Integer.parseInt(date[1]);"
       },
       {
         "lineNumber": 169,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            int month \u003d Integer.parseInt(date[1]);"
+        "content": "            int day \u003d Integer.parseInt(date[2]);"
       },
       {
         "lineNumber": 170,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            int day \u003d Integer.parseInt(date[2]);"
+        "content": "            int hour \u003d Integer.parseInt(time.substring(0, 2));"
       },
       {
         "lineNumber": 171,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            int hour \u003d Integer.parseInt(time.substring(0, 2));"
+        "content": "            int minute \u003d Integer.parseInt(time.substring(2));"
       },
       {
         "lineNumber": 172,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            int minute \u003d Integer.parseInt(time.substring(2));"
+        "content": "            return LocalDateTime.of(year, month, day, hour, minute);"
       },
       {
         "lineNumber": 173,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return LocalDateTime.of(year, month, day, hour, minute);"
+        "content": "        } catch (DateTimeException | NumberFormatException e) {"
       },
       {
         "lineNumber": 174,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } catch (DateTimeException | NumberFormatException e) {"
+        "content": "            throw new InvalidFormatDateException();"
       },
       {
         "lineNumber": 175,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            throw new InvalidFormatDateException();"
+        "content": "        }"
       },
       {
         "lineNumber": 176,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 177,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 178,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 179,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Making sense of the user\u0027s input and outputting the relevant commands to the input."
       },
       {
         "lineNumber": 180,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Making sense of the user\u0027s input and outputting the relevant commands to the input."
+        "content": "     *"
       },
       {
         "lineNumber": 181,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param message The inputted user\u0027s command."
       },
       {
         "lineNumber": 182,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param s The inputted user\u0027s command."
+        "content": "     * @return A command object that executes the user\u0027s command."
       },
       {
         "lineNumber": 183,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return A command object that executes the user\u0027s command."
+        "content": "     * @throws InvalidFormatByeException Throws an InvalidFormatByeException when the format of Bye is incorrect."
       },
       {
         "lineNumber": 184,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatByeException Throws an InvalidFormatByeException when the format of Bye is incorrect."
+        "content": "     * @throws InvalidFormatListException Throws an InvalidFormatListException when the format of List is incorrect."
       },
       {
         "lineNumber": 185,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatListException Throws an InvalidFormatListException when the format of List is incorrect."
+        "content": "     * @throws InvalidFormatDoneException Throws an InvalidFormatDoneException when the format of Done is incorrect."
       },
       {
         "lineNumber": 186,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatDoneException Throws an InvalidFormatDoneException when the format of Done is incorrect."
+        "content": "     * @throws EmptyTextException Throws an EmptyTextException when the user did not specify anything after the command."
       },
       {
         "lineNumber": 187,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws EmptyTextException Throws an EmptyTextException when the user did not specify anything after the command."
+        "content": "     * @throws InvalidFormatDeleteException Throws an InvalidFormatDeleteException when the format of Delete is"
       },
       {
         "lineNumber": 188,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws InvalidFormatDeleteException Throws an InvalidFormatDeleteException when the format of Delete is"
+        "content": "     * incorrect."
       },
       {
         "lineNumber": 189,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * incorrect."
+        "content": "     */"
       },
       {
         "lineNumber": 190,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public static Command parse(String message) throws InvalidFormatByeException, InvalidFormatListException,"
       },
       {
         "lineNumber": 191,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public static Command parse(String s) throws InvalidFormatByeException, InvalidFormatListException,"
+        "content": "            InvalidFormatDoneException, EmptyTextException, InvalidFormatDeleteException, InvalidFormatFindException {"
       },
       {
         "lineNumber": 192,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            InvalidFormatDoneException, EmptyTextException, InvalidFormatDeleteException, InvalidFormatFindException {"
+        "content": "        String[] inputArr \u003d message.trim().replaceAll(\"  +\", \" \").split(\" \", 2);"
       },
       {
         "lineNumber": 193,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String[] inputArr \u003d s.trim().replaceAll(\"  +\", \" \").split(\" \", 2);"
+        "content": "        inputArr[0] \u003d inputArr[0].toLowerCase();"
       },
       {
         "lineNumber": 194,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        inputArr[0] \u003d inputArr[0].toLowerCase();"
+        "content": "        if (isBye(inputArr[0])) {"
       },
       {
         "lineNumber": 195,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (isBye(inputArr[0])) {"
+        "content": "            if (inputArr.length !\u003d 1) {"
       },
       {
         "lineNumber": 196,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (inputArr.length !\u003d 1) {"
+        "content": "                throw new InvalidFormatByeException();"
       },
       {
         "lineNumber": 197,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatByeException();"
+        "content": "            }"
       },
       {
         "lineNumber": 198,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            return new ByeCommand(inputArr);"
       },
       {
         "lineNumber": 199,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return new ByeCommand(inputArr);"
+        "content": "        } else if (isList(inputArr[0])) {"
       },
       {
         "lineNumber": 200,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else if (isList(inputArr[0])) {"
+        "content": "            if (inputArr.length !\u003d 1) {"
       },
       {
         "lineNumber": 201,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (inputArr.length !\u003d 1) {"
+        "content": "                throw new InvalidFormatListException();"
       },
       {
         "lineNumber": 202,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatListException();"
+        "content": "            }"
       },
       {
         "lineNumber": 203,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            return new ListCommand(inputArr);"
       },
       {
         "lineNumber": 204,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return new ListCommand(inputArr);"
+        "content": "        } else if (isValidDone(inputArr[0])) {"
       },
       {
         "lineNumber": 205,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else if (isValidDone(inputArr[0])) {"
+        "content": "            // checking if the input is valid"
       },
       {
         "lineNumber": 206,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // checking if the input is valid"
+        "content": "            if (inputArr.length \u003d\u003d 1 || !isNumber(inputArr[1])) {"
       },
       {
         "lineNumber": 207,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (inputArr.length \u003d\u003d 1 || !isNumber(inputArr[1])) {"
+        "content": "                throw new InvalidFormatDoneException();"
       },
       {
         "lineNumber": 208,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatDoneException();"
+        "content": "            }"
       },
       {
         "lineNumber": 209,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            return new DoneCommand(inputArr);"
       },
       {
         "lineNumber": 210,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return new DoneCommand(inputArr);"
+        "content": "        } else if (isTask(inputArr[0])) {"
       },
       {
         "lineNumber": 211,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else if (isTask(inputArr[0])) {"
+        "content": "            // checking if the input is valid"
       },
       {
         "lineNumber": 212,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // checking if the input is valid"
+        "content": "            if (inputArr.length \u003d\u003d 1) {"
       },
       {
         "lineNumber": 213,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (inputArr.length \u003d\u003d 1) {"
+        "content": "                throw new EmptyTextException(inputArr[0]);"
       },
       {
         "lineNumber": 214,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new EmptyTextException(inputArr[0]);"
+        "content": "            }"
       },
       {
         "lineNumber": 215,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            return new AddCommand(inputArr);"
       },
       {
         "lineNumber": 216,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return new AddCommand(inputArr);"
+        "content": "        } else if (isDelete(inputArr[0])) {"
       },
       {
         "lineNumber": 217,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else if (isDelete(inputArr[0])) {"
+        "content": "            // checking if the input is valid"
       },
       {
         "lineNumber": 218,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // checking if the input is valid"
+        "content": "            if (inputArr.length \u003d\u003d 1) {"
       },
       {
         "lineNumber": 219,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (inputArr.length \u003d\u003d 1) {"
+        "content": "                throw new InvalidFormatDeleteException();"
       },
       {
         "lineNumber": 220,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatDeleteException();"
+        "content": "            }"
       },
       {
         "lineNumber": 221,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            return new DeleteCommand(inputArr);"
       },
       {
         "lineNumber": 222,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return new DeleteCommand(inputArr);"
+        "content": "        } else if (isFind(inputArr[0])) {"
       },
       {
         "lineNumber": 223,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else if (isFind(inputArr[0])) {"
+        "content": "            if (inputArr.length \u003d\u003d 1) {"
       },
       {
         "lineNumber": 224,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (inputArr.length \u003d\u003d 1) {"
+        "content": "                throw new InvalidFormatFindException();"
       },
       {
         "lineNumber": 225,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatFindException();"
+        "content": "            }"
       },
       {
         "lineNumber": 226,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            String[] inputArr2 \u003d inputArr[1].split(\" \");"
       },
       {
         "lineNumber": 227,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            String[] inputArr2 \u003d inputArr[1].split(\" \");"
+        "content": "            if (inputArr2.length \u003e 1) {"
       },
       {
         "lineNumber": 228,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (inputArr2.length \u003e 1) {"
+        "content": "                throw new InvalidFormatFindException();"
       },
       {
         "lineNumber": 229,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                throw new InvalidFormatFindException();"
+        "content": "            }"
       },
       {
         "lineNumber": 230,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            return new FindCommand(inputArr);"
       },
       {
         "lineNumber": 231,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return new FindCommand(inputArr);"
+        "content": "        } else {"
       },
       {
         "lineNumber": 232,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } else {"
+        "content": "            return new UnknownCommand(inputArr);"
       },
       {
         "lineNumber": 233,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            return new UnknownCommand(inputArr);"
+        "content": "        }"
       },
       {
         "lineNumber": 234,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 235,
-        "author": {
-          "gitId": "seanjyjy"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 236,
+        "lineNumber": 235,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -8070,7 +8736,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 236
+      "seanjyjy": 235
     }
   },
   {
@@ -8138,927 +8804,920 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "import java.nio.file.Files;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import java.nio.file.Files;"
+        "content": "import java.nio.file.Path;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import java.nio.file.Path;"
+        "content": "import java.nio.file.Paths;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import java.nio.file.Paths;"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "import duke.commands.Command;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.commands.Command;"
+        "content": "import duke.parser.Parser;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.parser.Parser;"
+        "content": "import duke.task.Deadline;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.task.Deadline;"
+        "content": "import duke.task.Event;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.task.Event;"
+        "content": "import duke.task.ToDo;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.task.ToDo;"
+        "content": "import duke.tasklist.TaskList;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.tasklist.TaskList;"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "/**"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "/**"
+        "content": " * Class that simulates the storing and retrieving of information into the hard-disk"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": " * Class that simulates the storing and retrieving of information into the hard-disk"
+        "content": " */"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": " */"
+        "content": "public class Storage {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "public class Storage {"
+        "content": "    // might use it at the end"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    // might use it at the end"
+        "content": "    private static final String CREATE_FILEPATH \u003d \"Creating file path ... ... ... ... ... ... ... ... ... ...\";"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String CREATE_FILEPATH \u003d \"Creating file path ... ... ... ... ... ... ... ... ... ...\";"
+        "content": "    private static final String CREATE_CSV \u003d \"Creating file todoList.csv ... ... ... ... ... ... ... ...\";"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String CREATE_CSV \u003d \"Creating file todoList.csv ... ... ... ... ... ... ... ...\";"
+        "content": "    private static final String SAVE_INFO \u003d \"Saving information ... ... ... ... ... ... ... ... ... ...\";"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String SAVE_INFO \u003d \"Saving information ... ... ... ... ... ... ... ... ... ...\";"
+        "content": "    private static final String SAVED \u003d \"Saved  ... ... ... ... ... ... ... ... ... ... ... ... ... \";"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private static final String SAVED \u003d \"Saved  ... ... ... ... ... ... ... ... ... ... ... ... ... \";"
+        "content": ""
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Checking if a particular task is completed."
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Checking if a particular task is completed."
+        "content": "     *"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param s A string encoding whether a task is completed."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param s A string encoding whether a task is completed."
+        "content": "     * @return Returns true if the task is completed, false otherwise."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return Returns true if the task is completed, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private boolean isTaskDone(String s) {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private boolean isTaskDone(String s) {"
+        "content": "        return !s.equals(\"0\");"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return !s.equals(\"0\");"
+        "content": "    }"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Creates a file path."
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Creates a file path."
+        "content": "     *"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param path The directory that to be created."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param path The directory that to be created."
+        "content": "     * @throws IOException"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws IOException"
+        "content": "     */"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private void createFilePath(Path path) throws IOException {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private void createFilePath(Path path) throws IOException {"
+        "content": "        //System.out.println(String.format(\"%s does not exist...\", path.toString()));"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        //System.out.println(String.format(\"%s does not exist...\", path.toString()));"
+        "content": "        Files.createDirectories(path);"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        Files.createDirectories(path);"
+        "content": "        //System.out.println(CREATE_FILEPATH);"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        //System.out.println(CREATE_FILEPATH);"
+        "content": "    }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Creates a CSV file for the user."
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Creates a CSV file for the user."
+        "content": "     *"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param file The CSV file to be created."
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param file The CSV file to be created."
+        "content": "     * @throws IOException"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws IOException"
+        "content": "     */"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private void createCsv(File file) throws IOException {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private void createCsv(File file) throws IOException {"
+        "content": "        //System.out.println(CREATE_CSV);"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        //System.out.println(CREATE_CSV);"
+        "content": "        file.createNewFile();"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        file.createNewFile();"
+        "content": "    }"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Recording down the list of tasks that the user have during this session."
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Recording down the list of tasks that the user have during this session."
+        "content": "     *"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param file The CSV file to record down the information."
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param file The CSV file to record down the information."
+        "content": "     * @param tasks Object contains the task list."
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param tasks Object contains the task list."
+        "content": "     * @throws IOException"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @throws IOException"
+        "content": "     */"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    private void savingFileInfo(File file, TaskList tasks) throws IOException {"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private void savingFileInfo(File file, TaskList tasks) throws IOException {"
+        "content": "        // System.out.println(SAVE_INFO);"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        // System.out.println(SAVE_INFO);"
+        "content": "        FileWriter fileWriter \u003d new FileWriter(file);"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        FileWriter fileWriter \u003d new FileWriter(file);"
+        "content": "        BufferedWriter bufferedWriter \u003d new BufferedWriter(fileWriter);"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        BufferedWriter bufferedWriter \u003d new BufferedWriter(fileWriter);"
+        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+        "content": "            bufferedWriter.write(tasks.get(i).formatStyling());"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            bufferedWriter.write(tasks.get(i).formatStyling());"
+        "content": "        }"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "        //System.out.println(SAVED);"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        //System.out.println(SAVED);"
+        "content": "        bufferedWriter.close();"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        bufferedWriter.close();"
+        "content": "    }"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * When the user exits, records the data back into the user\u0027s file."
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * When the user exits, records the data back into the user\u0027s file."
+        "content": "     *"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param tasks Object contains the task list."
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param tasks Object contains the task list."
+        "content": "     */"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public void record(TaskList tasks) {"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public void record(TaskList tasks) {"
+        "content": "        String dir \u003d System.getProperty(\"user.dir\");"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String dir \u003d System.getProperty(\"user.dir\");"
+        "content": "        Path path \u003d Paths.get(dir, \"duke.Duke\");"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        Path path \u003d Paths.get(dir, \"duke.Duke\");"
+        "content": "        try {"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        try {"
+        "content": "            //System.out.println(String.format(\"Saving file information into %s\", path.toString()));"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            //System.out.println(String.format(\"Saving file information into %s\", path.toString()));"
+        "content": "            // checking if path exist"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // checking if path exist"
+        "content": "            if (!Files.exists(path)) {"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (!Files.exists(path)) {"
+        "content": "                createFilePath(path);"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                createFilePath(path);"
+        "content": "            }"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            Path filePath \u003d Paths.get(dir, \"duke.Duke\", \"todoList.csv\");"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Path filePath \u003d Paths.get(dir, \"duke.Duke\", \"todoList.csv\");"
+        "content": "            File file \u003d filePath.toFile();"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            File file \u003d filePath.toFile();"
+        "content": "            // checking if file exist"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // checking if file exist"
+        "content": "            if (!file.exists()) {"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            if (!file.exists()) {"
+        "content": "                createCsv(file);"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                createCsv(file);"
+        "content": "            }"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "            // saving file"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            // saving file"
+        "content": "            savingFileInfo(file, tasks);"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            savingFileInfo(file, tasks);"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "            Command.printErr();"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Command.printErr();"
+        "content": "        }"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Retrieves the user\u0027s data and load into the system."
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Retrieves the user\u0027s data and load into the system."
+        "content": "     *"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @param tasks Object contains the task list."
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @param tasks Object contains the task list."
+        "content": "     */"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public void retrieve(TaskList tasks) {"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public void retrieve(TaskList tasks) {"
+        "content": "        String dir \u003d System.getProperty(\"user.dir\");"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String dir \u003d System.getProperty(\"user.dir\");"
+        "content": "        Path path \u003d Paths.get(dir, \"duke.Duke\", \"todoList.csv\");"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        Path path \u003d Paths.get(dir, \"duke.Duke\", \"todoList.csv\");"
+        "content": "        if (path.toFile().exists()) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        if (path.toFile().exists()) {"
+        "content": "            try {"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            try {"
+        "content": "                BufferedReader bufferedReader \u003d Files.newBufferedReader(path);"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                BufferedReader bufferedReader \u003d Files.newBufferedReader(path);"
+        "content": "                String line \u003d bufferedReader.readLine();"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                String line \u003d bufferedReader.readLine();"
+        "content": "                while (line !\u003d null) {"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                while (line !\u003d null) {"
+        "content": "                    String[] info \u003d line.split(\",\", 4);"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    String[] info \u003d line.split(\",\", 4);"
+        "content": "                    // todo format type description done"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    // todo format type description done"
+        "content": "                    // event format type at description done"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    // event format type at description done"
+        "content": "                    // deadline format type by description done"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    // deadline format type by description done"
+        "content": "                    if (Parser.isToDo(info[0])) {"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    if (Parser.isToDo(info[0])) {"
+        "content": "                        tasks.add(new ToDo(info[1], isTaskDone(info[2])));"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                        tasks.add(new ToDo(info[1], isTaskDone(info[2])));"
+        "content": "                    } else if (Parser.isEvent(info[0])) {"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    } else if (Parser.isEvent(info[0])) {"
+        "content": "                        tasks.add(new Event(info[2], info[1], isTaskDone(info[3])));"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                        tasks.add(new Event(info[2], info[1], isTaskDone(info[3])));"
+        "content": "                    } else if (Parser.isDeadline(info[0])) {"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    } else if (Parser.isDeadline(info[0])) {"
+        "content": "                        tasks.add(new Deadline(info[2], info[1], isTaskDone(info[3])));"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                        tasks.add(new Deadline(info[2], info[1], isTaskDone(info[3])));"
+        "content": "                    }"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    }"
+        "content": "                    line \u003d bufferedReader.readLine();"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                    line \u003d bufferedReader.readLine();"
+        "content": "                }"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                }"
+        "content": "            } catch (IOException e) {"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            } catch (IOException e) {"
+        "content": "                Command.printErr();"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                Command.printErr();"
+        "content": "            }"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "        }"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 140,
-        "author": {
-          "gitId": "seanjyjy"
-        },
         "content": ""
       },
       {
-        "lineNumber": 141,
+        "lineNumber": 140,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -9066,7 +9725,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 141
+      "seanjyjy": 140
     }
   },
   {
@@ -9176,7 +9835,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 16,
@@ -9253,7 +9912,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 27,
@@ -9337,7 +9996,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 39,
@@ -9528,7 +10187,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 16,
@@ -9605,7 +10264,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 27,
@@ -9689,7 +10348,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 39,
@@ -9824,7 +10483,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "public abstract class Task {"
+        "content": "public class Task {"
       },
       {
         "lineNumber": 8,
@@ -9894,7 +10553,7 @@
         "author": {
           "gitId": "-"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 18,
@@ -9964,7 +10623,7 @@
         "author": {
           "gitId": "-"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 28,
@@ -10041,7 +10700,7 @@
         "author": {
           "gitId": "-"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 39,
@@ -10195,7 +10854,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 61,
@@ -10258,7 +10917,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 70,
@@ -10300,94 +10959,87 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    "
+        "content": "    /**"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    /**"
+        "content": "     * Retrieves the details of the task."
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * Retrieves the details of the task."
+        "content": "     *"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     * @return A string representing the details of the task."
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * @return A string representing the details of the task."
+        "content": "     */"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     */"
+        "content": "    public String getDescription() {"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public String getDescription() {"
+        "content": "        return description;"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return description;"
+        "content": "    }"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "    @Override"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    @Override"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    public String toString() {"
+        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return \"[\" + getStatusIcon() + \"] \" + description;"
-      },
-      {
-        "lineNumber": 87,
-        "author": {
-          "gitId": "seanjyjy"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 88,
+        "lineNumber": 87,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -10396,7 +11048,7 @@
     ],
     "authorContributionMap": {
       "-": 35,
-      "seanjyjy": 53
+      "seanjyjy": 52
     }
   },
   {
@@ -10478,7 +11130,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 12,
@@ -10541,7 +11193,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 21,
@@ -10611,7 +11263,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 31,
@@ -10844,7 +11496,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 22,
@@ -10907,7 +11559,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 31,
@@ -10977,7 +11629,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 41,
@@ -11040,7 +11692,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "     * "
+        "content": "     *"
       },
       {
         "lineNumber": 50,
@@ -11329,7 +11981,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        return messageFormatter(HELLO_DUKE, QUESTION);   "
+        "content": "        return messageFormatter(HELLO_DUKE, QUESTION);"
       },
       {
         "lineNumber": 35,
@@ -11504,7 +12156,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            s.append(messageList[i]).append(\"\\n\"); "
+        "content": "            s.append(messageList[i]).append(\"\\n\");"
       },
       {
         "lineNumber": 60,
@@ -12261,584 +12913,577 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "import duke.storage.Storage;"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.storage.Storage;"
+        "content": "import duke.tasklist.TaskList;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.tasklist.TaskList;"
+        "content": "import duke.ui.Ui;"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "import duke.ui.Ui;"
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "public class ParserTest {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "public class ParserTest {"
+        "content": "    private Parser p;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    private Parser p;"
+        "content": "    @BeforeEach"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    @BeforeEach"
+        "content": "    void init() {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    void init() {"
+        "content": "        p \u003d new Parser();"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        p \u003d new Parser();"
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "    @Nested"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    @Nested"
+        "content": "    class FormatDateTime {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    class FormatDateTime {"
+        "content": "        @Test"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        public void testFormatDateTime() {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void testFormatDateTime() {"
+        "content": "            try {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            try {"
+        "content": "                LocalDateTime obj \u003d LocalDateTime.of(2020, 8, 25, 16, 23);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                LocalDateTime obj \u003d LocalDateTime.of(2020, 8, 25, 16, 23);"
+        "content": "                assertEquals(obj, p.formatDateTime(\"2020-08-25 1623\"));"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                assertEquals(obj, p.formatDateTime(\"2020-08-25 1623\"));"
+        "content": "            } catch (InvalidFormatDateException e) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            } catch (InvalidFormatDateException e) {"
+        "content": "                System.out.println(e);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "                System.out.println(e);"
+        "content": "            }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            }"
+        "content": "        }"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the InvalidFormatDateException in the method FormatDateTime\")"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the InvalidFormatDateException in the method FormatDateTime\")"
+        "content": "        public void writeInvalidFormatDateException() {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeInvalidFormatDateException() {"
+        "content": "            assertThrows(InvalidFormatDateException.class, () -\u003e p.formatDateTime(\"2020/20/13 1600\"));"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(InvalidFormatDateException.class, () -\u003e p.formatDateTime(\"2020/20/13 1600\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the DateTimeException in the method FormatDateTime (receives InvalidFormatDateException)\")"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the DateTimeException in the method FormatDateTime (receives InvalidFormatDateException)\")"
+        "content": "        public void writeInvalidDateTimeException() {"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeInvalidDateTimeException() {"
+        "content": "            assertThrows(InvalidFormatDateException.class, () -\u003e p.formatDateTime(\"2020-30-30 1600\"));"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(InvalidFormatDateException.class, () -\u003e p.formatDateTime(\"2020-30-30 1600\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    }"
+        "content": "    @Nested"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    @Nested"
+        "content": "    class Parse {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "    class Parse {"
+        "content": "        // missing on how to test created objects"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        // missing on how to test created objects"
+        "content": "        @Test"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the UnknownCommandException in the method Parse\")"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the UnknownCommandException in the method Parse\")"
+        "content": "        public void testUnknownCommandException() {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void testUnknownCommandException() {"
+        "content": "            TaskList tasks \u003d new TaskList();"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            TaskList tasks \u003d new TaskList();"
+        "content": "            Storage storage \u003d new Storage();"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Storage storage \u003d new Storage();"
+        "content": "            Ui ui \u003d new Ui();"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            Ui ui \u003d new Ui();"
+        "content": "            assertThrows(UnknownCommandException.class, () -\u003e p.parse(\"blah\").execute(tasks, ui, storage));"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(UnknownCommandException.class, () -\u003e p.parse(\"blah\").execute(tasks, ui, storage));"
+        "content": "        }"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the InvalidFormatByeException in the method Parse\")"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the InvalidFormatByeException in the method Parse\")"
+        "content": "        public void writeInvalidFormatByeException() {"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeInvalidFormatByeException() {"
+        "content": "            assertThrows(InvalidFormatByeException.class, () -\u003e p.parse(\"bye 2\"));"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(InvalidFormatByeException.class, () -\u003e p.parse(\"bye 2\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the InvalidFormatListException in the method Parse\")"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the InvalidFormatListException in the method Parse\")"
+        "content": "        public void writeInvalidFormatListException() {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeInvalidFormatListException() {"
+        "content": "            assertThrows(InvalidFormatListException.class, () -\u003e p.parse(\"list 2\"));"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(InvalidFormatListException.class, () -\u003e p.parse(\"list 2\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the InvalidFormatDoneException in the method Parse\")"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the InvalidFormatDoneException in the method Parse\")"
+        "content": "        public void writeInvalidFormatDoneException() {"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeInvalidFormatDoneException() {"
+        "content": "            assertThrows(InvalidFormatDoneException.class, () -\u003e p.parse(\"done here\"));"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(InvalidFormatDoneException.class, () -\u003e p.parse(\"done here\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the EmptyTextException in the method Parse\")"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the EmptyTextException in the method Parse\")"
+        "content": "        public void writeEmptyTextException() {"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeEmptyTextException() {"
+        "content": "            assertThrows(EmptyTextException.class, () -\u003e p.parse(\"todo\"));"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(EmptyTextException.class, () -\u003e p.parse(\"todo\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the InvalidFormatDeleteException in the method Parse\")"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the InvalidFormatDeleteException in the method Parse\")"
+        "content": "        public void writeInvalidFormatDeleteException() {"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeInvalidFormatDeleteException() {"
+        "content": "            assertThrows(InvalidFormatDeleteException.class, () -\u003e p.parse(\"delete\"));"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(InvalidFormatDeleteException.class, () -\u003e p.parse(\"delete\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": ""
+        "content": "        @Test"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @Test"
+        "content": "        @DisplayName(\"Testing the InvalidFormatDeleteException in the method Parse\")"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        @DisplayName(\"Testing the InvalidFormatDeleteException in the method Parse\")"
+        "content": "        public void writeInvalidFormatFindException() {"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        public void writeInvalidFormatFindException() {"
+        "content": "            assertThrows(InvalidFormatFindException.class, () -\u003e p.parse(\"find hello world\"));"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "            assertThrows(InvalidFormatFindException.class, () -\u003e p.parse(\"find hello world\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 103,
-        "author": {
-          "gitId": "seanjyjy"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 104,
+        "lineNumber": 103,
         "author": {
           "gitId": "seanjyjy"
         },
@@ -12846,7 +13491,7 @@
       }
     ],
     "authorContributionMap": {
-      "seanjyjy": 104
+      "seanjyjy": 103
     }
   },
   {
@@ -12970,7 +13615,7 @@
         "author": {
           "gitId": "seanjyjy"
         },
-        "content": "        String str \u003d \"Nice! I\u0027ve marked this task as done:\\n[\\u2713] hello world\";"
+        "content": "        String str \u003d \"Nice! I\u0027ve marked this task as done:\\n[\\u2714] hello world\";"
       },
       {
         "lineNumber": 18,
