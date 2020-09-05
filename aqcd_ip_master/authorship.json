@@ -833,7 +833,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        String[] deadlineInfo \u003d instructions[1].split(\" /by \", 2); // deadlineInfo \u003d [name, deadline]"
+        "content": "        String[] deadlineInfo \u003d instructions[1].split(\" /by \", 2); // deadlineInfo \u003d [name, deadline \u0026 tags]"
       },
       {
         "lineNumber": 30,
@@ -882,45 +882,164 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            Task deadline \u003d new Deadline(deadlineInfo[0], LocalDate.parse(deadlineInfo[1]));"
+        "content": "            String deadline \u003d deadlineInfo[1];"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            return tasks.addTask(deadline) + \"\\n\" + storage.save(tasks);"
+        "content": "            Task deadlineTask;"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        } catch (DateTimeParseException e) {"
+        "content": ""
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            return ui.invalidDateError();"
+        "content": "            if (deadlineInfo[1].contains(\" /tags \")) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        }"
+        "content": "                String[] tags;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "                String[] deadlineAndTags \u003d deadlineInfo[1].split(\" /tags \");"
       },
       {
         "lineNumber": 42,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                deadline \u003d deadlineAndTags[0];"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                tags \u003d deadlineAndTags[1].split(\",\");"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                // cleanup whitespace"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                for (int i \u003d 0; i \u003c tags.length; i++) {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                    tags[i] \u003d tags[i].strip();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                deadlineTask \u003d new Deadline(deadlineInfo[0], LocalDate.parse(deadline), tags);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                deadlineTask \u003d new Deadline(deadlineInfo[0], LocalDate.parse(deadline));"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return tasks.addTask(deadlineTask) + \"\\n\" + storage.save(tasks);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return ui.invalidDateError();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 59,
         "author": {
           "gitId": "aqcd"
         },
@@ -928,7 +1047,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 42
+      "aqcd": 59
     }
   },
   {
@@ -1136,7 +1255,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        String[] eventInfo \u003d instructions[1].split(\" /at \", 2); // eventInfo \u003d [name, date]"
+        "content": "        String[] eventInfo \u003d instructions[1].split(\" /at \", 2); // eventInfo \u003d [name, date \u0026 tags]"
       },
       {
         "lineNumber": 30,
@@ -1185,45 +1304,164 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            Task event \u003d new Event(eventInfo[0], LocalDate.parse(eventInfo[1]));"
+        "content": "            String eventDate \u003d eventInfo[1];"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            return tasks.addTask(event) + \"\\n\" + storage.save(tasks);"
+        "content": "            Task eventTask;"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        } catch (DateTimeParseException e) {"
+        "content": ""
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            return ui.invalidDateError();"
+        "content": "            if (eventInfo[1].contains(\" /tags \")) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        }"
+        "content": "                String[] tags;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "                String[] dateAndTags \u003d eventInfo[1].split(\" /tags \");"
       },
       {
         "lineNumber": 42,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                eventDate \u003d dateAndTags[0];"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                tags \u003d dateAndTags[1].split(\",\");"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                // cleanup whitespace"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                for (int i \u003d 0; i \u003c tags.length; i++) {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                    tags[i] \u003d tags[i].strip();"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                eventTask \u003d new Event(eventInfo[0], LocalDate.parse(eventDate), tags);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                eventTask \u003d new Event(eventInfo[0], LocalDate.parse(eventDate));"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return tasks.addTask(eventTask) + \"\\n\" + storage.save(tasks);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return ui.invalidDateError();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 59,
         "author": {
           "gitId": "aqcd"
         },
@@ -1231,7 +1469,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 42
+      "aqcd": 59
     }
   },
   {
@@ -1425,24 +1663,136 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        Task todo \u003d new Todo(instructions[1]);"
+        "content": "        Task todoTask;"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return tasks.addTask(todo) + \"\\n\" + storage.save(tasks);"
+        "content": ""
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "        if (instructions[1].contains(\" /tags \")) {"
       },
       {
         "lineNumber": 30,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            String[] tags;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            String[] nameAndTags \u003d instructions[1].split(\" /tags \");"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            String todoName \u003d nameAndTags[0];"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            tags \u003d nameAndTags[1].split(\",\");"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            // cleanup whitespace"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            for (int i \u003d 0; i \u003c tags.length; i++) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                tags[i] \u003d tags[i].strip();"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            todoTask \u003d new Todo(todoName, tags);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            todoTask \u003d new Todo(instructions[1]);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return tasks.addTask(todoTask) + \"\\n\" + storage.save(tasks);"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 46,
         "author": {
           "gitId": "aqcd"
         },
@@ -1450,7 +1800,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 30
+      "aqcd": 46
     }
   },
   {
@@ -2091,7 +2441,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Constructor for Dated Tasks."
+        "content": "     * Constructor for Dated Task with tags."
       },
       {
         "lineNumber": 26,
@@ -2105,42 +2455,42 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param isCompleted State of completion of duke.Task."
+        "content": "     * @param tags Tags associated with Task."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param date Date of duke.Task."
+        "content": "     */"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "    public DatedTask(String name, LocalDate date, String[] tags) {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public DatedTask(String name, boolean isCompleted, LocalDate date) {"
+        "content": "        super(name);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        super(name, isCompleted);"
+        "content": "        this.date \u003d date;"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        this.date \u003d date;"
+        "content": "        this.tags \u003d tags;"
       },
       {
         "lineNumber": 33,
@@ -2168,52 +2518,206 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Task in String form."
+        "content": "     * Constructor for Dated Tasks with completed state."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return String representation of duke.Task object."
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param isCompleted State of completion of duke.Task."
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": "     * @param date Date of duke.Task."
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String format() {"
+        "content": "     */"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return super.format() + getDelimiter() + this.date.format(DateTimeFormatter.ofPattern(\"yyyy-MM-dd\"));"
+        "content": "    public DatedTask(String name, boolean isCompleted, LocalDate date) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "        super(name, isCompleted);"
       },
       {
         "lineNumber": 43,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        this.date \u003d date;"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Constructor for Dated Tasks with completed state and tags."
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @param name Description of duke.Task."
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @param isCompleted State of completion of duke.Task."
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @param date Date of duke.Task."
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public DatedTask(String name, boolean isCompleted, LocalDate date, String[] tags) {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        super(name, isCompleted, tags);"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        this.date \u003d date;"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Task in String form."
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return String representation of duke.Task object."
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String format() {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return super.format() + getDelimiter() + this.date.format(DateTimeFormatter.ofPattern(\"yyyy-MM-dd\"));"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 65,
         "author": {
           "gitId": "aqcd"
         },
@@ -2221,7 +2725,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 43
+      "aqcd": 65
     }
   },
   {
@@ -2373,7 +2877,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Constructor for duke.Deadline-based Tasks."
+        "content": "     * Constructor for duke.Deadline-based Tasks with Tags."
       },
       {
         "lineNumber": 22,
@@ -2387,14 +2891,14 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param completed State of completion of duke.Task."
+        "content": "     * @param deadline duke.Deadline of duke.Task."
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param deadline duke.Deadline of duke.Task."
+        "content": "     * @param tags Tags associated with Task."
       },
       {
         "lineNumber": 25,
@@ -2408,14 +2912,14 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public Deadline(String name, boolean completed, LocalDate deadline) {"
+        "content": "    public Deadline(String name, LocalDate deadline, String[] tags) {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        super(name, completed, deadline);"
+        "content": "        super(name, deadline, tags);"
       },
       {
         "lineNumber": 28,
@@ -2443,115 +2947,262 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Deadline in format to be saved."
+        "content": "     * Constructor for duke.Deadline-based Tasks with completed state."
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return Saved representation of duke.Deadline object."
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param isCompleted State of completion of duke.Task."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": "     * @param deadline duke.Deadline of duke.Task."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String format() {"
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return \"D\" + getDelimiter() + super.format();"
+        "content": "    public Deadline(String name, boolean isCompleted, LocalDate deadline) {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "        super(name, isCompleted, deadline);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Deadline in String form."
+        "content": "    /**"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return String representation of duke.Deadline object."
+        "content": "     * Constructor for duke.Deadline-based Tasks with completed state and tags."
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": "     * @param isCompleted State of completion of duke.Task."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String toString() {"
+        "content": "     * @param deadline duke.Deadline of duke.Task."
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return \"[D]\" + super.toString() + \" (by: \" + date.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\")) + \")\";"
+        "content": "     * @param tags Tags associated with Task."
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 47,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public Deadline(String name, boolean isCompleted, LocalDate deadline, String[] tags) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        super(name, isCompleted, deadline, tags);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Deadline in format to be saved."
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return Saved representation of duke.Deadline object."
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String format() {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"D\" + getDelimiter() + super.format();"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Deadline in String form."
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return String representation of duke.Deadline object."
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + date.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\")) + \")\";"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 68,
         "author": {
           "gitId": "aqcd"
         },
@@ -2559,7 +3210,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 47
+      "aqcd": 68
     }
   },
   {
@@ -4360,7 +5011,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Constructor for duke.Event-based Tasks."
+        "content": "     * Constructor for duke.Event-based Tasks with Tags."
       },
       {
         "lineNumber": 22,
@@ -4374,14 +5025,14 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param completed State of completion of duke.Task."
+        "content": "     * @param deadline duke.Deadline of duke.Task."
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param date Date of duke.Task."
+        "content": "     * @param tags Tags associated with Task."
       },
       {
         "lineNumber": 25,
@@ -4395,14 +5046,14 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public Event(String name, boolean completed, LocalDate date) {"
+        "content": "    public Event(String name, LocalDate deadline, String[] tags) {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        super(name, completed, date);"
+        "content": "        super(name, deadline, tags);"
       },
       {
         "lineNumber": 28,
@@ -4430,115 +5081,255 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Event in format to be saved."
+        "content": "     * Constructor for duke.Event-based Tasks with completed state."
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return Saved representation of duke.Event object."
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param isCompleted State of completion of duke.Task."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": "     * @param date Date of duke.Task."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String format() {"
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return \"E\" + getDelimiter() + super.format();"
+        "content": "    public Event(String name, boolean isCompleted, LocalDate date) {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "        super(name, isCompleted, date);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Event in String form."
+        "content": "    /**"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return String representation of duke.Event object."
+        "content": "     * Constructor for duke.Event-based Tasks with completed state and tags."
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": "     * @param isCompleted State of completion of duke.Task."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String toString() {"
+        "content": "     * @param date Date of duke.Task."
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return \"[E]\" + super.toString() + \" (at: \" + date.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\")) + \")\";"
+        "content": "     */"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "    public Event(String name, boolean isCompleted, LocalDate date, String[] tags) {"
       },
       {
         "lineNumber": 47,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        super(name, isCompleted, date, tags);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Event in format to be saved."
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return Saved representation of duke.Event object."
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String format() {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"E\" + getDelimiter() + super.format();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Event in String form."
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return String representation of duke.Event object."
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (at: \" + date.format(DateTimeFormatter.ofPattern(\"MMM d yyyy\")) + \")\";"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 67,
         "author": {
           "gitId": "aqcd"
         },
@@ -4546,7 +5337,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 47
+      "aqcd": 67
     }
   },
   {
@@ -4572,318 +5363,339 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "/**"
+        "content": "import java.util.Arrays;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "aqcd"
         },
-        "content": " * Handles searching of tasks given a search phrase."
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "aqcd"
         },
-        "content": " */"
+        "content": "/**"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": " * Handles searching of tasks given a search phrase."
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "public class FindCommand extends Command {"
+        "content": " */"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /** duke.Command details in the form [TYPE, INFORMATION] */"
+        "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    private final String[] instructions;"
+        "content": "public class FindCommand extends Command {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "    /** duke.Command details in the form [TYPE, INFORMATION] */"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "    private final String[] instructions;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Constructor for duke.FindCommand."
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param instructions Contains search phrase."
+        "content": "    /**"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * Constructor for duke.FindCommand."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public FindCommand(String[] instructions) {"
+        "content": "     * @param instructions Contains search phrase."
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        super();"
+        "content": "     */"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        this.instructions \u003d instructions;"
+        "content": "    public FindCommand(String[] instructions) {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "        super();"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "        this.instructions \u003d instructions;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Executes the Find duke.Command, displaying a list of tasks that have the search phrase."
+        "content": ""
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param tasks duke.TaskList to be searched."
+        "content": "    /**"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param ui For user interaction."
+        "content": "     * Executes the Find duke.Command, displaying a list of tasks that have the search phrase."
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param storage Unused."
+        "content": "     * @param tasks duke.TaskList to be searched."
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param ui For user interaction."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String execute(TaskList tasks, Ui ui, Storage storage) {"
+        "content": "     * @param storage Unused."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        StringBuilder response \u003d new StringBuilder();"
+        "content": "     */"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        response.append(\"\u003e\u003e Your matching tasks:\");"
+        "content": "    public String execute(TaskList tasks, Ui ui, Storage storage) {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "        StringBuilder response \u003d new StringBuilder();"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        boolean hasResult \u003d false;"
+        "content": "        response.append(\"\u003e\u003e Your matching tasks:\");"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        int i \u003d 1;"
+        "content": ""
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        for (Task task : tasks.getTasks()) {"
+        "content": "        boolean hasResult \u003d false;"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            assert task.name !\u003d null : \"Task name could not be found!\";"
+        "content": "        int i \u003d 1;"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "        for (Task task : tasks.getTasks()) {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            if (task.name.contains(instructions[1])) { // instructions[1] contains the search query"
+        "content": "            assert task.name !\u003d null : \"Task name could not be found!\";"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                response.append(\"\\n\u003e\u003e \" + i++ + \". \" + task);"
+        "content": ""
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                hasResult \u003d true;"
+        "content": "            if (task.name.contains(instructions[1]) || (task.tags !\u003d null"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            }"
+        "content": "                    \u0026\u0026 Arrays.asList(task.tags).contains(instructions[1]))) { // instructions[1] contains search query"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        }"
+        "content": "                response.append(\"\\n\u003e\u003e \" + i++ + \". \" + task);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "                hasResult \u003d true;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        if (!hasResult) {"
+        "content": "            }"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            return \"\u003e\u003e No results!\";"
+        "content": "        }"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "        if (!hasResult) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return response.toString();"
+        "content": "            return \"\u003e\u003e No results!\";"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "}"
+        "content": ""
       },
       {
         "lineNumber": 48,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return response.toString();"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "}"
+      },
+      {
+        "lineNumber": 51,
         "author": {
           "gitId": "aqcd"
         },
@@ -4891,7 +5703,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 48
+      "aqcd": 51
     }
   },
   {
@@ -6978,42 +7790,42 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                    tasks.add(new Todo(taskInfo[1], Boolean.parseBoolean(taskInfo[2])));"
+        "content": "                    if (taskInfo.length \u003d\u003d 3) { // no tags"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                    break;"
+        "content": "                        tasks.add(new Todo(taskInfo[1], Boolean.parseBoolean(taskInfo[2])));"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                case SYMBOL_E:"
+        "content": "                    } else { // tags"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                    assert taskInfo.length \u003e 3 : \"File format error!\";"
+        "content": "                        tasks.add(new Todo(taskInfo[1], Boolean.parseBoolean(taskInfo[2]),"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                    tasks.add(new Event(taskInfo[1], Boolean.parseBoolean(taskInfo[2]),"
+        "content": "                                taskInfo[3].split(\",\")));"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                            LocalDate.parse(taskInfo[3])));"
+        "content": "                    }"
       },
       {
         "lineNumber": 99,
@@ -7027,7 +7839,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                case SYMBOL_D:"
+        "content": "                case SYMBOL_E:"
       },
       {
         "lineNumber": 101,
@@ -7041,122 +7853,227 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                    tasks.add(new Deadline(taskInfo[1], Boolean.parseBoolean(taskInfo[2]),"
+        "content": "                    if (taskInfo.length \u003d\u003d 4) { // no tags"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                            LocalDate.parse(taskInfo[3])));"
+        "content": "                        tasks.add(new Event(taskInfo[1], Boolean.parseBoolean(taskInfo[2]),"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                    break;"
+        "content": "                                LocalDate.parse(taskInfo[3])));"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                default:"
+        "content": "                    } else { // tags"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                    break;"
+        "content": "                        tasks.add(new Event(taskInfo[1], Boolean.parseBoolean(taskInfo[2]),"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "                }"
+        "content": "                                LocalDate.parse(taskInfo[4]), taskInfo[3].split(\",\")));"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            }"
+        "content": "                    }"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "                    break;"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            return this.tasks;"
+        "content": "                case SYMBOL_D:"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        } catch (FileNotFoundException e) {"
+        "content": "                    assert taskInfo.length \u003e 3 : \"File format error!\";"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            throw new DukeException(\"\u003e\u003e Oh no! I can\u0027t find your file!\");"
+        "content": "                    if (taskInfo.length \u003d\u003d 4) { // no tags"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "                        tasks.add(new Deadline(taskInfo[1], Boolean.parseBoolean(taskInfo[2]),"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            throw new DukeException(\"\u003e\u003e Oh no! The file couldn\u0027t be created for some reason!\");"
+        "content": "                                LocalDate.parse(taskInfo[3])));"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        } catch (IllegalArgumentException e) {"
+        "content": "                    } else { // tags"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "            throw new DukeException(\"\u003e\u003e Oh no! File format seems to be incorrect!\");"
+        "content": "                        tasks.add(new Deadline(taskInfo[1], Boolean.parseBoolean(taskInfo[2]),"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        }"
+        "content": "                                LocalDate.parse(taskInfo[4]), taskInfo[3].split(\",\")));"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "                    }"
       },
       {
         "lineNumber": 119,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                default:"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return this.tasks;"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        } catch (FileNotFoundException e) {"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            throw new DukeException(\"\u003e\u003e Oh no! I can\u0027t find your file!\");"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            throw new DukeException(\"\u003e\u003e Oh no! The file couldn\u0027t be created for some reason!\");"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        } catch (IllegalArgumentException e) {"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            throw new DukeException(\"\u003e\u003e Oh no! File format seems to be incorrect!\");"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 134,
         "author": {
           "gitId": "aqcd"
         },
@@ -7164,7 +8081,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 119
+      "aqcd": 134
     }
   },
   {
@@ -7190,343 +8107,343 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "/**"
+        "content": "import java.util.Arrays;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "aqcd"
         },
-        "content": " * Handles maintenance and display of duke.Task objects."
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "aqcd"
         },
-        "content": " */"
+        "content": "/**"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": " * Handles maintenance and display of duke.Task objects."
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "public class Task {"
+        "content": " */"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /** Separator for task details */"
+        "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    private static final String SAVE_DELIMITER \u003d \"|\";"
+        "content": "public class Task {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /** Escaped version of separator */"
+        "content": "    /** Separator for task details */"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    private static final String ESCAPED_SAVE_DELIMITER \u003d \"\\\\|\";"
+        "content": "    private static final String SAVE_DELIMITER \u003d \"|\";"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "    /** Escaped version of separator */"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /** Name of task */"
+        "content": "    private static final String ESCAPED_SAVE_DELIMITER \u003d \"\\\\|\";"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    protected String name;"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "    /** Name of task */"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /** Completion state of task */"
+        "content": "    protected String name;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    protected boolean isCompleted;"
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "    /** Completion state of task */"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "    protected boolean isCompleted;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Constructor for Tasks."
+        "content": ""
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param name Description of duke.Task."
+        "content": "    /** Tags associated with task */"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "    protected String[] tags;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public Task(String name) {"
+        "content": ""
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        this.name \u003d name;"
+        "content": "    /**"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        this.isCompleted \u003d false;"
+        "content": "     * Constructor for Tasks."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "    public Task(String name) {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Constructor for Tasks."
+        "content": "        this.name \u003d name;"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param name Description of duke.Task."
+        "content": "        this.isCompleted \u003d false;"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param completed Completion state of duke.Task."
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public Task(String name, boolean completed) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        this.name \u003d name;"
+        "content": "     * Constructor for Task with tags."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        this.isCompleted \u003d completed;"
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "     * @param tags Tags associated with Task."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "    public Task(String name, String[] tags) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Accessor for SAVE_DELIMITER."
+        "content": "        this.name \u003d name;"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return SAVE_DELIMITER."
+        "content": "        this.isCompleted \u003d false;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "        this.tags \u003d tags;"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public static String getDelimiter() {"
+        "content": "    }"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return SAVE_DELIMITER;"
+        "content": ""
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "     * Constructor for Tasks with completed state."
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Accessor for ESCAPED_SAVE_DELIMITER."
+        "content": "     * @param isCompleted Completion state of duke.Task."
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return ESCAPED_SAVE_DELIMITER."
+        "content": "     */"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "    public Task(String name, boolean isCompleted) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public static String getEscapedSaveDelimiter() {"
+        "content": "        this.name \u003d name;"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return ESCAPED_SAVE_DELIMITER;"
+        "content": "        this.isCompleted \u003d isCompleted;"
       },
       {
         "lineNumber": 52,
@@ -7554,213 +8471,528 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Marks duke.Task as complete."
+        "content": "     * Constructor for Task with completed state and tags."
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public void complete() {"
+        "content": "     * @param isCompleted Completion state of duke.Task."
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        this.isCompleted \u003d true;"
+        "content": "     * @param tags Tags associated with Task."
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "    public Task(String name, boolean isCompleted, String[] tags) {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "        this.name \u003d name;"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Gets appropriate status icon based on completion state of the duke.Task."
+        "content": "        this.isCompleted \u003d isCompleted;"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return Status icon."
+        "content": "        this.tags \u003d tags;"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String getStatusIcon() {"
+        "content": ""
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return this.isCompleted ? \"\\u2713\" : \"\\u2718\";"
+        "content": "    /**"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "     * Accessor for SAVE_DELIMITER."
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "     * @return SAVE_DELIMITER."
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Task in format to be saved."
+        "content": "    public static String getDelimiter() {"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return Saved representation of duke.Task object."
+        "content": "        return SAVE_DELIMITER;"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String format() {"
+        "content": ""
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return this.name + SAVE_DELIMITER + this.isCompleted;"
+        "content": "    /**"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "     * Accessor for ESCAPED_SAVE_DELIMITER."
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "aqcd"
         },
-        "content": ""
+        "content": "     * @return ESCAPED_SAVE_DELIMITER."
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Task in String form."
+        "content": "    public static String getEscapedSaveDelimiter() {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return String representation of duke.Task object."
+        "content": "        return ESCAPED_SAVE_DELIMITER;"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String toString() {"
+        "content": "    /**"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return \"[\" + getStatusIcon() + \"] \" + this.name;"
+        "content": "     * Marks duke.Task as complete."
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 85,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public void complete() {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        this.isCompleted \u003d true;"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Gets appropriate status icon based on completion state of the duke.Task."
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return Status icon."
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return this.isCompleted ? \"\\u2713\" : \"\\u2718\";"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Task in format to be saved."
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return Saved representation of duke.Task object."
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String format() {"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        String base \u003d this.name + SAVE_DELIMITER + this.isCompleted;"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        if (tags \u003d\u003d null || tags.length \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return base;"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return base + SAVE_DELIMITER + Arrays.stream(tags).reduce((a, b) -\u003e a + \",\" + b).orElse(\"\");"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Displays the list of tags for the task."
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return List of tags."
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String showTags() {"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        if (tags \u003d\u003d null || tags.length \u003d\u003d 0) {"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "            return \"\";"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        System.out.println(Arrays.toString(tags));"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"#\" + Arrays.stream(tags).reduce((a, b) -\u003e a + \" #\" + b).orElse(\"\");"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Task in String form."
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return String representation of duke.Task object."
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"[\" + getStatusIcon() + \"] \" + this.name + \" \" + showTags();"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 130,
         "author": {
           "gitId": "aqcd"
         },
@@ -7768,7 +9000,7 @@
       }
     ],
     "authorContributionMap": {
-      "aqcd": 85
+      "aqcd": 130
     }
   },
   {
@@ -8454,7 +9686,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Constructor for duke.Todo-type Tasks."
+        "content": "     * Constructor for duke.Todo-type Tasks with tags."
       },
       {
         "lineNumber": 18,
@@ -8468,7 +9700,7 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @param completed Completion state of duke.Task."
+        "content": "     * @param tags Tags associated with Task."
       },
       {
         "lineNumber": 20,
@@ -8482,14 +9714,14 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public Todo(String name, boolean completed) {"
+        "content": "    public Todo(String name, String[] tags) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        super(name, completed);"
+        "content": "        super(name, tags);"
       },
       {
         "lineNumber": 23,
@@ -8517,42 +9749,42 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Todo in format to be saved."
+        "content": "     * Constructor for duke.Todo-type Tasks with completed state."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return Saved representation of duke.Todo object."
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param isCompleted Completion state of duke.Task."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String format() {"
+        "content": "    public Todo(String name, boolean isCompleted) {"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return \"T\" + getDelimiter() + super.format();"
+        "content": "        super(name, isCompleted);"
       },
       {
         "lineNumber": 32,
@@ -8580,42 +9812,42 @@
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * Represents duke.Todo in String form."
+        "content": "     * Constructor for duke.Todo-type Tasks with completed state and tags."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     * @return String representation of duke.Todo object."
+        "content": "     * @param name Description of duke.Task."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "     */"
+        "content": "     * @param isCompleted Completion state of duke.Task."
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "    public String toString() {"
+        "content": "    public Todo(String name, boolean isCompleted, String[] tags) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "aqcd"
         },
-        "content": "        return \"[T]\" + super.toString();"
+        "content": "        super(name, isCompleted, tags);"
       },
       {
         "lineNumber": 41,
@@ -8629,11 +9861,137 @@
         "author": {
           "gitId": "aqcd"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Todo in format to be saved."
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return Saved representation of duke.Todo object."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String format() {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"T\" + getDelimiter() + super.format();"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * Represents duke.Todo in String form."
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     * @return String representation of duke.Todo object."
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "aqcd"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "aqcd"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "aqcd": 42
+      "aqcd": 60
     }
   },
   {

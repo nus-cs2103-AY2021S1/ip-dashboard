@@ -410,66 +410,122 @@
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "    public static final DukeException FILE_PARSING_EXCEPTION \u003d new DukeException("
+        "content": "    public static final DukeException INVALID_DEADLINE_FORMAT_EXCEPTION \u003d new DukeException("
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            \"Sorry, an error occurred while trying to parse the file.\");"
+        "content": "            \"Sorry, the description of a Deadline must be in this format:\\n\" +"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": ""
+        "content": "                    \"\\tdeadline [task name] /by [deadline]\");"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "    public static final DukeException FILE_LOADING_EXCEPTION \u003d new DukeException("
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            \"Sorry, the specified file does not seem to exist.\");"
+        "content": "    public static final DukeException INVALID_EVENT_FORMAT_EXCEPTION \u003d new DukeException("
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": ""
+        "content": "            \"Sorry, the description of an Event must be in this format:\\n\" +"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "    public DukeException(String message) {"
+        "content": "                    \"\\tevent [task name] /at [time]\");"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        super(message);"
+        "content": ""
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "    }"
+        "content": "    public static final DukeException FILE_PARSING_EXCEPTION \u003d new DukeException("
       },
       {
         "lineNumber": 22,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            \"Sorry, an error occurred while trying to parse the file.\");"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public static final DukeException FILE_LOADING_EXCEPTION \u003d new DukeException("
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            \"Sorry, the specified file does not seem to exist.\");"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public DukeException(String message) {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        super(message);"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
         "author": {
           "gitId": "lebencwb"
         },
@@ -477,7 +533,7 @@
       }
     ],
     "authorContributionMap": {
-      "lebencwb": 22
+      "lebencwb": 30
     }
   },
   {
@@ -874,7 +930,7 @@
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                    command \u003d new AddCommand(CommandType.TODO, parsingScanner.nextLine());"
+        "content": "                    command \u003d new AddCommand(CommandType.TODO, parsingScanner.nextLine().trim());"
       },
       {
         "lineNumber": 57,
@@ -923,287 +979,287 @@
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                    command \u003d new AddCommand(CommandType.DEADLINE,"
+        "content": "                    try {"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                            parsingScanner.nextLine().split(\"( /by )\", 2));"
+        "content": "                        String[] details \u003d parsingScanner.nextLine().trim().split(\"( /by )\", 2);"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                } else {"
+        "content": "                        command \u003d new AddCommand(CommandType.DEADLINE, details[0], details[1]);"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                    throw DukeException.INVALID_TASK_DESCRIPTION_EXCEPTION;"
+        "content": "                    } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                }"
+        "content": "                        throw DukeException.INVALID_DEADLINE_FORMAT_EXCEPTION;"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                break;"
+        "content": "                    }"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            case \"event\":"
+        "content": "                } else {"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                if (parsingScanner.hasNext()) {"
+        "content": "                    throw DukeException.INVALID_TASK_DESCRIPTION_EXCEPTION;"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                    command \u003d new AddCommand(CommandType.EVENT,"
+        "content": "                }"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                            parsingScanner.nextLine().split(\"( /at )\", 2));"
+        "content": "                break;"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                } else {"
+        "content": "            case \"event\":"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                    throw DukeException.INVALID_TASK_DESCRIPTION_EXCEPTION;"
+        "content": "                if (parsingScanner.hasNext()) {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                }"
+        "content": "                    try {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                break;"
+        "content": "                        String[] details \u003d parsingScanner.nextLine().trim().split(\"( /at )\", 2);"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            default:"
+        "content": "                        command \u003d new AddCommand(CommandType.EVENT, details[0], details[1]);"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                throw DukeException.INVALID_COMMAND_EXCEPTION;"
+        "content": "                    } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            }"
+        "content": "                        throw DukeException.INVALID_EVENT_FORMAT_EXCEPTION;"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            return command;"
+        "content": "                    }"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        } else {"
+        "content": "                } else {"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            throw DukeException.INVALID_COMMAND_EXCEPTION;"
+        "content": "                    throw DukeException.INVALID_TASK_DESCRIPTION_EXCEPTION;"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        }"
+        "content": "                }"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "    }"
+        "content": "                break;"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": ""
+        "content": "            default:"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "    public static Task parseTaskFromFile(String line) throws DukeException {"
+        "content": "                throw DukeException.INVALID_COMMAND_EXCEPTION;"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        Task task;"
+        "content": "            }"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        Scanner parsingScanner \u003d new Scanner(line);"
+        "content": "            return command;"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        String type \u003d parsingScanner.next();"
+        "content": "        } else {"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        int isDoneInteger;"
+        "content": "            throw DukeException.INVALID_COMMAND_EXCEPTION;"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        switch (type) {"
+        "content": "    }"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        case \"T\":"
+        "content": ""
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            parsingScanner.next();"
+        "content": "    public static Task parseTaskFromFile(String line) throws DukeException {"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            isDoneInteger \u003d parsingScanner.nextInt();"
+        "content": "        Task task;"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            parsingScanner.next();"
+        "content": "        Scanner parsingScanner \u003d new Scanner(line);"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            ToDo toDo \u003d new ToDo(parsingScanner.nextLine());"
+        "content": "        String type \u003d parsingScanner.next();"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            if (isDoneInteger \u003d\u003d 1) {"
+        "content": "        int isDoneInteger;"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                toDo.markAsDone();"
+        "content": ""
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            }"
+        "content": "        switch (type) {"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            task \u003d toDo;"
+        "content": "        case \"T\":"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            break;"
+        "content": "            parsingScanner.next();"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        case \"D\":"
+        "content": "            isDoneInteger \u003d parsingScanner.nextInt();"
       },
       {
         "lineNumber": 104,
@@ -1217,178 +1273,234 @@
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            isDoneInteger \u003d parsingScanner.nextInt();"
+        "content": "            ToDo toDo \u003d new ToDo(parsingScanner.nextLine());"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            parsingScanner.next();"
+        "content": "            if (isDoneInteger \u003d\u003d 1) {"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            String[] details \u003d parsingScanner.nextLine().split(\"( by )\", 2);"
+        "content": "                toDo.markAsDone();"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            Deadline deadline \u003d new Deadline(details[0], details[1]);"
+        "content": "            }"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            if (isDoneInteger \u003d\u003d 1) {"
+        "content": "            task \u003d toDo;"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                deadline.markAsDone();"
+        "content": "            break;"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            }"
+        "content": "        case \"D\":"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            task \u003d deadline;"
+        "content": "            parsingScanner.next();"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            break;"
+        "content": "            isDoneInteger \u003d parsingScanner.nextInt();"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        case \"E\":"
+        "content": "            parsingScanner.next();"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            parsingScanner.next();"
+        "content": "            String[] details \u003d parsingScanner.nextLine().split(\"( by )\", 2);"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            isDoneInteger \u003d parsingScanner.nextInt();"
+        "content": "            Deadline deadline \u003d new Deadline(details[0], details[1]);"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            parsingScanner.next();"
+        "content": "            if (isDoneInteger \u003d\u003d 1) {"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            details \u003d parsingScanner.nextLine().split(\"( at )\", 2);"
+        "content": "                deadline.markAsDone();"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            Event event \u003d new Event(details[0], details[1]);"
+        "content": "            }"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            if (isDoneInteger \u003d\u003d 1) {"
+        "content": "            task \u003d deadline;"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "                event.markAsDone();"
+        "content": "            break;"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            }"
+        "content": "        case \"E\":"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            task \u003d event;"
+        "content": "            parsingScanner.next();"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            break;"
+        "content": "            isDoneInteger \u003d parsingScanner.nextInt();"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        default:"
+        "content": "            parsingScanner.next();"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "            throw DukeException.FILE_PARSING_EXCEPTION;"
+        "content": "            details \u003d parsingScanner.nextLine().split(\"( at )\", 2);"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        }"
+        "content": "            Event event \u003d new Event(details[0], details[1]);"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "        return task;"
+        "content": "            if (isDoneInteger \u003d\u003d 1) {"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "lebencwb"
         },
-        "content": "    }"
+        "content": "                event.markAsDone();"
       },
       {
         "lineNumber": 130,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            task \u003d event;"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            break;"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            throw DukeException.FILE_PARSING_EXCEPTION;"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        return task;"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 138,
         "author": {
           "gitId": "lebencwb"
         },
@@ -1396,7 +1508,7 @@
       }
     ],
     "authorContributionMap": {
-      "lebencwb": 130
+      "lebencwb": 138
     }
   },
   {
@@ -5651,6 +5763,1142 @@
     ],
     "authorContributionMap": {
       "lebencwb": 18
+    }
+  },
+  {
+    "path": "src/test/java/duke/ParserTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "package duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.fail;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "public class ParserTest {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_bye_bye() throws Exception {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"BYE\", Parser.parse(\"bye\").toString());"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_list_list() throws Exception {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"LIST\", Parser.parse(\"list\").toString());"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_done1_done1() throws Exception {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"DONE 1\", Parser.parse(\"done 1\").toString());"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_delete2_delete2() throws Exception {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"DELETE 2\", Parser.parse(\"delete 2\").toString());"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_todo_todo() throws Exception {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"TODO [read book]\", Parser.parse(\"todo read book\").toString());"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_deadline_deadline() throws Exception {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"DEADLINE [return book, 6th June 2020]\","
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                Parser.parse(\"deadline return book /by 6th June 2020\").toString());"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_event_event() throws Exception {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"EVENT [meeting, time]\","
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                Parser.parse(\"event meeting /at time\").toString());"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_caseInsensitive_success() throws Exception {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"DEADLINE [case, insensitive]\","
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                Parser.parse(\"dEaDlInE case /by insensitive\").toString());"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_doneBadInteger_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"DONE 3\", Parser.parse(\"done three\").toString());"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, that is not a valid task.\", e.getMessage());"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_deleteNoNextScannerToken_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"DELETE\", Parser.parse(\"delete\").toString());"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, that is not a valid task.\", e.getMessage());"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_todoNoNextScannerToken_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"TODO\", Parser.parse(\"todo\").toString());"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, the description of a task cannot be empty.\", e.getMessage());"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_deadlineNoNextScannerToken_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"DEADLINE\", Parser.parse(\"deadline\").toString());"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, the description of a task cannot be empty.\", e.getMessage());"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_deadlineNoBySubstring_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"DEADLINE [do this, tonight]\","
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    Parser.parse(\"deadline do this tonight\").toString());"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, the description of a Deadline must be in this format:\\n\" +"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    \"\\tdeadline [task name] /by [deadline]\", e.getMessage());"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_deadlineWrongBySubstring_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"DEADLINE [do this, tonight]\","
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    Parser.parse(\"deadline do this by tonight\").toString());"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, the description of a Deadline must be in this format:\\n\" +"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    \"\\tdeadline [task name] /by [deadline]\", e.getMessage());"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_deadlineFakeBySubstring_success() throws Exception {"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"DEADLINE [swing by Mom\u0027s, tomorrow]\","
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                Parser.parse(\"deadline swing by Mom\u0027s /by tomorrow\").toString());"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_eventNoNextScannerToken_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"EVENT\", Parser.parse(\"event\").toString());"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, the description of a task cannot be empty.\", e.getMessage());"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_eventNoAtSubstring_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"EVENT [do this, 6pm]\","
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    Parser.parse(\"event do this 6pm\").toString());"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, the description of an Event must be in this format:\\n\" +"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    \"\\tevent [task name] /at [time]\", e.getMessage());"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_eventWrongAtSubstring_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"EVENT [do this, 6pm]\","
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    Parser.parse(\"event do this at 6pm\").toString());"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "            assertEquals(\"Sorry, the description of an Event must be in this format:\\n\" +"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                    \"\\tevent [task name] /at [time]\", e.getMessage());"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    public void parse_eventFakeAtSubstring_success() throws Exception {"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "        assertEquals(\"EVENT [stay at home, all times]\","
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "                Parser.parse(\"event stay at home /at all times\").toString());"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "lebencwb"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "lebencwb": 161
     }
   },
   {
