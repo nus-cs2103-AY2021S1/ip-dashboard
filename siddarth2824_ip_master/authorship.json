@@ -630,32 +630,25 @@
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "T | 1 | read book"
+        "content": "T | 0 | read book"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "D | 1 | return book | 04 Sep 2020 6:00 PM"
+        "content": "E | 0 | project meeting | 18 Sep 2020 4:30 PM"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "E | 0 | project meeting | 06 Jun 2020 4:00 PM"
-      },
-      {
-        "lineNumber": 4,
-        "author": {
-          "gitId": "siddarth2824"
-        },
-        "content": "D | 0 | complete Maths assignment | 04 Aug 2020 4:30 PM"
+        "content": "D | 0 | return book | 18 Sep 2020 5:30 PM"
       }
     ],
     "authorContributionMap": {
-      "siddarth2824": 4
+      "siddarth2824": 3
     }
   },
   {
@@ -5768,500 +5761,787 @@
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            String dateTime;"
+        "content": "            switch (commandType) {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            String[] userInputArgs;"
+        "content": "            case LIST:"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            DukeDateTime dukeDateTime;"
+        "content": "                return newListTasksCommand();"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            switch (commandType) {"
+        "content": "            case BYE:"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case LIST:"
+        "content": "                return newExitCommand();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                ListTasksCommand listTasks \u003d new ListTasksCommand();"
+        "content": "            case TODO:"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return listTasks;"
+        "content": "                content \u003d userInput.replaceFirst(\"^(?i)todo\", \"\");"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case BYE:"
+        "content": "                String trimmedContent \u003d content.trim();"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                ExitCommand exitDuke \u003d new ExitCommand();"
+        "content": "                AddCommand addTask \u003d new AddCommand(new Todo(trimmedContent));"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return exitDuke;"
+        "content": "                return addTask;"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case TODO:"
+        "content": "            case DEADLINE:"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                content \u003d userInput.replaceFirst(\"^(?i)todo\", \"\");"
+        "content": "                userInput \u003d userInput.replaceFirst(\"^(?i)deadline\", \"\");"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                String trimmedContent \u003d content.trim();"
+        "content": "                return newAddTaskCommand(CommandTypes.DEADLINE, userInput);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                AddCommand addTask \u003d new AddCommand(new Todo(trimmedContent));"
+        "content": "            case EVENT:"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return addTask;"
+        "content": "                userInput \u003d userInput.replaceFirst(\"^(?i)event\", \"\");"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case DEADLINE:"
+        "content": "                return newAddTaskCommand(CommandTypes.EVENT, userInput);"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                userInput \u003d userInput.replaceFirst(\"^(?i)deadline\", \"\");"
+        "content": "            case DONE:"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                userInputArgs \u003d userInput.split(\"\\\\s*/by\\\\s*\");"
+        "content": "                int completedTaskIndex \u003d Integer.parseInt(words[1]);"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                content \u003d userInputArgs[0].trim();"
+        "content": "                return newDoneCommand(completedTaskIndex);"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                dateTime \u003d userInputArgs[1];"
+        "content": "            case DELETE:"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                dukeDateTime \u003d DateTimeParser.parseDateTime(dateTime);"
+        "content": "                int deletedTaskIndex \u003d Integer.parseInt(words[1]);"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                AddCommand addDeadline \u003d new AddCommand(new Deadline(content, dukeDateTime));"
+        "content": "                return newDeleteCommand(deletedTaskIndex);"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return addDeadline;"
+        "content": "            case FIND:"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case EVENT:"
+        "content": "                content \u003d userInput.replaceFirst(\"^(?i)find\", \"\");"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                userInput \u003d userInput.replaceFirst(\"^(?i)event\", \"\");"
+        "content": "                return newFindCommand(content);"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                userInputArgs \u003d userInput.split(\"\\\\s*/at\\\\s*\");"
+        "content": "            case TODAY:"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                content \u003d userInputArgs[0].trim();"
+        "content": "                return newTodayTasksCommand();"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                dateTime \u003d userInputArgs[1];"
+        "content": "            case UNCOMPLETED:"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                dukeDateTime \u003d DateTimeParser.parseDateTime(dateTime);"
+        "content": "               return newListAllUncompletedTasksCommand();"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                AddCommand addEvent \u003d new AddCommand(new Event(content, dukeDateTime));"
+        "content": "            case COMPLETED:"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return addEvent;"
+        "content": "                return newListAllCompletedTasksCommand();"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case DONE:"
+        "content": "            case OVERDUE:"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                try {"
+        "content": "                return newOverdueCommand();"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    int completedTaskIndex \u003d Integer.parseInt(words[1]);"
+        "content": "            default:"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    DoneCommand completedTask \u003d new DoneCommand(completedTaskIndex);"
+        "content": "                throw new DukeException(Messages.INVALID_COMMAND_INPUT_MESSAGE);"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    return completedTask;"
+        "content": "            }"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                } catch (IndexOutOfBoundsException e) {"
+        "content": "        } catch (IllegalArgumentException e) {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    throw new DukeException(Messages.INVALID_TASK_INDEX_ERROR_MESSAGE);"
+        "content": "            throw new DukeException(Messages.INVALID_COMMAND_INPUT_MESSAGE);"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                }"
+        "content": "        }"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case DELETE:"
+        "content": "    }"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                try {"
+        "content": ""
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    int taskIndex \u003d Integer.parseInt(words[1]);"
+        "content": "    private static ListTasksCommand newListTasksCommand() {"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    DeleteCommand deleteTask \u003d new DeleteCommand(taskIndex);"
+        "content": "        return new ListTasksCommand();"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    return deleteTask;"
+        "content": "    }"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                } catch (IndexOutOfBoundsException e) {"
+        "content": ""
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                    throw new DukeException(Messages.INVALID_TASK_INDEX_ERROR_MESSAGE);"
+        "content": "    private static ExitCommand newExitCommand() {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                }"
+        "content": "        return new ExitCommand();"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case FIND:"
+        "content": "    }"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                content \u003d userInput.replaceFirst(\"^(?i)find\", \"\");"
+        "content": ""
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                trimmedContent \u003d content.trim();"
+        "content": "    private static DoneCommand newDoneCommand(int completedTaskIndex) throws DukeException {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                FindCommand findTaskCommand \u003d new FindCommand(trimmedContent);"
+        "content": "        try {"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return findTaskCommand;"
+        "content": "            DoneCommand doneCommand \u003d new DoneCommand(completedTaskIndex);"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case TODAY:"
+        "content": "            return doneCommand;"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                TodayTasksCommand tasksForToday \u003d new TodayTasksCommand();"
+        "content": "        } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return tasksForToday;"
+        "content": "            throw new DukeException(Messages.INVALID_TASK_INDEX_ERROR_MESSAGE);"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case UNCOMPLETED:"
+        "content": "        }"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                ListAllUncompletedTasksCommand uncompletedTasksCommand \u003d new ListAllUncompletedTasksCommand();"
+        "content": "    }"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return uncompletedTasksCommand;"
+        "content": ""
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case COMPLETED:"
+        "content": "    private static DeleteCommand newDeleteCommand(int deletedTaskIndex) throws DukeException {"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                ListAllCompletedTasksCommand completedTasksCommand \u003d new ListAllCompletedTasksCommand();"
+        "content": "        try {"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return completedTasksCommand;"
+        "content": "            DeleteCommand deleteCommand \u003d new DeleteCommand(deletedTaskIndex);"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            case OVERDUE:"
+        "content": "            return deleteCommand;"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                OverdueCommand overdueTasksCommand \u003d new OverdueCommand();"
+        "content": "        } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                return overdueTasksCommand;"
+        "content": "            throw new DukeException(Messages.INVALID_TASK_INDEX_ERROR_MESSAGE);"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            default:"
+        "content": "        }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "                throw new DukeException(Messages.INVALID_COMMAND_INPUT_MESSAGE);"
+        "content": "    }"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            }"
+        "content": ""
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "        } catch (IllegalArgumentException e) {"
+        "content": "    private static AddCommand newAddTaskCommand(CommandTypes taskType, String userInputContent) throws DukeException {"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "            throw new DukeException(Messages.INVALID_COMMAND_INPUT_MESSAGE);"
+        "content": "        switch (taskType) {"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "        }"
+        "content": "        case TODO:"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "siddarth2824"
         },
-        "content": "    }"
+        "content": "            String trimmedContent \u003d userInputContent.trim();"
       },
       {
         "lineNumber": 97,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            return new AddCommand(new Todo(trimmedContent));"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        case EVENT:"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            String[] userInputEventArgs \u003d userInputContent.split(\"\\\\s*/at\\\\s*\");"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            String content \u003d userInputEventArgs[0].trim();"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            String eventDateTime \u003d userInputEventArgs[1];"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            DukeDateTime eventDukeDateTime \u003d DateTimeParser.parseDateTime(eventDateTime);"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            AddCommand addEvent \u003d new AddCommand(new Event(content, eventDukeDateTime));"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            return addEvent;"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        case DEADLINE:"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            String[] userInputDeadlineArgs \u003d userInputContent.split(\"\\\\s*/by\\\\s*\");"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            content \u003d userInputDeadlineArgs[0].trim();"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            String deadlineDateTime \u003d userInputDeadlineArgs[1];"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            DukeDateTime deadlineDukeDateTime \u003d DateTimeParser.parseDateTime(deadlineDateTime);"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            AddCommand addDeadline \u003d new AddCommand(new Deadline(content, deadlineDukeDateTime));"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            return addDeadline;"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "            throw new DukeException(Messages.INVALID_COMMAND_INPUT_MESSAGE);"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    private static FindCommand newFindCommand(String keyword) {"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        String trimmedKeyword \u003d keyword.trim();"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        FindCommand newFindCommand \u003d new FindCommand(trimmedKeyword);"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        return newFindCommand;"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    private static TodayTasksCommand newTodayTasksCommand() {"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        return new TodayTasksCommand();"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    private static ListAllUncompletedTasksCommand newListAllUncompletedTasksCommand() {"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        return new ListAllUncompletedTasksCommand();"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    private static ListAllCompletedTasksCommand newListAllCompletedTasksCommand() {"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        return new ListAllCompletedTasksCommand();"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    private static OverdueCommand newOverdueCommand() {"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "        return new OverdueCommand();"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "siddarth2824"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 138,
         "author": {
           "gitId": "siddarth2824"
         },
@@ -6269,7 +6549,7 @@
       }
     ],
     "authorContributionMap": {
-      "siddarth2824": 97
+      "siddarth2824": 138
     }
   },
   {
