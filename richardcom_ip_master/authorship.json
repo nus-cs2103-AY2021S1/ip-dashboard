@@ -578,7 +578,7 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": "D | 0 | read books | 1212-12-12T12:12"
+        "content": "D | 0 | read books | 1111-11-11T11:11"
       }
     ],
     "authorContributionMap": {
@@ -2619,38 +2619,66 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        default:"
+        "content": "        case UPDATE:"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            return \"\";"
+        "content": "            Task tempUpdate \u003d UpdateCommand.executeCommand(instruction, tasks);"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "            return ui.updateTaskAlert(tempUpdate, tasks);"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        default:"
       },
       {
         "lineNumber": 69,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            return \"\";"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 73,
         "author": {
           "gitId": "richardcom"
         },
@@ -2658,7 +2686,7 @@
       }
     ],
     "authorContributionMap": {
-      "richardcom": 69
+      "richardcom": 73
     }
   },
   {
@@ -3085,7 +3113,7 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a task object representing the task to be done."
+        "content": "     * @return a task object representing the task to be deleted."
       },
       {
         "lineNumber": 18,
@@ -3502,7 +3530,7 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    DEADLINE, EVENT, TODO, BYE, DONE, DELETE, LIST, CHECK, FIND;"
+        "content": "    DEADLINE, EVENT, TODO, BYE, DONE, DELETE, LIST, CHECK, FIND, UPDATE;"
       },
       {
         "lineNumber": 8,
@@ -4363,6 +4391,414 @@
     }
   },
   {
+    "path": "src/main/java/duke/commands/UpdateCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "package duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "import static duke.parser.Parser.parseDateTime;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "import duke.exception.DukeException;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "import duke.tasks.Deadline;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "import duke.tasks.Event;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "import duke.tasks.Task;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "import duke.tasks.TaskList;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": " * A class that represents Update command."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "public class UpdateCommand {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * Executes the Update command from user input."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @param instruction the string of user input instruction."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @param tasks the tasklist that stores all the tasks."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @return a task object representing the task to be Updated."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @throws DukeException when the instruction format is incorrect."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    public static Task executeCommand(String instruction, TaskList tasks) throws DukeException {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        if (instruction.substring(6).strip().equals(\"\")) {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            throw new DukeException(\"The description of a changing information cannot be empty.\");"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        Integer indexDelete \u003d Integer.valueOf(instruction.substring(7, 8).strip()) - 1;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        if (indexDelete + 1 \u003e tasks.getSize()) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            throw new DukeException(\"The index of the task to be deleted is out of range.\");"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        Task tempDelete \u003d tasks.get(indexDelete);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        String newDateTime \u003d instruction.substring(9).strip();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        LocalDateTime deadlineDate \u003d parseDateTime(newDateTime);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        if (tempDelete instanceof Deadline) {"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            Deadline tempTask \u003d (Deadline) tempDelete;"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            tempTask.setBy(deadlineDate);"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            tasks.set(indexDelete, tempTask);"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        } else if (tempDelete instanceof Event) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            Event tempTask \u003d (Event) tempDelete;"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            tempTask.setStartTime(deadlineDate);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            tasks.set(indexDelete, tempTask);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "            throw new DukeException(\"Not the correct type of task to change new date.\");"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        return tempDelete;"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "richardcom": 57
+    }
+  },
+  {
     "path": "src/main/java/duke/exception/DukeException.java",
     "fileType": "java",
     "lines": [
@@ -4982,444 +5418,458 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        } else {"
+        "content": "        } else if (command.equals(\"update\")) {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            throw new DukeException(\"I\u0027m sorry, but I don\u0027t know what that means, there is a typo  :-(\");"
+        "content": "            enumCommand \u003d EnumCommand.UPDATE;"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "        } else {"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "            throw new DukeException(\"I\u0027m sorry, but I don\u0027t know what that means, there is a typo  :-(\");"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return enumCommand;"
+        "content": "        }"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        return enumCommand;"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Converts the user input of date to the correct date format."
+        "content": ""
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param date the input date string from user."
+        "content": "     * Converts the user input of date to the correct date format."
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return LocalDate Object that matches the user input date."
+        "content": "     *"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @throws DukeException if the user input format is illegal."
+        "content": "     * @param date the input date string from user."
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @throws DateTimeException if the date is an illegal date."
+        "content": "     * @return LocalDate Object that matches the user input date."
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * @throws DukeException if the user input format is illegal."
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public static LocalDate parseDate(String date) throws DukeException, DateTimeException {"
+        "content": "     * @throws DateTimeException if the date is an illegal date."
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        Boolean isFormatValid;"
+        "content": "     */"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        Boolean isYearValid;"
+        "content": "    public static LocalDate parseDate(String date) throws DukeException, DateTimeException {"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        Boolean isMonthValid;"
+        "content": "        Boolean isFormatValid;"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        Boolean isDayValid;"
+        "content": "        Boolean isYearValid;"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        Boolean isMonthValid;"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        String[] dateSplit \u003d date.split(\"-\");"
+        "content": "        Boolean isDayValid;"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        isFormatValid \u003d dateSplit.length \u003d\u003d 3;"
+        "content": ""
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        isYearValid \u003d dateSplit[0].strip().length() \u003d\u003d 4;"
+        "content": "        String[] dateSplit \u003d date.split(\"-\");"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        isMonthValid \u003d dateSplit[1].strip().length() \u003d\u003d 2;"
+        "content": "        isFormatValid \u003d dateSplit.length \u003d\u003d 3;"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        isDayValid \u003d dateSplit[2].strip().length() \u003d\u003d 2;"
+        "content": "        isYearValid \u003d dateSplit[0].strip().length() \u003d\u003d 4;"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        isMonthValid \u003d dateSplit[1].strip().length() \u003d\u003d 2;"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        if (!isFormatValid || !isYearValid || !isMonthValid || !isDayValid) {"
+        "content": "        isDayValid \u003d dateSplit[2].strip().length() \u003d\u003d 2;"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            throw new DukeException(\"The input date format is incorrect\");"
+        "content": ""
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "        if (!isFormatValid || !isYearValid || !isMonthValid || !isDayValid) {"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        LocalDate localDate \u003d LocalDate.parse(date);"
+        "content": "            throw new DukeException(\"The input date format is incorrect\");"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return localDate;"
+        "content": "        LocalDate localDate \u003d LocalDate.parse(date);"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        return localDate;"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Converts the user input of dateTime to the correct dateTime format."
+        "content": ""
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param dateTime the input dateTime string from user."
+        "content": "     * Converts the user input of dateTime to the correct dateTime format."
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a LocalDateTime object that matches the input string."
+        "content": "     *"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @throws DukeException if the user input format is illegal."
+        "content": "     * @param dateTime the input dateTime string from user."
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @throws DateTimeException if the date is an illegal date."
+        "content": "     * @return a LocalDateTime object that matches the input string."
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * @throws DukeException if the user input format is illegal."
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public static LocalDateTime parseDateTime(String dateTime) throws DukeException, DateTimeException {"
+        "content": "     * @throws DateTimeException if the date is an illegal date."
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        String[] dateTimeSplit \u003d dateTime.strip().split(\" \");"
+        "content": "     */"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    public static LocalDateTime parseDateTime(String dateTime) throws DukeException, DateTimeException {"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        if (dateTimeSplit.length !\u003d 2) {"
+        "content": "        String[] dateTimeSplit \u003d dateTime.strip().split(\" \");"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            throw new DukeException(\"The format of the input date and time is incorrect\");"
+        "content": ""
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "        if (dateTimeSplit.length !\u003d 2) {"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "            throw new DukeException(\"The format of the input date and time is incorrect\");"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        String date \u003d dateTimeSplit[0].strip();"
+        "content": "        }"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        LocalDate localDate \u003d parseDate(date);"
+        "content": ""
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        String time \u003d dateTimeSplit[1].strip();"
+        "content": "        String date \u003d dateTimeSplit[0].strip();"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        if (time.length() !\u003d 4) {"
+        "content": "        LocalDate localDate \u003d parseDate(date);"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            throw new DukeException(\"The input time format is incorrect\");"
+        "content": "        String time \u003d dateTimeSplit[1].strip();"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "        if (time.length() !\u003d 4) {"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "            throw new DukeException(\"The input time format is incorrect\");"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        LocalTime localTime \u003d LocalTime.of(Integer.parseInt(time.substring(0, 2)),"
+        "content": "        }"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "                Integer.parseInt(time.substring(2, 4)));"
+        "content": ""
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        LocalDateTime localDateTime \u003d LocalDateTime.of(localDate, localTime);"
+        "content": "        LocalTime localTime \u003d LocalTime.of(Integer.parseInt(time.substring(0, 2)),"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "                Integer.parseInt(time.substring(2, 4)));"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return localDateTime;"
+        "content": "        LocalDateTime localDateTime \u003d LocalDateTime.of(localDate, localTime);"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 125,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        return localDateTime;"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 127,
         "author": {
           "gitId": "richardcom"
         },
@@ -5427,7 +5877,7 @@
       }
     ],
     "authorContributionMap": {
-      "richardcom": 125
+      "richardcom": 127
     }
   },
   {
@@ -6722,73 +7172,129 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "     * Sets the deadline date of the task."
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns the string representation of the deadline task."
+        "content": "     *"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * @param by the localDate object of the task deadline."
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return the string representation of deadline task, including status icon, description,"
+        "content": "     */"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *         and description."
+        "content": "    public void setBy(LocalDateTime by) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "        this.by \u003d by;"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String toString() {"
+        "content": "    }"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by.format(DateTimeFormatter.ofPattern(\"MM d yyyy HH : mm\")) + \")\";"
+        "content": ""
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 54,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * Returns the string representation of the deadline task."
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @return the string representation of deadline task, including status icon, description,"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     *         and description."
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        return \"[D]\" + super.toString() + \" (by: \" + by.format(DateTimeFormatter.ofPattern(\"MM d yyyy HH : mm\")) + \")\";"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
         "author": {
           "gitId": "richardcom"
         },
@@ -6796,7 +7302,7 @@
       }
     ],
     "authorContributionMap": {
-      "richardcom": 54
+      "richardcom": 62
     }
   },
   {
@@ -6969,206 +7475,262 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "     * Sets the start time of the event."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns the start datetime of the task."
+        "content": "     *"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * @param startTime the LocalDateTime object that represents the events of the task."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return the LocalDateTime object of start dateTime."
+        "content": "     */"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "    public void setStartTime(LocalDateTime startTime) {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public LocalDateTime getStartTime() {"
+        "content": "        this.startTime \u003d startTime;"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return startTime;"
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "     * Returns the start datetime of the task."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns the event date of the task."
+        "content": "     *"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * @return the LocalDateTime object of start dateTime."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return the localDate object of the task start time."
+        "content": "     */"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "    public LocalDateTime getStartTime() {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public LocalDate getDate() {"
+        "content": "        return startTime;"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return startTime.toLocalDate();"
+        "content": "    }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "     * Returns the event date of the task."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns the string representation of the event task."
+        "content": "     *"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * @return the localDate object of the task start time."
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return the string representation of event task, including status icon, description,"
+        "content": "     */"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *         and description."
+        "content": "    public LocalDate getDate() {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "        return startTime.toLocalDate();"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String toString() {"
+        "content": "    }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return \"[E]\" + super.toString() + \" (at: \""
+        "content": ""
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "                + this.startTime.format(DateTimeFormatter.ofPattern(\"MM d yyyy HH : mm\")) + \")\";"
+        "content": "    /**"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "     * Returns the string representation of the event task."
       },
       {
         "lineNumber": 53,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @return the string representation of event task, including status icon, description,"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     *         and description."
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        return \"[E]\" + super.toString() + \" (at: \""
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "                + this.startTime.format(DateTimeFormatter.ofPattern(\"MM d yyyy HH : mm\")) + \")\";"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 61,
         "author": {
           "gitId": "richardcom"
         },
@@ -7176,7 +7738,7 @@
       }
     ],
     "authorContributionMap": {
-      "richardcom": 53
+      "richardcom": 61
     }
   },
   {
@@ -9585,588 +10147,588 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    private static String updateTaskFrontAlert \u003d \"Noted. I have updated the task.\";"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns greetings at the beginning."
+        "content": "    /**"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * Returns greetings at the beginning."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing greetings at the beginning."
+        "content": "     *"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * @return a string representing greetings at the beginning."
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String greetings() {"
+        "content": "     */"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return printAnswer(\"\", greetings, \"\");"
+        "content": "    public String greetings() {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "        return printAnswer(\"\", greetings, \"\");"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns reminders when adding a task to the list."
+        "content": "    /**"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * Returns reminders when adding a task to the list."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param result the TaskList of all tasks."
+        "content": "     *"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing reminders when adding a task to the list."
+        "content": "     * @param result the TaskList of all tasks."
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * @return a string representing reminders when adding a task to the list."
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String addTaskAlert(TaskList result) {"
+        "content": "     */"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return printAnswer(addTaskFrontAlert, \"   \" + result.get(result.getSize() - 1).toString(),"
+        "content": "    public String addTaskAlert(TaskList result) {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "                String.format(addTaskTailAlert, result.getSize()));"
+        "content": "        return printAnswer(addTaskFrontAlert, \"   \" + result.get(result.getSize() - 1).toString(),"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "                String.format(addTaskTailAlert, result.getSize()));"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns the reminders when done with a task."
+        "content": "    /**"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * Returns the reminders when done with a task."
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param tempDone the task object that has been done."
+        "content": "     *"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing the reminders when done with a task."
+        "content": "     * @param tempDone the task object that has been done."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * @return a string representing the reminders when done with a task."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String doneAlert(Task tempDone) {"
+        "content": "     */"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return printAnswer(doneAlert, \"   \" + tempDone.toString(), \"\");"
+        "content": "    public String doneAlert(Task tempDone) {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "        return printAnswer(doneAlert, \"   \" + tempDone.toString(), \"\");"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns a reminder when a task has been deleted."
+        "content": "    /**"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * Returns a reminder when a task has been deleted."
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param tempDelete the task object that has been deleted."
+        "content": "     *"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param result the TaskList of all the tasks."
+        "content": "     * @param tempDelete the task object that has been deleted."
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing a reminder when a task has been deleted."
+        "content": "     * @param result the TaskList of all the tasks."
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * @return a string representing a reminder when a task has been deleted."
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String deleteTaskAlert(Task tempDelete, TaskList result) {"
+        "content": "     */"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return printAnswer(deleteTaskFrondAlert, \"   \" + tempDelete.toString(),"
+        "content": "    public String deleteTaskAlert(Task tempDelete, TaskList result) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "                String.format(addTaskTailAlert, result.getSize()));"
+        "content": "        return printAnswer(deleteTaskFrondAlert, \"   \" + tempDelete.toString(),"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "                String.format(addTaskTailAlert, result.getSize()));"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns a list of tasks."
+        "content": "    /**"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     * Returns a reminder when a task has been udpated."
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param result the TaskList of task to be printed."
+        "content": "     *"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing a list of tasks."
+        "content": "     * @param tempUpdate the task object that has been deleted."
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * @param result the TaskList of all the tasks."
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String showList(TaskList result) {"
+        "content": "     * @return a string representing a reminder when a task has been deleted."
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return printList(\":) Here are all the tasks in your list:\", result, \"\");"
+        "content": "     */"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "    public String updateTaskAlert(Task tempUpdate, TaskList result) {"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        return printAnswer(updateTaskFrontAlert, \"   \" + tempUpdate.toString(),"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "                String.format(addTaskTailAlert, result.getSize()));"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns a farewell message when exiting the application."
+        "content": "    }"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": ""
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing a farewell message when exiting the application."
+        "content": "    /**"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * Returns a list of tasks."
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String farewell() {"
+        "content": "     *"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return printAnswer(\"\", farewell, \"\");"
+        "content": "     * @param result the TaskList of task to be printed."
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "     * @return a string representing a list of tasks."
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "    public String showList(TaskList result) {"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns a list of tasks when finding by keywords."
+        "content": "        return printList(\":) Here are all the tasks in your list:\", result, \"\");"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param result the list of tasks that are found by a keyword."
+        "content": ""
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing a list of tasks when finding by keywords."
+        "content": "    /**"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     * Returns a farewell message when exiting the application."
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String findTaskAlert(TaskList result) {"
+        "content": "     *"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return printList(findTaskFrontAlert, result, \"\");"
+        "content": "     * @return a string representing a farewell message when exiting the application."
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "    public String farewell() {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "        return printAnswer(\"\", farewell, \"\");"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Prints out answers according to commands with front reminder, and tail reminder."
+        "content": "    }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": ""
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param answers a vararg string parameter representing strings to be printed."
+        "content": "    /**"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing answers according to commands with front reminder, and tail reminder."
+        "content": "     * Returns a list of tasks when finding by keywords."
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public static String printAnswer(String... answers) {"
+        "content": "     * @param result the list of tasks that are found by a keyword."
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        String result \u003d \"\";"
+        "content": "     * @return a string representing a list of tasks when finding by keywords."
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        for (int i \u003d 0; i \u003c answers.length; i++) {"
+        "content": "    public String findTaskAlert(TaskList result) {"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            result +\u003d answers[i] + \"\\n\";"
+        "content": "        return printList(findTaskFrontAlert, result, \"\");"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 101,
@@ -10180,266 +10742,266 @@
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return result;"
+        "content": "    /**"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "     * Prints out answers according to commands with front reminder, and tail reminder."
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "     * @param answers a vararg string parameter representing strings to be printed."
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns a list according to commands with front reminder, and tail reminder."
+        "content": "     * @return a string representing answers according to commands with front reminder, and tail reminder."
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "     */"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param frontGuidance a string representing reminders at the front."
+        "content": "    public static String printAnswer(String... answers) {"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param result a TaskList to be printed."
+        "content": "        String result \u003d \"\";"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param tailGuidance a string representing reminders at the tail."
+        "content": ""
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing a list."
+        "content": "        for (int i \u003d 0; i \u003c answers.length; i++) {"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": "            result +\u003d answers[i] + \"\\n\";"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public static String printList(String frontGuidance, TaskList result, String tailGuidance) {"
+        "content": "        }"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        String resultString \u003d \"\";"
+        "content": ""
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        return result;"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        if (frontGuidance.length() !\u003d 0) {"
+        "content": "    }"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            resultString +\u003d frontGuidance + \"\\n\";"
+        "content": ""
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "    /**"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "     * Returns a list according to commands with front reminder, and tail reminder."
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        for (int i \u003d 0; i \u003c result.getSize(); i++) {"
+        "content": "     *"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            resultString +\u003d (i + 1) + \". \" + result.get(i) + \"\\n\";"
+        "content": "     * @param frontGuidance a string representing reminders at the front."
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "     * @param result a TaskList to be printed."
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "     * @param tailGuidance a string representing reminders at the tail."
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        if (tailGuidance.length() !\u003d 0) {"
+        "content": "     * @return a string representing a list."
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "            resultString +\u003d tailGuidance + \"\\n\";"
+        "content": "     */"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        }"
+        "content": "    public static String printList(String frontGuidance, TaskList result, String tailGuidance) {"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "        String resultString \u003d \"\";"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return resultString;"
+        "content": ""
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "        if (frontGuidance.length() !\u003d 0) {"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "richardcom"
         },
-        "content": ""
+        "content": "            resultString +\u003d frontGuidance + \"\\n\";"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * Returns the error message when encountering exceptions."
+        "content": ""
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     *"
+        "content": "        for (int i \u003d 0; i \u003c result.getSize(); i++) {"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @param e the exception occurred."
+        "content": "            resultString +\u003d (i + 1) + \". \" + result.get(i) + \"\\n\";"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     * @return a string representing the error message when encountering exceptions."
+        "content": "        }"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    public String showError(Exception e) {"
+        "content": "        if (tailGuidance.length() !\u003d 0) {"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "        return e.toString();"
+        "content": "            resultString +\u003d tailGuidance + \"\\n\";"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "richardcom"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 140,
@@ -10453,11 +11015,102 @@
         "author": {
           "gitId": "richardcom"
         },
+        "content": "        return resultString;"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * Returns the error message when encountering exceptions."
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @param e the exception occurred."
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     * @return a string representing the error message when encountering exceptions."
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    public String showError(Exception e) {"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "        return e.toString();"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "richardcom"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "richardcom"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "richardcom": 141
+      "richardcom": 154
     }
   },
   {
