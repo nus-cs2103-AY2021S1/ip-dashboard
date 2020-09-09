@@ -7661,6 +7661,1037 @@
     }
   },
   {
+    "path": "src/main/java/duke/command/UpdateCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "package duke.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import java.time.LocalDate;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import java.time.LocalTime;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import duke.common.DukeException;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import duke.common.Ui;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import duke.io.Storage;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import duke.io.TaskList;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import duke.task.Deadline;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import duke.task.Event;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "import duke.task.Task;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "public class UpdateCommand extends Command {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    private final String fullCommand;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    public UpdateCommand(String fullCommand) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        this.fullCommand \u003d fullCommand;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * Update description or data value of the task."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @param taskList arraylist of task."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @param ui       ui class for print."
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @param storage  storage for read, write to file."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @throws DukeException Exception for wrong date or time format or invalid update."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    @SuppressWarnings(\"checkstyle:SeparatorWrap\")"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    public void execute(TaskList taskList, Ui ui, Storage storage) throws DukeException {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        if (!fullCommand.contains(\" \")) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            throw new DukeException(\"☹ OOPS!!! The changes cannot be empty.\");"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        if (!(fullCommand.contains(\"/desc\") || fullCommand.contains(\"/date\"))) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            throw new DukeException(\"☹ OOPS!!! Change value have to be a description or a date\");"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        String fullDetails \u003d fullCommand.substring(fullCommand.indexOf(\" \")).trim();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        String index \u003d fullDetails.substring(0, fullDetails.indexOf(\"/\")).trim();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        String updateDetails \u003d fullDetails.substring(fullDetails.indexOf(\"/\") + 1).trim();"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        String updateType \u003d updateDetails.substring(0, updateDetails.indexOf(\" \")).trim();"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        String updateValue \u003d updateDetails.substring(updateDetails.indexOf(\" \")).trim();"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        String resultSb \u003d String.format(\"%s\\n %s\\n\", ui.showLine(), \"Got it. I\u0027ve updated this task:\") + \"\\t\";"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        Task toUpdate \u003d taskList.retrieveTask(Integer.parseInt(index) - 1);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        if (updateType.equals(\"desc\")) {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            toUpdate.setDescription(updateValue);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            String[] inputDateTime \u003d updateValue.split(\" \");"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            String[] date \u003d inputDateTime[0].split(\"[/\\\\\\\\]|-\");"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            LocalDate updateLocalDate \u003d convertDateToLocalDate(date);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            if (toUpdate.getClass().equals(Deadline.class)) {"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                ((Deadline) toUpdate).setBy(LocalDateTime.of(updateLocalDate,"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                        convertTimeToLocalTime(inputDateTime[1])));"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                storage.write(taskList);"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            } else if (toUpdate.getClass().equals(Event.class)) {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                LocalTime startLocalTime \u003d LocalTime.of(0, 0);"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                LocalTime endLocalTime \u003d LocalTime.of(23, 59);"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                if (inputDateTime.length \u003e 1) {"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    String[] timeArr \u003d inputDateTime[1].split(\"-\");"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    if (timeArr.length \u003e 1) {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                        endLocalTime \u003d convertTimeToLocalTime(timeArr[1]);"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    }"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    startLocalTime \u003d convertTimeToLocalTime(timeArr[0]);"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                ((Event) toUpdate).setAt(LocalDateTime.of(updateLocalDate, startLocalTime));"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                ((Event) toUpdate).setEnd(LocalDateTime.of(updateLocalDate, endLocalTime));"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                storage.write(taskList);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            } else {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                throw new DukeException(\"☹ OOPS!!! No date time value to update\");"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        resultSb \u003d toUpdate + String.format(\"\\nNow you have %o tasks in list\" + \".\\n\","
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                taskList.sizeOfList()) + ui.showLine();"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        Ui.printString(resultSb);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    private static LocalDate convertDateToLocalDate(String[] date) throws DukeException {"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        LocalDate localDate;"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        if (date.length \u003d\u003d 3) {"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            int day \u003d Integer.parseInt(date[0]);"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert day \u003c 32"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Date\";"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert day \u003e 0"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Date\";"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            int month \u003d Integer.parseInt(date[1]);"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert month \u003c 13"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Month\";"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert month \u003e 0"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Month\";"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            int year \u003d Integer.parseInt(date[2]);"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert year \u003e 0"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Year\";"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            localDate \u003d LocalDate.of(year, month, day);"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            throw new DukeException(\"Error with input date!\");"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        return localDate;"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    private static LocalTime convertTimeToLocalTime(String time) throws DukeException {"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        int timeLength \u003d time.length();"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        LocalTime localTime;"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        if (timeLength \u003d\u003d 4) {"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            int hour \u003d Integer.parseInt(time.substring(0, 2));"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert hour \u003e\u003d 0"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Hour\";"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert hour \u003c\u003d 23"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Hour\";"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            int minute \u003d Integer.parseInt(time.substring(2, 4));"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert minute \u003e\u003d 0"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Minutes\";"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert minute \u003c 60"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Minutes\";"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            localTime \u003d LocalTime.of(hour, minute);"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        } else if (timeLength \u003d\u003d 3) {"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            int hour \u003d Integer.parseInt(String.valueOf(time.charAt(0)));"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert hour \u003e\u003d 0"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Hour\";"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert hour \u003c 10"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Hour\";"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            int minute \u003d Integer.parseInt(time.substring(1, 3));"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert minute \u003e\u003d 0"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Minutes\";"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            assert minute \u003c 60"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                    : \"Not Valid Minutes\";"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            localTime \u003d LocalTime.of(hour, minute);"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            throw new DukeException(\"Error with input time\");"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        return localTime;"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * Indicator for application to end."
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @return false."
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "galvinleow": 146
+    }
+  },
+  {
     "path": "src/main/java/duke/common/DukeException.java",
     "fileType": "java",
     "lines": [
@@ -8063,7 +9094,7 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "                + \"8. find {item to find}\\n\" + \"9. bye\\n\";"
+        "content": "                + \"8. find {item to find}\\n\" + \"9. update {item number} /{desc OR date} {value}\\n\" + \"10. bye\";"
       },
       {
         "lineNumber": 38,
@@ -10134,290 +11165,311 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "import duke.common.DukeException;"
+        "content": "import duke.command.UpdateCommand;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": ""
+        "content": "import duke.common.DukeException;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "/**"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": " * Parser class."
+        "content": "/**"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": " * Define rule to determine which command is use."
+        "content": " * Parser class."
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": " *"
+        "content": " * Define rule to determine which command is use."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": " * @author Galvin Leow Wen Yuan"
+        "content": " *"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": " * @author A0200204J"
+        "content": " * @author Galvin Leow Wen Yuan"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": " * @version v1.0"
+        "content": " * @author A0200204J"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": " */"
+        "content": " * @version v1.0"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "public class Parser {"
+        "content": " */"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    /**"
+        "content": "public class Parser {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Returns command type that will be used."
+        "content": "    /**"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     *"
+        "content": "     * Returns command type that will be used."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @param fullCommand full command that the user input."
+        "content": "     *"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return command type."
+        "content": "     * @param fullCommand full command that the user input."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @throws DukeException input command does not fit any of the application functionalities."
+        "content": "     * @return command type."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     */"
+        "content": "     * @throws DukeException input command does not fit any of the application functionalities."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public static Command parse(String fullCommand) throws DukeException {"
+        "content": "     */"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        String command \u003d fullCommand.split(\" \")[0];"
+        "content": "    public static Command parse(String fullCommand) throws DukeException {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        switch (command) {"
+        "content": "        String command \u003d fullCommand.split(\" \")[0];"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"list\":"
+        "content": "        switch (command) {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new ListCommand();"
+        "content": "        case \"list\":"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"done\":"
+        "content": "            return new ListCommand();"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new DoneCommand(fullCommand);"
+        "content": "        case \"done\":"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"todo\":"
+        "content": "            return new DoneCommand(fullCommand);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new TodoCommand(fullCommand);"
+        "content": "        case \"todo\":"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"deadline\":"
+        "content": "            return new TodoCommand(fullCommand);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new DeadlineCommand(fullCommand);"
+        "content": "        case \"deadline\":"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"event\":"
+        "content": "            return new DeadlineCommand(fullCommand);"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new EventCommand(fullCommand);"
+        "content": "        case \"event\":"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"delete\":"
+        "content": "            return new EventCommand(fullCommand);"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new DeleteCommand(fullCommand);"
+        "content": "        case \"delete\":"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"find\":"
+        "content": "            return new DeleteCommand(fullCommand);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new FindCommand(fullCommand);"
+        "content": "        case \"find\":"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        case \"bye\":"
+        "content": "            return new FindCommand(fullCommand);"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return new ByeCommand();"
+        "content": "        case \"bye\":"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        default:"
+        "content": "            return new ByeCommand();"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            throw new DukeException(\"☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means\");"
+        "content": "        case \"update\":"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "            return new UpdateCommand(fullCommand);"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    }"
+        "content": "        default:"
       },
       {
         "lineNumber": 53,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            throw new DukeException(\"☹ OOPS!!! I\u0027m sorry, but I don\u0027t know what that means\");"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 56,
         "author": {
           "gitId": "galvinleow"
         },
@@ -10425,7 +11477,7 @@
       }
     ],
     "authorContributionMap": {
-      "galvinleow": 53
+      "galvinleow": 56
     }
   },
   {
@@ -10542,7 +11594,7 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    private final LocalDateTime by;"
+        "content": "    private LocalDateTime by;"
       },
       {
         "lineNumber": 17,
@@ -10710,220 +11762,283 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Checks if two object are equal."
+        "content": "     * Update by time for task."
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * If equal true, else false."
+        "content": "     *"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     *"
+        "content": "     * @param by input date time for to update existing task."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @param obj object to be compare."
+        "content": "     */"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return true is same, false if differento"
+        "content": "    public void setBy(LocalDateTime by) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     */"
+        "content": "        this.by \u003d by;"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public boolean equals(Object obj) {"
+        "content": ""
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (this \u003d\u003d obj) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return true;"
+        "content": "     * Checks if two object are equal."
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "     * If equal true, else false."
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (obj \u003d\u003d null || getClass() !\u003d obj.getClass()) {"
+        "content": "     *"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return false;"
+        "content": "     * @param obj object to be compare."
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "     * @return true is same, false if differento"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (!super.equals(obj)) {"
+        "content": "     */"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return false;"
+        "content": "    @Override"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "    public boolean equals(Object obj) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        Deadline deadline \u003d (Deadline) obj;"
+        "content": "        if (this \u003d\u003d obj) {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return Objects.equals(by, deadline.by);"
+        "content": "            return true;"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": ""
+        "content": "        if (obj \u003d\u003d null || getClass() !\u003d obj.getClass()) {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    /**"
+        "content": "            return false;"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Returns summary to the deadline object."
+        "content": "        }"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     *"
+        "content": "        if (!super.equals(obj)) {"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return string to the deadline object."
+        "content": "            return false;"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     */"
+        "content": "        }"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    @Override"
+        "content": "        Deadline deadline \u003d (Deadline) obj;"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public String toString() {"
+        "content": "        return Objects.equals(by, deadline.by);"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, dd/MMM/yyyy HHmm\");"
+        "content": "    }"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return String.format(\"[D]%s (by: %s)\", super.toString(), by.format(dtf));"
+        "content": ""
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 71,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * Returns summary to the deadline object."
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @return string to the deadline object."
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, dd/MMM/yyyy HHmm\");"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        return String.format(\"[D]%s (by: %s)\", super.toString(), by.format(dtf));"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 80,
         "author": {
           "gitId": "galvinleow"
         },
@@ -10931,7 +12046,7 @@
       }
     ],
     "authorContributionMap": {
-      "galvinleow": 71
+      "galvinleow": 80
     }
   },
   {
@@ -11055,14 +12170,14 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    private final LocalDateTime at;"
+        "content": "    private LocalDateTime at;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    private final LocalDateTime end;"
+        "content": "    private LocalDateTime end;"
       },
       {
         "lineNumber": 19,
@@ -11244,7 +12359,7 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Returns end date and time of the event object."
+        "content": "     * Update start date and time for task."
       },
       {
         "lineNumber": 45,
@@ -11258,7 +12373,7 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return localDateTime of start event."
+        "content": "     * @param at input start date time for to update existing task."
       },
       {
         "lineNumber": 47,
@@ -11272,14 +12387,14 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public LocalDateTime getEnd() {"
+        "content": "    public void setAt(LocalDateTime at) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return end;"
+        "content": "        this.at \u003d at;"
       },
       {
         "lineNumber": 50,
@@ -11307,227 +12422,353 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Checks if two object are equal."
+        "content": "     * Returns end date and time of the event object."
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * If equal true, else false."
+        "content": "     *"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     *"
+        "content": "     * @return localDateTime of start event."
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @param obj object to be compare."
+        "content": "     */"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return true is same, false if different"
+        "content": "    public LocalDateTime getEnd() {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     */"
+        "content": "        return end;"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public boolean equals(Object obj) {"
+        "content": ""
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (this \u003d\u003d obj) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return true;"
+        "content": "     * Update end date and time for task."
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "     *"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (obj \u003d\u003d null || getClass() !\u003d obj.getClass()) {"
+        "content": "     * @param end input end date time for to update existing task."
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return false;"
+        "content": "     */"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "    public void setEnd(LocalDateTime end) {"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (!super.equals(obj)) {"
+        "content": "        this.end \u003d end;"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return false;"
+        "content": "    }"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        Event event \u003d (Event) obj;"
+        "content": "    /**"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return Objects.equals(at, event.at) \u0026\u0026 Objects.equals(end, event.end);"
+        "content": "     * Checks if two object are equal."
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    }"
+        "content": "     * If equal true, else false."
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    /**"
+        "content": "     * @param obj object to be compare."
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Returns summary of the event object."
+        "content": "     * @return true is same, false if different"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     *"
+        "content": "     */"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return string to the event object."
+        "content": "    @Override"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     */"
+        "content": "    public boolean equals(Object obj) {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    @Override"
+        "content": "        if (this \u003d\u003d obj) {"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public String toString() {"
+        "content": "            return true;"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, dd/MMM/yyyy HHmm\");"
+        "content": "        }"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return String.format("
+        "content": "        if (obj \u003d\u003d null || getClass() !\u003d obj.getClass()) {"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "                \"[E]%s (at: %s till %s)\", super.toString(), at.format(dtf), end.format(dtf));"
+        "content": "            return false;"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 85,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        if (!super.equals(obj)) {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        Event event \u003d (Event) obj;"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        return Objects.equals(at, event.at) \u0026\u0026 Objects.equals(end, event.end);"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * Returns summary of the event object."
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @return string to the event object."
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        DateTimeFormatter dtf \u003d DateTimeFormatter.ofPattern(\"E, dd/MMM/yyyy HHmm\");"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        return String.format("
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "                \"[E]%s (at: %s till %s)\", super.toString(), at.format(dtf), end.format(dtf));"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 103,
         "author": {
           "gitId": "galvinleow"
         },
@@ -11535,7 +12776,7 @@
       }
     ],
     "authorContributionMap": {
-      "galvinleow": 85
+      "galvinleow": 103
     }
   },
   {
@@ -11617,7 +12858,7 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    private final String description;"
+        "content": "    private String description;"
       },
       {
         "lineNumber": 12,
@@ -11904,7 +13145,7 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Returns status of task object."
+        "content": "     * Update the task description."
       },
       {
         "lineNumber": 53,
@@ -11918,7 +13159,7 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return true/false status of task object."
+        "content": "     * @param description input value to update existing task."
       },
       {
         "lineNumber": 55,
@@ -11932,14 +13173,14 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public boolean isDone() {"
+        "content": "    public void setDescription(String description) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return isDone;"
+        "content": "        this.description \u003d description;"
       },
       {
         "lineNumber": 58,
@@ -11967,175 +13208,175 @@
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Checks if two object are equal."
+        "content": "     * Returns status of task object."
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * If equal true, else false."
+        "content": "     *"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     *"
+        "content": "     * @return true/false status of task object."
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @param obj object to be compare."
+        "content": "     */"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return true is same, false if different"
+        "content": "    public boolean isDone() {"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     */"
+        "content": "        return isDone;"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public boolean equals(Object obj) {"
+        "content": ""
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (this \u003d\u003d obj) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return true;"
+        "content": "     * Checks if two object are equal."
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "     * If equal true, else false."
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        if (obj \u003d\u003d null || getClass() !\u003d obj.getClass()) {"
+        "content": "     *"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "            return false;"
+        "content": "     * @param obj object to be compare."
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        }"
+        "content": "     * @return true is same, false if different"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        Task task \u003d (Task) obj;"
+        "content": "     */"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return isDone \u003d\u003d task.isDone \u0026\u0026 description.equals(task.description);"
+        "content": "    @Override"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    }"
+        "content": "    public boolean equals(Object obj) {"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": ""
+        "content": "        if (this \u003d\u003d obj) {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    /**"
+        "content": "            return true;"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * Returns summary to the task object."
+        "content": "        }"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     *"
+        "content": "        if (obj \u003d\u003d null || getClass() !\u003d obj.getClass()) {"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     * @return string to the task object."
+        "content": "            return false;"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "     */"
+        "content": "        }"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "    public String toString() {"
+        "content": "        Task task \u003d (Task) obj;"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "galvinleow"
         },
-        "content": "        return String.format(\"[%s] %s\", this.getStatusIcon(), this.description);"
+        "content": "        return isDone \u003d\u003d task.isDone \u0026\u0026 description.equals(task.description);"
       },
       {
         "lineNumber": 86,
@@ -12149,11 +13390,74 @@
         "author": {
           "gitId": "galvinleow"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * Returns summary to the task object."
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     * @return string to the task object."
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "        return String.format(\"[%s] %s\", this.getStatusIcon(), this.description);"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "galvinleow"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "galvinleow"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "galvinleow": 87
+      "galvinleow": 96
     }
   },
   {

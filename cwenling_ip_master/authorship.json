@@ -3463,24 +3463,31 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                + \"  exit Nite\\n    bye\\n\";"
+        "content": "                + \"  sort tasks\\n    sort \u003ctaskType\u003e \u003ctaskType\u003e \u003ctaskType\u003e\\n\""
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return ui.showAction(commandsList);"
+        "content": "                + \"  exit Nite\\n    bye\\n\";"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "        return ui.showAction(commandsList);"
       },
       {
         "lineNumber": 40,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
         "author": {
           "gitId": "cwenling"
         },
@@ -3488,7 +3495,7 @@
       }
     ],
     "authorContributionMap": {
-      "cwenling": 40
+      "cwenling": 41
     }
   },
   {
@@ -4000,6 +4007,351 @@
     }
   },
   {
+    "path": "src/main/java/nite/command/SortCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "package nite.command;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import java.util.concurrent.atomic.AtomicInteger;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import java.util.stream.Stream;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import nite.storage.Storage;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import nite.task.Task;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import nite.task.TaskList;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import nite.ui.Ui;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": " * Represents a SortCommand where user wants to sort the list of tasks."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "public class SortCommand extends Command {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    private final String[] sortingParameters;"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Creates a SortCommand."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @param sortingParameters Order and Type of tasks to sort."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public SortCommand(String ... sortingParameters) {"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        this.sortingParameters \u003d sortingParameters;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Executes the command to sort and display the tasklist."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @param tasks Tasklist containing current tasks."
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @param ui Ui for displaying output."
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @param storage Storage of tasks in hard disk."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return Sorted tasks;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public String execute(TaskList tasks, Ui ui, Storage storage) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        ArrayList\u003cTask\u003e sortedTasks \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        for (int i \u003d 1; i \u003c sortingParameters.length; i++) {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "            sortedTasks.addAll(tasks.sortedTasks(sortingParameters[i]));"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        AtomicInteger counter \u003d new AtomicInteger(1);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        Stream\u003cString\u003e stringsStream \u003d sortedTasks.stream().map(t -\u003e String.format(\"%n    %d.%s\","
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "                counter.getAndIncrement(), t));"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        String tasksString \u003d stringsStream.reduce(\"\", (s, t) -\u003e s +\u003d String.format(\"%s\", t));"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return ui.showAction(\"  Here are the sorted tasks:\" + tasksString);"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "cwenling": 48
+    }
+  },
+  {
     "path": "src/main/java/nite/exception/NiteException.java",
     "fileType": "java",
     "lines": [
@@ -4213,476 +4565,476 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import nite.exception.NiteException;"
+        "content": "import nite.command.SortCommand;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import nite.task.Deadline;"
+        "content": "import nite.exception.NiteException;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import nite.task.Event;"
+        "content": "import nite.task.Deadline;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import nite.task.Task;"
+        "content": "import nite.task.Event;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import nite.task.ToDo;"
+        "content": "import nite.task.Task;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "import nite.task.ToDo;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "/**"
+        "content": ""
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "cwenling"
         },
-        "content": " * Represents the Parser used to make sense of user commands."
+        "content": "/**"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "cwenling"
         },
-        "content": " */"
+        "content": " * Represents the Parser used to make sense of user commands."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "public class Parser {"
+        "content": " */"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "public class Parser {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Parses user input into executable Commands."
+        "content": "    /**"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "     * Parses user input into executable Commands."
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param fullCommand Entire user input."
+        "content": "     *"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return duke.Duke Command corresponding to input."
+        "content": "     * @param fullCommand Entire user input."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @throws NiteException If task is not successfully parsed."
+        "content": "     * @return duke.Duke Command corresponding to input."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "     * @throws NiteException If task is not successfully parsed."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public static Command parse(String fullCommand) throws NiteException {"
+        "content": "     */"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Command command;"
+        "content": "    public static Command parse(String fullCommand) throws NiteException {"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "        Command command;"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        if (fullCommand.equals(\"bye\")) {"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            return new ExitCommand();"
+        "content": "        if (fullCommand.equals(\"bye\")) {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.equals(\"list\")) {"
+        "content": "            return new ExitCommand();"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            command \u003d new ListCommand();"
+        "content": "        } else if (fullCommand.equals(\"list\")) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.equals(\"help\")) {"
+        "content": "            command \u003d new ListCommand();"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            command \u003d new HelpCommand();"
+        "content": "        } else if (fullCommand.equals(\"help\")) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.startsWith(\"done\")) {"
+        "content": "            command \u003d new HelpCommand();"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            try {"
+        "content": "        } else if (fullCommand.startsWith(\"done\")) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                command \u003d new DoneCommand(Integer.parseInt(fullCommand.split(\" \")[1]));"
+        "content": "            try {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
+        "content": "                command \u003d new DoneCommand(Integer.parseInt(fullCommand.split(\" \")[1]));"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                throw new NiteException(\"Invalid format of task number!\");"
+        "content": "            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            }"
+        "content": "                throw new NiteException(\"Invalid format of task number!\");"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.startsWith(\"delete\")) {"
+        "content": "            }"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            try {"
+        "content": "        } else if (fullCommand.startsWith(\"delete\")) {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                command \u003d new DeleteCommand(Integer.parseInt(fullCommand.split(\" \")[1]));"
+        "content": "            try {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
+        "content": "                command \u003d new DeleteCommand(Integer.parseInt(fullCommand.split(\" \")[1]));"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                throw new NiteException(\"Invalid format of task number!\");"
+        "content": "            } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            }"
+        "content": "                throw new NiteException(\"Invalid format of task number!\");"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.startsWith(\"todo\")) {"
+        "content": "            }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            command \u003d new AddCommand(parseTask(\"todo\", fullCommand));"
+        "content": "        } else if (fullCommand.startsWith(\"todo\")) {"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.startsWith(\"deadline\")) {"
+        "content": "            command \u003d new AddCommand(parseTask(\"todo\", fullCommand));"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            command \u003d new AddCommand(parseTask(\"deadline\", fullCommand));"
+        "content": "        } else if (fullCommand.startsWith(\"deadline\")) {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.startsWith(\"event\")) {"
+        "content": "            command \u003d new AddCommand(parseTask(\"deadline\", fullCommand));"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            command \u003d new AddCommand(parseTask(\"event\", fullCommand));"
+        "content": "        } else if (fullCommand.startsWith(\"event\")) {"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else if (fullCommand.startsWith(\"find\")) {"
+        "content": "            command \u003d new AddCommand(parseTask(\"event\", fullCommand));"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            command \u003d new FindCommand(fullCommand.split(\" \")[1]);"
+        "content": "        } else if (fullCommand.startsWith(\"find\")) {"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } else {"
+        "content": "            command \u003d new FindCommand(fullCommand.split(\" \")[1]);"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            command \u003d new InvalidCommand(fullCommand);"
+        "content": "        } else if (fullCommand.startsWith(\"sort\")) {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "            command \u003d new SortCommand(fullCommand.split(\" \"));"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return command;"
+        "content": "        } else {"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "            command \u003d new InvalidCommand(fullCommand);"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "        return command;"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Parses a task input into Task objects."
+        "content": "    }"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": ""
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param type Type of task (todo, deadline, or event)."
+        "content": "    /**"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param taskString The full input of the task."
+        "content": "     * Parses a task input into Task objects."
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return Task obtained from the input."
+        "content": "     *"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @throws NiteException If task is not successfully parsed."
+        "content": "     * @param type Type of task (todo, deadline, or event)."
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "     * @param taskString The full input of the task."
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public static Task parseTask(String type, String taskString) throws NiteException {"
+        "content": "     * @return Task obtained from the input."
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task task;"
+        "content": "     * @throws NiteException If task is not successfully parsed."
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        switch (type) {"
+        "content": "     */"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        case \"todo\":"
+        "content": "    public static Task parseTask(String type, String taskString) throws NiteException {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d getTodo(taskString);"
+        "content": "        Task task;"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            break;"
+        "content": "        switch (type) {"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        case \"deadline\":"
+        "content": "        case \"todo\":"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d getDeadline(taskString);"
+        "content": "            task \u003d getTodo(taskString);"
       },
       {
         "lineNumber": 80,
@@ -4696,14 +5048,14 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        case \"event\":"
+        "content": "        case \"deadline\":"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d getEvent(taskString);"
+        "content": "            task \u003d getDeadline(taskString);"
       },
       {
         "lineNumber": 83,
@@ -4717,304 +5069,325 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        default:"
+        "content": "        case \"event\":"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            assert false : \"Cases should be exhaustive.\";"
+        "content": "            task \u003d getEvent(taskString);"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            throw new NiteException(\"Unexpected value: \" + type);"
+        "content": "            break;"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "        default:"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return task;"
+        "content": "            assert false : \"Cases should be exhaustive.\";"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "            throw new NiteException(\"Unexpected value: \" + type);"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    private static Task getEvent(String taskString) throws NiteException {"
+        "content": "        return task;"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task task;"
+        "content": "    }"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        if (taskString.length() \u003c\u003d 6) {"
+        "content": ""
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            throw new NiteException(\"The description of an event cannot be empty.\");"
+        "content": "    private static Task getEvent(String taskString) throws NiteException {"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "        Task task;"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        String[] taskArr2 \u003d taskString.substring(6).split(\" /at \");"
+        "content": "        if (taskString.length() \u003c\u003d 6) {"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        try {"
+        "content": "            throw new NiteException(\"The description of an event cannot be empty.\");"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d new Event(taskArr2[0], taskArr2[1]);"
+        "content": "        }"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } catch (IndexOutOfBoundsException ex) {"
+        "content": "        String[] taskArr2 \u003d taskString.substring(6).split(\" /at \");"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            throw new NiteException(\"Invalid description of an event.\");"
+        "content": "        try {"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "            task \u003d new Event(taskArr2[0], taskArr2[1]);"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return task;"
+        "content": "        } catch (IndexOutOfBoundsException ex) {"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "            throw new NiteException(\"Invalid description of an event.\");"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    private static Task getDeadline(String taskString) throws NiteException {"
+        "content": "        return task;"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task task;"
+        "content": "    }"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        if (taskString.length() \u003c\u003d 9) {"
+        "content": ""
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            throw new NiteException(\"The description of a deadline cannot be empty.\");"
+        "content": "    private static Task getDeadline(String taskString) throws NiteException {"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "        Task task;"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        String[] taskArr \u003d taskString.substring(9).split(\" /by \");"
+        "content": "        if (taskString.length() \u003c\u003d 9) {"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        try {"
+        "content": "            throw new NiteException(\"The description of a deadline cannot be empty.\");"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d new Deadline(taskArr[0], taskArr[1]);"
+        "content": "        }"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        } catch (IndexOutOfBoundsException ex) {"
+        "content": "        String[] taskArr \u003d taskString.substring(9).split(\" /by \");"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            throw new NiteException(\"Invalid description of a deadline.\");"
+        "content": "        try {"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "            task \u003d new Deadline(taskArr[0], taskArr[1]);"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return task;"
+        "content": "        } catch (IndexOutOfBoundsException ex) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "            throw new NiteException(\"Invalid description of a deadline.\");"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    private static Task getTodo(String taskString) throws NiteException {"
+        "content": "        return task;"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task task;"
+        "content": "    }"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        if (taskString.length() \u003c\u003d 5) {"
+        "content": ""
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            throw new NiteException(\"The description of a todo cannot be empty.\");"
+        "content": "    private static Task getTodo(String taskString) throws NiteException {"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "        Task task;"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        task \u003d new ToDo(taskString.substring(5));"
+        "content": "        if (taskString.length() \u003c\u003d 5) {"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return task;"
+        "content": "            throw new NiteException(\"The description of a todo cannot be empty.\");"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 127,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        task \u003d new ToDo(taskString.substring(5));"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return task;"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 130,
         "author": {
           "gitId": "cwenling"
         },
@@ -5022,7 +5395,7 @@
       }
     ],
     "authorContributionMap": {
-      "cwenling": 127
+      "cwenling": 130
     }
   },
   {
@@ -6079,11 +6452,109 @@
         "author": {
           "gitId": "cwenling"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Returns the type of the Deadline Task."
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return String representing Deadline."
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public String typeOfTask() {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return \"deadline\";"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public LocalDateTime getTime() {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return timeBy;"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "cwenling"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "cwenling": 57
+      "cwenling": 71
     }
   },
   {
@@ -6529,11 +7000,109 @@
         "author": {
           "gitId": "cwenling"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Returns the type of the Event Task."
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return String representing Event."
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public String typeOfTask() {"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return \"event\";"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public LocalDateTime getTime() {"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return timeStart;"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "cwenling"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "cwenling": 63
+      "cwenling": 77
     }
   },
   {
@@ -6559,7 +7128,597 @@
         "author": {
           "gitId": "cwenling"
         },
+        "content": "import java.time.LocalDateTime;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "cwenling"
+        },
         "content": "import java.time.format.DateTimeFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": " * Represents a Task created by the user."
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "public abstract class Task {"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    protected String description;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    protected boolean isDone;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    protected final DateTimeFormatter inputDateTimePattern \u003d"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "            DateTimeFormatter.ofPattern(\"yyyy-MM-dd HHmm\");"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    protected final DateTimeFormatter displayDateTimePattern \u003d"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "            DateTimeFormatter.ofPattern(\"yyyy-MM-dd HHmm\");"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Default constructor for a Task."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @param description Description of task."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public Task(String description) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        assert !description.isEmpty() : \"Description should not be empty.\";"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        this.isDone \u003d false;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Returns the symbolic representation of the completion status of the task."
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return Tick if task is completed, cross if task is not completed."
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public String getStatusIcon() {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\");"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Marks a task as done."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public void markAsDone() {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        isDone \u003d true;"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Returns the String representation of a Task."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return String representation of a Task."
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return String.format(\"[%s] %s\", getStatusIcon(), description);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Returns the text representation of a Task to be saved in a text file."
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Default Method to be overridden by classes which inherit Task."
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return Text representation of Task."
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public abstract String toData();"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Checks if a task contains the given keyword in its description."
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @param keyword Word to find in task description."
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return True if description contains keyword, false otherwise."
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public boolean hasKeyword(String keyword) {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        assert !keyword.isEmpty() : \"Keyword should not be empty.\";"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return description.contains(keyword);"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Returns the type of the Task."
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return Type of Task."
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public abstract String typeOfTask();"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public LocalDateTime getTime() {"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return null;"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "cwenling": 83
+    }
+  },
+  {
+    "path": "src/main/java/nite/task/TaskComparator.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "package nite.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "import java.util.Comparator;"
       },
       {
         "lineNumber": 4,
@@ -6580,7 +7739,7 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": " * Represents a Task created by the user."
+        "content": " * Type comparator compares two tasks of the same type."
       },
       {
         "lineNumber": 7,
@@ -6594,458 +7753,178 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "public class Task {"
+        "content": "public class TaskComparator implements Comparator\u003cTask\u003e {"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    protected String description;"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    protected boolean isDone;"
+        "content": "    /**"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    protected final DateTimeFormatter inputDateTimePattern \u003d"
+        "content": "     * Compares two tasks of the same type."
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            DateTimeFormatter.ofPattern(\"yyyy-MM-dd HHmm\");"
+        "content": "     * The first criteria of  comparison is the time of the task."
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    protected final DateTimeFormatter displayDateTimePattern \u003d"
+        "content": "     * If the task lacks a timing, or if two timings are the same,"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            DateTimeFormatter.ofPattern(\"yyyy-MM-dd HHmm\");"
+        "content": "     * tasks will be compared by alphabetical order."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "     * @param task1 The first task to be compared."
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Default constructor for a Task."
+        "content": "     * @param task2 The second task to be compared"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "     * @return The relative ranking of the two tasks."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param description Description of task."
+        "content": "     */"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "    @Override"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public Task(String description) {"
+        "content": "    public int compare(Task task1, Task task2) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        assert !description.isEmpty() : \"Description should not be empty.\";"
+        "content": "        if (task1.typeOfTask().equals(\"todo\")) {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        this.description \u003d description;"
+        "content": "            return task1.description.compareTo(task2.description);"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        this.isDone \u003d false;"
+        "content": "        } else if (task1.typeOfTask().equals(\"deadline\")"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "                || task1.typeOfTask().equals(\"event\")) {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "            if (task1.getTime().equals(task2.getTime())) {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "                return task1.description.compareTo(task2.description);"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Returns the symbolic representation of the completion status of the task."
+        "content": "            }"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "            return task1.getTime().compareTo(task2.getTime());"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return Tick if task is completed, cross if task is not completed."
+        "content": "        }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "        return 0;"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public String getStatusIcon() {"
+        "content": "    }"
       },
       {
         "lineNumber": 33,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "        return (isDone ? \"\\u2713\" : \"\\u2718\");"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * Marks a task as done."
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    public void markAsDone() {"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "        isDone \u003d true;"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * Returns the String representation of a Task."
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * @return String representation of a Task."
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "        return String.format(\"[%s] %s\", getStatusIcon(), description);"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * Returns the text representation of a Task to be saved in a text file."
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * Default Method to be overridden by classes which inherit Task."
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * @return Text representation of Task."
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    public String toData() {"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "        return \"\";"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * Checks if a task contains the given keyword in its description."
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * @param keyword Word to find in task description."
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     * @return True if description contains keyword, false otherwise."
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    public boolean hasKeyword(String keyword) {"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "        assert !keyword.isEmpty() : \"Keyword should not be empty.\";"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "        return description.contains(keyword);"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "cwenling"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 73,
         "author": {
           "gitId": "cwenling"
         },
@@ -7053,7 +7932,7 @@
       }
     ],
     "authorContributionMap": {
-      "cwenling": 73
+      "cwenling": 33
     }
   },
   {
@@ -7086,427 +7965,427 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import java.util.stream.Collectors;"
+        "content": "import java.util.concurrent.atomic.AtomicInteger;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import java.util.stream.Stream;"
+        "content": "import java.util.stream.Collectors;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "import java.util.stream.Stream;"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "import nite.exception.NiteException;"
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "import nite.exception.NiteException;"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "/**"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "cwenling"
         },
-        "content": " * Represents a list of tasks."
+        "content": "/**"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "cwenling"
         },
-        "content": " */"
+        "content": " * Represents a list of tasks."
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "public class TaskList {"
+        "content": " */"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "public class TaskList {"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    private final ArrayList\u003cTask\u003e tasks;"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "    private final ArrayList\u003cTask\u003e tasks;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Creates an empty TaskList."
+        "content": "    /**"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "     * Creates an empty TaskList."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public TaskList() {"
+        "content": "     */"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        tasks \u003d new ArrayList\u003c\u003e();"
+        "content": "    public TaskList() {"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "        tasks \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Creates a TaskList already containing Tasks."
+        "content": "    /**"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * This is used if Storage is able to load data from the text file."
+        "content": "     * Creates a TaskList already containing Tasks."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "     * This is used if Storage is able to load data from the text file."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param taskStrings List of lines in the text file, representing Tasks."
+        "content": "     *"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "     * @param taskStrings List of lines in the text file, representing Tasks."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public TaskList(ArrayList\u003cString\u003e taskStrings) {"
+        "content": "     */"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        tasks \u003d new ArrayList\u003c\u003e();"
+        "content": "    public TaskList(ArrayList\u003cString\u003e taskStrings) {"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        for (String taskString : taskStrings) {"
+        "content": "        tasks \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            try {"
+        "content": "        for (String taskString : taskStrings) {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                this.tasks.add(dataToTask(taskString));"
+        "content": "            try {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            } catch (NiteException ignored) {"
+        "content": "                this.tasks.add(dataToTask(taskString));"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                // Line in data which cannot be converted to Task is ignored."
+        "content": "            } catch (NiteException ignored) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            }"
+        "content": "                // Line in data which cannot be converted to Task is ignored."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Converts a line of text into a Task."
+        "content": "    /**"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "     * Converts a line of text into a Task."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param taskString Line of text from text file."
+        "content": "     *"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return Task which is specified by the line of text"
+        "content": "     * @param taskString Line of text from text file."
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "     * @return Task which is specified by the line of text"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public Task dataToTask(String taskString) throws NiteException {"
+        "content": "     */"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        String[] taskLine \u003d taskString.split(\"~\");"
+        "content": "    public Task dataToTask(String taskString) throws NiteException {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task task \u003d null;"
+        "content": "        String[] taskLine \u003d taskString.split(\"~\");"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        switch (taskLine[0]) {"
+        "content": "        Task task \u003d null;"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        case \"T\":"
+        "content": "        switch (taskLine[0]) {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d new ToDo(taskLine[2]);"
+        "content": "        case \"T\":"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            break;"
+        "content": "            task \u003d new ToDo(taskLine[2]);"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        case \"D\":"
+        "content": "            break;"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d new Deadline(taskLine[2], taskLine[3]);"
+        "content": "        case \"D\":"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            break;"
+        "content": "            task \u003d new Deadline(taskLine[2], taskLine[3]);"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        case \"E\":"
+        "content": "            break;"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d new Event(taskLine[2], taskLine[3]);"
+        "content": "        case \"E\":"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            break;"
+        "content": "            task \u003d new Event(taskLine[2], taskLine[3]);"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        default:"
+        "content": "            break;"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            assert false : \"Cases should be exhaustive.\";"
+        "content": "        default:"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            break;"
+        "content": "            assert false : \"Cases should be exhaustive.\";"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": "            break;"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        if (taskLine[1].equals(\"1\")) {"
+        "content": "        }"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            assert task !\u003d null : \"Task should not be null.\";"
+        "content": "        if (taskLine[1].equals(\"1\")) {"
       },
       {
         "lineNumber": 65,
@@ -7590,549 +8469,612 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        String tasks \u003d \"\";"
+        "content": "        AtomicInteger counter \u003d new AtomicInteger(1);"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task task;"
+        "content": "        Stream\u003cString\u003e stringsStream \u003d tasks.stream().map(t -\u003e String.format(\"  %d.%s%n\","
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        for (int i \u003d 0; i \u003c this.tasks.size(); i++) {"
+        "content": "                counter.getAndIncrement(), t));"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            task \u003d this.tasks.get(i);"
+        "content": "        return stringsStream.reduce(\"\", (s, t) -\u003e s +\u003d String.format(\"  %s\", t));"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            tasks +\u003d String.format(\"  %d.%s%n\", i + 1, task);"
+        "content": "    }"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return tasks;"
+        "content": "    /**"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "     * Adds a Task to the TaskList."
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "     * @param task Task to be added."
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Adds a Task to the TaskList."
+        "content": "     */"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "    public void add(Task task) {"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param task Task to be added."
+        "content": "        assert task !\u003d null : \"Task should not be null.\";"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "        tasks.add(task);"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public void add(Task task) {"
+        "content": "    }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        assert task !\u003d null : \"Task should not be null.\";"
+        "content": ""
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        tasks.add(task);"
+        "content": "    /**"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "     * Returns the size of the TaskList."
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "     * @return Number of items in TaskList."
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Returns the size of the TaskList."
+        "content": "     */"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "    public int size() {"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return Number of items in TaskList."
+        "content": "        return tasks.size();"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public int size() {"
+        "content": ""
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return tasks.size();"
+        "content": "    /**"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "     * Converts the TaskList into lines of text."
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "     * @return List containing lines of text."
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Converts the TaskList into lines of text."
+        "content": "     */"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "    public ArrayList\u003cString\u003e tasksToText() {"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return List containing lines of text."
+        "content": "        return tasks.stream().map(Task::toData)"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "                .collect(Collectors.toCollection(ArrayList::new));"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public ArrayList\u003cString\u003e tasksToText() {"
+        "content": "    }"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        ArrayList\u003cString\u003e strings \u003d tasks.stream().map(Task::toData)"
+        "content": ""
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                .collect(Collectors.toCollection(ArrayList::new));"
+        "content": "    /**"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return strings;"
+        "content": "     * Returns a String listing out all the tasks that match the keyword."
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "     * @return String representation of list of tasks."
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Returns a String listing out all the tasks that match the keyword."
+        "content": "    public String findTasks(String keyword) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "        assert !keyword.isEmpty() : \"Keyword should not be empty.\";"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return String representation of list of tasks."
+        "content": "        AtomicInteger counter \u003d new AtomicInteger(1);"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "        Stream\u003cTask\u003e matchingTasks \u003d tasks.stream().filter(t -\u003e t.hasKeyword(keyword));"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public String findTasks(String keyword) {"
+        "content": "        Stream\u003cString\u003e stringsStream \u003d matchingTasks.map(t -\u003e String.format(\"  %d.%s%n\","
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        assert !keyword.isEmpty() : \"Keyword should not be empty.\";"
+        "content": "                counter.getAndIncrement(), t));"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Stream\u003cTask\u003e matchingTasks \u003d tasks.stream().filter(t -\u003e t.hasKeyword(keyword));"
+        "content": "        return stringsStream.reduce(\"\", (s, t) -\u003e s +\u003d String.format(\"  %s\", t));"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Stream\u003cString\u003e stringsStream \u003d matchingTasks.map(t -\u003e String.format(\"  %s%n\", t));"
+        "content": "    }"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        String matchingTasksString \u003d stringsStream.reduce(\"\", (s, t)"
+        "content": ""
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "                -\u003e s +\u003d String.format(\"  %s%n\", t));"
+        "content": "    /**"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return matchingTasksString;"
+        "content": "     * Deletes and returns the task at a position in the list."
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "     * @param taskNumber Position of the Task in the list of tasks."
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "     * @return Task which was deleted."
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Deletes and returns the task at a position in the list."
+        "content": "     */"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "    public Task remove(int taskNumber) {"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param taskNumber Position of the Task in the list of tasks."
+        "content": "        assert (taskNumber \u003e 0 \u0026\u0026 taskNumber \u003c size()) : \"Task number should be within bounds\";"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return Task which was deleted."
+        "content": "        Task t \u003d tasks.get(taskNumber - 1);"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "        tasks.remove(taskNumber - 1);"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public Task remove(int taskNumber) {"
+        "content": "        return t;"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        assert (taskNumber \u003e 0 \u0026\u0026 taskNumber \u003c size()) : \"Task number should be within bounds\";"
+        "content": "    }"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task t \u003d tasks.get(taskNumber - 1);"
+        "content": ""
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        tasks.remove(taskNumber - 1);"
+        "content": "    /**"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return t;"
+        "content": "     * Marks a task in the list as done."
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "cwenling"
         },
-        "content": ""
+        "content": "     * @param taskNumber Position of Task in the list of tasks."
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    /**"
+        "content": "     * @return Task which was marked as done."
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * Marks a tast in the list as done."
+        "content": "     */"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     *"
+        "content": "    public Task markTask(int taskNumber) {"
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @param taskNumber Position of Task in the list of tasks."
+        "content": "        assert (taskNumber \u003e 0 \u0026\u0026 taskNumber \u003c size()) : \"Task number should be within bounds\";"
       },
       {
         "lineNumber": 146,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     * @return Task which was marked as done."
+        "content": "        Task t \u003d tasks.get(taskNumber - 1);"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "     */"
+        "content": "        t.markAsDone();"
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    public Task markTask(int taskNumber) {"
+        "content": "        return t;"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        assert (taskNumber \u003e 0 \u0026\u0026 taskNumber \u003c size()) : \"Task number should be within bounds\";"
+        "content": "    }"
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        Task t \u003d tasks.get(taskNumber - 1);"
+        "content": ""
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        t.markAsDone();"
+        "content": "    /**"
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "        return t;"
+        "content": "     * Returns a sorted list of tasks based on timing."
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "cwenling"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 154,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @param type Type of task, either todo, deadline, or event."
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return A sorted ArrayList of tasks."
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public ArrayList\u003cTask\u003e sortedTasks(String type) {"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        assert !type.isEmpty() : \"Task type cannot be empty.\";"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        Stream\u003cTask\u003e tasksOfType \u003d tasks.stream().filter(t -\u003e t.typeOfTask().equals(type));"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        Stream\u003cTask\u003e sortedTasks \u003d tasksOfType.sorted(new TaskComparator());"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return sortedTasks.collect(Collectors.toCollection(ArrayList::new));"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 163,
         "author": {
           "gitId": "cwenling"
         },
@@ -8140,7 +9082,7 @@
       }
     ],
     "authorContributionMap": {
-      "cwenling": 154
+      "cwenling": 163
     }
   },
   {
@@ -8404,11 +9346,88 @@
         "author": {
           "gitId": "cwenling"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * Returns the type of the Todo Task."
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     * @return String representing Todo."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    public String typeOfTask() {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "        return \"todo\";"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "cwenling"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "cwenling"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "cwenling": 37
+      "cwenling": 48
     }
   },
   {
@@ -10665,7 +11684,7 @@
         "author": {
           "gitId": "cwenling"
         },
-        "content": "            assertEquals(\"D~0~tP AB3 familiarization~2020-08-26 2359\\n\","
+        "content": "            assertEquals(String.format(\"D~0~tP AB3 familiarization~2020-08-26 2359%n\"),"
       },
       {
         "lineNumber": 15,
