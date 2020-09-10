@@ -330,7 +330,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    mainClassName \u003d \"Duke\""
+        "content": "    mainClassName \u003d \"Launcher\""
       },
       {
         "lineNumber": 48,
@@ -426,6 +426,13 @@
       {
         "lineNumber": 61,
         "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    enableAssertions \u003d true"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
           "gitId": "-"
         },
         "content": "}"
@@ -433,7 +440,7 @@
     ],
     "authorContributionMap": {
       "-": 44,
-      "csiongn": 17
+      "csiongn": 18
     }
   },
   {
@@ -559,7 +566,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private final String type;"
+        "content": "    private final TaskType type;"
       },
       {
         "lineNumber": 12,
@@ -629,7 +636,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public AddCommand(String type, String description) {"
+        "content": "    public AddCommand(TaskType type, String description) {"
       },
       {
         "lineNumber": 22,
@@ -748,7 +755,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public String execute(TaskList tasks, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
+        "content": "    public String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
       },
       {
         "lineNumber": 39,
@@ -762,28 +769,653 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        switch (this.type) {"
+        "content": "        assert tasks !\u003d null : \"tasks shouldn\u0027t be null\";"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"todo\": {"
+        "content": "        assert ui !\u003d null : \"ui shouldn\u0027t be null\";"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            Task newTodo \u003d new Todo(description);"
+        "content": "        assert storage !\u003d null : \"storage shouldn\u0027t be null\";"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "csiongn"
         },
+        "content": "        assert runnables !\u003d null : \"runnables shouldn\u0027t be null\";"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        switch (this.type) {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case TODO: {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Task newTodo \u003d new Todo(description);"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "csiongn"
+        },
         "content": "            return tasks.createTask(newTodo);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case DEADLINE: {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String[] text \u003d description.split(\" /by \");"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String description \u003d text[0];"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            if (text.length \u003c\u003d 1) {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                throw new EmptyBodyException(\"deadline\", \"deadline\");"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                LocalDate deadline \u003d LocalDate.parse(text[1]);"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                Task newDeadline \u003d new Deadline(description, deadline);"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                return tasks.createTask(newDeadline);"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            } catch (DateTimeParseException e) {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                throw new UnknownInputException(text[1]);"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case EVENT: {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String[] text \u003d description.split(\" /at \");"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String description \u003d text[0];"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            if (text.length \u003c\u003d 1) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                throw new EmptyBodyException(\"date and time\", \"event\");"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String dateTime \u003d text[1];"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Task newEvent \u003d new Event(description, dateTime);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return tasks.createTask(newEvent);"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            throw new UnknownInputException(this.type.toString());"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Returns whether the command is a command to exit."
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @return false."
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 88
+    }
+  },
+  {
+    "path": "src/main/java/AddNoteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Map;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Objects;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class AddNoteCommand extends Command {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Attributes"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private String title;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private String description;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private Priority priority;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Constructor"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public AddNoteCommand(String title, String description, Priority priority) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.title \u003d title;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.priority \u003d priority;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Methods"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) throws DukeException {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        Note newNote \u003d Note.createNote(this.title, this.description, this.priority);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        notes.createNote(newNote);"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return String.format(\"Note with title %s created!\", this.title);"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    boolean isExit() {"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public boolean equals(Object o) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        if (this \u003d\u003d o) {"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        if (o \u003d\u003d null || getClass() !\u003d o.getClass()) {"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        AddNoteCommand that \u003d (AddNoteCommand) o;"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        if (!title.equals(that.title)) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return false;"
       },
       {
         "lineNumber": 44,
@@ -797,269 +1429,129 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"deadline\": {"
+        "content": "        if (!description.equals(that.description)) {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            String[] text \u003d description.split(\" /by \");"
+        "content": "            return false;"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            String description \u003d text[0];"
+        "content": "        }"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            if (text.length \u003c\u003d 1) {"
+        "content": "        return priority \u003d\u003d that.priority;"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                throw new EmptyBodyException(\"deadline\", \"deadline\");"
+        "content": "    }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            }"
+        "content": ""
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            try {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                LocalDate deadline \u003d LocalDate.parse(text[1]);"
+        "content": "    public int hashCode() {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                Task newDeadline \u003d new Deadline(description, deadline);"
+        "content": "        int result \u003d title.hashCode();"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                return tasks.createTask(newDeadline);"
+        "content": "        result \u003d 31 * result + description.hashCode();"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            } catch (DateTimeParseException e) {"
+        "content": "        result \u003d 31 * result + priority.hashCode();"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                throw new UnknownInputException(text[1]);"
+        "content": "        return result;"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            }"
+        "content": "    }"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"event\": {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            String[] text \u003d description.split(\" /at \");"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            String description \u003d text[0];"
+        "content": "        return this.title + this.description;"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            if (text.length \u003c\u003d 1) {"
+        "content": "    }"
       },
       {
         "lineNumber": 63,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "                throw new EmptyBodyException(\"date and time\", \"event\");"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            }"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            String dateTime \u003d text[1];"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            Task newEvent \u003d new Event(description, dateTime);"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            return tasks.createTask(newEvent);"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        default:"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            throw new UnknownInputException(this.type);"
-      },
-      {
-        "lineNumber": 71,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 72,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 73,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 74,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 75,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "     * Returns whether the command is a command to exit."
-      },
-      {
-        "lineNumber": 76,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 77,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "     * @return false."
-      },
-      {
-        "lineNumber": 78,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 79,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 80,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    public boolean isExit() {"
-      },
-      {
-        "lineNumber": 81,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        return false;"
-      },
-      {
-        "lineNumber": 82,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 83,
         "author": {
           "gitId": "csiongn"
         },
@@ -1067,7 +1559,7 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 83
+      "csiongn": 63
     }
   },
   {
@@ -1142,59 +1634,66 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @param ui Ui object to handle printing of outputs."
+        "content": "     * @params notes NotesList representing list of current notes."
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @param storage Storage object to handle saving of outputs to computer"
+        "content": "     * @param ui Ui object to handle printing of outputs."
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "     * @param storage Storage object to handle saving of outputs to computer."
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    abstract String execute(TaskList tasks, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
+        "content": "     */"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            throws DukeException;"
+        "content": "    abstract String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "            throws DukeException;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    abstract boolean isExit();"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    abstract boolean isExit();"
       },
       {
         "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
@@ -1202,7 +1701,7 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 18
+      "csiongn": 19
     }
   },
   {
@@ -1573,7 +2072,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @param storage Storage object to handle saving of outputs to computer"
+        "content": "     * @param storage Storage object to handle saving of outputs to computer."
       },
       {
         "lineNumber": 23,
@@ -1601,7 +2100,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    String execute(TaskList tasks, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
+        "content": "    String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
       },
       {
         "lineNumber": 27,
@@ -1615,80 +2114,115 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        return tasks.deleteTask(taskNumber);"
+        "content": "        assert tasks !\u003d null : \"tasks shouldn\u0027t be null\";"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        assert ui !\u003d null : \"ui shouldn\u0027t be null\";"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        assert storage !\u003d null : \"storage shouldn\u0027t be null\";"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "        assert runnables !\u003d null : \"runnables shouldn\u0027t be null\";"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Returns whether the command is a command to exit."
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @return false."
+        "content": "        return tasks.deleteTask(taskNumber);"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    boolean isExit() {"
+        "content": "    /**"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        return false;"
+        "content": "     * Returns whether the command is a command to exit."
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "     * @return false."
       },
       {
         "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    boolean isExit() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
         "author": {
           "gitId": "csiongn"
         },
@@ -1696,7 +2230,296 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 39
+      "csiongn": 44
+    }
+  },
+  {
+    "path": "src/main/java/DeleteNoteCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Map;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " * Class representing commands to delete a task"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class DeleteNoteCommand extends Command {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Attributes"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private final int noteNumber;"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Constructor"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public DeleteNoteCommand(int noteNumber) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.noteNumber \u003d noteNumber;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Methods"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Executes the command to delete a note by deleting specified note from given NotesList."
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param tasks TaskList representing list of current tasks."
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param notes NotesList representing list of current notes."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param ui Ui object to handle printing of outputs."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param storage Storage object to handle saving of outputs to computer"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @throws IndexOutOfBoundsDukeException If note number is invalid."
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            throws IndexOutOfBoundsDukeException {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return notes.deleteNote(noteNumber);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Returns whether the command is a command to exit."
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @return false."
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    boolean isExit() {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 40
     }
   },
   {
@@ -1792,297 +2615,311 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "import javafx.scene.layout.HBox;"
+        "content": "import javafx.scene.layout.Background;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "import javafx.scene.layout.HBox;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "public class DialogBox extends HBox {"
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "public class DialogBox extends HBox {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @FXML"
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private Label dialog;"
+        "content": "    @FXML"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @FXML"
+        "content": "    private Label dialog;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private ImageView displayPicture;"
+        "content": "    @FXML"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    private ImageView displayPicture;"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private DialogBox(String text, Image image) {"
+        "content": ""
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        try {"
+        "content": "    private DialogBox(String text, Image image) {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            FXMLLoader fxmlLoader \u003d new FXMLLoader(MainWindow.class.getResource(\"/view/DialogBox.fxml\"));"
+        "content": "        try {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            fxmlLoader.setController(this);"
+        "content": "            FXMLLoader fxmlLoader \u003d new FXMLLoader(MainWindow.class.getResource(\"/view/DialogBox.fxml\"));"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            fxmlLoader.setRoot(this);"
+        "content": "            fxmlLoader.setController(this);"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            fxmlLoader.load();"
+        "content": "            fxmlLoader.setRoot(this);"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "            fxmlLoader.load();"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            e.printStackTrace();"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        dialog.setText(text);"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        displayPicture.setImage(image);"
+        "content": "        dialog.setText(text);"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        displayPicture.setImage(image);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Flips the dialog box such that the ImageView is on the left and text on the right."
+        "content": "    /**"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "     * Flips the dialog box such that the ImageView is on the left and text on the right."
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private void flip() {"
+        "content": "     */"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        ObservableList\u003cNode\u003e tmp \u003d FXCollections.observableArrayList(this.getChildren());"
+        "content": "    private void flip() {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        Collections.reverse(tmp);"
+        "content": "        ObservableList\u003cNode\u003e tmp \u003d FXCollections.observableArrayList(this.getChildren());"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        getChildren().setAll(tmp);"
+        "content": "        Collections.reverse(tmp);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        setAlignment(Pos.TOP_LEFT);"
+        "content": "        getChildren().setAll(tmp);"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        setAlignment(Pos.CENTER_LEFT);"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        dialog.setAlignment(Pos.CENTER_LEFT);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public static DialogBox getUserDialog(String text, Image img) {"
+        "content": "    }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        return new DialogBox(text, img);"
+        "content": ""
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "    public static DialogBox getUserDialog(String text, Image img) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        return new DialogBox(text, img);"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public static DialogBox getDukeDialog(String text, Image img) {"
+        "content": "    }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        var db \u003d new DialogBox(text, img);"
+        "content": ""
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        db.flip();"
+        "content": "    public static DialogBox getDukeDialog(String text, Image img) {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        return db;"
+        "content": "        var db \u003d new DialogBox(text, img);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        db.flip();"
       },
       {
         "lineNumber": 55,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return db;"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
         "author": {
           "gitId": "csiongn"
         },
@@ -2090,7 +2927,7 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 55
+      "csiongn": 57
     }
   },
   {
@@ -2277,7 +3114,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    String execute(TaskList tasks, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
+        "content": "    String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables)"
       },
       {
         "lineNumber": 27,
@@ -2447,220 +3284,255 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    private final NotesList notes;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    // Constructor"
+        "content": ""
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    // Constructor"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Creates a new duke bot that saves list of tasks to /data/todo.txt."
+        "content": "    /**"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "     * Creates a new duke bot that saves list of tasks to /data/todo.txt."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public Duke() {"
+        "content": "     */"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        this.ui \u003d new Ui();"
+        "content": "    public Duke() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        this.storage \u003d new Storage(\"./data/todo.txt\");"
+        "content": "        this.ui \u003d new Ui();"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        this.tasks \u003d storage.read();"
+        "content": "        this.storage \u003d new Storage(\"./data/todo.txt\", \"./data/notes.txt\");"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        if (storage.doesFileExistTasks()) {"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "            this.tasks \u003d storage.readTasks();"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Creates a new duke bot that saves list of tasks to a given filepath."
+        "content": "        } else {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @param filePath File path to save list of tasks to,"
+        "content": "            storage.createFileTasks();"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "            this.tasks \u003d new TaskList();"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public Duke(String filePath) {"
+        "content": "        }"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        this.ui \u003d new Ui();"
+        "content": ""
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        this.storage \u003d new Storage(filePath);"
+        "content": "        if (storage.doesFileExistNotes()) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        this.tasks \u003d storage.read();"
+        "content": "            this.notes \u003d storage.readNotes();"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        } else {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "            storage.createFileNotes();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    // Methods"
+        "content": "            this.notes \u003d new NotesList();"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    String getResponse(String fullCommand, Map\u003cString, Runnable\u003e runnables) {"
+        "content": "        }"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        try {"
+        "content": ""
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            Command c \u003d Parser.parse(fullCommand);"
+        "content": "    }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return c.execute(tasks, ui, storage, runnables);"
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        } catch (DukeException e) {"
+        "content": "    // Methods"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return e.toString();"
+        "content": "    String getResponse(String fullCommand, Map\u003cString, Runnable\u003e runnables) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "        try {"
       },
       {
         "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Command c \u003d Parser.parse(fullCommand);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return c.execute(tasks, notes, ui, storage, runnables);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (DukeException e) {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return e.toString();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 44,
         "author": {
           "gitId": "-"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 40,
+        "lineNumber": 45,
         "author": {
           "gitId": "-"
         },
@@ -2669,7 +3541,7 @@
     ],
     "authorContributionMap": {
       "-": 3,
-      "csiongn": 37
+      "csiongn": 42
     }
   },
   {
@@ -3135,101 +4007,108 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public String execute(TaskList tasks, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) {"
+        "content": "    public String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        storage.save(tasks);"
+        "content": "        storage.save(tasks, notes);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        runnables.get(\"handleExit\").run();"
+        "content": "        assert runnables.containsKey(\"handleExit\") : \"Runnable object should contain code for handleExit\";"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        return EXIT + \"\\n File saved!\";"
+        "content": "        runnables.get(\"handleExit\").run();"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        return EXIT + \"\\n File saved!\";"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Returns whether the command is a command to exit."
+        "content": "    /**"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @return true."
+        "content": "     * Returns whether the command is a command to exit."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "     * @return true."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    boolean isExit() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        return true;"
+        "content": "    boolean isExit() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        return true;"
       },
       {
         "lineNumber": 35,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
         "author": {
           "gitId": "csiongn"
         },
@@ -3237,7 +4116,7 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 35
+      "csiongn": 36
     }
   },
   {
@@ -3347,7 +4226,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    String execute(TaskList tasks, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) {"
+        "content": "    String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) {"
       },
       {
         "lineNumber": 16,
@@ -3661,7 +4540,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    String execute(TaskList tasks, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) {"
+        "content": "    String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) {"
       },
       {
         "lineNumber": 16,
@@ -3757,6 +4636,295 @@
     ],
     "authorContributionMap": {
       "csiongn": 28
+    }
+  },
+  {
+    "path": "src/main/java/ListNotesCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Map;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " * Command to list the current tasks the user has."
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class ListNotesCommand extends Command {"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Executes the ListCommand by printing the list of tasks."
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param tasks the current list of tasks."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param ui Ui object to handle printing."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    k * @param storage Storage object."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    String execute(TaskList tasks, NotesList notes, Ui ui, Storage storage, Map\u003cString, Runnable\u003e runnables) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return String.format(\"Here are the notes in your list!\\n\""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                + \"%s\", notes);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Returns whether the command is a command to exit."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @return false."
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public boolean isExit() {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public boolean equals(Object o) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        if (this \u003d\u003d o) {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return true;"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        if (o \u003d\u003d null || getClass() !\u003d o.getClass()) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return false;"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return true;"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 40
     }
   },
   {
@@ -4176,14 +5344,14 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private final Image userImage \u003d new Image(this.getClass().getResourceAsStream(\"/images/Jigglypuff.jpg\"));"
+        "content": "    private final Image dukeImage \u003d new Image(this.getClass().getResourceAsStream(\"/images/Jigglypuff.jpg\"));"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private final Image dukeImage \u003d new Image(this.getClass().getResourceAsStream(\"/images/Pikachu.png\"));"
+        "content": "    private final Image userImage \u003d new Image(this.getClass().getResourceAsStream(\"/images/Pikachu.png\"));"
       },
       {
         "lineNumber": 31,
@@ -4204,77 +5372,562 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        userInput.setDisable(true);"
+        "content": "        assert !userInput.isDisable() : \"User input should not be disabled when calling handleExit\";"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        sendButton.setDisable(true);"
+        "content": "        assert !sendButton.isDisable() : \"Button to send message should not be disabled when calling handleExit\";"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    };"
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        userInput.setDisable(true);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private final Map\u003cString, Runnable\u003e runnables \u003d Stream.of("
+        "content": "        sendButton.setDisable(true);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            new AbstractMap.SimpleEntry\u003c\u003e(\"handleExit\", this.handleExit))"
+        "content": "    };"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));"
+        "content": ""
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    private final Map\u003cString, Runnable\u003e runnables \u003d Stream.of("
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @FXML"
+        "content": "            new AbstractMap.SimpleEntry\u003c\u003e(\"handleExit\", this.handleExit))"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public void initialize() {"
+        "content": "            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "csiongn"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @FXML"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void initialize() {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "csiongn"
+        },
         "content": "        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void setDuke(Duke d) {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        duke \u003d d;"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Creates two dialog boxes, one echoing user input and the other containing Duke\u0027s reply and then appends them to"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * the dialog container. Clears the user input after processing."
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @FXML"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private void handleUserInput() {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String input \u003d userInput.getText();"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String response \u003d duke.getResponse(input, this.runnables);"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        dialogContainer.getChildren().addAll("
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                DialogBox.getUserDialog(input, userImage),"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                DialogBox.getDukeDialog(response, dukeImage)"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        );"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        userInput.clear();"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 68
+    }
+  },
+  {
+    "path": "src/main/java/Note.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.io.Serializable;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Map;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class Note implements Serializable {"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Static Variables"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private static int count \u003d 0;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Attributes"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private int id;"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private String title;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private Priority priority;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private String description;"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private boolean isArchived;"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Constructor"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private Note(int id, String title, Priority priority, String description, boolean isArchived) {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.id \u003d id;"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.title \u003d title;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.priority \u003d priority;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.description \u003d description;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.isArchived \u003d isArchived;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Static Factory Methods"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public static Note createNote(String title, String description, Priority priority) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        Validator.requireNonNull(title, description, priority);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        int id \u003d count;"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        count +\u003d 1;"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return new Note(id, title, priority, description, false);"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // Methods"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void archive() {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        if (!this.isArchived) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            this.isArchived \u003d true;"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            throw new UnsupportedOperationException(\"Note is already archived.\");"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void editDescription(String newDescription) {"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        this.description \u003d newDescription;"
       },
       {
         "lineNumber": 44,
@@ -4295,14 +5948,14 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public void setDuke(Duke d) {"
+        "content": "    public void editTitle(String newTitle) {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        duke \u003d d;"
+        "content": "        this.title \u003d title;"
       },
       {
         "lineNumber": 48,
@@ -4323,108 +5976,45 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "    // String Representation"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Creates two dialog boxes, one echoing user input and the other containing Duke\u0027s reply and then appends them to"
+        "content": "    @Override"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * the dialog container. Clears the user input after processing."
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "        return String.format(\"[%s] %s: %s\", this.priority.toString().charAt(0), this.title, this.description);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @FXML"
+        "content": "    }"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private void handleUserInput() {"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        String input \u003d userInput.getText();"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        String response \u003d duke.getResponse(input, this.runnables);"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "csiongn"
-        },
         "content": ""
       },
       {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        dialogContainer.getChildren().addAll("
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "                DialogBox.getUserDialog(input, userImage),"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "                DialogBox.getDukeDialog(response, dukeImage)"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        );"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        userInput.clear();"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 65,
+        "lineNumber": 56,
         "author": {
           "gitId": "csiongn"
         },
@@ -4432,11 +6022,11 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 65
+      "csiongn": 56
     }
   },
   {
-    "path": "src/main/java/Parser.java",
+    "path": "src/main/java/NotesList.java",
     "fileType": "java",
     "lines": [
       {
@@ -4444,28 +6034,28 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "/**"
+        "content": "import java.io.Serializable;"
       },
       {
         "lineNumber": 2,
         "author": {
           "gitId": "csiongn"
         },
-        "content": " * Class to handle parsing of input into commands."
+        "content": "import java.util.ArrayList;"
       },
       {
         "lineNumber": 3,
         "author": {
           "gitId": "csiongn"
         },
-        "content": " */"
+        "content": "import java.util.Arrays;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "public class Parser {"
+        "content": "import java.util.List;"
       },
       {
         "lineNumber": 5,
@@ -4479,175 +6069,695 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "public class NotesList implements Serializable {"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Parses the given command in string form into a Command object."
+        "content": ""
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @param textCommand the command to be parsed in string formed."
+        "content": "    // Attributes"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @return Command after being parsed."
+        "content": "    private final List\u003cNote\u003e notesList;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @throws EmptyBodyException If command in string form is empty."
+        "content": ""
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @throws UnknownInputException If command in string form is not a recognised command."
+        "content": "    // Constructor"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public static Command parse(String textCommand) throws EmptyBodyException, UnknownInputException {"
+        "content": "    /**"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        String[] words \u003d textCommand.split(\" \", 2);"
+        "content": "     * Creates a new TaskList."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        String firstWord \u003d words[0];"
+        "content": "     */"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        String remaining \u003d words.length \u003e 1 ? words[1] : \"\";"
+        "content": "    public NotesList() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        this.notesList \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        switch (firstWord) {"
+        "content": "    }"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"bye\":"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new ExitCommand();"
+        "content": "    public NotesList(List\u003cNote\u003e listofNotes) {"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"list\":"
+        "content": "        this.notesList \u003d listofNotes;"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new ListCommand();"
+        "content": "    }"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"delete\": {"
+        "content": ""
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            if (remaining.equals(\"\")) {"
+        "content": "    // Methods"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                throw new EmptyBodyException(\"task number\", \"task\");"
+        "content": ""
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            }"
+        "content": "    /**"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            int taskNumber \u003d Integer.parseInt(remaining);"
+        "content": "     * Adds a new note into the NotesList."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new DeleteCommand(taskNumber);"
+        "content": "     * @param newNote note to be added into the NotesList."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "     * @return String denoting result of adding the note into the NotesList."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"done\": {"
+        "content": "     */"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public String createNote(Note newNote) {"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        notesList.add(newNote);"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        int newSize \u003d notesList.size();"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String noteText \u003d String.format(\"Got it. I\u0027ve added this note:\\n\""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                + \" %s\\n\""
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                + \"Now you have %s tasks in the list\", newNote, newSize);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return noteText;"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Deletes a note with specified note number."
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param noteNumber note number of note to be deleted."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @return String denoting result of deleting note."
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @throws IndexOutOfBoundsDukeException If note number given is not valid."
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public String deleteNote(int noteNumber) throws IndexOutOfBoundsDukeException {"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Note note \u003d notesList.get(noteNumber - 1);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            notesList.remove(noteNumber - 1);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String deleteText \u003d String.format(\"Okay. I\u0027ve removed this note:\\n\""
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    + \" %s\", note);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return deleteText;"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (IndexOutOfBoundsException e) {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            throw new IndexOutOfBoundsDukeException(noteNumber, notesList.size(), \"note\");"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // String Representation"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        StringBuilder sb \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        int sizeOfList \u003d notesList.size();"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        for (int i \u003d 0; i \u003c sizeOfList; i++) {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            int number \u003d i + 1;"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String text \u003d notesList.get(i).toString();"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            sb.append(String.format(\" %s. %s\\n\", number, text));"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        return sb.toString();"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 73
+    }
+  },
+  {
+    "path": "src/main/java/Parser.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Arrays;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.HashMap;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Map;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.MissingFormatArgumentException;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " * Class to handle parsing of input into commands."
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class Parser {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Parses the given command in string form into a Command object."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param textCommand the command to be parsed in string form."
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @return Command after being parsed."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @throws EmptyBodyException    If command in string form is empty."
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @throws UnknownInputException If command in string form is not a recognised command."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public static Command parse(String textCommand) throws EmptyBodyException, UnknownInputException {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String[] words \u003d textCommand.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String firstWord \u003d words[0];"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String remaining \u003d words.length \u003e 1 ? words[1] : \"\";"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        switch (firstWord) {"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"bye\":"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return new ExitCommand();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"list\":"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return new ListCommand();"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"delete\": {"
       },
       {
         "lineNumber": 31,
@@ -4682,7 +6792,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new DoneCommand(taskNumber);"
+        "content": "            return new DeleteCommand(taskNumber);"
       },
       {
         "lineNumber": 36,
@@ -4696,115 +6806,997 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"todo\": {"
+        "content": "        case \"done\": {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new AddCommand(\"todo\", remaining);"
+        "content": "            if (remaining.equals(\"\")) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "                throw new EmptyBodyException(\"task number\", \"task\");"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"deadline\": {"
+        "content": "            }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new AddCommand(\"deadline\", remaining);"
+        "content": "            int taskNumber \u003d Integer.parseInt(remaining);"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "            return new DoneCommand(taskNumber);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"event\": {"
+        "content": "        }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new AddCommand(\"event\", remaining);"
+        "content": "        case \"todo\": {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "            return new AddCommand(TaskType.TODO, remaining);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        case \"find\": {"
+        "content": "        }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new FindCommand(remaining);"
+        "content": "        case \"deadline\": {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "            return new AddCommand(TaskType.DEADLINE, remaining);"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        default:"
+        "content": "        }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            throw new UnknownInputException(firstWord);"
+        "content": "        case \"event\": {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "            return new AddCommand(TaskType.EVENT, remaining);"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 53,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"find\": {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return new FindCommand(remaining);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"notes\": {"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return parseNotesCommand(remaining);"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            throw new UnknownInputException(firstWord);"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Parses the given notes portion of command in string form into a Command object."
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param command the notes portion of command to be parsed in string form."
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @return Command after being parsed."
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @throws EmptyBodyException    If command in string form is empty."
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @throws UnknownInputException If command in string form is not a recognised command."
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public static Command parseNotesCommand(String command) throws UnknownInputException, EmptyBodyException {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        Validator.requireNonNull(command);"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String[] words \u003d command.split(\" \", 2);"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String firstWord \u003d words[0];"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String remaining \u003d words.length \u003e 1 ? words[1] : \"\";"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String title \u003d null;"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String description \u003d null;"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        Priority priority \u003d null;"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        if (words.length \u003e 1) {"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            // Formatting command parameters"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            List\u003cString\u003e rawParameters \u003d Arrays.asList(remaining.split(\" (?\u003d\\\\w*[a-z]+\\\\/)\"));"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Map\u003cString, Object\u003e parameters \u003d new HashMap\u003c\u003e();"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            rawParameters.forEach(parameter -\u003e {"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                String[] rawSplitParameters \u003d parameter.split(\"/\", 2);"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                if (rawSplitParameters.length \u003e 1) {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    String name \u003d rawSplitParameters[0];"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    Object value \u003d rawSplitParameters[1];"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    parameters.put(name, value);"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            });"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            // Parsing command parameters"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            for (Map.Entry\u003cString, Object\u003e entry : parameters.entrySet()) {"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                switch (entry.getKey()) {"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                case \"title\":"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                case \"t\": {"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    title \u003d (String) entry.getValue();"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                case \"description\":"
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                case \"d\": {"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    description \u003d (String) entry.getValue();"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                case \"priority\":"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                case \"p\": {"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    priority \u003d parsePriority((String) entry.getValue());"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    break;"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                default: {"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                    throw new UnknownInputException(\"Unknown parameter name \" + entry.getKey()); //todo change to duke exceptions"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                }"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        switch (firstWord) {"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"add\": {"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            try {"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                Validator.requireNonNull(title, description, priority);"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                return new AddNoteCommand(title, description, priority);"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            } catch (NullPointerException e) {"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                e.printStackTrace();"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                throw new MissingFormatArgumentException(\"\"); // todo: need implement"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"list\": {"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return new ListNotesCommand();"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"delete\": {"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            if (remaining.equals(\"\")) {"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                throw new EmptyBodyException(\"note number\", \"note\");"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            int taskNumber \u003d Integer.parseInt(remaining);"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return new DeleteNoteCommand(taskNumber);"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        default: {"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            throw new UnknownInputException(\"Unknown notes command: \" + firstWord); //todo change to duke exceptions"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * Parses a string representing priority into a Priority object."
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @param priority String form of priority."
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @return Priority object with priority."
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     * @throws UnknownInputException If string does not represent a recognised priority."
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private static Priority parsePriority(String priority) throws UnknownInputException {"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        switch (priority) {"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"high\":"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"h\":"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"High\": {"
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return Priority.HIGH;"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"medium\":"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"m\":"
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"Medium\": {"
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return Priority.MEDIUM;"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"low\":"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"l\":"
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        case \"Low\": {"
+      },
+      {
+        "lineNumber": 173,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return Priority.LOW;"
+      },
+      {
+        "lineNumber": 174,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 175,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        default:"
+      },
+      {
+        "lineNumber": 176,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            throw new UnknownInputException(\"Unknown priority: \" + priority); // todo: change exception name"
+      },
+      {
+        "lineNumber": 177,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 178,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 179,
         "author": {
           "gitId": "csiongn"
         },
@@ -4812,7 +7804,37 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 53
+      "csiongn": 179
+    }
+  },
+  {
+    "path": "src/main/java/Priority.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public enum Priority {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    LOW, MEDIUM, HIGH"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 3
     }
   },
   {
@@ -4915,514 +7937,654 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private final String filePath;"
+        "content": "    private final String filePathTasks;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    private final String filePathNotes;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    // Constructor"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    // Constructor"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "    public Storage(String filePathTasks, String filePathNotes) {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Creates a storage object that reads and writes to a file at a specified filepath."
+        "content": "        this.filePathTasks \u003d filePathTasks;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     *"
+        "content": "        this.filePathNotes \u003d filePathNotes;"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @param filePath file path of file to read and write to."
+        "content": "    }"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public Storage(String filePath) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        this.filePath \u003d filePath;"
+        "content": "     * Checks whether the file exists."
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "     * @return Boolean representing whether the file exists."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Checks whether the file exists."
+        "content": "    public boolean doesFileExistTasks() {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     *"
+        "content": "        File file \u003d new File(this.filePathTasks);"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @return Boolean representing whether the file exists."
+        "content": "        return file.exists();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public boolean doesFileExist() {"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        File file \u003d new File(this.filePath);"
+        "content": "    public boolean doesFileExistNotes() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        return file.exists();"
+        "content": "        File file \u003d new File(this.filePathNotes);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "        return file.exists();"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Creates the file"
+        "content": "    public void createFileTasks() {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "        try {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public void createFile() throws IOException {"
+        "content": "            File file \u003d new File(this.filePathTasks);"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        File file \u003d new File(this.filePath);"
+        "content": "            file.getParentFile().mkdirs();"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        boolean createdDirectory \u003d file.getParentFile().mkdirs();"
+        "content": "            file.createNewFile();"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        boolean createdFile \u003d file.createNewFile();"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Saves a list to the file. Creates the file if it does not exist."
+        "content": ""
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     *"
+        "content": "    public void createFileNotes() {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @param lst TaskList to save to the file."
+        "content": "        try {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "            File file \u003d new File(this.filePathNotes);"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public void save(TaskList lst) {"
+        "content": "            file.getParentFile().mkdirs();"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        try {"
+        "content": "            file.createNewFile();"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            FileOutputStream fileOutputStream \u003d new FileOutputStream(this.filePath);"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            ObjectOutputStream objectOutputStream \u003d new ObjectOutputStream(fileOutputStream);"
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            objectOutputStream.writeObject(lst);"
+        "content": "        }"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            objectOutputStream.close();"
+        "content": "    }"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        } catch (IOException e) {"
+        "content": ""
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            e.printStackTrace();"
+        "content": "    public void save(TaskList tasks, NotesList notes) {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "        try {"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "            FileOutputStream fileOutputStream \u003d new FileOutputStream(this.filePathTasks);"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "            ObjectOutputStream objectOutputStream \u003d new ObjectOutputStream(fileOutputStream);"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    /**"
+        "content": "            objectOutputStream.writeObject(tasks);"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * Reads from the file containing a TaskList and returns it. If file does not exist, returns an"
+        "content": "            objectOutputStream.close();"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * empty file."
+        "content": ""
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     *"
+        "content": "            fileOutputStream \u003d new FileOutputStream(this.filePathNotes);"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     * @return The TaskList read from the file if one is read, otherwise an empty TaskList."
+        "content": "            objectOutputStream \u003d new ObjectOutputStream(fileOutputStream);"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "     */"
+        "content": "            objectOutputStream.writeObject(notes);"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public TaskList read() {"
+        "content": "            objectOutputStream.close();"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        try {"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            if (doesFileExist()) {"
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                FileInputStream fileInputStream \u003d new FileInputStream(this.filePath);"
+        "content": "        }"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                ObjectInputStream objectInputStream \u003d new ObjectInputStream(fileInputStream);"
+        "content": "    }"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                TaskList lst \u003d (TaskList) objectInputStream.readObject();"
+        "content": ""
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                objectInputStream.close();"
+        "content": "    public TaskList readTasks() {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                return lst;"
+        "content": "        try {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            } else {"
+        "content": "            if (!doesFileExistTasks()) {"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                createFile();"
+        "content": "                throw new UnsupportedOperationException(\"File does not exist\");"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                return new TaskList();"
+        "content": "            }"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            }"
+        "content": "            FileInputStream fileInputStream \u003d new FileInputStream(this.filePathTasks);"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "            ObjectInputStream objectInputStream \u003d new ObjectInputStream(fileInputStream);"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        } catch (IOException | ClassNotFoundException e) {"
+        "content": "            TaskList tasks \u003d (TaskList) objectInputStream.readObject();"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            System.out.println(\"Error reading file\");"
+        "content": "            objectInputStream.close();"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            e.printStackTrace();"
+        "content": "            return tasks;"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            return new TaskList(); // Returns an empty list so that program can keep running"
+        "content": "        } catch (IOException | ClassNotFoundException e) {"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "            System.out.println(\"Error reading file\");"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 87,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return new TaskList();"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public NotesList readNotes() {"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            if (!doesFileExistNotes()) {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                throw new UnsupportedOperationException(\"File does not exist\");"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            FileInputStream fileInputStream \u003d new FileInputStream(this.filePathNotes);"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            ObjectInputStream objectInputStream \u003d new ObjectInputStream(fileInputStream);"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            NotesList notes \u003d (NotesList) objectInputStream.readObject();"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            objectInputStream.close();"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return notes;"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (IOException | ClassNotFoundException e) {"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            System.out.println(\"Error reading file\");"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            return new NotesList();"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 107,
         "author": {
           "gitId": "csiongn"
         },
@@ -5430,7 +8592,7 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 87
+      "csiongn": 107
     }
   },
   {
@@ -6537,6 +9699,50 @@
     }
   },
   {
+    "path": "src/main/java/TaskType.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public enum TaskType {"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    TODO,"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    EVENT,"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    DEADLINE"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 5
+    }
+  },
+  {
     "path": "src/main/java/Todo.java",
     "fileType": "java",
     "lines": [
@@ -7229,6 +10435,183 @@
     }
   },
   {
+    "path": "src/main/java/Validator.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Arrays;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Collection;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import java.util.Objects;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " * Class to store helper functions to validate variables"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class Validator {"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    // todo: fix ambiguous method call for requireNonNull(null) \u003c- not sure which method to call"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public static void requireNonNull(Object object) {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        Objects.requireNonNull(object);"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public static void requireNonNull(Object... objects) {"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        Arrays.stream(objects).forEach(Objects::requireNonNull);"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public static void requireNonNull(Collection\u003cObject\u003e objects) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        objects.forEach(Objects::requireNonNull);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 24
+    }
+  },
+  {
     "path": "src/main/resources/view/DialogBox.fxml",
     "fileType": "fxml",
     "lines": [
@@ -7258,87 +10641,150 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "\u003c?import javafx.scene.control.Label?\u003e"
+        "content": "\u003c?import javafx.geometry.Point3D?\u003e"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "\u003c?import javafx.scene.image.ImageView?\u003e"
+        "content": "\u003c?import javafx.scene.control.Label?\u003e"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "\u003c?import javafx.scene.layout.HBox?\u003e"
+        "content": "\u003c?import javafx.scene.image.ImageView?\u003e"
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "\u003c?import javafx.scene.layout.HBox?\u003e"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "\u003cfx:root alignment\u003d\"TOP_RIGHT\" maxHeight\u003d\"1.7976931348623157E308\" maxWidth\u003d\"1.7976931348623157E308\" prefWidth\u003d\"400.0\" type\u003d\"javafx.scene.layout.HBox\" xmlns\u003d\"http://javafx.com/javafx/8.0.171\" xmlns:fx\u003d\"http://javafx.com/fxml/1\"\u003e"
+        "content": "\u003c?import javafx.scene.text.Font?\u003e"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    \u003cchildren\u003e"
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        \u003cLabel fx:id\u003d\"dialog\" text\u003d\"Label\" wrapText\u003d\"true\" /\u003e"
+        "content": "\u003cfx:root alignment\u003d\"TOP_RIGHT\" maxHeight\u003d\"1.7976931348623157E308\" maxWidth\u003d\"1.7976931348623157E308\" prefWidth\u003d\"400.0\" type\u003d\"javafx.scene.layout.HBox\" xmlns\u003d\"http://javafx.com/javafx/11.0.1\" xmlns:fx\u003d\"http://javafx.com/fxml/1\"\u003e"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        \u003cImageView fx:id\u003d\"displayPicture\" fitHeight\u003d\"99.0\" fitWidth\u003d\"99.0\" pickOnBounds\u003d\"true\" preserveRatio\u003d\"true\" /\u003e"
+        "content": "    \u003cchildren\u003e"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    \u003c/children\u003e"
+        "content": "        \u003cLabel fx:id\u003d\"dialog\" alignment\u003d\"CENTER_RIGHT\" graphicTextGap\u003d\"0.0\" text\u003d\"Label\" wrapText\u003d\"true\"\u003e"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    \u003cpadding\u003e"
+        "content": "         \u003cfont\u003e"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        \u003cInsets bottom\u003d\"15.0\" left\u003d\"5.0\" right\u003d\"5.0\" top\u003d\"15.0\" /\u003e"
+        "content": "            \u003cFont name\u003d\"Comic Sans MS\" size\u003d\"13.0\" /\u003e"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    \u003c/padding\u003e"
+        "content": "         \u003c/font\u003e"
       },
       {
         "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "         \u003crotationAxis\u003e"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            \u003cPoint3D /\u003e"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "         \u003c/rotationAxis\u003e"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        \u003c/Label\u003e"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        \u003cImageView fx:id\u003d\"displayPicture\" fitHeight\u003d\"99.0\" fitWidth\u003d\"99.0\" pickOnBounds\u003d\"true\" preserveRatio\u003d\"true\" /\u003e"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    \u003c/children\u003e"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    \u003cpadding\u003e"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        \u003cInsets bottom\u003d\"15.0\" left\u003d\"5.0\" right\u003d\"5.0\" top\u003d\"15.0\" /\u003e"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    \u003c/padding\u003e"
+      },
+      {
+        "lineNumber": 25,
         "author": {
           "gitId": "csiongn"
         },
@@ -7346,7 +10792,7 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 16
+      "csiongn": 25
     }
   },
   {
@@ -7407,21 +10853,21 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "\u003c?import javafx.scene.text.Font?\u003e"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "\u003cAnchorPane maxHeight\u003d\"-Infinity\" maxWidth\u003d\"-Infinity\" minHeight\u003d\"-Infinity\" minWidth\u003d\"-Infinity\" prefHeight\u003d\"600.0\" prefWidth\u003d\"400.0\" xmlns\u003d\"http://javafx.com/javafx/8.0.171\" xmlns:fx\u003d\"http://javafx.com/fxml/1\" fx:controller\u003d\"MainWindow\""
+        "content": ""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            stylesheets\u003d\"@../stylesheets/stylesheet.css\"\u003e"
+        "content": "\u003cAnchorPane maxHeight\u003d\"-Infinity\" maxWidth\u003d\"-Infinity\" minHeight\u003d\"-Infinity\" minWidth\u003d\"-Infinity\" prefHeight\u003d\"600.0\" prefWidth\u003d\"400.0\" stylesheets\u003d\"@../stylesheets/stylesheet.css\" xmlns\u003d\"http://javafx.com/javafx/11.0.1\" xmlns:fx\u003d\"http://javafx.com/fxml/1\" fx:controller\u003d\"MainWindow\"\u003e"
       },
       {
         "lineNumber": 11,
@@ -7435,59 +10881,80 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        \u003cTextField fx:id\u003d\"userInput\" layoutY\u003d\"558.0\" onAction\u003d\"#handleUserInput\" prefHeight\u003d\"41.0\" prefWidth\u003d\"324.0\" AnchorPane.bottomAnchor\u003d\"1.0\" /\u003e"
+        "content": "        \u003cTextField fx:id\u003d\"userInput\" layoutY\u003d\"558.0\" onAction\u003d\"#handleUserInput\" prefHeight\u003d\"41.0\" prefWidth\u003d\"324.0\" style\u003d\"-fx-background-color: #E5EDB7;\" AnchorPane.bottomAnchor\u003d\"1.0\" /\u003e"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        \u003cButton fx:id\u003d\"sendButton\" layoutX\u003d\"324.0\" layoutY\u003d\"558.0\" mnemonicParsing\u003d\"false\" onAction\u003d\"#handleUserInput\" prefHeight\u003d\"41.0\" prefWidth\u003d\"76.0\" text\u003d\"Send\" /\u003e"
+        "content": "        \u003cButton fx:id\u003d\"sendButton\" layoutX\u003d\"324.0\" layoutY\u003d\"558.0\" mnemonicParsing\u003d\"false\" onAction\u003d\"#handleUserInput\" prefHeight\u003d\"41.0\" prefWidth\u003d\"76.0\" style\u003d\"-fx-background-color: #8BCDCD; -fx-border-color: black; -fx-border-width: 0.4;\" text\u003d\"Send\"\u003e"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        \u003cScrollPane fx:id\u003d\"scrollPane\" hbarPolicy\u003d\"NEVER\" hvalue\u003d\"1.0\" prefHeight\u003d\"557.0\" prefWidth\u003d\"400.0\" vvalue\u003d\"1.0\"\u003e"
+        "content": "         \u003cfont\u003e"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            \u003ccontent\u003e"
+        "content": "            \u003cFont name\u003d\"Marker Felt Thin\" size\u003d\"12.0\" /\u003e"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                \u003cVBox fx:id\u003d\"dialogContainer\" prefHeight\u003d\"552.0\" prefWidth\u003d\"388.0\" /\u003e"
+        "content": "         \u003c/font\u003e\u003c/Button\u003e"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            \u003c/content\u003e"
+        "content": "        \u003cScrollPane fx:id\u003d\"scrollPane\" hbarPolicy\u003d\"NEVER\" hvalue\u003d\"1.0\" prefHeight\u003d\"557.0\" prefWidth\u003d\"400.0\" vvalue\u003d\"1.0\"\u003e"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        \u003c/ScrollPane\u003e"
+        "content": "            \u003ccontent\u003e"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    \u003c/children\u003e"
+        "content": "                \u003cVBox fx:id\u003d\"dialogContainer\" prefHeight\u003d\"552.0\" prefWidth\u003d\"388.0\" style\u003d\"-fx-background-color: #63664f#63664f;\" /\u003e"
       },
       {
         "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            \u003c/content\u003e"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        \u003c/ScrollPane\u003e"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    \u003c/children\u003e"
+      },
+      {
+        "lineNumber": 23,
         "author": {
           "gitId": "csiongn"
         },
@@ -7495,11 +10962,11 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 20
+      "csiongn": 23
     }
   },
   {
-    "path": "src/test/java/TaskListTest.java",
+    "path": "src/test/java/ParserTest.java",
     "fileType": "java",
     "lines": [
       {
@@ -7542,7 +11009,7 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "public class TaskListTest {"
+        "content": "public class ParserTest {"
       },
       {
         "lineNumber": 7,
@@ -7556,126 +11023,851 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    private final TaskList tasks \u003d new TaskList();"
+        "content": "    @Test"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    public void parseNotesCommand_addNewNote() {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @Test"
+        "content": "        try {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public void createTask_emptyTaskList() {"
+        "content": "            Command addNoteCommand \u003d Parser.parseNotesCommand(\"add t/hehe d/it\u0027s week 5 p/low\");"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        String expected \u003d \"Got it. I\u0027ve added this task:\\n\""
+        "content": "            Command expectedNoteCommand \u003d new AddNoteCommand(\"hehe\", \"it\u0027s week 5\", Priority.LOW);"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                + \" [T][✘] cry\\n\""
+        "content": "            assertEquals(expectedNoteCommand, addNoteCommand);"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "                + \"Now you have 1 tasks in the list\";"
+        "content": "        } catch (Exception e) {"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "            e.printStackTrace();"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        try {"
+        "content": "            fail();"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            Task newTask \u003d new Todo(\"cry\");"
+        "content": "        }"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            String actual \u003d tasks.createTask(newTask);"
+        "content": "    }"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            assertEquals(expected, actual);"
+        "content": ""
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    @Test"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        } catch (EmptyBodyException e) {"
+        "content": "    public void parseNotesCommand_listNotes() {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            e.printStackTrace();"
+        "content": "        try {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            fail();"
+        "content": "            Command listNotesCommand \u003d Parser.parseNotesCommand(\"list\");"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "            Command expectedNoteCommand \u003d new ListNotesCommand();"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "csiongn"
         },
+        "content": "            assertEquals(expectedNoteCommand, listNotesCommand);"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (Exception e) {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "csiongn"
+        },
         "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 31
+    }
+  },
+  {
+    "path": "src/test/java/TaskListTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertThrows;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.fail;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class TaskListTest {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    private final TaskList tasks \u003d new TaskList();"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void createTask_emptyTaskList() {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String expected \u003d \"Got it. I\u0027ve added this task:\\n\""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                + \" [T][✘] cry\\n\""
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                + \"Now you have 1 tasks in the list\";"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Task newTask \u003d new Todo(\"cry\");"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String actual \u003d tasks.createTask(newTask);"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            assertEquals(expected, actual);"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (EmptyBodyException e) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void markAsDone_task() {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String expected \u003d \"Nice! I\u0027ve marked this task as done:\\n\""
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                + \" [T][✓] cry\";"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Task newTask \u003d new Todo(\"cry\");"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            tasks.createTask(newTask);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String actual \u003d tasks.markAsDone(1);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            assertEquals(expected, actual);"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (IndexOutOfBoundsDukeException | EmptyBodyException e) {"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void deleteTask_task() {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String expected \u003d \"Okay. I\u0027ve removed this task:\\n\""
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "                + \" [T][✘] cry\";"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Task newTask \u003d new Todo(\"cry\");"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            tasks.createTask(newTask);"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String actual \u003d tasks.deleteTask(1);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            assertEquals(expected, actual);"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (IndexOutOfBoundsDukeException | EmptyBodyException e) {"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            e.printStackTrace();"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            fail();"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void toString_task() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String expected \u003d \" 1. [T][✘] cry\\n\";"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            Task newTask \u003d new Todo(\"cry\");"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            tasks.createTask(newTask);"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String actual \u003d tasks.toString();"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            assertEquals(expected, actual);"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (EmptyBodyException e) {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            fail(\"Expected: \" + expected + \"\\n Actual:\" + e.toString());"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "csiongn": 70
+    }
+  },
+  {
+    "path": "src/test/java/TodoTest.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.assertThrows;"
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import static org.junit.jupiter.api.Assertions.fail;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "import org.junit.jupiter.api.Test;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "public class TodoTest {"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void toString_creatingTodo() {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String expected \u003d \"[T][✘] hehe\";"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            String actual \u003d new Todo(\"hehe\").toString();"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            assertEquals(expected, actual);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        } catch (EmptyBodyException e) {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "            fail(\"Expected: \" + expected + \"\\n Actual:\" + e.toString());"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    @Test"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "    public void toString_creatingTodoWithEmptyDescription_exceptionThrown() {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        String expectedMessage \u003d \":((( OOPS!!! The description of a class Todo cannot be empty.\";"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        EmptyBodyException e \u003d assertThrows(EmptyBodyException.class, () -\u003e new Todo(\"\"));"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "csiongn"
+        },
+        "content": "        assertEquals(expectedMessage, e.getMessage());"
       },
       {
         "lineNumber": 26,
@@ -7689,297 +11881,10 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @Test"
+        "content": "    }"
       },
       {
         "lineNumber": 28,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    public void markAsDone_task() {"
-      },
-      {
-        "lineNumber": 29,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        String expected \u003d \"Nice! I\u0027ve marked this task as done:\\n\""
-      },
-      {
-        "lineNumber": 30,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "                + \" [T][✓] cry\";"
-      },
-      {
-        "lineNumber": 31,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            Task newTask \u003d new Todo(\"cry\");"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            tasks.createTask(newTask);"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            String actual \u003d tasks.markAsDone(1);"
-      },
-      {
-        "lineNumber": 35,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            assertEquals(expected, actual);"
-      },
-      {
-        "lineNumber": 36,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        } catch (IndexOutOfBoundsDukeException | EmptyBodyException e) {"
-      },
-      {
-        "lineNumber": 37,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 38,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            fail();"
-      },
-      {
-        "lineNumber": 39,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 40,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 41,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 42,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    @Test"
-      },
-      {
-        "lineNumber": 43,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    public void deleteTask_task() {"
-      },
-      {
-        "lineNumber": 44,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        String expected \u003d \"Okay. I\u0027ve removed this task:\\n\""
-      },
-      {
-        "lineNumber": 45,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "                + \" [T][✘] cry\";"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            Task newTask \u003d new Todo(\"cry\");"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            tasks.createTask(newTask);"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            String actual \u003d tasks.deleteTask(1);"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            assertEquals(expected, actual);"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        } catch (IndexOutOfBoundsDukeException | EmptyBodyException e) {"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            e.printStackTrace();"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            fail();"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    @Test"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    public void toString_task() {"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        String expected \u003d \" 1. [T][✘] cry\\n\";"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        try {"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            Task newTask \u003d new Todo(\"cry\");"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            tasks.createTask(newTask);"
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            String actual \u003d tasks.toString();"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            assertEquals(expected, actual);"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        } catch (EmptyBodyException e) {"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "            fail(\"Expected: \" + expected + \"\\n Actual:\" + e.toString());"
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 69,
         "author": {
           "gitId": "csiongn"
         },
@@ -7987,11 +11892,11 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 69
+      "csiongn": 28
     }
   },
   {
-    "path": "src/test/java/TodoTest.java",
+    "path": "src/test/java/ValidatorTest.java",
     "fileType": "java",
     "lines": [
       {
@@ -8013,150 +11918,136 @@
         "author": {
           "gitId": "csiongn"
         },
-        "content": "public class TodoTest {"
+        "content": "import static org.junit.jupiter.api.Assertions.assertEquals;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "import static org.junit.jupiter.api.Assertions.assertThrows;"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @Test"
+        "content": "import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public void toString_creatingTodo() {"
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        String expected \u003d \"[T][✘] hehe\";"
+        "content": "public class ValidatorTest {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        try {"
+        "content": ""
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            String actual \u003d new Todo(\"hehe\").toString();"
+        "content": "    @Test"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            assertEquals(expected, actual);"
+        "content": "    public void requireNonNull_passNullIn_exceptionThrown() {"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        } catch (EmptyBodyException e) {"
+        "content": "        assertThrows(NullPointerException.class, () -\u003e Validator.requireNonNull(null, null, null));"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "            fail(\"Expected: \" + expected + \"\\n Actual:\" + e.toString());"
+        "content": "        assertThrows(NullPointerException.class, () -\u003e Validator.requireNonNull(1, 2, 3, null));"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "    @Test"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    @Test"
+        "content": "    public void requireNonNull_passObjectsIn() {"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "    public void toString_creatingTodoWithEmptyDescription_exceptionThrown() {"
+        "content": "        assertDoesNotThrow(() -\u003e Validator.requireNonNull(1, 2, 3));"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        String expectedMessage \u003d \":((( OOPS!!! The description of a class Todo cannot be empty.\";"
+        "content": "        assertDoesNotThrow(() -\u003e Validator.requireNonNull(\"hehe\"));"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "csiongn"
         },
-        "content": ""
+        "content": "        assertDoesNotThrow(() -\u003e Validator.requireNonNull(\"Pikachu\", \"says\", \"hello\"));"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        EmptyBodyException e \u003d assertThrows(EmptyBodyException.class, () -\u003e new Todo(\"\"));"
+        "content": "    }"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "csiongn"
         },
-        "content": "        assertEquals(expectedMessage, e.getMessage());"
-      },
-      {
-        "lineNumber": 22,
-        "author": {
-          "gitId": "csiongn"
-        },
         "content": ""
       },
       {
-        "lineNumber": 23,
-        "author": {
-          "gitId": "csiongn"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 24,
+        "lineNumber": 22,
         "author": {
           "gitId": "csiongn"
         },
@@ -8164,7 +12055,7 @@
       }
     ],
     "authorContributionMap": {
-      "csiongn": 24
+      "csiongn": 22
     }
   },
   {

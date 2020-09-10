@@ -1251,28 +1251,28 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "import javafx.scene.control.Label;"
+        "content": "import javafx.scene.image.Image;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "import javafx.scene.image.Image;"
+        "content": "import javafx.scene.image.ImageView;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "import javafx.scene.image.ImageView;"
+        "content": "import javafx.scene.layout.HBox;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "import javafx.scene.layout.HBox;"
+        "content": "import javafx.scene.text.Text;"
       },
       {
         "lineNumber": 16,
@@ -1335,7 +1335,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    private Label dialog;"
+        "content": "    private Text dialog;"
       },
       {
         "lineNumber": 25,
@@ -1827,7 +1827,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            this.taskManager \u003d new TaskManager(new Storage().load());"
+        "content": "            this.taskManager \u003d new Storage().load(new TaskManager());"
       },
       {
         "lineNumber": 21,
@@ -1988,7 +1988,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                return \"OOPS! Something went wrong while executing: \" + e.toString();"
+        "content": "                return \"OOPS! Something went wrong while executing:\\n\" + e.getMessage();"
       },
       {
         "lineNumber": 44,
@@ -2916,7 +2916,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "import duke.tasks.Task;"
+        "content": "import duke.tasks.TaskManager;"
       },
       {
         "lineNumber": 6,
@@ -3098,437 +3098,535 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public List\u003cTask\u003e load() throws DukeException {"
+        "content": "    public TaskManager load(TaskManager tm) throws DukeException {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        List\u003cTask\u003e tasks \u003d new ArrayList\u003c\u003e();"
+        "content": "        List\u003cTodo\u003e todos \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "        List\u003cDeadline\u003e deadlines \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        try {"
+        "content": "        List\u003cEvent\u003e events \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            File f \u003d new File(TASKS_TEXT_FILE_PATH);"
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            Scanner sc \u003d new Scanner(f);"
+        "content": "        try {"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            "
+        "content": "            File f \u003d new File(TASKS_TEXT_FILE_PATH);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            while (sc.hasNext()) {"
+        "content": "            Scanner sc \u003d new Scanner(f);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                String taskInfo \u003d sc.nextLine();"
+        "content": ""
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                String[] taskArr \u003d taskInfo.split(\",\");"
+        "content": "            while (sc.hasNext()) {"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                Task task;"
+        "content": "                String taskInfo \u003d sc.nextLine();"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                switch (taskArr[0]) {"
+        "content": "                String[] taskArr \u003d taskInfo.split(\",\");"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                case \"T\":"
+        "content": "                switch (taskArr[0]) {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    task \u003d new Todo(taskArr[2]);"
+        "content": "                case \"T\":"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    break;"
+        "content": "                    Todo todo \u003d new Todo(taskArr[2]);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                case \"D\":"
+        "content": "                    if (isMarkedDone(taskArr)) {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    task \u003d new Deadline(taskArr[2], taskArr[3]);"
+        "content": "                        todo.setCompleted();"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    break;"
+        "content": "                    }"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                case \"E\":"
+        "content": "                    todos.add(todo);"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    task \u003d new Event(taskArr[2], taskArr[3], taskArr[4]);"
+        "content": "                    break;"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    break;"
+        "content": "                case \"D\":"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                default:"
+        "content": "                    Deadline deadline \u003d new Deadline(taskArr[2], taskArr[3]);"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    throw new DukeException(\"Unrecognised category character when loading from tasks.txt\");"
+        "content": "                    if (isMarkedDone(taskArr)) {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                }"
+        "content": "                        deadline.setCompleted();"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                if (isMarkedDone(taskArr)) {"
+        "content": "                    }"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                    task.setCompleted();"
+        "content": "                    deadlines.add(deadline);"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                }"
+        "content": "                    break;"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                tasks.add(task);"
+        "content": "                case \"E\":"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            }"
+        "content": "                    Event event \u003d new Event(taskArr[2], taskArr[3], taskArr[4]);"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            sc.close();"
+        "content": "                    if (isMarkedDone(taskArr)) {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            return tasks;"
+        "content": "                        event.setCompleted();"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        } catch (FileNotFoundException e) {"
+        "content": "                    }"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            // TODO: Customise font"
+        "content": "                    events.add(event);"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            try {"
+        "content": "                    break;"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                System.out.println(\"File \\\"tasks.txt\\\" does not exist. Attempting to create one for you.\");"
+        "content": "                default:"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                File file \u003d new File(TASKS_TEXT_FILE_PATH);"
+        "content": "                    throw new DukeException(\"Unrecognised category character when loading from tasks.txt\");"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                file.createNewFile();"
+        "content": "                }"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                System.out.println(\"Successfully created file tasks.txt\");"
+        "content": "            }"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                return tasks;"
+        "content": ""
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            } catch (IOException io) {"
+        "content": "            tm.initialiseTodos(todos);"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                throw new DukeException(io.getMessage());"
+        "content": "            tm.initialiseDeadlines(deadlines);"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            }"
+        "content": "            tm.initialiseEvents(events);"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "            sc.close();"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "            return tm;"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    private boolean isMarkedDone(String[] taskArr) {"
+        "content": "        } catch (FileNotFoundException e) {"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        return taskArr[1].equals(\"1\");"
+        "content": "            try {"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "                System.out.println(\"File \\\"tasks.txt\\\" does not exist. Attempting to create one for you.\");"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "                File file \u003d new File(TASKS_TEXT_FILE_PATH);"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "                file.createNewFile();"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Writes the list of tasks to the file \"tasks.txt\"."
+        "content": "                System.out.println(\"Successfully created file tasks.txt\");"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param fileContent the comma seperated string information to be written to the file"
+        "content": "                return tm;"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "            } catch (IOException io) {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public static void writeTasksFile(String fileContent) throws DukeException {"
+        "content": "                throw new DukeException(io.getMessage());"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        try {"
+        "content": "            }"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            FileWriter fw \u003d new FileWriter(TASKS_TEXT_FILE_PATH, false);"
+        "content": "        }"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            fw.write(fileContent);"
+        "content": "    }"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            fw.close();"
+        "content": ""
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "    private boolean isMarkedDone(String[] taskArr) {"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            throw new DukeException(\"Something went wrong while saving to the backend: \" + e.getMessage());"
+        "content": "        return taskArr[1].equals(\"1\");"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 93,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Writes the list of tasks to the file \"tasks.txt\"."
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @param fileContent the comma seperated string information to be written to the file"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @throws DukeException if something went wrong while saving to the file."
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public static void writeTasksFile(String fileContent) throws DukeException {"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            FileWriter fw \u003d new FileWriter(TASKS_TEXT_FILE_PATH, false);"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            fw.write(fileContent);"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            fw.close();"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } catch (IOException e) {"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            throw new DukeException(\"Something went wrong while saving to the backend: \" + e.getMessage());"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 107,
         "author": {
           "gitId": "joshtyf"
         },
@@ -3536,7 +3634,7 @@
       }
     ],
     "authorContributionMap": {
-      "joshtyf": 93
+      "joshtyf": 107
     }
   },
   {
@@ -5164,129 +5262,157 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        Task task \u003d tm.markDone(Integer.parseInt(input));"
+        "content": "        try {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setResponse(ui.taskCompleted(task));"
+        "content": "            Task task \u003d tm.markDone(Integer.parseInt(input));"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setDone();"
+        "content": "            setResponse(ui.taskCompleted(task));"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        return true;"
+        "content": "            setDone();"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "            return true;"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "        } catch (NumberFormatException e) {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "            throw new DukeException(\"I couldn\u0027t understand your input. Please give a number\");"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Sets the utility tools \u003ccode\u003etm\u003c/code\u003e and \u003ccode\u003eui\u003c/code\u003e."
+        "content": "        }"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * In addition, it sets the initial response to ask for the task number"
+        "content": "    }"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * to complete."
+        "content": ""
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param tm the task manager."
+        "content": "    /**"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param ui the ui."
+        "content": "     * Sets the utility tools \u003ccode\u003etm\u003c/code\u003e and \u003ccode\u003eui\u003c/code\u003e."
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "     * In addition, it sets the initial response to ask for the task number"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    @Override"
+        "content": "     * to complete."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public void init(TaskManager tm, Ui ui) {"
+        "content": "     * @param tm the task manager."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setUtility(tm, ui);"
+        "content": "     * @param ui the ui."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setResponse(ui.askTaskNumToComplete());"
+        "content": "     */"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "    @Override"
       },
       {
         "lineNumber": 39,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public void init(TaskManager tm, Ui ui) {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        setUtility(tm, ui);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        setResponse(ui.askTaskNumToComplete());"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
         "author": {
           "gitId": "joshtyf"
         },
@@ -5294,7 +5420,7 @@
       }
     ],
     "authorContributionMap": {
-      "joshtyf": 39
+      "joshtyf": 43
     }
   },
   {
@@ -5586,7 +5712,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            tm.add(new Deadline(deadlineName, deadlineDate));"
+        "content": "            tm.addDeadline(new Deadline(deadlineName, deadlineDate));"
       },
       {
         "lineNumber": 42,
@@ -5882,129 +6008,164 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        Task task \u003d tm.deleteTask(Integer.parseInt(input));"
+        "content": "        try {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        String response \u003d String.format(\"Successfully removed the following task:\\n %s\", task);"
+        "content": "            Task task \u003d tm.deleteTask(Integer.parseInt(input));"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setResponse(response);"
+        "content": "            String response \u003d String.format(\"Successfully removed the following task:\\n %s\", task);"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setDone();"
+        "content": "            setResponse(response);"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        return true;"
+        "content": "            setDone();"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "            return true;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "        } catch (NumberFormatException e) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "            throw new DukeException(\"I couldn\u0027t understand your input. Please give a number.\");"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Sets the utility tools \u003ccode\u003etm\u003c/code\u003e and \u003ccode\u003eui\u003c/code\u003e."
+        "content": "        }"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * In addition, it sets the initial response to ask for the task number to be deleted."
+        "content": ""
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param tm the task manager."
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param ui the ui."
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    @Override"
+        "content": "     * Sets the utility tools \u003ccode\u003etm\u003c/code\u003e and \u003ccode\u003eui\u003c/code\u003e."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public void init(TaskManager tm, Ui ui) {"
+        "content": "     * In addition, it sets the initial response to ask for the task number to be deleted."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setUtility(tm, ui);"
+        "content": "     * @param tm the task manager."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        setResponse(ui.askTaskNumToDelete());"
+        "content": "     * @param ui the ui."
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 39,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public void init(TaskManager tm, Ui ui) {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        setUtility(tm, ui);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        setResponse(ui.askTaskNumToDelete());"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
         "author": {
           "gitId": "joshtyf"
         },
@@ -6012,7 +6173,7 @@
       }
     ],
     "authorContributionMap": {
-      "joshtyf": 39
+      "joshtyf": 44
     }
   },
   {
@@ -6614,7 +6775,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            tm.add(new Event(eventName, eventStartTime, eventEndTime));"
+        "content": "            tm.addEvent(new Event(eventName, eventStartTime, eventEndTime));"
       },
       {
         "lineNumber": 52,
@@ -7637,7 +7798,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        tm.add(new Todo(input));"
+        "content": "        tm.addTodo(new Todo(input));"
       },
       {
         "lineNumber": 21,
@@ -7863,7 +8024,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "public class Deadline extends Task implements Comparable\u003cDeadline\u003e {"
       },
       {
         "lineNumber": 15,
@@ -8066,7 +8227,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ";        return \"D,\" + completeStatus + \",\" + super.getName() + \",\" + dateFormat.format(dueDate);"
+        "content": "        return \"D,\" + completeStatus + \",\" + super.getName() + \",\" + dateFormat.format(dueDate);"
       },
       {
         "lineNumber": 44,
@@ -8150,11 +8311,144 @@
         "author": {
           "gitId": "joshtyf"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Compares with another deadline. Both are equal if they have the same name and same date."
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Else, they will be compared according to their date."
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @param other the other deadline to be compared with."
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @return a value 0 if both deadlines are equal;"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * a value greater than 0 if this Deadline is later than the Deadline argument;"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * a value less than 0 if this deadline is before the Deadline argument."
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public int compareTo(Deadline other) {"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        boolean sameName \u003d getName().equals(other.getName());"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        boolean sameDate \u003d dueDate.compareTo(other.dueDate) \u003d\u003d 0;"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        if (sameName \u0026\u0026 sameDate) {"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            return 0;"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } else{"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            return dueDate.compareTo(other.dueDate);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "joshtyf"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "joshtyf": 55
+      "joshtyf": 74
     }
   },
   {
@@ -8257,7 +8551,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "public class Event extends Task {"
+        "content": "public class Event extends Task implements Comparable\u003cEvent\u003e {"
       },
       {
         "lineNumber": 15,
@@ -8474,7 +8768,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ";        return \"E,\" + completeStatus + \",\" + super.getName() + \",\" + dateFormat.format(start) + \",\" + dateFormat.format(end);"
+        "content": "        return \"E,\" + completeStatus + \",\" + super.getName() + \",\" + dateFormat.format(start) + \",\" + dateFormat.format(end);"
       },
       {
         "lineNumber": 46,
@@ -8558,11 +8852,144 @@
         "author": {
           "gitId": "joshtyf"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Compares with another event. Both are equal if they have the same name and start date."
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Else, they will be compared according to their start date."
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @param other the other event to be compared with."
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @return a value 0 if both events are equal;"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * a value greater than 0 if this Event is later than the Event argument;"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * a value less than 0 if this Event is before the Event argument."
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public int compareTo(Event other) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        boolean sameName \u003d getName().equals(other.getName());"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        boolean sameDate \u003d start.compareTo(other.start) \u003d\u003d 0;"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        if (sameName \u0026\u0026 sameDate) {"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            return 0;"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            return start.compareTo(other.start);"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "joshtyf"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "joshtyf": 57
+      "joshtyf": 76
     }
   },
   {
@@ -9101,336 +9528,336 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    private List\u003cTask\u003e tasks;"
+        "content": "    private List\u003cTodo\u003e todos;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "    private List\u003cDeadline\u003e deadlines;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "    private List\u003cEvent\u003e events;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Constructs a new \u003ccode\u003eTaskManager\u003c/code\u003e object"
+        "content": ""
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * and initialises its \u003ccode\u003etasks\u003c/code\u003e field as"
+        "content": "    public TaskManager() {"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * an empty \u003ccode\u003eArrayList\u003c/code\u003e."
+        "content": "        todos \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "        deadlines \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public TaskManager() {"
+        "content": "        events \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        this.tasks \u003d new ArrayList\u003c\u003e();"
+        "content": "    }"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "     * Sets the todo list with the given argument."
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Constructs a new \u003ccode\u003eTaskManager\u003c/code\u003e object"
+        "content": "     * @param todos the todo list to be set."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * and initialises its \u003ccode\u003etasks\u003c/code\u003e field using the provided"
+        "content": "     */"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * argument."
+        "content": "    public void initialiseTodos(List\u003cTodo\u003e todos) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param tasks the list of duke.tasks to be initialised with"
+        "content": "        this.todos \u003d todos;"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public TaskManager(List\u003cTask\u003e tasks) {"
+        "content": ""
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        this.tasks \u003d tasks;   "
+        "content": "    /**"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "     * Sets the deadline list with the given argument."
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "     * @param deadlines the deadline list to be set."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Adds a task."
+        "content": "    public void initialiseDeadlines(List\u003cDeadline\u003e deadlines) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param task the task to be added"
+        "content": "        this.deadlines \u003d deadlines;"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public void add(Task task) throws DukeException {"
+        "content": ""
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        tasks.add(task);"
+        "content": "    /**"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        save();"
+        "content": "     * Sets the event list with the given argument."
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "     * @param events the event list to be set."
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "    public void initialiseEvents(List\u003cEvent\u003e events) {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Gets the \"save\" text represenation of each \u003ccode\u003eTask\u003c/code\u003e"
+        "content": "        this.events \u003d events;"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * and creates a \u003ccode\u003eString\u003c/code\u003e of the information to be saved."
+        "content": "    }"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * This string information is then passed on to the \u003ccode\u003eStorage\u003c/code\u003e"
+        "content": ""
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * class where it will handle the saving of the information."
+        "content": "    /**"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "     * Adds a todo."
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    private void save() throws DukeException {"
+        "content": "     * @param todo the todo to be added."
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        assert tasks !\u003d null : \"the task list was never initialised\";"
+        "content": "     * @throws DukeException if something went wrong while saving."
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        StringBuilder sb \u003d new StringBuilder();"
+        "content": "     */"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        for (Task task : tasks) {"
+        "content": "    public void addTodo(Todo todo) throws DukeException {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            sb.append(task.saveText()).append(\"\\n\");"
+        "content": "        todos.add(todo);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": "        save();"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        Storage.writeTasksFile(sb.toString());"
+        "content": "    }"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "    /**"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "     * Adds a deadline and sorts the deadline list."
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Creates a string representation of all the duke.tasks."
+        "content": "     * @param deadline the deadline to be added."
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @return the string representation of all the duke.tasks"
+        "content": "     * @throws DukeException if something went wrong while saving."
       },
       {
         "lineNumber": 61,
@@ -9444,514 +9871,1123 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public String listTasks() {"
+        "content": "    public void addDeadline(Deadline deadline) throws DukeException {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        int i \u003d 1;"
+        "content": "        deadlines.add(deadline);"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        StringBuffer sb \u003d new StringBuffer(\"Here are your duke.tasks\\n\");"
+        "content": "        deadlines.sort(Deadline::compareTo);"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        for (Task task: tasks) {"
+        "content": "        save();"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            sb.append(\"\\n\").append(i).append(\". \").append(task);"
+        "content": "    }"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            i++;"
+        "content": ""
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": "    /**"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        return sb.toString();"
+        "content": "     * Adds a event and sorts the events list."
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "     * @param event the event to be added."
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "     * @throws DukeException if something went wrong while saving."
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Marks a particular task as done. The task to be marked as done"
+        "content": "    public void addEvent(Event event) throws DukeException {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * is identified by the \u003ccode\u003etaskNum\u003c/code\u003e. \u003ccode\u003etaskNum - 1\u003c/code\u003e"
+        "content": "        events.add(event);"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * is the index position of the task in the \u003ccode\u003eArrayList\u003c/code\u003e."
+        "content": "        events.sort(Event::compareTo);"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param taskNum the number of the task in the task list"
+        "content": "        save();"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @return the \u003ccode\u003eTask\u003c/code\u003e that is marked done"
+        "content": "    }"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @throws DukeException if the provided task number is out of bounds of the range of the \u003ccode\u003eArrayList\u003c/code\u003e"
+        "content": ""
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public Task markDone(int taskNum) throws DukeException {"
+        "content": "     * Gets each task from the three lists and saves them to Task.txt file."
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        try {"
+        "content": "     * @throws DukeException if something went wrong while writing to the file."
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            Task task \u003d tasks.get(taskNum - 1);"
+        "content": "     */"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            task.setCompleted();"
+        "content": "    private void save() throws DukeException {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            save();"
+        "content": "        StringBuilder sb \u003d new StringBuilder();"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            return task;"
+        "content": "        for (Todo todo : todos) {"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": "            sb.append(todo.saveText()).append(\"\\n\");"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            throw new DukeException(\"you gave an invalid task number!\");"
+        "content": "        }"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": "        for (Deadline deadline : deadlines) {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        "
+        "content": "            sb.append(deadline.saveText()).append(\"\\n\");"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "        for (Event event : events) {"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "            sb.append(event.saveText()).append(\"\\n\");"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Deletes a task from the list."
+        "content": "        }"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param taskNum the task number of the task to be deleted"
+        "content": "        Storage.writeTasksFile(sb.toString());"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @throws DukeException if the provided task number is out of bounds of the range of the \u003ccode\u003eArrayList\u003c/code\u003e"
+        "content": "    }"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public Task deleteTask(int taskNum) throws DukeException {"
+        "content": "    /**"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        try {"
+        "content": "     * Creates a string representation of all the tasks."
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            Task task \u003d tasks.remove(taskNum - 1);"
+        "content": "     * @return the string representation of all the tasks"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            save();"
+        "content": "     */"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            return task;"
+        "content": "    public String listTasks() {"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": "        int i \u003d 1;"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            throw new DukeException(\"you gave an invalid task number!\");"
+        "content": "        StringBuilder sb \u003d new StringBuilder();"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": "        if (!todos.isEmpty()) {"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "            sb.append(\"Here are your todos:\\n\");"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "            for (Todo todo : todos) {"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    /**"
+        "content": "                sb.append(i).append(\". \").append(todo).append(\"\\n\");"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * Finds a task with a given keyword in its name."
+        "content": "                i++;"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @param keyword the keyword to search for"
+        "content": "            }"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * @return the string represenation of the list of duke.tasks found. If none found, it will"
+        "content": "            sb.append(\"\\n\");"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     * return a message indicating that no asks were found."
+        "content": "        } else {"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "     */"
+        "content": "            sb.append(\"You have no todos.\\n\");"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public String findTask(String keyword) {"
+        "content": "        }"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        List\u003cTask\u003e temp \u003d new ArrayList\u003c\u003e();"
+        "content": "        if (!deadlines.isEmpty()) {"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        for (Task task : tasks) {"
+        "content": "            sb.append(\"Here are your deadlines:\\n\");"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            if (task.getName().toLowerCase().contains(keyword.toLowerCase())) {"
+        "content": "            for (Deadline deadline : deadlines) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                temp.add(task);"
+        "content": "                sb.append(i).append(\". \").append(deadline).append(\"\\n\");"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            }"
+        "content": "                i++;"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        if (temp.isEmpty()) {"
+        "content": "            sb.append(\"\\n\");"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            return \"Sorry there are no tasks that matches your keyword\";"
+        "content": "        } else {"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        } else {"
+        "content": "            sb.append(\"You have no deadlines.\\n\");"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            StringBuilder sb \u003d new StringBuilder(\"Here are the tasks that match your keyword\\n\");"
+        "content": "        }"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            for (int i \u003d 0; i \u003c temp.size(); i++) {"
+        "content": "        if (!events.isEmpty()) {"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "                sb.append(\"\\n\").append(i + 1).append(\". \").append(temp.get(i));"
+        "content": "            sb.append(\"Here are your events:\\n\");"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            }"
+        "content": "            for (Event event : events) {"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "            return sb.toString();"
+        "content": "                sb.append(i).append(\". \").append(event).append(\"\\n\");"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        }"
+        "content": "                i++;"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "            }"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": ""
+        "content": "            sb.append(\"\\n\");"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    @Override"
+        "content": "        } else {"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    public String toString() {"
+        "content": "            sb.append(\"You have no events.\\n\");"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        return \"This is an instance of a task manager\";"
+        "content": "        }"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "    }"
+        "content": "        return sb.toString();"
       },
       {
         "lineNumber": 135,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Marks a particular task as done."
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @param taskNum the number of the task in the task list"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @return the \u003ccode\u003eTask\u003c/code\u003e that is marked done"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @throws DukeException if the provided task number is out of the range of number of tasks."
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public Task markDone(int taskNum) throws DukeException {"
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        checkValidIndex(taskNum);"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        Task task;"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        if (taskNum \u003c\u003d todos.size()) {"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            task \u003d todos.get(taskNum - 1);"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } else if (taskNum \u003c\u003d todos.size() + deadlines.size()) {"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            int ind \u003d taskNum - todos.size() - 1;"
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            task \u003d deadlines.get(ind);"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            int ind \u003d taskNum - todos.size() - deadlines.size() - 1;"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            task \u003d events.get(ind);"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        task.setCompleted();"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        save();"
+      },
+      {
+        "lineNumber": 157,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        return task;"
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    private void checkValidIndex(int taskNum) throws DukeException {"
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        int totalNumber \u003d getTotalNumberOfItems();"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        if (taskNum \u003c 0 || taskNum \u003e\u003d totalNumber) {"
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            String errorResponse \u003d String.format(\"You gave an invalid task number. Give a number from 0 to %d.\", totalNumber);"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            throw new DukeException(errorResponse);"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Deletes a task from the list."
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @param taskNum the task number of the task to be deleted"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @throws DukeException if the provided task number is out of bounds of the range of the \u003ccode\u003eArrayList\u003c/code\u003e"
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 173,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public Task deleteTask(int taskNum) throws DukeException {"
+      },
+      {
+        "lineNumber": 174,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        checkValidIndex(taskNum);"
+      },
+      {
+        "lineNumber": 175,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        Task task;"
+      },
+      {
+        "lineNumber": 176,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        if (taskNum \u003c\u003d todos.size()) {"
+      },
+      {
+        "lineNumber": 177,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            task \u003d todos.remove(taskNum - 1);"
+      },
+      {
+        "lineNumber": 178,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } else if (taskNum \u003c\u003d todos.size() + deadlines.size()) {"
+      },
+      {
+        "lineNumber": 179,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            task \u003d deadlines.remove(taskNum - 1 - todos.size());"
+      },
+      {
+        "lineNumber": 180,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 181,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            task \u003d events.remove(taskNum - 1 - todos.size() - deadlines.size());"
+      },
+      {
+        "lineNumber": 182,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 183,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        save();"
+      },
+      {
+        "lineNumber": 184,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        return task;"
+      },
+      {
+        "lineNumber": 185,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 186,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 187,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    private boolean hasKeyword(String keyword, Task task) {"
+      },
+      {
+        "lineNumber": 188,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        return task.getName().toLowerCase().contains((keyword.toLowerCase()));"
+      },
+      {
+        "lineNumber": 189,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 190,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 191,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 192,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * Finds a task with a given keyword in its name."
+      },
+      {
+        "lineNumber": 193,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @param keyword the keyword to search for"
+      },
+      {
+        "lineNumber": 194,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * @return the string represenation of the list of duke.tasks found. If none found, it will"
+      },
+      {
+        "lineNumber": 195,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     * return a message indicating that no asks were found."
+      },
+      {
+        "lineNumber": 196,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 197,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public String findTask(String keyword) {"
+      },
+      {
+        "lineNumber": 198,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        List\u003cTask\u003e temp \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 199,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        todos.stream().filter(todo -\u003e hasKeyword(keyword, todo)).forEach(temp::add);"
+      },
+      {
+        "lineNumber": 200,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        deadlines.stream().filter(deadline -\u003e hasKeyword(keyword, deadline)).forEach(temp::add);"
+      },
+      {
+        "lineNumber": 201,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        events.stream().filter(event -\u003e hasKeyword(keyword, event)).forEach(temp::add);"
+      },
+      {
+        "lineNumber": 202,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 203,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        if (temp.isEmpty()) {"
+      },
+      {
+        "lineNumber": 204,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            return \"Sorry there are no tasks that matches your keyword\";"
+      },
+      {
+        "lineNumber": 205,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 206,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            StringBuilder sb \u003d new StringBuilder(\"Here are the tasks that match your keyword\\n\");"
+      },
+      {
+        "lineNumber": 207,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            for (int i \u003d 0; i \u003c temp.size(); i++) {"
+      },
+      {
+        "lineNumber": 208,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "                sb.append(\"\\n\").append(i + 1).append(\". \").append(temp.get(i));"
+      },
+      {
+        "lineNumber": 209,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 210,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "            return sb.toString();"
+      },
+      {
+        "lineNumber": 211,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 212,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 213,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 214,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    private int getTotalNumberOfItems() {"
+      },
+      {
+        "lineNumber": 215,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        return todos.size() + deadlines.size() + events.size();"
+      },
+      {
+        "lineNumber": 216,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 217,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 218,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 219,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 220,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "        return \"This is an instance of a task manager\";"
+      },
+      {
+        "lineNumber": 221,
+        "author": {
+          "gitId": "joshtyf"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 222,
         "author": {
           "gitId": "joshtyf"
         },
@@ -9959,7 +10995,7 @@
       }
     ],
     "authorContributionMap": {
-      "joshtyf": 135
+      "joshtyf": 222
     }
   },
   {
@@ -10218,21 +11254,21 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "\u003c?import javafx.scene.control.Label?\u003e"
+        "content": "\u003c?import javafx.scene.image.ImageView?\u003e"
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "\u003c?import javafx.scene.image.ImageView?\u003e"
+        "content": "\u003c?import javafx.scene.layout.HBox?\u003e"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "\u003c?import javafx.scene.layout.HBox?\u003e"
+        "content": "\u003c?import javafx.scene.text.Text?\u003e"
       },
       {
         "lineNumber": 7,
@@ -10246,7 +11282,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "\u003cfx:root alignment\u003d\"TOP_RIGHT\" maxHeight\u003d\"1.7976931348623157E308\" maxWidth\u003d\"1.7976931348623157E308\" prefWidth\u003d\"400.0\" type\u003d\"javafx.scene.layout.HBox\" xmlns\u003d\"http://javafx.com/javafx/8.0.171\" xmlns:fx\u003d\"http://javafx.com/fxml/1\"\u003e"
+        "content": "\u003cfx:root alignment\u003d\"TOP_RIGHT\" maxWidth\u003d\"1.7976931348623157E308\" prefWidth\u003d\"400.0\" type\u003d\"javafx.scene.layout.HBox\" xmlns\u003d\"http://javafx.com/javafx/11.0.1\" xmlns:fx\u003d\"http://javafx.com/fxml/1\"\u003e"
       },
       {
         "lineNumber": 9,
@@ -10260,7 +11296,7 @@
         "author": {
           "gitId": "joshtyf"
         },
-        "content": "        \u003cLabel fx:id\u003d\"dialog\" text\u003d\"Label\" wrapText\u003d\"true\" /\u003e"
+        "content": "      \u003cText fx:id\u003d\"dialog\" strokeType\u003d\"OUTSIDE\" strokeWidth\u003d\"0.0\" text\u003d\"Text\" wrappingWidth\u003d\"300.0\" /\u003e"
       },
       {
         "lineNumber": 11,

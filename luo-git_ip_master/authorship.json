@@ -2037,7 +2037,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class DeadlineCommand extends TaskCommand {"
+        "content": "public class DeadlineCommand extends StoringCommand {"
       },
       {
         "lineNumber": 19,
@@ -3961,7 +3961,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class EventCommand extends TaskCommand {"
+        "content": "public class EventCommand extends StoringCommand {"
       },
       {
         "lineNumber": 19,
@@ -5900,7 +5900,914 @@
     }
   },
   {
-    "path": "src/main/java/luoyi/duke/commands/TaskCommand.java",
+    "path": "src/main/java/luoyi/duke/commands/SortCommand.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "package luoyi.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.common.Message;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.common.TextFormatter;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.data.IDuke;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.data.task.TaskList;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.storage.Storage;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.ui.Ui;"
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * Sort class to encapsulate a sort command."
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * A sort command sorts the task based on some criteria,"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * such as time or description."
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * A command must be initiated with a Duke object before"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * it can execute."
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "public class SortCommand extends StoringCommand {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    private final SortType sortType;"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Returns a new Command."
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @param duke Duke object to perform action on."
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @param sortType Type of sort."
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    protected SortCommand(IDuke duke, SortType sortType) {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        super(-1, duke);"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        this.sortType \u003d sortType;"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Returns an SortCommand object."
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @return SortCommand object with specified properties, not yet initiated with duke."
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public static SortCommand getSortCommand(SortType sortType) {"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return new SortCommand(null, sortType);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Execute the sort."
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Duke has to be initiated before execution."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @return The string prompt after the sort."
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public String execute() {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        if (duke \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            throw new RuntimeException(Message.ERR_DUKE_NOT_INIT.toString());"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        String output \u003d handleSort();"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        System.out.println(TextFormatter.getFormattedText(output));"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return output;"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    private String handleSort() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        Storage storage \u003d duke.getStorage();"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        TaskList taskList \u003d duke.getTasks();"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        // Sort task based on sort type"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        taskList.getList().sort(sortType.getTaskComparator());"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        // Save sorted tasks to disk"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        storage.save(taskList.getList());"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return \"Sort successful!\\n\" + Ui.displayTasks(taskList);"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * {@inheritDoc}"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public SortCommand setDuke(IDuke duke) {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return new SortCommand(duke, sortType);"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "}"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      }
+    ],
+    "authorContributionMap": {
+      "luo-git": 80
+    }
+  },
+  {
+    "path": "src/main/java/luoyi/duke/commands/SortType.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "package luoyi.duke.commands;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import java.util.Comparator;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import java.util.Optional;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.common.TimeWrapper;"
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.data.task.ITask;"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * Type of sort, which can be based on time or description alphabetically."
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " *"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * When a time without actual time parameter (date or datetime) is defined to be smaller."
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "public enum SortType {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    TIME((o1, o2) -\u003e {"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        Optional\u003cTimeWrapper\u003e t1 \u003d o1.getTime();"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        Optional\u003cTimeWrapper\u003e t2 \u003d o2.getTime();"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        if (t1.isEmpty() \u0026\u0026 t2.isEmpty()) {"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            return 0;"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        } else if (t1.isPresent() \u0026\u0026 t2.isEmpty()) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            return 1;"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        } else if (t1.isEmpty() \u0026\u0026 t2.isPresent()) {"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            return -1;"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        assert t1.isPresent() \u0026\u0026 t2.isPresent();"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return t1.get().compareTo(t2.get());"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }),"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    DESCRIPTION((o1, o2) -\u003e {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return o1.getDescription().compareTo(o2.getDescription());"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    });"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    private final Comparator\u003c? super ITask\u003e taskComparator;"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    SortType(Comparator\u003c? super ITask\u003e taskComparator) {"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        this.taskComparator \u003d taskComparator;"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Returns the comparator associated with the sort type."
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @return Comparator associated with the sort type."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public Comparator\u003c? super ITask\u003e getTaskComparator() {"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return taskComparator;"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "luo-git": 47
+    }
+  },
+  {
+    "path": "src/main/java/luoyi/duke/commands/StoringCommand.java",
     "fileType": "java",
     "lines": [
       {
@@ -5964,7 +6871,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": " * Abstract TaskCommand which supports creating and storing a Task."
+        "content": " * Abstract StoringCommand which supports storing tasks."
       },
       {
         "lineNumber": 10,
@@ -5978,7 +6885,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public abstract class TaskCommand extends Command {"
+        "content": "public abstract class StoringCommand extends Command {"
       },
       {
         "lineNumber": 12,
@@ -6020,7 +6927,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    protected TaskCommand(int targetIndex, IDuke duke) {"
+        "content": "    protected StoringCommand(int targetIndex, IDuke duke) {"
       },
       {
         "lineNumber": 18,
@@ -6274,7 +7181,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class ToDoCommand extends TaskCommand {"
+        "content": "public class ToDoCommand extends StoringCommand {"
       },
       {
         "lineNumber": 19,
@@ -6864,416 +7771,430 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    ERR_WRONG_CMD (\"Unrecognizable command!\\n\"),"
+        "content": "    ERR_WRONG_SORT_CMD (\"Wrong sort command!\\n\" + Usage.get(\"sort\") + \"\\n\"),"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    ERR_DUKE_NOT_INIT(\"Duke not initialised yet in execute command\"),"
+        "content": "    ERR_WRONG_CMD (\"Unrecognizable command!\\n\"),"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    CAT_DOUBT (\"Meow? Sorry I don\u0027t know what you are talking about...\\n\"),"
+        "content": "    ERR_DUKE_NOT_INIT(\"Duke not initialised yet in execute command\"),"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    CAT_CRY (\"Meow!!! Something terrible happened!\\n\");"
+        "content": "    CAT_DOUBT (\"Meow? Sorry I don\u0027t know what you are talking about...\\n\"),"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    CAT_CRY (\"Meow!!! Something terrible happened!\\n\");"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Class to encapsulate the usage help strings."
+        "content": "    /**"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "     * Class to encapsulate the usage help strings."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static class Usage {"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        private static final HashMap\u003cString, String\u003e usages \u003d new HashMap\u003c\u003e();"
+        "content": "    private static class Usage {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        private static final HashMap\u003cString, String\u003e usages \u003d new HashMap\u003c\u003e();"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        static {"
+        "content": ""
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"list\", \"List the tasks stored. Optionally, list tasks on a specific date.\""
+        "content": "        static {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    + \"\\nUsage: list [date]\");"
+        "content": "            usages.put(\"list\", \"List the tasks stored. Optionally, list tasks on a specific date.\""
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"done\", \"Mark a task as done.\\nUsage: done [index]\");"
+        "content": "                    + \"\\nUsage: list [date]\");"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"todo\", \"Create a new todo task.\\nUsage: todo [description]\");"
+        "content": "            usages.put(\"done\", \"Mark a task as done.\\nUsage: done [index]\");"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"deadline\", \"Create a new deadline task.\\nUsage: deadline [description] /by [time]\");"
+        "content": "            usages.put(\"todo\", \"Create a new todo task.\\nUsage: todo [description]\");"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"event\", \"Create a new event task.\\nUsage: event [description] /at [time]\");"
+        "content": "            usages.put(\"deadline\", \"Create a new deadline task.\\nUsage: deadline [description] /by [time]\");"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"delete\", \"Delete a task.\\nUsage: delete [index]\");"
+        "content": "            usages.put(\"event\", \"Create a new event task.\\nUsage: event [description] /at [time]\");"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"find\", \"Find a task with description.\\nUsage: find [description]\");"
+        "content": "            usages.put(\"delete\", \"Delete a task.\\nUsage: delete [index]\");"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"bye\", \"Quit application.\\nUsage: bye\");"
+        "content": "            usages.put(\"find\", \"Find a task with description.\\nUsage: find [description]\");"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            usages.put(\"help\", \"Get help. Can specify command.\\nUsage: help [keyword]\");"
+        "content": "            usages.put(\"bye\", \"Quit application.\\nUsage: bye\");"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "            usages.put(\"sort\", \"Sort tasks.\\nUsage: sort [time/description]\");"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "            usages.put(\"help\", \"Get help. Can specify command.\\nUsage: help [keyword]\");"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        private static String get(String key) {"
+        "content": "        }"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return usages.get(key);"
+        "content": ""
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "        private static String get(String key) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "            return usages.get(key);"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private final String message;"
+        "content": "    }"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    Message(String message) {"
+        "content": ""
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        this.message \u003d message;"
+        "content": "    private final String message;"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    Message(String message) {"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        this.message \u003d message;"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns help message."
+        "content": ""
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param keyword Keyword used to find help."
+        "content": "     * Returns help message."
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return Help message."
+        "content": "     *"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "     * @param keyword Keyword used to find help."
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public static String getHelpMessage(String keyword) {"
+        "content": "     * @return Help message."
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (keyword !\u003d null) {"
+        "content": "     */"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            String helpMessage \u003d Usage.get(keyword);"
+        "content": "    public static String getHelpMessage(String keyword) {"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return helpMessage \u003d\u003d null"
+        "content": "        if (keyword !\u003d null) {"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    ? \"Cannot find help for \" + keyword"
+        "content": "            String helpMessage \u003d Usage.get(keyword);"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    : keyword + \": \" + helpMessage;"
+        "content": "            return helpMessage \u003d\u003d null"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "                    ? \"Cannot find help for \" + keyword"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "                    : keyword + \": \" + helpMessage;"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        // If no keyword, return help for all commands"
+        "content": "        }"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        StringBuilder sb \u003d new StringBuilder();"
+        "content": ""
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        Usage.usages.forEach((key, description) -\u003e"
+        "content": "        // If no keyword, return help for all commands"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                sb.append(key).append(\": \").append(description).append(\"\\n\\n\"));"
+        "content": "        StringBuilder sb \u003d new StringBuilder();"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return sb.toString();"
+        "content": "        Usage.usages.forEach((key, description) -\u003e"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "                sb.append(key).append(\": \").append(description).append(\"\\n\\n\"));"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return sb.toString();"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public String toString() {"
+        "content": ""
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return this.message;"
+        "content": "    @Override"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 82,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return this.message;"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 84,
         "author": {
           "gitId": "luo-git"
         },
@@ -7281,7 +8202,7 @@
       }
     ],
     "authorContributionMap": {
-      "luo-git": 82
+      "luo-git": 84
     }
   },
   {
@@ -7554,7 +8475,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class TimeWrapper {"
+        "content": "public class TimeWrapper implements Comparable\u003cTimeWrapper\u003e {"
       },
       {
         "lineNumber": 12,
@@ -8030,11 +8951,207 @@
         "author": {
           "gitId": "luo-git"
         },
+        "content": ""
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public int compareTo(TimeWrapper o) {"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        if (this.dateTime !\u003d null) {"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            if (o.dateTime !\u003d null) {"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return this.dateTime.compareTo(o.dateTime);"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            } else if (o.date !\u003d null) {"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return this.dateTime.toLocalDate().compareTo(o.date);"
+      },
+      {
+        "lineNumber": 87,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            } else if (o.message !\u003d null) {"
+      },
+      {
+        "lineNumber": 88,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return 1;"
+      },
+      {
+        "lineNumber": 89,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 90,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        } else if (this.date !\u003d null) {"
+      },
+      {
+        "lineNumber": 91,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            if (o.dateTime !\u003d null) {"
+      },
+      {
+        "lineNumber": 92,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return this.date.compareTo(o.dateTime.toLocalDate());"
+      },
+      {
+        "lineNumber": 93,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            } else if (o.date !\u003d null) {"
+      },
+      {
+        "lineNumber": 94,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return this.date.compareTo(o.date);"
+      },
+      {
+        "lineNumber": 95,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            } else if (o.message !\u003d null) {"
+      },
+      {
+        "lineNumber": 96,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return 1;"
+      },
+      {
+        "lineNumber": 97,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        } else if (this.message !\u003d null) {"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            if (o.dateTime !\u003d null || o.date !\u003d null) {"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return -1;"
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            } else if (o.message !\u003d null) {"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                return this.message.compareTo(o.message);"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        throw new RuntimeException(\"Invalid TimeWrapper Object!\");"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "luo-git"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "luo-git": 79
+      "luo-git": 107
     }
   },
   {
@@ -9483,297 +10600,255 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class Deadline extends Task {"
+        "content": "public class Deadline extends TimedTask {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private final TimeWrapper time;"
+        "content": ""
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    private Deadline(String description, TimeWrapper time, boolean isDone) {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private Deadline(String description, TimeWrapper time, boolean isDone) {"
+        "content": "        super(description, time, isDone);"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        super(description, isDone);"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        this.time \u003d time;"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * Returns a new uncompleted deadline."
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     * @param description Description of deadline."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns a new uncompleted deadline."
+        "content": "     * @param time Time by which the task is to be done."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param description Description of deadline."
+        "content": "     * @return New uncompleted deadline."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param time Time by which the task is to be done."
+        "content": "     */"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return New uncompleted deadline."
+        "content": "    public static Deadline getDeadline(String description, String time) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "        return new Deadline(description, TimeWrapper.getTimeWrapper(time), false);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public static Deadline getDeadline(String description, String time) {"
+        "content": "    }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new Deadline(description, TimeWrapper.getTimeWrapper(time), false);"
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "    @Override"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    public Task markComplete() {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "        return new Deadline(description, time, true);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public Task markComplete() {"
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new Deadline(description, time, true);"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "    @Override"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    public String getDataString() {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "        return String.format(\"D|%d|%s|%s\", isDone ? 1 : 0, description, time);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public String getDataString() {"
+        "content": "    }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return String.format(\"D|%d|%s|%s\", isDone ? 1 : 0, description, time);"
+        "content": ""
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    @Override"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public boolean isSameTime(String date) {"
+        "content": "        return String.format(\"[D]%s (by: %s)\", super.toString(), time.toString());"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return time.equals(TimeWrapper.getTimeWrapper(date));"
+        "content": "    }"
       },
       {
         "lineNumber": 45,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 46,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 47,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 48,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "        return String.format(\"[D]%s (by: %s)\", super.toString(), time.toString());"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 51,
         "author": {
           "gitId": "luo-git"
         },
@@ -9781,7 +10856,7 @@
       }
     ],
     "authorContributionMap": {
-      "luo-git": 51
+      "luo-git": 45
     }
   },
   {
@@ -9849,297 +10924,283 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class Event extends Task {"
+        "content": "public class Event extends TimedTask {"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private final TimeWrapper time;"
+        "content": ""
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    private Event(String description, TimeWrapper time, boolean isDone) {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private Event(String description, TimeWrapper time, boolean isDone) {"
+        "content": "        super(description, time, isDone);"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        super(description, isDone);"
+        "content": "    }"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        this.time \u003d time;"
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * Returns a new uncompleted event."
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     * @param description Description of event."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns a new uncompleted event."
+        "content": "     * @param time Time during which the event is happening."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param description Description of event."
+        "content": "     * @return New uncompleted event."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param time Time during which the event is happening."
+        "content": "     */"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return New uncompleted event."
+        "content": "    public static Event getEvent(String description, String time) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "        return new Event(description, TimeWrapper.getTimeWrapper(time), false);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public static Event getEvent(String description, String time) {"
+        "content": "    }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new Event(description, TimeWrapper.getTimeWrapper(time), false);"
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "    @Override"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    public Task markComplete() {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "        return new Event(description, time, true);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public Task markComplete() {"
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new Event(description, time, true);"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "    @Override"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    public String getDataString() {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "        return String.format(\"E|%d|%s|%s\", isDone ? 1 : 0, description, time);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public String getDataString() {"
+        "content": "    }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return String.format(\"E|%d|%s|%s\", isDone ? 1 : 0, description, time);"
+        "content": ""
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    public boolean isSameTime(String date) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return time.equals(TimeWrapper.getTimeWrapper(date));"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public boolean isSameTime(String date) {"
+        "content": "    }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return time.equals(TimeWrapper.getTimeWrapper(date));"
+        "content": ""
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    @Override"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "        return String.format(\"[E]%s (at: %s)\", super.toString(), time);"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 49,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "        return String.format(\"[E]%s (at: %s)\", super.toString(), time);"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "luo-git"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 51,
+        "lineNumber": 49,
         "author": {
           "gitId": "luo-git"
         },
@@ -10147,7 +11208,7 @@
       }
     ],
     "authorContributionMap": {
-      "luo-git": 51
+      "luo-git": 49
     }
   },
   {
@@ -10173,255 +11234,339 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public interface ITask {"
+        "content": "import java.util.Optional;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns a task which is completed."
+        "content": "import luoyi.duke.common.TimeWrapper;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return Completed Task."
+        "content": "public interface ITask {"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    ITask markComplete();"
+        "content": "     * Returns a task which is completed."
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     * @return Completed Task."
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns true if the task is done, false otherwise."
+        "content": "     */"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": "    ITask markComplete();"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return true if the task is done, false otherwise."
+        "content": ""
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    boolean isDone();"
+        "content": "     * Returns true if the task is done, false otherwise."
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     * @return true if the task is done, false otherwise."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns a string to represent data in this task."
+        "content": "     */"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": "    boolean isDone();"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return A string to represent the data in this task."
+        "content": ""
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    String getDataString();"
+        "content": "     * Returns a string to represent data in this task."
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     * @return A string to represent the data in this task."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns the description of the task."
+        "content": "     */"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": "    String getDataString();"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return"
+        "content": ""
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    String getDescription();"
+        "content": "     * Returns the description of the task."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     * @return"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Checks if the task occurs at some date."
+        "content": "     */"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": "    String getDescription();"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param date Date to check against."
+        "content": ""
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return True if task occurs at that time, false otherwise."
+        "content": "    /**"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "     * Returns the time object stored in the task."
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    boolean isSameTime(String date);"
+        "content": "     * The time object may or may not exist."
       },
       {
         "lineNumber": 39,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @return Optional time object."
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    Optional\u003cTimeWrapper\u003e getTime();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Checks if the task occurs at some date."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @param date Date to check against."
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @return True if task occurs at that time, false otherwise."
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    boolean isSameTime(String date);"
+      },
+      {
+        "lineNumber": 51,
         "author": {
           "gitId": "luo-git"
         },
@@ -10429,7 +11574,7 @@
       }
     ],
     "authorContributionMap": {
-      "luo-git": 39
+      "luo-git": 51
     }
   },
   {
@@ -10483,7 +11628,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class Task implements ITask {"
+        "content": "public abstract class Task implements ITask {"
       },
       {
         "lineNumber": 8,
@@ -10588,346 +11733,192 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns a new uncompleted task."
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": "     */"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param description Description of task."
+        "content": "    @Override"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return New uncompleted task."
+        "content": "    public boolean isDone() {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "        return this.isDone;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public static Task getTask(String description) {"
+        "content": "    }"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new Task(description, false);"
+        "content": ""
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "    @Override"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    public String getDataString() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "        return String.format(\"Ta|%d|%s\", isDone ? 1 : 0, description);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public Task markComplete() {"
+        "content": "    }"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new Task(this.description, true);"
+        "content": ""
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "    @Override"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    public String getDescription() {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "        return description;"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public boolean isDone() {"
+        "content": "    }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return this.isDone;"
+        "content": ""
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "    @Override"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "        return String.format(\"[%s] %s\", isDone ? \"V\" : \"X\", description);"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "    }"
       },
       {
         "lineNumber": 49,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 50,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 51,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    public String getDataString() {"
-      },
-      {
-        "lineNumber": 52,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "        return String.format(\"Ta|%d|%s\", isDone ? 1 : 0, description);"
-      },
-      {
-        "lineNumber": 53,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    /**"
-      },
-      {
-        "lineNumber": 56,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "     * {@inheritDoc}"
-      },
-      {
-        "lineNumber": 57,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 58,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 59,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    public String getDescription() {"
-      },
-      {
-        "lineNumber": 60,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "        return description;"
-      },
-      {
-        "lineNumber": 61,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 62,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 63,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    public boolean isSameTime(String time) {"
-      },
-      {
-        "lineNumber": 64,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "        return false;"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 66,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": ""
-      },
-      {
-        "lineNumber": 67,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    @Override"
-      },
-      {
-        "lineNumber": 68,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    public String toString() {"
-      },
-      {
-        "lineNumber": 69,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "        return String.format(\"[%s] %s\", isDone ? \"V\" : \"X\", description);"
-      },
-      {
-        "lineNumber": 70,
-        "author": {
-          "gitId": "luo-git"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 71,
         "author": {
           "gitId": "luo-git"
         },
@@ -10935,7 +11926,7 @@
       }
     ],
     "authorContributionMap": {
-      "luo-git": 71
+      "luo-git": 49
     }
   },
   {
@@ -11480,6 +12471,274 @@
     }
   },
   {
+    "path": "src/main/java/luoyi/duke/data/task/TimedTask.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "package luoyi.duke.data.task;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import java.util.Optional;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "import luoyi.duke.common.TimeWrapper;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " * Encapsulate a task which has a time component."
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "public abstract class TimedTask extends Task {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    protected final TimeWrapper time;"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Returns a new TimedTask object."
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @param description Description of the task."
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @param isDone      Boolean to keep track of whether the task is done."
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    protected TimedTask(String description, TimeWrapper time, boolean isDone) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        super(description, isDone);"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        this.time \u003d time;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public Optional\u003cTimeWrapper\u003e getTime() {"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return Optional.ofNullable(time);"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * {@inheritDoc}"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public boolean isSameTime(String date) {"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return time.equals(TimeWrapper.getTimeWrapper(date));"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "luo-git": 37
+    }
+  },
+  {
     "path": "src/main/java/luoyi/duke/data/task/ToDo.java",
     "fileType": "java",
     "lines": [
@@ -11502,269 +12761,444 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "/**"
+        "content": "import java.util.Optional;"
       },
       {
         "lineNumber": 4,
         "author": {
           "gitId": "luo-git"
         },
-        "content": " * ToDo class."
+        "content": ""
       },
       {
         "lineNumber": 5,
         "author": {
           "gitId": "luo-git"
         },
-        "content": " * A ToDo is a task without any date/time attached to it."
+        "content": "import luoyi.duke.common.TimeWrapper;"
       },
       {
         "lineNumber": 6,
         "author": {
           "gitId": "luo-git"
         },
-        "content": " */"
+        "content": ""
       },
       {
         "lineNumber": 7,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class ToDo extends Task {"
+        "content": "/**"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private ToDo(String description, boolean isDone) {"
+        "content": " * ToDo class."
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        super(description, isDone);"
+        "content": " * A ToDo is a task without any date/time attached to it."
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": " */"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "public class ToDo extends Task {"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "    private ToDo(String description, boolean isDone) {"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Returns a new uncompleted ToDo."
+        "content": "        super(description, isDone);"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param description Description of ToDo."
+        "content": "    }"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return New uncompleted ToDo."
+        "content": ""
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public static ToDo getToDo(String description) {"
+        "content": "     * Returns a new uncompleted ToDo."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new ToDo(description, false);"
+        "content": "     * @param description Description of ToDo."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "     * @return New uncompleted ToDo."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "    public static ToDo getToDo(String description) {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "        return new ToDo(description, false);"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public Task markComplete() {"
+        "content": "    /**"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return new ToDo(description, true);"
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": "    public Task markComplete() {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * {@inheritDoc}"
+        "content": "        return new ToDo(description, true);"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public String getDataString() {"
+        "content": "    /**"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return String.format(\"T|%d|%s\", isDone ? 1 : 0, description);"
+        "content": "     * {@inheritDoc}"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    @Override"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    @Override"
+        "content": "    public String getDataString() {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public String toString() {"
+        "content": "        return String.format(\"T|%d|%s\", isDone ? 1 : 0, description);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return \"[T]\" + super.toString();"
+        "content": "    }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 41,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Returns an empty optional."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * This is because todo has no time."
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @return Empty optional."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public Optional\u003cTimeWrapper\u003e getTime() {"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return Optional.empty();"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * Returns vacuous false."
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     * @return False."
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public boolean isSameTime(String date) {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return \"[T]\" + super.toString();"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 66,
         "author": {
           "gitId": "luo-git"
         },
@@ -11772,7 +13206,7 @@
       }
     ],
     "authorContributionMap": {
-      "luo-git": 41
+      "luo-git": 66
     }
   },
   {
@@ -11861,798 +13295,798 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "import luoyi.duke.commands.ToDoCommand;"
+        "content": "import luoyi.duke.commands.SortCommand;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "import luoyi.duke.common.Message;"
+        "content": "import luoyi.duke.commands.SortType;"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "import luoyi.duke.data.exception.DukeIllegalArgumentException;"
+        "content": "import luoyi.duke.commands.ToDoCommand;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "import luoyi.duke.data.exception.DukeUnrecognizedArgumentException;"
+        "content": "import luoyi.duke.common.Message;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "import luoyi.duke.data.exception.DukeIllegalArgumentException;"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "/**"
+        "content": "import luoyi.duke.data.exception.DukeUnrecognizedArgumentException;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "luo-git"
         },
-        "content": " * Parser class to handle command string parsing."
+        "content": ""
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "luo-git"
         },
-        "content": " */"
+        "content": "/**"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "public class Parser {"
+        "content": " * Parser class to handle command string parsing."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    /**"
+        "content": " */"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * Parse a command and returns the corresponding command object."
+        "content": "public class Parser {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @param commandStr Command string."
+        "content": "     * Parse a command and returns the corresponding command object."
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @return Command object to execute."
+        "content": "     *"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @throws DukeIllegalArgumentException If the command string is invalid."
+        "content": "     * @param commandStr Command string."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     * @see Command For details of command objects."
+        "content": "     * @return Command object to execute."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "     */"
+        "content": "     * @throws DukeIllegalArgumentException If the command string is invalid."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    public static Command parse(String commandStr) throws DukeIllegalArgumentException {"
+        "content": "     * @see Command For details of command objects."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (commandStr.matches(\"^list.*\")) {"
+        "content": "     */"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Found list command"
+        "content": "    public static Command parse(String commandStr) throws DukeIllegalArgumentException {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseListCommand(commandStr);"
+        "content": "        if (commandStr.matches(\"^list.*\")) {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.matches(\"^done.*\")) {"
+        "content": "            // Found list command"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Found done command"
+        "content": "            return parseListCommand(commandStr);"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseDoneCommand(commandStr);"
+        "content": "        } else if (commandStr.matches(\"^done.*\")) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.matches(\"^todo.*\")) {"
+        "content": "            // Found done command"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Found todo command"
+        "content": "            return parseDoneCommand(commandStr);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseToDoCommand(commandStr);"
+        "content": "        } else if (commandStr.matches(\"^todo.*\")) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.matches(\"^deadline.*\")) {"
+        "content": "            // Found todo command"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Found deadline command"
+        "content": "            return parseToDoCommand(commandStr);"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseDeadlineCommand(commandStr);"
+        "content": "        } else if (commandStr.matches(\"^deadline.*\")) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.matches(\"^event.*\")) {"
+        "content": "            // Found deadline command"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Handle event command"
+        "content": "            return parseDeadlineCommand(commandStr);"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseEventCommand(commandStr);"
+        "content": "        } else if (commandStr.matches(\"^event.*\")) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.matches(\"^delete.*\")) {"
+        "content": "            // Handle event command"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Handle delete command"
+        "content": "            return parseEventCommand(commandStr);"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseDeleteCommand(commandStr);"
+        "content": "        } else if (commandStr.matches(\"^delete.*\")) {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.matches(\"^find.*\")) {"
+        "content": "            // Handle delete command"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Handle find command"
+        "content": "            return parseDeleteCommand(commandStr);"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseFindCommand(commandStr);"
+        "content": "        } else if (commandStr.matches(\"^find.*\")) {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.matches(\"^help.*\")) {"
+        "content": "            // Handle find command"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            // Handle help command"
+        "content": "            return parseFindCommand(commandStr);"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return parseHelpCommand(commandStr);"
+        "content": "        } else if (commandStr.matches(\"^help.*\")) {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (commandStr.equals(\"bye\")) {"
+        "content": "            // Handle help command"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return ByeCommand.getByeCommand();"
+        "content": "            return parseHelpCommand(commandStr);"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "        } else if (commandStr.matches(\"^sort.*\")) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        throw new DukeUnrecognizedArgumentException(Message.ERR_WRONG_CMD.toString());"
+        "content": "            // Handle sort command"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "            if (commandStr.equals(\"sort time\")) {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "                return SortCommand.getSortCommand(SortType.TIME);"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static HelpCommand parseHelpCommand(String commandStr) {"
+        "content": "            } else if (commandStr.equals(\"sort description\")) {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (!commandStr.matches(\"^help .+\")) {"
+        "content": "                return SortCommand.getSortCommand(SortType.DESCRIPTION);"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return HelpCommand.getHelpCommand(null);"
+        "content": "            }"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "            throw new DukeIllegalArgumentException("
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        String param \u003d commandStr.split(\" \", 2)[1];"
+        "content": "                    Message.ERR_WRONG_SORT_CMD.toString());"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return HelpCommand.getHelpCommand(param);"
+        "content": "        } else if (commandStr.equals(\"bye\")) {"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "            return ByeCommand.getByeCommand();"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static FindCommand parseFindCommand(String commandStr) {"
+        "content": "        throw new DukeUnrecognizedArgumentException(Message.ERR_WRONG_CMD.toString());"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (!commandStr.matches(\"^find .*\")) {"
+        "content": "    }"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            throw new DukeIllegalArgumentException("
+        "content": ""
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    Message.ERR_WRONG_FIND_CMD.toString());"
+        "content": "    private static HelpCommand parseHelpCommand(String commandStr) {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "        if (!commandStr.matches(\"^help .+\")) {"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        String searchString \u003d commandStr.split(\" \", 2)[1];"
+        "content": "            return HelpCommand.getHelpCommand(null);"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return FindCommand.getFindCommand(searchString);"
+        "content": "        }"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "        String param \u003d commandStr.split(\" \", 2)[1];"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return HelpCommand.getHelpCommand(param);"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static DeleteCommand parseDeleteCommand(String commandStr) {"
+        "content": "    }"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (!commandStr.matches(\"^delete -?[0-9]+$\")) {"
+        "content": ""
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            throw new DukeIllegalArgumentException("
+        "content": "    private static FindCommand parseFindCommand(String commandStr) {"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    Message.ERR_WRONG_DELETE_CMD.toString());"
+        "content": "        if (!commandStr.matches(\"^find .*\")) {"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "            throw new DukeIllegalArgumentException("
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        int index \u003d Integer.parseInt(commandStr.split(\" \")[1]);"
+        "content": "                    Message.ERR_WRONG_FIND_CMD.toString());"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return DeleteCommand.getDeleteCommand(index);"
+        "content": "        }"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "        String searchString \u003d commandStr.split(\" \", 2)[1];"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return FindCommand.getFindCommand(searchString);"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static EventCommand parseEventCommand(String commandStr) {"
+        "content": "    }"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (!commandStr.matches(\"^event .* /at .*\")) {"
+        "content": ""
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            throw new DukeIllegalArgumentException("
+        "content": "    private static DeleteCommand parseDeleteCommand(String commandStr) {"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    Message.ERR_WRONG_EVENT_CMD.toString());"
+        "content": "        if (!commandStr.matches(\"^delete -?[0-9]+$\")) {"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "            throw new DukeIllegalArgumentException("
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        String[] params \u003d commandStr.split(\" \", 2)[1].split(\" /at \");"
+        "content": "                    Message.ERR_WRONG_DELETE_CMD.toString());"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return EventCommand.getEventCommand(params[0], params[1]);"
+        "content": "        }"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "        int index \u003d Integer.parseInt(commandStr.split(\" \")[1]);"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return DeleteCommand.getDeleteCommand(index);"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static DeadlineCommand parseDeadlineCommand(String commandStr) {"
+        "content": "    }"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (!commandStr.matches(\"^deadline .* /by .*\")) {"
+        "content": ""
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            throw new DukeIllegalArgumentException("
+        "content": "    private static EventCommand parseEventCommand(String commandStr) {"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    Message.ERR_WRONG_DEADLINE_CMD.toString());"
+        "content": "        if (!commandStr.matches(\"^event .* /at .*\")) {"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "            throw new DukeIllegalArgumentException("
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        String[] params \u003d commandStr.split(\" \", 2)[1].split(\" /by \");"
+        "content": "                    Message.ERR_WRONG_EVENT_CMD.toString());"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return DeadlineCommand.getDeadlineCommand(params[0], params[1]);"
+        "content": "        }"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "        String[] params \u003d commandStr.split(\" \", 2)[1].split(\" /at \");"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return EventCommand.getEventCommand(params[0], params[1]);"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static ToDoCommand parseToDoCommand(String commandStr) {"
+        "content": "    }"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (!commandStr.matches(\"^todo .*\")) {"
+        "content": ""
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            throw new DukeIllegalArgumentException("
+        "content": "    private static DeadlineCommand parseDeadlineCommand(String commandStr) {"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    Message.ERR_WRONG_TODO_CMD.toString());"
+        "content": "        if (!commandStr.matches(\"^deadline .* /by .*\")) {"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "            throw new DukeIllegalArgumentException("
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        String description \u003d commandStr.split(\" \", 2)[1];"
+        "content": "                    Message.ERR_WRONG_DEADLINE_CMD.toString());"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return ToDoCommand.getToDoCommand(description);"
+        "content": "        }"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "        String[] params \u003d commandStr.split(\" \", 2)[1].split(\" /by \");"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return DeadlineCommand.getDeadlineCommand(params[0], params[1]);"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static DoneCommand parseDoneCommand(String commandStr) {"
+        "content": "    }"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (!commandStr.matches(\"^done -?[0-9]+$\")) {"
+        "content": ""
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            throw new DukeIllegalArgumentException("
+        "content": "    private static ToDoCommand parseToDoCommand(String commandStr) {"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    Message.ERR_WRONG_DONE_CMD.toString());"
+        "content": "        if (!commandStr.matches(\"^todo .*\")) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        }"
+        "content": "            throw new DukeIllegalArgumentException("
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        int index \u003d Integer.parseInt(commandStr.split(\" \", 2)[1]);"
+        "content": "                    Message.ERR_WRONG_TODO_CMD.toString());"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return DoneCommand.getDoneCommand(index);"
+        "content": "        }"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "        String description \u003d commandStr.split(\" \", 2)[1];"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "        return ToDoCommand.getToDoCommand(description);"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    private static ListCommand parseListCommand(String commandStr) {"
+        "content": "    }"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        if (commandStr.equals(\"list\")) {"
+        "content": ""
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "            return ListCommand.getListCommand(null);"
+        "content": "    private static DoneCommand parseDoneCommand(String commandStr) {"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        } else if (!commandStr.matches(\"^list .+\")) {"
+        "content": "        if (!commandStr.matches(\"^done -?[0-9]+$\")) {"
       },
       {
         "lineNumber": 126,
@@ -12666,7 +14100,7 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "                    Message.ERR_WRONG_LIST_CMD.toString());"
+        "content": "                    Message.ERR_WRONG_DONE_CMD.toString());"
       },
       {
         "lineNumber": 128,
@@ -12680,21 +14114,21 @@
         "author": {
           "gitId": "luo-git"
         },
-        "content": "        return ListCommand.getListCommand(commandStr.split(\" \", 2)[1]);"
+        "content": "        int index \u003d Integer.parseInt(commandStr.split(\" \", 2)[1]);"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "luo-git"
         },
-        "content": "    }"
+        "content": "        return DoneCommand.getDoneCommand(index);"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "luo-git"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 132,
@@ -12708,11 +14142,88 @@
         "author": {
           "gitId": "luo-git"
         },
+        "content": "    private static ListCommand parseListCommand(String commandStr) {"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        if (commandStr.equals(\"list\")) {"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            return ListCommand.getListCommand(null);"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        } else if (!commandStr.matches(\"^list .+\")) {"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "            throw new DukeIllegalArgumentException("
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "                    Message.ERR_WRONG_LIST_CMD.toString());"
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "        return ListCommand.getListCommand(commandStr.split(\" \", 2)[1]);"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "luo-git"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "luo-git"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "luo-git": 133
+      "luo-git": 144
     }
   },
   {

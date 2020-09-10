@@ -853,227 +853,269 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    static final String FILE_PATH \u003d \"savedTasks.txt\";"
+        "content": "    static final String FILE_PATH_TASKS \u003d \"savedTasks.txt\";"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private Parser parser;"
+        "content": "    /**"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "     * The file path for saving tags."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "     */"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Loads saved data from disk into the current Duke instance if it exists."
+        "content": "    static final String FILE_PATH_TAGS \u003d \"savedTags.txt\";"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "    private Parser parser;"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return The {@link Response response} of the loading operation."
+        "content": "    "
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @throws IOException if an error occurs while reading the file."
+        "content": "    /**"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @throws ClassNotFoundException if the file exists but doesn\u0027t contain valid Duke data."
+        "content": "     * Loads saved data from disk into the current Duke instance if it exists."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public Response loadFromDisk() throws IOException, ClassNotFoundException {"
+        "content": "     * @return The {@link Response response} of the loading operation."
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        Storage storage \u003d new Storage(FILE_PATH);"
+        "content": "     * @throws IOException if an error occurs while reading the file."
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "     * @throws ClassNotFoundException if the file exists but doesn\u0027t contain valid Duke data."
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        if (storage.doesStorageFileExist()) {"
+        "content": "     */"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            TaskList savedList \u003d storage.load();"
+        "content": "    public Response loadFromDisk() throws IOException, ClassNotFoundException {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            parser \u003d new Parser(storage, savedList);"
+        "content": "        Storage storage \u003d new Storage(FILE_PATH_TASKS, FILE_PATH_TAGS);"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showSuccessfulLoad());"
+        "content": "        "
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        } else {"
+        "content": "        if (storage.doStorageFilesExist()) {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            parser \u003d new Parser(storage);"
+        "content": "            storage.load();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showNoExistingSave());"
+        "content": "            TaskList savedList \u003d storage.getLoadedTasks();"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "            TagList savedTags \u003d storage.getLoadedTags();"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "            parser \u003d new Parser(storage, savedList, savedTags);"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "            return new Response(Ui.showSuccessfulLoad());"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "        } else {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Reads a user input string, parses it, and executes it."
+        "content": "            parser \u003d new Parser(storage);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "            return new Response(Ui.showNoExistingSave());"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param input The input string."
+        "content": "        }"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return The {@link Response response} of the executed operation."
+        "content": "    }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "    "
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public Response readAndExecute(String input) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return parser.parseAndExecute(input);"
+        "content": "     * Reads a user input string, parses it, and executes it."
       },
       {
         "lineNumber": 43,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param input The input string."
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return The {@link Response response} of the executed operation."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    public Response readAndExecute(String input) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return parser.parseAndExecute(input);"
+      },
+      {
+        "lineNumber": 49,
         "author": {
           "gitId": "-"
         },
         "content": "    }"
       },
       {
-        "lineNumber": 44,
+        "lineNumber": 50,
         "author": {
           "gitId": "-"
         },
@@ -1081,7 +1123,7 @@
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 42,
+      "silvernitro": 48,
       "-": 2
     }
   },
@@ -1900,773 +1942,1011 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private static final List\u003cString\u003e PARAMETERIZED_COMMANDS \u003d Arrays.asList(\"done\", \"delete\", \"find\");"
+        "content": "    private static final List\u003cString\u003e PARAMETERIZED_COMMANDS \u003d Arrays.asList("
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private final TaskList userTaskList;"
+        "content": "            \"done\","
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private final Storage storage;"
+        "content": "            \"delete\","
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "            \"find\","
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "            \"tag\","
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Constructs a Parser when no saved task list exists."
+        "content": "            \"untag\""
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "    );"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param storage A Storage instance to use when the parser needs to save to disk."
+        "content": "    private final TaskList userTaskList;"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "    private final TagList tagList;"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public Parser(Storage storage) {"
+        "content": "    private final Storage storage;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        userTaskList \u003d new TaskList();"
+        "content": "    "
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        this.storage \u003d storage;"
+        "content": "    /**"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "     * Constructs a Parser when no saved task list exists."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "     *"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "     * @param storage A Storage instance to use when the parser needs to save to disk."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Constructs a Parser when a saved task list exists."
+        "content": "     */"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "    public Parser(Storage storage) {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param storage      A Storage instance to use when the parser needs to save to disk."
+        "content": "        userTaskList \u003d new TaskList();"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param userTaskList A TaskList instance that represents the existing save."
+        "content": "        tagList \u003d new TagList();"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "        this.storage \u003d storage;"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    Parser(Storage storage, TaskList userTaskList) {"
+        "content": "    }"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        this.userTaskList \u003d userTaskList;"
+        "content": "    "
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        this.storage \u003d storage;"
+        "content": "    /**"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "     * Constructs a Parser when a saved task list exists."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "     *"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "     * @param storage      A Storage instance to use when the parser needs to save to disk."
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Parses a string literal and executes the associated operation."
+        "content": "     * @param userTaskList A TaskList instance that represents the existing save."
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "     */"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param literal The string literal to parse and execute."
+        "content": "    Parser(Storage storage, TaskList userTaskList, TagList tagList) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return The {@link Response response} of the executed operation."
+        "content": "        this.userTaskList \u003d userTaskList;"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "        this.tagList \u003d tagList;"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public Response parseAndExecute(String literal) {"
+        "content": "        this.storage \u003d storage;"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        String command \u003d literal.split(\" \")[0];"
+        "content": "    }"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        boolean isValidCommand \u003d PARAMETERIZED_COMMANDS.contains(command);"
+        "content": "    "
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        boolean hasArgument \u003d literal.split(\" \").length \u003e 1;"
+        "content": "    /**"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "     * Parses a string literal and executes the associated operation."
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        if (isValidCommand \u0026\u0026 hasArgument) {"
+        "content": "     *"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            // handle commands with \u003e1 argument"
+        "content": "     * @param literal The string literal to parse and execute."
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return parseParameterizedCommand(command, literal);"
+        "content": "     * @return The {@link Response response} of the executed operation."
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        } else {"
+        "content": "     */"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            switch (literal) {"
+        "content": "    public Response parseAndExecute(String literal) {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            case \"bye\":"
+        "content": "        String command \u003d literal.split(\" \")[0];"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "                return Response.terminatingResponse(Ui.showGoodbyeMessage());"
+        "content": "        boolean isValidCommand \u003d PARAMETERIZED_COMMANDS.contains(command);"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            case \"list\":"
+        "content": "        boolean hasArgument \u003d literal.split(\" \").length \u003e 1;"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "                return new Response(Ui.printList(userTaskList));"
+        "content": "    "
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            case \"save\":"
+        "content": "        if (isValidCommand \u0026\u0026 hasArgument) {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "                return storage.save(userTaskList);"
+        "content": "            // handle commands with \u003e1 argument"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            default:"
+        "content": "            return parseParameterizedCommand(command, literal);"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "                return parseAddCommand(literal);"
+        "content": "        } else {"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            }"
+        "content": "            switch (literal) {"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "            case \"bye\":"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "                return Response.terminatingResponse(Ui.showGoodbyeMessage());"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "            case \"list\":"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private Response parseParameterizedCommand(String command, String literal) {"
+        "content": "                return new Response(Ui.printList(userTaskList));"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        assert command.length() \u003e 0 : \"empty command string\";"
+        "content": "            case \"tags\":"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "                return new Response(Ui.printTags(tagList));"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        switch (command) {"
+        "content": "            case \"save\":"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        case \"done\":"
+        "content": "                return storage.save(userTaskList, tagList);"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return parseDoneCommand(literal);"
+        "content": "            default:"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        case \"delete\":"
+        "content": "                return parseAddCommand(literal);"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return parseDeleteCommand(literal);"
+        "content": "            }"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        case \"find\":"
+        "content": "        }"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return parseFindCommand(literal);"
+        "content": "    }"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        default:"
+        "content": "    "
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            assert !PARAMETERIZED_COMMANDS.contains(command) : \"invalid parameterized command\";"
+        "content": "    private Response parseParameterizedCommand(String command, String literal) {"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return Response.emptyResponse();"
+        "content": "        assert command.length() \u003e 0 : \"empty command string\";"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "        "
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        switch (command) {"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "        case \"done\":"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private Response parseDoneCommand(String literal) {"
+        "content": "            return parseDoneCommand(literal);"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
+        "content": "        case \"delete\":"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "            return parseDeleteCommand(literal);"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        try {"
+        "content": "        case \"find\":"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return userTaskList.markAsDone("
+        "content": "            return parseFindCommand(literal);"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "                    Integer.parseInt(literal.split(\" \")[1])"
+        "content": "        case \"tag\":"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            );"
+        "content": "            return parseTagCommand(literal);"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        } catch (IllegalArgumentException ex) {"
+        "content": "        case \"untag\":"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showErrorMessage(ex));"
+        "content": "            return parseUntagCommand(literal);"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "        default:"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "            assert !PARAMETERIZED_COMMANDS.contains(command) : \"invalid parameterized command\";"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "            return Response.emptyResponse();"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private Response parseDeleteCommand(String literal) {"
+        "content": "        }"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
+        "content": "    }"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "    "
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        try {"
+        "content": "    private Response parseDoneCommand(String literal) {"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return userTaskList.removeItem("
+        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "                    Integer.parseInt(literal.split(\" \")[1])"
+        "content": "        "
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            );"
+        "content": "        try {"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        } catch (IllegalArgumentException ex) {"
+        "content": "            return userTaskList.markAsDone("
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showErrorMessage(ex));"
+        "content": "                    Integer.parseInt(literal.split(\" \")[1])"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "            );"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        } catch (IllegalArgumentException ex) {"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "            return new Response(Ui.showErrorMessage(ex));"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private Response parseFindCommand(String literal) {"
+        "content": "        }"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
+        "content": "    }"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "    "
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        TaskSearcher searcher \u003d new TaskSearcher(userTaskList);"
+        "content": "    private Response parseDeleteCommand(String literal) {"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return searcher.searchAndDisplay(literal.split(\"find\")[1].trim());"
+        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        "
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "        try {"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private Response parseAddCommand(String literal) {"
+        "content": "            return userTaskList.removeItem("
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
+        "content": "                    Integer.parseInt(literal.split(\" \")[1])"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "            );"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        try {"
+        "content": "        } catch (IllegalArgumentException ex) {"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            Task addedTask \u003d userTaskList.addItem(literal);"
+        "content": "            return new Response(Ui.showErrorMessage(ex));"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showSuccessfulAdd(addedTask));"
+        "content": "        }"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        } catch (DukeException ex) {"
+        "content": "    }"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showErrorMessage(ex));"
+        "content": "    "
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "    private Response parseFindCommand(String literal) {"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
       },
       {
         "lineNumber": 123,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        TaskSearcher searcher \u003d new TaskSearcher(userTaskList);"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return searcher.searchAndDisplay(literal.split(\"find\")[1].trim());"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private Response parseAddCommand(String literal) {"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        assert literal.length() \u003e 0 : \"empty command literal\";"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            Task addedTask \u003d userTaskList.addItem(literal);"
+      },
+      {
+        "lineNumber": 133,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return new Response(Ui.showSuccessfulAdd(addedTask));"
+      },
+      {
+        "lineNumber": 134,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        } catch (DukeException ex) {"
+      },
+      {
+        "lineNumber": 135,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return new Response(Ui.showErrorMessage(ex));"
+      },
+      {
+        "lineNumber": 136,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 137,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 138,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 139,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private Response parseTagCommand(String literal) {"
+      },
+      {
+        "lineNumber": 140,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        String parameters \u003d literal.split(\"tag\")[1].trim();"
+      },
+      {
+        "lineNumber": 141,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        int itemIndex \u003d Integer.parseInt(parameters.split(\" \")[0]);"
+      },
+      {
+        "lineNumber": 142,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        String tagName \u003d parameters.split(Integer.toString(itemIndex))[1].trim();"
+      },
+      {
+        "lineNumber": 143,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return userTaskList.tagItem(itemIndex, tagName, tagList);"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private Response parseUntagCommand(String literal) {"
+      },
+      {
+        "lineNumber": 148,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 149,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return userTaskList.untagItem("
+      },
+      {
+        "lineNumber": 150,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                    Integer.parseInt(literal.split(\" \")[1]),"
+      },
+      {
+        "lineNumber": 151,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                    tagList"
+      },
+      {
+        "lineNumber": 152,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            );"
+      },
+      {
+        "lineNumber": 153,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        } catch (IllegalArgumentException ex) {"
+      },
+      {
+        "lineNumber": 154,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return new Response(Ui.showErrorMessage(ex));"
+      },
+      {
+        "lineNumber": 155,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 156,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 157,
         "author": {
           "gitId": "silvernitro"
         },
@@ -2674,7 +2954,7 @@
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 123
+      "silvernitro": 157
     }
   },
   {
@@ -2770,7 +3050,7 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Checks if a file exists."
+        "content": "     * Checks if a list of files exist."
       },
       {
         "lineNumber": 14,
@@ -2784,14 +3064,14 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param path The file path to check."
+        "content": "     * @param filePaths The file paths to check."
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return True if the file exists, False otherwise."
+        "content": "     * @return True if all files exist, False otherwise."
       },
       {
         "lineNumber": 17,
@@ -2805,136 +3085,283 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    static boolean doesFileExist(String path) {"
+        "content": "    static boolean doFilesExist(String... filePaths) {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        File file \u003d new File(path);"
+        "content": "        for (String path : filePaths) {"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return file.exists() \u0026\u0026 file.isFile();"
+        "content": "            File file \u003d new File(path);"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "            boolean isInvalidFile \u003d !(file.exists() \u0026\u0026 file.isFile());"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": ""
+        "content": "            if (isInvalidFile) {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "                return false;"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Reads a serialized {@link TaskList TaskList} instance from disk."
+        "content": "            }"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "        }"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param path The file path of the serialized TaskList."
+        "content": "        return true;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return The deserialized {@link TaskList TaskList} instance."
+        "content": "    }"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @throws ClassNotFoundException if the file given doesn\u0027t contain a serialized"
+        "content": ""
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * {@link TaskList TaskList} instance."
+        "content": "    /**"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @throws IOException if an IO exception occurs while reading the file."
+        "content": "     * Reads a serialized {@link TaskList TaskList} instance from disk."
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    static TaskList readListFromFile(String path) throws ClassNotFoundException, IOException {"
+        "content": "     * @param path The file path of the serialized TaskList."
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        FileInputStream fileInputStream \u003d new FileInputStream(path);"
+        "content": "     * @return The deserialized {@link TaskList TaskList} instance."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        ObjectInputStream objectInputStream \u003d new ObjectInputStream(fileInputStream);"
+        "content": "     * @throws ClassNotFoundException if the file given doesn\u0027t contain a serialized"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return (TaskList) objectInputStream.readObject();"
+        "content": "     * {@link TaskList TaskList} instance."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "     * @throws IOException if an IO exception occurs while reading the file."
       },
       {
         "lineNumber": 37,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    static TaskList readListFromFile(String path) throws ClassNotFoundException, IOException {"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        FileInputStream fileInputStream \u003d new FileInputStream(path);"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        ObjectInputStream objectInputStream \u003d new ObjectInputStream(fileInputStream);"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return (TaskList) objectInputStream.readObject();"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Reads a serialized {@link TagList tag list} instance from disk."
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param path The file path of the serialized TagList."
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return The deserialized {@link TagList tag list} instance."
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @throws ClassNotFoundException if the file given doesn\u0027t contain a serialized"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * {@link TagList tag list} instance."
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @throws IOException if an IO exception occurs while reading the file."
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    static TagList readTagsFromFile(String path) throws ClassNotFoundException, IOException {"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        FileInputStream fileInputStream \u003d new FileInputStream(path);"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        ObjectInputStream objectInputStream \u003d new ObjectInputStream(fileInputStream);"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return (TagList) objectInputStream.readObject();"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 58,
         "author": {
           "gitId": "silvernitro"
         },
@@ -2942,7 +3369,7 @@
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 37
+      "silvernitro": 58
     }
   },
   {
@@ -3537,297 +3964,451 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /** The file path associated with the current running instance of Duke. */"
+        "content": "    private final String taskListFilePath;"
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    private final String filePath;"
+        "content": "    private final String tagsFilePath;"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": ""
+        "content": "    private TaskList loadedTaskList;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "    private TagList loadedTagList;"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Constructs a new Storage instance with an associated file path."
+        "content": ""
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param filePath The file path associated with a running instance of Duke."
+        "content": "     * Constructs a new Storage instance with the associated file paths."
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public Storage(String filePath) {"
+        "content": "     * @param taskListFilePath File path associated with a saved task list."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        this.filePath \u003d filePath;"
+        "content": "     * @param tagsFilePath File path associated with a saved tag list."
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": ""
+        "content": "    public Storage(String taskListFilePath, String tagsFilePath) {"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "        this.taskListFilePath \u003d taskListFilePath;"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Loads a TaskList instance from disk."
+        "content": "        this.tagsFilePath \u003d tagsFilePath;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return The saved TaskList."
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @throws IOException if an IO exception occurs while reading."
+        "content": "    /**"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @throws ClassNotFoundException if the file cannot be deserialized into a TaskList."
+        "content": "     * Loads a {@link TaskList task list} and {@link TagList tag list} from disk."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     *"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    TaskList load() throws IOException, ClassNotFoundException {"
+        "content": "     * @throws IOException if an IO exception occurs while reading."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return Reader.readListFromFile(filePath);"
+        "content": "     * @throws ClassNotFoundException if the files cannot be deserialized into a TaskList/TagList."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": ""
+        "content": "    void load() throws IOException, ClassNotFoundException {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "        loadedTaskList \u003d Reader.readListFromFile(taskListFilePath);"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Saves a TaskList instance to disk."
+        "content": "        loadedTagList \u003d Reader.readTagsFromFile(tagsFilePath);"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param taskList The TaskList instance to save."
+        "content": "    "
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return A response representing the result of the save operation."
+        "content": "    /**"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     * Return the {@link TaskList task list} that was read from disk."
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    Response save(TaskList taskList) {"
+        "content": "     *"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return Writer.writeListToFile(taskList, filePath);"
+        "content": "     * @return The loaded task list."
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": ""
+        "content": "    TaskList getLoadedTasks() {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "        return loadedTaskList;"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Checks if a file already exists at the storage file path."
+        "content": "    }"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "    "
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return True if file exists, False if otherwise."
+        "content": "    /**"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     * Return the {@link TagList tag list} that was read from disk."
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    boolean doesStorageFileExist() {"
+        "content": "     *"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return Reader.doesFileExist(filePath);"
+        "content": "     * @return The loaded tag list."
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": ""
+        "content": "    TagList getLoadedTags() {"
       },
       {
         "lineNumber": 51,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return loadedTagList;"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Saves a {@link TaskList task list} and {@link TagList tag list} to disk."
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param taskList The TaskList instance to save."
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param tagList The TagList instance to save."
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return A response representing the result of the save operation."
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    Response save(TaskList taskList, TagList tagList) {"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return Writer.writeToFile(taskList, tagList, taskListFilePath, tagsFilePath);"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Checks if the Duke save-files already exist at the storage file path."
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return True if files exist, False if otherwise."
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    boolean doStorageFilesExist() {"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return Reader.doFilesExist(taskListFilePath, tagsFilePath);"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 73,
         "author": {
           "gitId": "silvernitro"
         },
@@ -3835,7 +4416,1119 @@
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 51
+      "silvernitro": 73
+    }
+  },
+  {
+    "path": "src/main/java/com/siawsam/duke/Tag.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "package com.siawsam.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "import java.io.Serializable;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": " * Represents a taggable item\u0027s tag."
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "public class Tag implements Serializable {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private final String tagName;"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private final List\u003cTaggable\u003e taggedItems \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    Tag(String tagName) {"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        this.tagName \u003d tagName;"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Adds a {@link Taggable taggable} item to this tag."
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param taggable The taggable to add."
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    void addItem(Taggable taggable) {"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        taggedItems.add(taggable);"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Removes a {@link Taggable taggable} item from this tag."
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param taggable The taggable to remove."
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    void removeItem(Taggable taggable) {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        taggedItems.remove(taggable);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Checks if the tag has any {@link Taggable taggables} tagged to it."
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return True if no taggables are tagged, false if otherwise."
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    boolean isTagEmpty() {"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return taggedItems.isEmpty();"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Return the name of the tag."
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return The string representation of the tag name."
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    String getTagName() {"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return tagName;"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Returns the list of {@link Taggable taggables} tagged to this tag."
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return The list of taggables."
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    List\u003cTaggable\u003e getTaggedItems() {"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return taggedItems;"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return getTagName() + \" (\" + taggedItems.size() + \" items)\";"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "silvernitro": 67
+    }
+  },
+  {
+    "path": "src/main/java/com/siawsam/duke/TagList.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "package com.siawsam.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "import java.io.Serializable;"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "import java.util.ArrayList;"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "import java.util.List;"
+      },
+      {
+        "lineNumber": 6,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 7,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "/**"
+      },
+      {
+        "lineNumber": 8,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": " * Represents a list of {@link Tag tags}."
+      },
+      {
+        "lineNumber": 9,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": " */"
+      },
+      {
+        "lineNumber": 10,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "public class TagList implements Serializable {"
+      },
+      {
+        "lineNumber": 11,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private final List\u003cTag\u003e tags \u003d new ArrayList\u003c\u003e();"
+      },
+      {
+        "lineNumber": 12,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 13,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private Tag createAndAddTag(String tagName) {"
+      },
+      {
+        "lineNumber": 14,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        Tag tag \u003d new Tag(tagName);"
+      },
+      {
+        "lineNumber": 15,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        tags.add(tag);"
+      },
+      {
+        "lineNumber": 16,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return tag;"
+      },
+      {
+        "lineNumber": 17,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 18,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "   "
+      },
+      {
+        "lineNumber": 19,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private boolean doesTagExistInList(String tagName) {"
+      },
+      {
+        "lineNumber": 20,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        for (Tag t : tags) {"
+      },
+      {
+        "lineNumber": 21,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            if (t.getTagName().equals(tagName)) {"
+      },
+      {
+        "lineNumber": 22,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                return true;"
+      },
+      {
+        "lineNumber": 23,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 24,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 25,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return false;"
+      },
+      {
+        "lineNumber": 26,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 27,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 28,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private Tag getTagByName(String tagName) throws DukeException {"
+      },
+      {
+        "lineNumber": 29,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        for (Tag t : tags) {"
+      },
+      {
+        "lineNumber": 30,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            if (t.getTagName().equals(tagName)) {"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                return t;"
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        throw new DukeException(\"No such tag exists\");"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Adds a {@link Taggable taggable} to a {@link Tag tag}."
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param tagName The string representing the tag\u0027s name."
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param taggable The taggable to add to the tag."
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return The tag object corresponding to the tag name (after adding the taggable)."
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @throws DukeException if an invalid tag is given."
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    Tag addTaggableToTag(String tagName, Taggable taggable) throws DukeException {"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        Tag tag;"
+      },
+      {
+        "lineNumber": 47,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        if (doesTagExistInList(tagName)) {"
+      },
+      {
+        "lineNumber": 48,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            tag \u003d getTagByName(tagName);"
+      },
+      {
+        "lineNumber": 49,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        } else {"
+      },
+      {
+        "lineNumber": 50,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            tag \u003d createAndAddTag(tagName);"
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        tag.addItem(taggable);"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return tag;"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Removes a {@link Taggable taggable} from a {@link Tag tag}."
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param tag The tag to remove the taggable from."
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param taggable The taggable to remove."
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    void untag(Tag tag, Taggable taggable) {"
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        tag.removeItem(taggable);"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        //we don\u0027t keep tags that have no Taggables inside"
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        if (tag.isTagEmpty()) {"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            // compare tags by their names since equality is not preserved by serialization"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            tags.removeIf(t -\u003e t.getTagName().equals(tag.getTagName()));"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        StringBuilder stringBuilder \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        for (int i \u003d 0; i \u003c tags.size(); i++) {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            String taskString \u003d (i + 1) + \". \" + tags.get(i) + \"\\n\";"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            stringBuilder.append(taskString);"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return stringBuilder.toString();"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "silvernitro": 83
+    }
+  },
+  {
+    "path": "src/main/java/com/siawsam/duke/Taggable.java",
+    "fileType": "java",
+    "lines": [
+      {
+        "lineNumber": 1,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "package com.siawsam.duke;"
+      },
+      {
+        "lineNumber": 2,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 3,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "public interface Taggable {"
+      },
+      {
+        "lineNumber": 4,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    void addTag(Tag tag);"
+      },
+      {
+        "lineNumber": 5,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "}"
+      }
+    ],
+    "authorContributionMap": {
+      "silvernitro": 5
     }
   },
   {
@@ -3896,7 +5589,7 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "public class Task implements Serializable {"
+        "content": "public class Task implements Serializable, Taggable {"
       },
       {
         "lineNumber": 9,
@@ -3917,266 +5610,266 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "    private Tag tag;"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "    "
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Constructs a new Task instance containing a task description."
+        "content": "    /**"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "     * Constructs a new Task instance containing a task description."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param description The task description."
+        "content": "     *"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     * @param description The task description."
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public Task(String description) {"
+        "content": "     */"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        taskDescription \u003d description;"
+        "content": "    public Task(String description) {"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        taskDescription \u003d description;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "    }"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "    "
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Marks the task as \"done\"."
+        "content": "    /**"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "     * Marks the task as \"done\"."
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return A response indicating the task that is marked as \"done\"."
+        "content": "     *"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     * @return A response indicating the task that is marked as \"done\"."
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    Response markAsDone() {"
+        "content": "     */"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        isDone \u003d true;"
+        "content": "    Response markAsDone() {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return new Response(Ui.showMarkedAsDone(this));"
+        "content": "        isDone \u003d true;"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        return new Response(Ui.showMarkedAsDone(this));"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "    "
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Checks if the task description includes a search term."
+        "content": "    /**"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "     * Checks if the task description includes a search term."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param keyword The search string."
+        "content": "     *"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return True if the task description includes the keyword, false if otherwise."
+        "content": "     * @param keyword The search string."
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     * @return True if the task description includes the keyword, false if otherwise."
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public boolean includesKeyword(String keyword) {"
+        "content": "     */"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return taskDescription.contains(keyword);"
+        "content": "    public boolean includesKeyword(String keyword) {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        return taskDescription.contains(keyword);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    "
+        "content": "    }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    /**"
+        "content": "    "
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Returns a string representation of the task."
+        "content": "    /**"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "     * Adds a {@link Tag tag} to the task."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return The formatted string."
+        "content": "     *"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     * @param tag The tag to add."
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public String toString() {"
+        "content": "     */"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        String status \u003d isDone ? \"\\u2713\" : \"\\u2718\";"
+        "content": "    public void addTag(Tag tag) {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return \"[\" + status + \"] \" + taskDescription;"
+        "content": "        this.tag \u003d tag;"
       },
       {
         "lineNumber": 49,
@@ -4190,11 +5883,249 @@
         "author": {
           "gitId": "silvernitro"
         },
+        "content": "    "
+      },
+      {
+        "lineNumber": 51,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 52,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Removes the {@link Tag tag} from the task."
+      },
+      {
+        "lineNumber": 53,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 54,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    public void removeTag() {"
+      },
+      {
+        "lineNumber": 55,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        tag \u003d null;"
+      },
+      {
+        "lineNumber": 56,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 57,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 58,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    Tag getTag() {"
+      },
+      {
+        "lineNumber": 59,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return tag;"
+      },
+      {
+        "lineNumber": 60,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 61,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 62,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 63,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Checks if the task has a tag associated with it."
+      },
+      {
+        "lineNumber": 64,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 65,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return True if a tag exists in the task instance, False if otherwise."
+      },
+      {
+        "lineNumber": 66,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    boolean isTagged() {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return tag !\u003d null;"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Returns a string representation of the task."
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return The formatted string."
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        String status \u003d isDone ? \"\\u2713\" : \"\\u2718\";"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        String taskString \u003d \"[\" + status + \"] \" + taskDescription;"
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        if (tag \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return taskString;"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return taskString + \" (tag: #\" + tag.getTagName() + \")\";"
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "silvernitro"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 50
+      "silvernitro": 84
     }
   },
   {
@@ -5221,80 +7152,444 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    @Override"
+        "content": "    /**"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    public String toString() {"
+        "content": "     * Tags an item."
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        StringBuilder stringBuilder \u003d new StringBuilder();"
+        "content": "     *"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "     * @param itemIndex The index of the item in the tasklist to tag."
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        for (int i \u003d 1; i \u003c\u003d itemList.size(); i++) {"
+        "content": "     * @param tagName The name of the tag."
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            String taskString \u003d i + \". \" + itemList.get(i - 1) + \"\\n\";"
+        "content": "     * @param tagList The tag list instance to handle the tagging."
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            stringBuilder.append(taskString);"
+        "content": "     * @return A Response representing the result of the tagging operation."
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "     */"
       },
       {
         "lineNumber": 154,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        "
+        "content": "    Response tagItem(int itemIndex, String tagName, TagList tagList) {"
       },
       {
         "lineNumber": 155,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        return stringBuilder.toString();"
+        "content": "        if (itemIndex \u003e itemList.size()) {"
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "            throw new IllegalArgumentException(\"Item #\" + itemIndex + \" does \""
       },
       {
         "lineNumber": 157,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                                                       + \"not exist and cannot \""
+      },
+      {
+        "lineNumber": 158,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                                                       + \"be tagged.\");"
+      },
+      {
+        "lineNumber": 159,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 160,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 161,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 162,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            Task task \u003d itemList.get(itemIndex - 1);"
+      },
+      {
+        "lineNumber": 163,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            if (task.isTagged()) {"
+      },
+      {
+        "lineNumber": 164,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                return new Response(Ui.showTaskAlreadyTagged());"
+      },
+      {
+        "lineNumber": 165,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            }"
+      },
+      {
+        "lineNumber": 166,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            "
+      },
+      {
+        "lineNumber": 167,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            Tag tag \u003d tagList.addTaggableToTag(tagName, task);"
+      },
+      {
+        "lineNumber": 168,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            task.addTag(tag);"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return new Response(Ui.showSuccessfulTag(task));"
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        } catch (DukeException exception) {"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return new Response(Ui.showErrorMessage(exception));"
+      },
+      {
+        "lineNumber": 172,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 173,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 174,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 175,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 176,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * Untags an item."
+      },
+      {
+        "lineNumber": 177,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 178,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param itemIndex The index of the item in the tasklist to untag."
+      },
+      {
+        "lineNumber": 179,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @param tagList The tag list instance to handle the untagging."
+      },
+      {
+        "lineNumber": 180,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     * @return A Response representing the result of the untagging operation."
+      },
+      {
+        "lineNumber": 181,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 182,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    Response untagItem(int itemIndex, TagList tagList) {"
+      },
+      {
+        "lineNumber": 183,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        if (itemIndex \u003e itemList.size()) {"
+      },
+      {
+        "lineNumber": 184,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            throw new IllegalArgumentException(\"Item #\" + itemIndex + \" does \""
+      },
+      {
+        "lineNumber": 185,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                                                       + \"not exist and cannot \""
+      },
+      {
+        "lineNumber": 186,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "                                                       + \"be untagged.\");"
+      },
+      {
+        "lineNumber": 187,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 188,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 189,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        Task task \u003d itemList.get(itemIndex - 1);"
+      },
+      {
+        "lineNumber": 190,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        if (!task.isTagged()) {"
+      },
+      {
+        "lineNumber": 191,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            return new Response(Ui.showItemNotTagged());"
+      },
+      {
+        "lineNumber": 192,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 193,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        tagList.untag(task.getTag(), task);"
+      },
+      {
+        "lineNumber": 194,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        task.removeTag();"
+      },
+      {
+        "lineNumber": 195,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return new Response(Ui.showSuccessfulUntag());"
+      },
+      {
+        "lineNumber": 196,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 197,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 198,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 199,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 200,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        StringBuilder stringBuilder \u003d new StringBuilder();"
+      },
+      {
+        "lineNumber": 201,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 202,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        for (int i \u003d 1; i \u003c\u003d itemList.size(); i++) {"
+      },
+      {
+        "lineNumber": 203,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            String taskString \u003d i + \". \" + itemList.get(i - 1) + \"\\n\";"
+      },
+      {
+        "lineNumber": 204,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "            stringBuilder.append(taskString);"
+      },
+      {
+        "lineNumber": 205,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 206,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        "
+      },
+      {
+        "lineNumber": 207,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return stringBuilder.toString();"
+      },
+      {
+        "lineNumber": 208,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 209,
         "author": {
           "gitId": "silvernitro"
         },
@@ -5302,7 +7597,7 @@
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 157
+      "silvernitro": 209
     }
   },
   {
@@ -6144,11 +8439,151 @@
         "author": {
           "gitId": "silvernitro"
         },
+        "content": "    "
+      },
+      {
+        "lineNumber": 67,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    static String showSuccessfulTag(Task task) {"
+      },
+      {
+        "lineNumber": 68,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return \"This task has been tagged: \" + task;"
+      },
+      {
+        "lineNumber": 69,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 70,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 71,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    static String showSuccessfulUntag() {"
+      },
+      {
+        "lineNumber": 72,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return \"Task successfully untagged.\";"
+      },
+      {
+        "lineNumber": 73,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 74,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 75,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    static String showTaskAlreadyTagged() {"
+      },
+      {
+        "lineNumber": 76,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return \"This task has already been tagged. Untag before adding new tag.\";"
+      },
+      {
+        "lineNumber": 77,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 78,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 79,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    static String showItemNotTagged() {"
+      },
+      {
+        "lineNumber": 80,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return \"This item does not have a tag.\";"
+      },
+      {
+        "lineNumber": 81,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 82,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 83,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    static String printTags(TagList tagList) {"
+      },
+      {
+        "lineNumber": 84,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        return \"These are your tags:\\n\" + tagList.toString();"
+      },
+      {
+        "lineNumber": 85,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 86,
+        "author": {
+          "gitId": "silvernitro"
+        },
         "content": "}"
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 66
+      "silvernitro": 86
     }
   },
   {
@@ -6237,129 +8672,248 @@
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * Writes a TaskList instance to a file on disk."
+        "content": "     * Serializes and writes a {@link TagList tag list}  and {@link TaskList task list} to disk."
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     *"
+        "content": "     * @param taskList The task list to save."
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param taskList The TaskList instance to write."
+        "content": "     * @param tagList The tag list to save."
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @param path The file path to write to."
+        "content": "     * @param taskListPath The write path for the task list."
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     * @return A response representing the result of the write operation."
+        "content": "     * @param tagListPath The write path for the tag list."
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "     */"
+        "content": "     * @return A Response indicating the result of the write operation."
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    static Response writeListToFile(TaskList taskList, String path) {"
+        "content": "     */"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        try {"
+        "content": "    static Response writeToFile("
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            FileOutputStream fileOutputStream \u003d new FileOutputStream(path);"
+        "content": "            TaskList taskList, TagList tagList,"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            ObjectOutputStream objectOutputStream \u003d new ObjectOutputStream(fileOutputStream);"
+        "content": "            String taskListPath, String tagListPath"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            objectOutputStream.writeObject(taskList);"
+        "content": "    ) {"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            objectOutputStream.flush();"
+        "content": "        try {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            objectOutputStream.close();"
+        "content": "            writeListToFile(taskList, taskListPath);"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showSuccessfulSave());"
+        "content": "            writeTagsToFile(tagList, tagListPath);"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "            return new Response(Ui.showSuccessfulSave());"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "            return new Response(Ui.showErrorMessage(e));"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "        }"
+        "content": "            return new Response(Ui.showErrorMessage(e));"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "silvernitro"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 30,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 31,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 32,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private static void writeListToFile(TaskList taskList, String path) throws IOException {"
+      },
+      {
+        "lineNumber": 33,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        FileOutputStream fileOutputStream \u003d new FileOutputStream(path);"
+      },
+      {
+        "lineNumber": 34,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        ObjectOutputStream objectOutputStream \u003d new ObjectOutputStream(fileOutputStream);"
+      },
+      {
+        "lineNumber": 35,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        objectOutputStream.writeObject(taskList);"
+      },
+      {
+        "lineNumber": 36,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        objectOutputStream.flush();"
+      },
+      {
+        "lineNumber": 37,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        objectOutputStream.close();"
+      },
+      {
+        "lineNumber": 38,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 39,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    "
+      },
+      {
+        "lineNumber": 40,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    private static void writeTagsToFile(TagList tagList, String path) throws IOException {"
+      },
+      {
+        "lineNumber": 41,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        FileOutputStream fileOutputStream \u003d new FileOutputStream(path);"
+      },
+      {
+        "lineNumber": 42,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        ObjectOutputStream objectOutputStream \u003d new ObjectOutputStream(fileOutputStream);"
+      },
+      {
+        "lineNumber": 43,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        objectOutputStream.writeObject(tagList);"
+      },
+      {
+        "lineNumber": 44,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        objectOutputStream.flush();"
+      },
+      {
+        "lineNumber": 45,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "        objectOutputStream.close();"
+      },
+      {
+        "lineNumber": 46,
+        "author": {
+          "gitId": "silvernitro"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 47,
         "author": {
           "gitId": "silvernitro"
         },
@@ -6367,7 +8921,7 @@
       }
     ],
     "authorContributionMap": {
-      "silvernitro": 30
+      "silvernitro": 47
     }
   },
   {
