@@ -328,9 +328,9 @@
       {
         "lineNumber": 47,
         "author": {
-          "gitId": "-"
+          "gitId": "sun-yitao"
         },
-        "content": "    mainClassName \u003d \"seedu.duke.Duke\""
+        "content": "    mainClassName \u003d \"duke.Launcher\""
       },
       {
         "lineNumber": 48,
@@ -432,8 +432,8 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 16,
-      "-": 45
+      "sun-yitao": 17,
+      "-": 44
     }
   },
   {
@@ -1105,7 +1105,7 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return StringConstants.joinStrings(userTaskList.getTasksAsStrings());"
+        "content": "            return saveTaskListAndJoinMessages(userTaskList.getTasksAsStrings());"
       },
       {
         "lineNumber": 32,
@@ -1126,157 +1126,143 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            String[] doneMessages \u003d userTaskList.markTaskDoneAtIndex(doneIndex);"
+        "content": "            return saveTaskListAndJoinMessages(userTaskList.markTaskDoneAtIndex(doneIndex));"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            userTaskList.saveTaskList();"
+        "content": "        case DELETE:"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return StringConstants.joinStrings(doneMessages);"
+        "content": "            int deleteIndex \u003d Parser.getTaskIndex(userInput);"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        case DELETE:"
+        "content": "            return saveTaskListAndJoinMessages(userTaskList.deleteTaskAtIndex(deleteIndex));"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            int deleteIndex \u003d Parser.getTaskIndex(userInput);"
+        "content": "        case TODO:"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            String[] deleteMessages \u003d userTaskList.deleteTaskAtIndex(deleteIndex);"
+        "content": "        case DEADLINE:"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            userTaskList.saveTaskList();"
+        "content": "        case EVENT:"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return StringConstants.joinStrings(deleteMessages);"
+        "content": "            return saveTaskListAndJoinMessages(userTaskList.addTask(userInput, userCommandType));"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        case TODO:"
+        "content": "        case FIND:"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        case DEADLINE:"
+        "content": "            return saveTaskListAndJoinMessages(userTaskList.find(userInput));"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        case EVENT:"
+        "content": "        default:"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            String[] addMessages \u003d userTaskList.addTask(userInput, userCommandType);"
+        "content": "            return \"Error: Unrecognised command type\";"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            userTaskList.saveTaskList();"
+        "content": "        }"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return StringConstants.joinStrings(addMessages);"
+        "content": "    }"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        case FIND:"
+        "content": ""
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            String[] findMessages \u003d userTaskList.find(userInput);"
+        "content": "    private String saveTaskListAndJoinMessages(String[] messages) throws IOException {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return StringConstants.joinStrings(findMessages);"
+        "content": "        userTaskList.saveTaskList();"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        default:"
+        "content": "        return StringConstants.joinStrings(messages);"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return \"Error\";"
+        "content": "    }"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
-      },
-      {
-        "lineNumber": 54,
-        "author": {
-          "gitId": "sun-yitao"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 55,
-        "author": {
-          "gitId": "sun-yitao"
-        },
         "content": ""
       },
       {
-        "lineNumber": 56,
+        "lineNumber": 54,
         "author": {
           "gitId": "-"
         },
@@ -1284,7 +1270,7 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 54,
+      "sun-yitao": 52,
       "-": 2
     }
   },
@@ -2430,794 +2416,829 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        if (command.equals(LIST_COMMAND)) {"
+        "content": "        assert command !\u003d null : \"Command is null\";"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.LIST;"
+        "content": "        if (command.equals(LIST_COMMAND)) {"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (command.equals(EXIT_COMMAND)) {"
+        "content": "            return UserCommandType.LIST;"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.EXIT;"
+        "content": "        } else if (command.equals(EXIT_COMMAND)) {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (command.startsWith(DONE_COMMAND)) {"
+        "content": "            return UserCommandType.EXIT;"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.DONE;"
+        "content": "        } else if (command.startsWith(DONE_COMMAND)) {"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (command.startsWith(DELETE_COMMAND)) {"
+        "content": "            return UserCommandType.DONE;"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.DELETE;"
+        "content": "        } else if (command.startsWith(DELETE_COMMAND)) {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (command.startsWith(TODO_COMMAND)) {"
+        "content": "            return UserCommandType.DELETE;"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.TODO;"
+        "content": "        } else if (command.startsWith(TODO_COMMAND)) {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (command.startsWith(DEADLINE_COMMAND)) {"
+        "content": "            return UserCommandType.TODO;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.DEADLINE;"
+        "content": "        } else if (command.startsWith(DEADLINE_COMMAND)) {"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (command.startsWith(EVENT_COMMAND)) {"
+        "content": "            return UserCommandType.DEADLINE;"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.EVENT;"
+        "content": "        } else if (command.startsWith(EVENT_COMMAND)) {"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (command.startsWith(FIND_COMMAND)) {"
+        "content": "            return UserCommandType.EVENT;"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return UserCommandType.FIND;"
+        "content": "        } else if (command.startsWith(FIND_COMMAND)) {"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else {"
+        "content": "            return UserCommandType.FIND;"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidCommandException();"
+        "content": "        } else {"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "            throw new InvalidCommandException();"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Parses a task command and return the String components."
+        "content": "    /**"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param command user command String"
+        "content": "     * Parses a task command and return the String components."
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String array of the command components as Task name, dateTimeString"
+        "content": "     * @param command user command String"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws InvalidCommandException if command syntax is unrecognised"
+        "content": "     * @return String array of the command components as Task name, dateTimeString"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @throws InvalidCommandException if command syntax is unrecognised"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static String[] parseTask(String command) throws InvalidCommandException {"
+        "content": "     */"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String[] components \u003d command.split(\" \");"
+        "content": "    public static String[] parseTask(String command) throws InvalidCommandException {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String taskType \u003d components[0];"
+        "content": "        assert command !\u003d null : \"Command is null\";"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "        String[] components \u003d command.split(\" \");"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        if (taskType.equals(TODO_COMMAND)) {"
+        "content": "        String taskType \u003d components[0];"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            if (components.length \u003c 2) {"
+        "content": ""
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                throw new InvalidCommandException(\"The description of a todo cannot be empty.\");"
+        "content": "        if (taskType.equals(TODO_COMMAND)) {"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            }"
+        "content": "            if (components.length \u003c 2) {"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return new String[]{"
+        "content": "                throw new InvalidCommandException(\"The description of a todo cannot be empty.\");"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                String.join(\" \", Arrays.copyOfRange(components, 1, components.length))"
+        "content": "            }"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            };"
+        "content": "            return new String[]{"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else if (taskType.equals(DEADLINE_COMMAND) || taskType.equals(EVENT_COMMAND)) {"
+        "content": "                String.join(\" \", Arrays.copyOfRange(components, 1, components.length))"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            for (int i \u003d 0; i \u003c components.length - 1; i++) {"
+        "content": "            };"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                if (components[i].equals(\"/at\") || components[i].equals(\"/by\")) {"
+        "content": "        } else if (taskType.equals(DEADLINE_COMMAND) || taskType.equals(EVENT_COMMAND)) {"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                    String dateTimeString \u003d  i + 2 \u003d\u003d components.length"
+        "content": "            for (int i \u003d 0; i \u003c components.length - 1; i++) {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                            ? components[i + 1] + \" 0000\""
+        "content": "                if (components[i].equals(\"/at\") || components[i].equals(\"/by\")) {"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                            : String.join(\" \","
+        "content": "                    String dateTimeString \u003d  i + 2 \u003d\u003d components.length"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                            Arrays.copyOfRange(components, i + 1, components.length));"
+        "content": "                            ? components[i + 1] + \" 0000\""
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                    // Task name, Datetime"
+        "content": "                            : String.join(\" \","
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                    return new String[]{"
+        "content": "                            Arrays.copyOfRange(components, i + 1, components.length));"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                        String.join(\" \", Arrays.copyOfRange(components, 1, i)),"
+        "content": "                    // Task name, Datetime"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                        dateTimeString"
+        "content": "                    return new String[]{"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                    };"
+        "content": "                        String.join(\" \", Arrays.copyOfRange(components, 1, i)),"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                }"
+        "content": "                        dateTimeString"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            }"
+        "content": "                    };"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidCommandException(\"No date provided\");"
+        "content": "                }"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else {"
+        "content": "            }"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidCommandException();"
+        "content": "            throw new InvalidCommandException(\"No date provided\");"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "        } else {"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "            throw new InvalidCommandException();"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Parses datetime String and return LocalDateTime."
+        "content": ""
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param dateString datetime String"
+        "content": "    /**"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return LocalDateTime"
+        "content": "     * Parses datetime String and return LocalDateTime."
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws InvalidCommandException if cannot parse dateString"
+        "content": "     * @param dateString datetime String"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return LocalDateTime"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static LocalDateTime parseDateTime(String dateString) throws InvalidCommandException {"
+        "content": "     * @throws InvalidCommandException if cannot parse dateString"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        try {"
+        "content": "     */"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return LocalDateTime.parse(dateString, dateTimeFormatter);"
+        "content": "    public static LocalDateTime parseDateTime(String dateString) throws InvalidCommandException {"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } catch (DateTimeParseException exception) {"
+        "content": "        assert dateString !\u003d null : \"dateString is null\";"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidCommandException(\"Invalid date time format, \" +"
+        "content": "        try {"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                    \"please specify your date in dd/MM/yyyy HHmm format\");"
+        "content": "            return LocalDateTime.parse(dateString, dateTimeFormatter);"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "        } catch (DateTimeParseException exception) {"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "            throw new InvalidCommandException(\"Invalid date time format, \" +"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "                    \"please specify your date in dd/MM/yyyy HHmm format\");"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Gets Task index of done user command."
+        "content": "    }"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param command User command String"
+        "content": ""
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return task index"
+        "content": "    /**"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws InvalidCommandException if command syntax is invalid"
+        "content": "     * Gets Task index of done user command."
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @param command User command String"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static int getTaskIndex(String command) throws InvalidCommandException {"
+        "content": "     * @return task index"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String[] components \u003d command.split(\" \");"
+        "content": "     * @throws InvalidCommandException if command syntax is invalid"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        if (components.length !\u003d 2) {"
+        "content": "     */"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidCommandException(\"Done command should have 2 components\");"
+        "content": "    public static int getTaskIndex(String command) throws InvalidCommandException {"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "        assert command !\u003d null : \"Command is null\";"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return Integer.parseInt(components[1]) - 1;"
+        "content": "        String[] components \u003d command.split(\" \");"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        if (components.length !\u003d 2) {"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "            throw new InvalidCommandException(\"Done command should have 2 components\");"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Gets Keyword String from find command."
+        "content": "        return Integer.parseInt(components[1]) - 1;"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param command user command"
+        "content": "    }"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return keyword String"
+        "content": ""
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws InvalidCommandException if keyword string not provided"
+        "content": "    /**"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * Gets Keyword String from find command."
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static String getFindKeyWordString(String command) throws InvalidCommandException {"
+        "content": "     * @param command user command"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String[] components \u003d command.split(\" \");"
+        "content": "     * @return keyword String"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        if (components.length \u003c 2) {"
+        "content": "     * @throws InvalidCommandException if keyword string not provided"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidCommandException(\"Done command should have 2 components\");"
+        "content": "     */"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "    public static String getFindKeyWordString(String command) throws InvalidCommandException {"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return String.join(\" \", Arrays.copyOfRange(components, 1, components.length));"
+        "content": "        assert command !\u003d null : \"Command is null\";"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        String[] components \u003d command.split(\" \");"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "        if (components.length \u003c 2) {"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "            throw new InvalidCommandException(\"Done command should have 2 components\");"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * An exception for invalid user command."
+        "content": "        }"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "        return String.join(\" \", Arrays.copyOfRange(components, 1, components.length));"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static class InvalidCommandException extends Exception {"
+        "content": "    }"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        public InvalidCommandException(String errorMessage) {"
+        "content": ""
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            super(errorMessage);"
+        "content": "    /**"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "     * An exception for invalid user command."
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        public InvalidCommandException() {"
+        "content": "    public static class InvalidCommandException extends Exception {"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            super(\"Unrecognised command\");"
+        "content": "        public InvalidCommandException(String errorMessage) {"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "            super(errorMessage);"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        }"
       },
       {
         "lineNumber": 143,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 144,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "        public InvalidCommandException() {"
+      },
+      {
+        "lineNumber": 145,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "            super(\"Unrecognised command\");"
+      },
+      {
+        "lineNumber": 146,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 147,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 148,
         "author": {
           "gitId": "sun-yitao"
         },
@@ -3225,7 +3246,7 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 143
+      "sun-yitao": 148
     }
   },
   {
@@ -3876,199 +3897,178 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String LINE \u003d \"__________________________________________________\";"
+        "content": "    public static final String[] GREETING_MESSAGES \u003d new String[]{"
       },
       {
         "lineNumber": 8,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String FOUR_SPACES \u003d \"    \";"
+        "content": "        \"Hello! I\u0027m Duke\","
       },
       {
         "lineNumber": 9,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String SIX_SPACES \u003d \"      \";"
+        "content": "        \"What can I do for you?\""
       },
       {
         "lineNumber": 10,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String[] GREETING_MESSAGES \u003d new String[]{"
+        "content": "    };"
       },
       {
         "lineNumber": 11,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        \"Hello! I\u0027m Duke\","
+        "content": "    public static final String DONE_MESSAGE \u003d \"Nice! I\u0027ve marked this task as done:\";"
       },
       {
         "lineNumber": 12,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        \"What can I do for you?\""
+        "content": "    public static final String ADD_MESSAGE \u003d \"Got it. I\u0027ve added this task: \";"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    };"
+        "content": "    public static final String DELETE_MESSAGE \u003d \"Noted. I\u0027ve removed this task:\";"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String DONE_MESSAGE \u003d \"Nice! I\u0027ve marked this task as done:\";"
+        "content": "    public static final String COUNT_MESSAGE \u003d \"Now you have %d tasks in the list.\";"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String ADD_MESSAGE \u003d \"Got it. I\u0027ve added this task: \";"
+        "content": "    public static final String EXIT_MESSAGE \u003d \"Bye. Hope to see you again soon!\";"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String DELETE_MESSAGE \u003d \"Noted. I\u0027ve removed this task:\";"
+        "content": "    public static final String TASK_FOUND_MESSAGE \u003d \"Here are the matching tasks in your list:\";"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String COUNT_MESSAGE \u003d \"Now you have %d tasks in the list.\";"
+        "content": "    public static final String NO_TASK_FOUND_MESSAGE \u003d \"No matching tasks found.\";"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String EXIT_MESSAGE \u003d \"Bye. Hope to see you again soon!\";"
+        "content": ""
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String TASK_FOUND_MESSAGE \u003d \"Here are the matching tasks in your list:\";"
+        "content": "    /**"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static final String NO_TASK_FOUND_MESSAGE \u003d \"No matching tasks found.\";"
+        "content": "     * Joins array of strings together separated by newline character."
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "     * @param strings array of strings to join"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "     * @return joined string"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Joins array of strings together separated by newline character."
+        "content": "     */"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param strings array of strings to join"
+        "content": "    public static String joinStrings(String[] strings) {"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return joined string"
+        "content": "        return String.join(\"\\n\", strings);"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static String joinStrings(String[] strings) {"
+        "content": ""
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return String.join(\"\\n\", strings);"
+        "content": "    public static String getGreeting() {"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        return joinStrings(StringConstants.GREETING_MESSAGES);"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static String getGreeting() {"
-      },
-      {
-        "lineNumber": 32,
-        "author": {
-          "gitId": "sun-yitao"
-        },
-        "content": "        return joinStrings(StringConstants.GREETING_MESSAGES);"
-      },
-      {
-        "lineNumber": 33,
-        "author": {
-          "gitId": "sun-yitao"
-        },
-        "content": "    }"
-      },
-      {
-        "lineNumber": 34,
-        "author": {
-          "gitId": "sun-yitao"
-        },
         "content": ""
       },
       {
-        "lineNumber": 35,
+        "lineNumber": 32,
         "author": {
           "gitId": "sun-yitao"
         },
@@ -4076,7 +4076,7 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 35
+      "sun-yitao": 32
     }
   },
   {
@@ -4263,175 +4263,175 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        tasks.add(task);"
+        "content": "        assert task !\u003d null : \"Task being added is null\";"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        tasks.add(task);"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Parse add task command and adds corresponding task."
+        "content": "    /**"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param command User command String"
+        "content": "     * Parse add task command and adds corresponding task."
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param userCommandType UserCommandType"
+        "content": "     * @param command User command String"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String array of output messages"
+        "content": "     * @param userCommandType UserCommandType"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws Parser.InvalidCommandException if user command syntax is invalid"
+        "content": "     * @return String array of output messages"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @throws Parser.InvalidCommandException if user command syntax is invalid"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String[] addTask(String command, UserCommandType userCommandType)"
+        "content": "     */"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throws Parser.InvalidCommandException {"
+        "content": "    public String[] addTask(String command, UserCommandType userCommandType)"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        Task task;"
+        "content": "            throws Parser.InvalidCommandException {"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String[] taskComponents \u003d Parser.parseTask(command);"
+        "content": "        assert command !\u003d null : \"Command is null\";"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "        assert userCommandType !\u003d null : \"userCommandType is null\";"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        switch (userCommandType) {"
+        "content": "        Task task;"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            case TODO:"
+        "content": "        String[] taskComponents \u003d Parser.parseTask(command);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                task \u003d new Todo(taskComponents[0], false);"
+        "content": ""
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                break;"
+        "content": "        switch (userCommandType) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            case DEADLINE:"
+        "content": "            case TODO:"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                task \u003d new Deadline(taskComponents[0], false,"
+        "content": "                task \u003d new Todo(taskComponents[0], false);"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                        Parser.parseDateTime(taskComponents[1]));"
+        "content": "                break;"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                break;"
+        "content": "            case DEADLINE:"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            case EVENT:"
+        "content": "                task \u003d new Deadline(taskComponents[0], false,"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                task \u003d new Event(taskComponents[0], false, taskComponents[1]);"
+        "content": "                        Parser.parseDateTime(taskComponents[1]));"
       },
       {
         "lineNumber": 51,
@@ -4445,815 +4445,843 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            default:"
+        "content": "            case EVENT:"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                throw new Parser.InvalidCommandException();"
+        "content": "                task \u003d new Event(taskComponents[0], false, taskComponents[1]);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "                break;"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "            default:"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        addTask(task);"
+        "content": "                throw new Parser.InvalidCommandException();"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return new String[] {"
+        "content": "        }"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            StringConstants.ADD_MESSAGE,"
+        "content": ""
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            \"  \" + task.toString(),"
+        "content": "        addTask(task);"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            String.format(StringConstants.COUNT_MESSAGE, tasks.size())"
+        "content": "        return new String[] {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        };"
+        "content": "            StringConstants.ADD_MESSAGE,"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "            \"  \" + task.toString(),"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "            String.format(StringConstants.COUNT_MESSAGE, tasks.size())"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "        };"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Mark task done at index."
+        "content": "    }"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param index index of task to be marked done"
+        "content": ""
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String array of messages to be printed"
+        "content": "    /**"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws InvalidIndexException if index is out of bounds"
+        "content": "     * Mark task done at index."
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @param index index of task to be marked done"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String[] markTaskDoneAtIndex(int index) throws InvalidIndexException {"
+        "content": "     * @return String array of messages to be printed"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        try {"
+        "content": "     * @throws InvalidIndexException if index is out of bounds"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            Task task \u003d tasks.get(index);"
+        "content": "     */"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            task.markDone();"
+        "content": "    public String[] markTaskDoneAtIndex(int index) throws InvalidIndexException {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return new String[] {"
+        "content": "        try {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                StringConstants.DONE_MESSAGE,"
+        "content": "            Task task \u003d tasks.get(index);"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                \"  \" + task.toString()"
+        "content": "            task.markDone();"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            };"
+        "content": "            return new String[] {"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": "                StringConstants.DONE_MESSAGE,"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidIndexException();"
+        "content": "                \"  \" + task.toString()"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "            };"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "            throw new InvalidIndexException();"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Delete task at index."
+        "content": "    }"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param index index of task to delete"
+        "content": ""
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String array of messages to be printed"
+        "content": "    /**"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws InvalidIndexException if index is out of bounds"
+        "content": "     * Delete task at index."
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @param index index of task to delete"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String[] deleteTaskAtIndex(int index) throws InvalidIndexException {"
+        "content": "     * @return String array of messages to be printed"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        try {"
+        "content": "     * @throws InvalidIndexException if index is out of bounds"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            Task task \u003d tasks.get(index);"
+        "content": "     */"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            tasks.remove(index);"
+        "content": "    public String[] deleteTaskAtIndex(int index) throws InvalidIndexException {"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return new String[] {"
+        "content": "        try {"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                StringConstants.DELETE_MESSAGE,"
+        "content": "            Task task \u003d tasks.get(index);"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                \"  \" + task.toString(),"
+        "content": "            tasks.remove(index);"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                String.format(StringConstants.COUNT_MESSAGE, tasks.size())"
+        "content": "            return new String[] {"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            };"
+        "content": "                StringConstants.DELETE_MESSAGE,"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } catch (IndexOutOfBoundsException e) {"
+        "content": "                \"  \" + task.toString(),"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidIndexException();"
+        "content": "                String.format(StringConstants.COUNT_MESSAGE, tasks.size())"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "            };"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "            throw new InvalidIndexException();"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Gets task at index."
+        "content": "    }"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param index index of task to get"
+        "content": ""
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return task at index"
+        "content": "    /**"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @throws InvalidIndexException if index is out of bounds"
+        "content": "     * Gets task at index."
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @param index index of task to get"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public Task getTaskAtIndex(int index) throws InvalidIndexException {"
+        "content": "     * @return task at index"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        try {"
+        "content": "     * @throws InvalidIndexException if index is out of bounds"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return tasks.get(index);"
+        "content": "     */"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
+        "content": "    public Task getTaskAtIndex(int index) throws InvalidIndexException {"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            throw new InvalidIndexException();"
+        "content": "        try {"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "            return tasks.get(index);"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        } catch (ArrayIndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "            throw new InvalidIndexException();"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Gets tasks\u0027 String representations as String array"
+        "content": "    }"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String array of tasks\u0027 print Strings"
+        "content": ""
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String[] getTasksAsStrings() {"
+        "content": "     * Gets tasks\u0027 String representations as String array"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String[] messages \u003d new String[tasks.size()];"
+        "content": "     * @return String array of tasks\u0027 print Strings"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
+        "content": "     */"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            Task task \u003d tasks.get(i);"
+        "content": "    public String[] getTasksAsStrings() {"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            messages[i] \u003d String.format(\"%d.%s\", i + 1, task.toString());"
+        "content": "        String[] messages \u003d new String[tasks.size()];"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "        for (int i \u003d 0; i \u003c tasks.size(); i++) {"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return messages;"
+        "content": "            Task task \u003d tasks.get(i);"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "            messages[i] \u003d String.format(\"%d.%s\", i + 1, task.toString());"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "        return messages;"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Finds tasks matching with keyword String and prints them."
+        "content": "    }"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @param command user command String"
+        "content": ""
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String array of output messages"
+        "content": "    /**"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * Finds tasks matching with keyword String and prints them."
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String[] find(String command) throws Parser.InvalidCommandException {"
+        "content": "     * @param command user command String"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String keyWordString \u003d Parser.getFindKeyWordString(command);"
+        "content": "     * @return String array of output messages"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        ArrayList\u003cString\u003e messages \u003d new ArrayList\u003c\u003e();"
+        "content": "     */"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        messages.add(StringConstants.TASK_FOUND_MESSAGE);"
+        "content": "    public String[] find(String command) throws Parser.InvalidCommandException {"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        int i \u003d 1;"
+        "content": "        assert command !\u003d null : \"Command is null\";"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        for (Task task: tasks) {"
+        "content": "        String keyWordString \u003d Parser.getFindKeyWordString(command);"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            if (task.getName().contains(keyWordString)) {"
+        "content": "        ArrayList\u003cString\u003e messages \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                messages.add(String.format(\"%d.%s\", i, task.toString()));"
+        "content": "        messages.add(StringConstants.TASK_FOUND_MESSAGE);"
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                i++;"
+        "content": "        int i \u003d 1;"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            }"
+        "content": "        for (Task task: tasks) {"
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "            if (task.getName().contains(keyWordString)) {"
       },
       {
         "lineNumber": 146,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        if (messages.size() \u003d\u003d 1) {"
+        "content": "                messages.add(String.format(\"%d.%s\", i, task.toString()));"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return new String[]{StringConstants.NO_TASK_FOUND_MESSAGE};"
+        "content": "                i++;"
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        } else {"
+        "content": "            }"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            return messages.toArray(new String[0]);"
+        "content": "        }"
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "        if (messages.size() \u003d\u003d 1) {"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "            return new String[]{StringConstants.NO_TASK_FOUND_MESSAGE};"
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "        } else {"
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "            return messages.toArray(new String[0]);"
       },
       {
         "lineNumber": 154,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Saves user tasks to disk."
+        "content": "        }"
       },
       {
         "lineNumber": 155,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public void saveTaskList() throws IOException {"
+        "content": ""
       },
       {
         "lineNumber": 157,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            Storage.save(tasks);"
+        "content": "    /**"
       },
       {
         "lineNumber": 158,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "     * Saves user tasks to disk."
       },
       {
         "lineNumber": 159,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 160,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": "    public void saveTaskList() throws IOException {"
       },
       {
         "lineNumber": 161,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Exception for when task index is out of bounds."
+        "content": "            Storage.save(tasks);"
       },
       {
         "lineNumber": 162,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "    }"
       },
       {
         "lineNumber": 163,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public static class InvalidIndexException extends Exception {"
+        "content": ""
       },
       {
         "lineNumber": 164,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        public InvalidIndexException() {"
+        "content": "    /**"
       },
       {
         "lineNumber": 165,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "            super(\"Invalid task index\");"
+        "content": "     * Exception for when task index is out of bounds."
       },
       {
         "lineNumber": 166,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        }"
+        "content": "     */"
       },
       {
         "lineNumber": 167,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "    public static class InvalidIndexException extends Exception {"
       },
       {
         "lineNumber": 168,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "        public InvalidIndexException() {"
+      },
+      {
+        "lineNumber": 169,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "            super(\"Invalid task index\");"
+      },
+      {
+        "lineNumber": 170,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 171,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 172,
         "author": {
           "gitId": "sun-yitao"
         },
@@ -5261,7 +5289,7 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 168
+      "sun-yitao": 172
     }
   },
   {
@@ -5506,164 +5534,171 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        this.deadline \u003d deadline;"
+        "content": "        assert deadline !\u003d null : \"Deadline is null\";"
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        this.deadline \u003d deadline;"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Returns String representation of Task presented to user."
+        "content": "    /**"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String representation of Task presented to user"
+        "content": "     * Returns String representation of Task presented to user."
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return String representation of Task presented to user"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String toString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String doneSymbol \u003d getIsDone() ? \"✓\" : \"✗\";"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return String.format(\"[D][%s] %s (by: %s)\", doneSymbol, getName(),"
+        "content": "        String doneSymbol \u003d getIsDone() ? \"✓\" : \"✗\";"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "                deadline.format(DateTimeFormatter.ofPattern(\"MMM dd yyyy HHmm\")));"
+        "content": "        return String.format(\"[D][%s] %s (by: %s)\", doneSymbol, getName(),"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "                deadline.format(DateTimeFormatter.ofPattern(\"MMM dd yyyy HHmm\")));"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Returns String representation of Task to be saved."
+        "content": "    /**"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String representation of Task to be saved"
+        "content": "     * Returns String representation of Task to be saved."
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return String representation of Task to be saved"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String toSaveString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return String.format(\"D|%d|%s|%s\", getIsDone() ? 1 : 0, getName(), deadline);"
+        "content": "    public String toSaveString() {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        return String.format(\"D|%d|%s|%s\", getIsDone() ? 1 : 0, getName(), deadline);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 40,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 41,
         "author": {
           "gitId": "sun-yitao"
         },
@@ -5671,7 +5706,7 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 40
+      "sun-yitao": 41
     }
   },
   {
@@ -5774,150 +5809,157 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        this.duration \u003d duration;"
+        "content": "        assert duration !\u003d null : \"Duration is null\";"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        this.duration \u003d duration;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Returns String representation of Task presented to user."
+        "content": "    /**"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String representation of Task presented to user"
+        "content": "     * Returns String representation of Task presented to user."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return String representation of Task presented to user"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String toString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String doneSymbol \u003d getIsDone() ? \"✓\" : \"✗\";"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return String.format(\"[E][%s] %s (at: %s)\", doneSymbol, getName(), duration);"
+        "content": "        String doneSymbol \u003d getIsDone() ? \"✓\" : \"✗\";"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        return String.format(\"[E][%s] %s (at: %s)\", doneSymbol, getName(), duration);"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Returns String representation of Task to be saved."
+        "content": "    /**"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String representation of Task to be saved"
+        "content": "     * Returns String representation of Task to be saved."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return String representation of Task to be saved"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String toSaveString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return String.format(\"E|%d|%s|%s\", getIsDone() ? 1 : 0, getName(), duration);"
+        "content": "    public String toSaveString() {"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        return String.format(\"E|%d|%s|%s\", getIsDone() ? 1 : 0, getName(), duration);"
       },
       {
         "lineNumber": 35,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 36,
         "author": {
           "gitId": "sun-yitao"
         },
@@ -5925,7 +5967,7 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 35
+      "sun-yitao": 36
     }
   },
   {
@@ -6021,297 +6063,304 @@
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        this.name \u003d name;"
+        "content": "        assert name !\u003d null : \"Task name is null\";"
       },
       {
         "lineNumber": 14,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        this.isDone \u003d isDone;"
+        "content": "        this.name \u003d name;"
       },
       {
         "lineNumber": 15,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        this.isDone \u003d isDone;"
       },
       {
         "lineNumber": 16,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 17,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 18,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Marks task as done."
+        "content": "    /**"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * Marks task as done."
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public void markDone() {"
+        "content": "     */"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        this.isDone \u003d true;"
+        "content": "    public void markDone() {"
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        this.isDone \u003d true;"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Returns whether Task is done."
+        "content": "    /**"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return boolean of task is done"
+        "content": "     * Returns whether Task is done."
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return boolean of task is done"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public boolean getIsDone() {"
+        "content": "     */"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return isDone;"
+        "content": "    public boolean getIsDone() {"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        return isDone;"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Gets name of task."
+        "content": "    /**"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return name of task as a String"
+        "content": "     * Gets name of task."
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return name of task as a String"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String getName() {"
+        "content": "     */"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return name;"
+        "content": "    public String getName() {"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        return name;"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Returns String representation of Task presented to user."
+        "content": "    /**"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String representation of Task presented to user"
+        "content": "     * Returns String representation of Task presented to user."
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return String representation of Task presented to user"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public String toString() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        String doneSymbol \u003d getIsDone() ? \"✓\" : \"✗\";"
+        "content": "    public String toString() {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "        return String.format(\"[%s] %s\", doneSymbol, getName());"
+        "content": "        String doneSymbol \u003d getIsDone() ? \"✓\" : \"✗\";"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    }"
+        "content": "        return String.format(\"[%s] %s\", doneSymbol, getName());"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * Returns String representation of Task to be saved."
+        "content": "    /**"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     * @return String representation of Task to be saved"
+        "content": "     * Returns String representation of Task to be saved."
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "     */"
+        "content": "     * @return String representation of Task to be saved"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "sun-yitao"
         },
-        "content": "    public abstract String toSaveString();"
+        "content": "     */"
       },
       {
         "lineNumber": 55,
+        "author": {
+          "gitId": "sun-yitao"
+        },
+        "content": "    public abstract String toSaveString();"
+      },
+      {
+        "lineNumber": 56,
         "author": {
           "gitId": "sun-yitao"
         },
@@ -6319,7 +6368,7 @@
       }
     ],
     "authorContributionMap": {
-      "sun-yitao": 55
+      "sun-yitao": 56
     }
   },
   {
