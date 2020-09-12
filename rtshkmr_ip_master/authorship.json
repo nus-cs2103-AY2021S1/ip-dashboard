@@ -749,14 +749,14 @@
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": " * Drives the personal assistant using a UI, along with a parser to make sense of user inputs and executing commands on"
+        "content": " * Drives the personal assistant using a UI, along with a parser to make sense of user inputs and"
       },
       {
         "lineNumber": 13,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": " * a list of tasks that are read/written from local storage"
+        "content": " * executing commands on a list of tasks that are read/written from local storage"
       },
       {
         "lineNumber": 14,
@@ -1862,714 +1862,714 @@
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        } else if (keyword.equals(CommandWord.DONE_CMD.getCmd())"
+        "content": "        } else if (keyword.equals(CommandWord.DONE_CMD.getCmd()) || keyword.equals(CommandWord.DELETE_CMD.getCmd())) {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                || keyword.equals(CommandWord.DELETE_CMD.getCmd())) {"
+        "content": "            return parseDoneDelete(input);"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            return parseDoneDelete(input);"
+        "content": "        } else if (keyword.equals(CommandWord.FIND_CMD.getCmd())) {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        } else if (keyword.equals(CommandWord.FIND_CMD.getCmd())) {"
+        "content": "            return new FindCommand(input);"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            return new FindCommand(input);"
+        "content": "        } else { // parse the command based on the identified keyword:"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        } else { // parse the command based on the identified keyword:"
+        "content": "            switch (keyword) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            switch (keyword) {"
+        "content": "            case \"todo\":"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            case \"todo\":"
+        "content": "                return new AddCommand(parseToDo(input));"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                return new AddCommand(parseToDo(input));"
+        "content": "            case \"deadline\":"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            case \"deadline\":"
+        "content": "                return new AddCommand(parseDeadline(input));"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                return new AddCommand(parseDeadline(input));"
+        "content": "            case \"event\":"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            case \"event\":"
+        "content": "                return new AddCommand(parseEvent(input));"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                return new AddCommand(parseEvent(input));"
+        "content": "            default:"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            default:"
+        "content": "                throw new DukeException(Message.ERROR_UNKNOWN_CMD.getMsg());"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                throw new DukeException(Message.ERROR_UNKNOWN_CMD.getMsg());"
+        "content": "            }"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            }"
+        "content": "        }"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    /**"
+        "content": "     * Parses user input that is related to the done and delete commands"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * Parses user input that is related to the done and delete commands"
+        "content": "     *"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @param input User input related to Done and Delete commands"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param input User input related to Done and Delete commands"
+        "content": "     *"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @return Either Done or Delete Command"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @return Either Done or Delete Command"
+        "content": "     *"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @throws DukeException If the format is wrong, a non-integer is passed in as argument,"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @throws DukeException If the format is wrong or if a non-integer is passed in as argument or  multiple arguments"
+        "content": "     *                       multiple arguments are passed in"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *                       are passed in"
+        "content": "     */"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     */"
+        "content": "    private Command parseDoneDelete(String input) throws DukeException {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    private Command parseDoneDelete(String input) throws DukeException {"
+        "content": "        StringTokenizer st \u003d new StringTokenizer(input);"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringTokenizer st \u003d new StringTokenizer(input);"
+        "content": "        // if there are more than 2 tokens, then it\u0027s wrong format:"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        // if there are more than 2 tokens, then it\u0027s wrong format:"
+        "content": "        if (st.countTokens() !\u003d 2) {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (st.countTokens() !\u003d 2) {"
+        "content": "            throw new DukeException(Message.ERROR_DONEDELETE_ARGS.getMsg());"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_DONEDELETE_ARGS.getMsg());"
+        "content": "        }"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        String command \u003d st.nextToken();"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String command \u003d st.nextToken();"
+        "content": "        assert command.equals(CommandWord.DONE_CMD.getCmd()) || command.equals(CommandWord.DELETE_CMD.getCmd())"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        assert command.equals(CommandWord.DONE_CMD.getCmd())"
+        "content": "                : \"parseDoneDelete(): neither done nor delete cmd\";"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                || command.equals(CommandWord.DELETE_CMD.getCmd()) : \"parseDoneDelete(): neither done nor delete cmd\";"
+        "content": "        String taskID \u003d st.nextToken();"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String taskID \u003d st.nextToken();"
+        "content": "        if (!isInteger(taskID)) {"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (!isInteger(taskID)) {"
+        "content": "            throw new DukeException(Message.ERROR_DONEDELETE_NOTINT.getMsg());"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_DONEDELETE_NOTINT.getMsg());"
+        "content": "        }"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        String[] parsedInput \u003d new String[]{command, taskID};"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String[] parsedInput \u003d new String[]{command, taskID};"
+        "content": "        return command.equals(CommandWord.DELETE_CMD.getCmd())"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        return command.equals(CommandWord.DELETE_CMD.getCmd())"
+        "content": "               ? new DeleteCommand(parsedInput)"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "               ? new DeleteCommand(parsedInput)"
+        "content": "               : new DoneCommand(parsedInput);"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "               : new DoneCommand(parsedInput);"
+        "content": "    }"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    /**"
+        "content": "     * Parses user input that is related to the todo"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * Parses user input that is related to the todo"
+        "content": "     *"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @param input User input related to todo command"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param input User input related to todo command"
+        "content": "     *"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @return String[] array of format: description of todo"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @return String[] array of format: description of todo"
+        "content": "     *"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @throws DukeException If no description is passed in"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @throws DukeException If no description is passed in"
+        "content": "     */"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     */"
+        "content": "    private String[] parseToDo(String input) throws DukeException {"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    private String[] parseToDo(String input) throws DukeException {"
+        "content": "        StringTokenizer st \u003d new StringTokenizer(input);"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringTokenizer st \u003d new StringTokenizer(input);"
+        "content": "        String command \u003d st.nextToken();"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String command \u003d st.nextToken();"
+        "content": "        assert command.equals(CommandWord.TODO_CMD.getCmd()) : \"parseToDo(): incorrect cmd\";"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        assert command.equals(CommandWord.TODO_CMD.getCmd()) : \"parseToDo(): incorrect cmd\";"
+        "content": "        if (!st.hasMoreTokens()) {"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (!st.hasMoreTokens()) {"
+        "content": "            throw new DukeException(Message.ERROR_TODO_DESC.getMsg());"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_TODO_DESC.getMsg());"
+        "content": "        }"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        StringBuilder description \u003d new StringBuilder();"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringBuilder description \u003d new StringBuilder();"
+        "content": "        while (st.hasMoreTokens()) {"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        while (st.hasMoreTokens()) {"
+        "content": "            description.append(st.nextToken()).append(\" \");"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            description.append(st.nextToken()).append(\" \");"
+        "content": "        }"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        return new String[]{\"T\", description.toString().stripTrailing()};"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        return new String[]{\"T\", description.toString().stripTrailing()};"
+        "content": "    }"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "    /**"
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    /**"
+        "content": "     * Parses user input that is related to the Deadline command"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * Parses user input that is related to the Deadline command"
+        "content": "     *"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @param input User input related to Deadline command"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param input User input related to Deadline command"
+        "content": "     *"
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @return String array of format: description of Deadline String representation for the date"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @return String array of format: description of Deadline String representation for the date"
+        "content": "     *"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @throws DukeException If the format is wrong or if it lacks proper description"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @throws DukeException If the format is wrong or if it lacks proper description"
+        "content": "     */"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     */"
+        "content": "    private String[] parseDeadline(String input) throws DukeException {"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    private String[] parseDeadline(String input) throws DukeException {"
+        "content": "        String[] separatedInput \u003d input.split(DEADLINE_DELIMITER);"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String[] separatedInput \u003d input.split(DEADLINE_DELIMITER);"
+        "content": "        if (separatedInput.length \u003c\u003d 1) {"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (separatedInput.length \u003c\u003d 1) {"
+        "content": "            throw new DukeException(Message.ERROR_DEADLINE_FORMAT.getMsg());"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_DEADLINE_FORMAT.getMsg());"
+        "content": "        }"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        String dateString \u003d separatedInput[1];"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String dateString \u003d separatedInput[1];"
+        "content": "        StringTokenizer st \u003d new StringTokenizer(separatedInput[0]);"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringTokenizer st \u003d new StringTokenizer(separatedInput[0]);"
+        "content": "        String command \u003d st.nextToken();"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String command \u003d st.nextToken();"
+        "content": "        assert command.equals(CommandWord.DEADLINE_CMD.getCmd()) : \"parseToDo(): incorrect cmd\";"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        assert command.equals(CommandWord.DEADLINE_CMD.getCmd()) : \"parseToDo(): incorrect cmd\";"
+        "content": "        StringBuilder descriptionBuilder \u003d new StringBuilder();"
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringBuilder descriptionBuilder \u003d new StringBuilder();"
+        "content": "        while (st.hasMoreTokens()) {"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        while (st.hasMoreTokens()) {"
+        "content": "            descriptionBuilder.append(st.nextToken()).append(\" \");"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            descriptionBuilder.append(st.nextToken()).append(\" \");"
+        "content": "        }"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        String description \u003d descriptionBuilder.toString().stripTrailing();"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String description \u003d descriptionBuilder.toString().stripTrailing();"
+        "content": "        if (description.isEmpty()) {"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (description.isEmpty()) {"
+        "content": "            throw new DukeException(Message.ERROR_DEADLINE_DESC.getMsg());"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_DEADLINE_DESC.getMsg());"
+        "content": "        }"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        return new String[]{\"D\", description, dateString};"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        return new String[]{\"D\","
+        "content": "    }"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                            description,"
+        "content": "    /**"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                            dateString};"
+        "content": "     * Parses user input that is related to the Event command"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "     *"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    /**"
+        "content": "     * @param input User input related to Event command"
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * Parses user input that is related to the Event command"
+        "content": "     *"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @return String array of format: \"E\" description of Event String representation for the date start time end"
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param input User input related to Event command"
+        "content": "     *         time\u003e}"
       },
       {
         "lineNumber": 146,
@@ -2583,395 +2583,346 @@
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @return String array of format: \"E\" description of Event String representation for the date start time end"
+        "content": "     * @throws DukeException If the format is wrong or if it lacks proper description"
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *         time\u003e}"
+        "content": "     */"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "    // todo: refactor this if possible. so long :("
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @throws DukeException If the format is wrong or if it lacks proper description"
+        "content": "    private String[] parseEvent(String input) throws DukeException {"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     */"
+        "content": "        String[] separatedInput \u003d input.split(EVENT_DELIMITER); //  \u003cwords\u003e /at \u003ctimeInfo\u003e"
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    // todo: refactor this if possible. so long :("
+        "content": "        // not enough info in user input:"
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    private String[] parseEvent(String input) throws DukeException {"
+        "content": "        if (separatedInput.length \u003c\u003d 1) {"
       },
       {
         "lineNumber": 154,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String[] separatedInput \u003d input.split(EVENT_DELIMITER); //  \u003cwords\u003e /at \u003ctimeInfo\u003e"
+        "content": "            throw new DukeException(Message.ERROR_EVENT_FORMAT.getMsg());"
       },
       {
         "lineNumber": 155,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        // not enough info in user input:"
+        "content": "        }"
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (separatedInput.length \u003c\u003d 1) {"
+        "content": "        // parse description field for the event:"
       },
       {
         "lineNumber": 157,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_EVENT_FORMAT.getMsg());"
+        "content": "        String words \u003d separatedInput[0];"
       },
       {
         "lineNumber": 158,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        StringTokenizer wordsTokenizer \u003d new StringTokenizer(words);"
       },
       {
         "lineNumber": 159,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        // parse description field for the event:"
+        "content": "        String command \u003d wordsTokenizer.nextToken();"
       },
       {
         "lineNumber": 160,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String words \u003d separatedInput[0];"
+        "content": "        assert command.equals(CommandWord.EVENT_CMD.getCmd()) : \"[parseEvent()]: incorrect command\";"
       },
       {
         "lineNumber": 161,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringTokenizer wordsTokenizer \u003d new StringTokenizer(words);"
+        "content": "        StringBuilder descriptionBuilder \u003d new StringBuilder();"
       },
       {
         "lineNumber": 162,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String command \u003d wordsTokenizer.nextToken();"
+        "content": "        while (wordsTokenizer.hasMoreTokens()) {"
       },
       {
         "lineNumber": 163,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        assert command.equals(CommandWord.EVENT_CMD.getCmd()) : \"[parseEvent()]: incorrect command\";"
+        "content": "            descriptionBuilder.append(wordsTokenizer.nextToken()).append(\" \");"
       },
       {
         "lineNumber": 164,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringBuilder descriptionBuilder \u003d new StringBuilder();"
+        "content": "        }"
       },
       {
         "lineNumber": 165,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        while (wordsTokenizer.hasMoreTokens()) {"
+        "content": "        String description \u003d descriptionBuilder.toString().stripTrailing();"
       },
       {
         "lineNumber": 166,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            descriptionBuilder.append(wordsTokenizer.nextToken()).append(\" \");"
+        "content": "        // parse start and end timing for the event:"
       },
       {
         "lineNumber": 167,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        String[] timeInfo \u003d separatedInput[1].split(\" \");"
       },
       {
         "lineNumber": 168,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String description \u003d descriptionBuilder.toString().stripTrailing();"
+        "content": "        String startAndEndTiming \u003d timeInfo[timeInfo.length - 1];"
       },
       {
         "lineNumber": 169,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        // parse start and end timing for the event:"
+        "content": "        String[] separatedStartAndEndTiming \u003d startAndEndTiming.split(TIME_DELIMITER);"
       },
       {
         "lineNumber": 170,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String[] timeInfo \u003d separatedInput[1].split(\" \");"
+        "content": "        if (separatedStartAndEndTiming.length \u003c\u003d 1) {"
       },
       {
         "lineNumber": 171,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String startAndEndTiming \u003d timeInfo[timeInfo.length - 1];"
+        "content": "            throw new DukeException(Message.ERROR_EVENT_TIME.getMsg());"
       },
       {
         "lineNumber": 172,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String[] separatedStartAndEndTiming \u003d startAndEndTiming.split(TIME_DELIMITER);"
+        "content": "        }"
       },
       {
         "lineNumber": 173,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (separatedStartAndEndTiming.length \u003c\u003d 1) {"
+        "content": "        String startTime \u003d separatedStartAndEndTiming[0];"
       },
       {
         "lineNumber": 174,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_EVENT_TIME.getMsg());"
+        "content": "        String endTime \u003d separatedStartAndEndTiming[1];"
       },
       {
         "lineNumber": 175,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "        // parse string representation for the date:"
       },
       {
         "lineNumber": 176,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String startTime \u003d separatedStartAndEndTiming[0];"
+        "content": "        StringBuilder dateStringBuilder \u003d new StringBuilder();"
       },
       {
         "lineNumber": 177,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String endTime \u003d separatedStartAndEndTiming[1];"
+        "content": "        for (int i \u003d 0; i \u003c\u003d timeInfo.length - 2; i++) {"
       },
       {
         "lineNumber": 178,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        // parse string representation for the date:"
+        "content": "            dateStringBuilder.append(timeInfo[i]).append(\" \");"
       },
       {
         "lineNumber": 179,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        StringBuilder dateStringBuilder \u003d new StringBuilder();"
+        "content": "        }"
       },
       {
         "lineNumber": 180,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        for (int i \u003d 0; i \u003c\u003d timeInfo.length - 2; i++) {"
+        "content": "        String dateString \u003d dateStringBuilder.toString().stripTrailing();"
       },
       {
         "lineNumber": 181,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            dateStringBuilder.append(timeInfo[i]).append(\" \");"
+        "content": "        if (dateString.isEmpty()) {"
       },
       {
         "lineNumber": 182,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "            throw new DukeException(Message.ERROR_EVENT_DATE.getMsg());"
       },
       {
         "lineNumber": 183,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String dateString \u003d dateStringBuilder.toString().stripTrailing();"
+        "content": "        }"
       },
       {
         "lineNumber": 184,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        if (dateString.isEmpty()) {"
+        "content": "        return new String[]{\"E\", description, dateString, startTime, endTime};"
       },
       {
         "lineNumber": 185,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "            throw new DukeException(Message.ERROR_EVENT_DATE.getMsg());"
+        "content": "    }"
       },
       {
         "lineNumber": 186,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        }"
+        "content": "    /**"
       },
       {
         "lineNumber": 187,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        return new String[]{\"E\","
+        "content": "     * Checks if input is a string representation of an integer"
       },
       {
         "lineNumber": 188,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                            description,"
+        "content": "     *"
       },
       {
         "lineNumber": 189,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                            dateString,"
+        "content": "     * @param s input string"
       },
       {
         "lineNumber": 190,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                            startTime,"
+        "content": "     *"
       },
       {
         "lineNumber": 191,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "                            endTime};"
+        "content": "     * @return True if input is representing an Integer"
       },
       {
         "lineNumber": 192,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "     */"
       },
       {
         "lineNumber": 193,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    /**"
+        "content": "    private boolean isInteger(String s) {"
       },
       {
         "lineNumber": 194,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * Checks if input is a string representation of an integer"
+        "content": "        return s.matches(\"\\\\d+\");"
       },
       {
         "lineNumber": 195,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 196,
-        "author": {
-          "gitId": "rtshkmr"
-        },
-        "content": "     * @param s input string"
-      },
-      {
-        "lineNumber": 197,
-        "author": {
-          "gitId": "rtshkmr"
-        },
-        "content": "     *"
-      },
-      {
-        "lineNumber": 198,
-        "author": {
-          "gitId": "rtshkmr"
-        },
-        "content": "     * @return True if input is representing an Integer"
-      },
-      {
-        "lineNumber": 199,
-        "author": {
-          "gitId": "rtshkmr"
-        },
-        "content": "     */"
-      },
-      {
-        "lineNumber": 200,
-        "author": {
-          "gitId": "rtshkmr"
-        },
-        "content": "    private boolean isInteger(String s) {"
-      },
-      {
-        "lineNumber": 201,
-        "author": {
-          "gitId": "rtshkmr"
-        },
-        "content": "        return s.matches(\"\\\\d+\");"
-      },
-      {
-        "lineNumber": 202,
-        "author": {
-          "gitId": "rtshkmr"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 203,
+        "lineNumber": 196,
         "author": {
           "gitId": "rtshkmr"
         },
@@ -2979,7 +2930,7 @@
       }
     ],
     "authorContributionMap": {
-      "rtshkmr": 203
+      "rtshkmr": 196
     }
   },
   {
@@ -4696,248 +4647,255 @@
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    private final String commandTag; // indicates what kind of Task"
+        "content": "    /*Indicates the type of task*/"
       },
       {
         "lineNumber": 19,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    /**"
+        "content": "    private final String commandTag;"
       },
       {
         "lineNumber": 20,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * Constructs an AddCommand Object."
+        "content": "    /**"
       },
       {
         "lineNumber": 21,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * Constructs an AddCommand Object."
       },
       {
         "lineNumber": 22,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param parsedInput Parser\u0027s output for the user input"
+        "content": "     *"
       },
       {
         "lineNumber": 23,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     */"
+        "content": "     * @param parsedInput Parser\u0027s output for the user input"
       },
       {
         "lineNumber": 24,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    public AddCommand(String[] parsedInput) {"
+        "content": "     */"
       },
       {
         "lineNumber": 25,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        this.parsedInput \u003d parsedInput;"
+        "content": "    public AddCommand(String[] parsedInput) {"
       },
       {
         "lineNumber": 26,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        this.commandTag \u003d parsedInput[0];"
+        "content": "        this.parsedInput \u003d parsedInput;"
       },
       {
         "lineNumber": 27,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "        this.commandTag \u003d parsedInput[0];"
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    /**"
+        "content": "    }"
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * Prints out a confirmation message of the command, adds the entry to TaskList and displays the current status of"
+        "content": "    /**"
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * the TaskList"
+        "content": "     * Prints out a confirmation message of the command, adds the entry to TaskList and displays the current status of"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * the TaskList"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param tasks Current TaskList"
+        "content": "     *"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param ui    Where the User shall receive messages about the command"
+        "content": "     * @param tasks Current TaskList"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     *"
+        "content": "     * @param ui    Where the User shall receive messages about the command"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @throws DukeException If we can\u0027t write onto the file after adding a task to TaskList"
+        "content": "     *"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     */"
+        "content": "     * @throws DukeException If we can\u0027t write onto the file after adding a task to TaskList"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    public String execute(TaskList tasks, Ui ui) throws DukeException, IOException {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        ArrayList\u003cString\u003e lines \u003d new ArrayList\u003c\u003e();"
+        "content": "    public String execute(TaskList tasks, Ui ui) throws DukeException, IOException {"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        lines.add(Message.CONFIRMATION_MSG.getMsg());"
+        "content": "        ArrayList\u003cString\u003e lines \u003d new ArrayList\u003c\u003e();"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        String reply \u003d tasks.addEntry(this.parsedInput, this.commandTag);"
+        "content": "        lines.add(Message.CONFIRMATION_MSG.getMsg());"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        assert !reply.isEmpty() : \"AddCommand.execute(): reply is somehow empty\";"
+        "content": "        String reply \u003d tasks.addEntry(this.parsedInput, this.commandTag);"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        lines.add(reply);"
+        "content": "        assert !reply.isEmpty() : \"AddCommand.execute(): reply is somehow empty\";"
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        lines.add(tasks.getCurrentStatus());"
+        "content": "        lines.add(reply);"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        ui.display(lines);"
+        "content": "        lines.add(tasks.getCurrentStatus());"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        Storage.save(tasks); // save upon addition because we want to do a write on every change"
+        "content": "        ui.display(lines);"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        return Command.listLinesToString(lines);"
+        "content": "        Storage.save(tasks); // save upon addition because we want to do a write on every change"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "        return Command.listLinesToString(lines);"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    @Override"
+        "content": "    }"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    public boolean isExit() {"
+        "content": "    @Override"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "        return false;"
+        "content": "    public boolean isExit() {"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "    }"
+        "content": "        return false;"
       },
       {
         "lineNumber": 53,
+        "author": {
+          "gitId": "rtshkmr"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 54,
         "author": {
           "gitId": "rtshkmr"
         },
@@ -4945,7 +4903,7 @@
       }
     ],
     "authorContributionMap": {
-      "rtshkmr": 53
+      "rtshkmr": 54
     }
   },
   {
@@ -9468,7 +9426,7 @@
         "author": {
           "gitId": "rtshkmr"
         },
-        "content": "     * @param parsedInput Parser\u0027s output"
+        "content": "     * @param parsedInput User\u0027s input that is parsed by the parser"
       },
       {
         "lineNumber": 31,
