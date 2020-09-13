@@ -2159,115 +2159,108 @@
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        DukeResponse dukeResponse;"
+        "content": "        String inputWithoutCommand \u003d input.replaceFirst(firstToken, \"\");"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        try {"
+        "content": "        DukeResponse dukeResponse;"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            Command command \u003d Store.getAliasManager().getCommand(firstToken);"
+        "content": "        try {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // Substitute any aliases if necessary."
+        "content": "            Command command \u003d Store.getAliasManager().getCommand(firstToken);"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String substitutedInput \u003d input.replaceFirst(firstToken, command.toString());"
+        "content": "            // Check that the user input is of the correct format for the command."
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // Check that the user input is of the correct format for the command."
+        "content": "            command.validate(firstToken, inputWithoutCommand);"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            command.validate(substitutedInput);"
+        "content": "            // Execute the command."
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // Execute the command."
+        "content": "            dukeResponse \u003d command.execute(inputWithoutCommand);"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            dukeResponse \u003d command.execute(substitutedInput);"
+        "content": "        } catch (DukeException e) {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        } catch (DukeException e) {"
+        "content": "            dukeResponse \u003d new DukeResponse(e.getMessage());"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            dukeResponse \u003d new DukeResponse(e.getMessage());"
+        "content": "        } catch (IllegalArgumentException e) {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        } catch (IllegalArgumentException e) {"
+        "content": "            dukeResponse \u003d new DukeResponse(ResourceHandler.getString(\"repl.unknownCommand\"));"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            dukeResponse \u003d new DukeResponse(ResourceHandler.getString(\"repl.unknownCommand\"));"
+        "content": "        }"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        return dukeResponse;"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        return dukeResponse;"
-      },
-      {
-        "lineNumber": 65,
-        "author": {
-          "gitId": "ianyong"
-        },
         "content": "    }"
       },
       {
-        "lineNumber": 66,
+        "lineNumber": 65,
         "author": {
           "gitId": "ianyong"
         },
@@ -2275,7 +2268,7 @@
       }
     ],
     "authorContributionMap": {
-      "ianyong": 66
+      "ianyong": 65
     }
   },
   {
@@ -3593,2992 +3586,3069 @@
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 28,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 29,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 30,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "         */"
       },
       {
         "lineNumber": 31,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "        @Override"
       },
       {
         "lineNumber": 32,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)alias\\\\s+\\\\S+\\\\s+\\\\S+\\\\s*$|^(?i)alias\\\\s+-l$\";"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 33,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "            String regex \u003d \"^\\\\s*\\\\S+\\\\s+\\\\S+\\\\s*$|^\\\\s*-l\\\\s*$|^\\\\s*-rm\\\\s+\\\\S+\\\\s*$\";"
       },
       {
         "lineNumber": 34,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 35,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        ResourceHandler.getString(\"command.aliasFormat\"));"
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
       },
       {
         "lineNumber": 36,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"alias\");"
+        "content": "                        ResourceHandler.getString(\"command.aliasFormat\"));"
       },
       {
         "lineNumber": 37,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 38,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": ""
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027alias\u0027 command."
+        "content": "        /**"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "         * Executes the \u0027alias\u0027 command."
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "         *"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027alias\u0027 command."
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "         * @return the output of running the \u0027alias\u0027 command."
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "         */"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": "        @Override"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)alias\\\\s+-l$\";"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (Pattern.matches(regex, input)) {"
+        "content": "            String listRegex \u003d \"^\\\\s*-l\\\\s*$\";"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                // Display list of aliases."
+        "content": "            String removeRegex \u003d \"^\\\\s*-rm\\\\s+\\\\S+\\\\s*$\";"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                return new DukeResponse(Store.getAliasManager().toString());"
+        "content": "            String response;"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "            if (Pattern.matches(listRegex, inputArgs)) {"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "                // Display list of aliases."
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // Add a new alias."
+        "content": "                response \u003d Store.getAliasManager().toString();"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String lineWithoutCommand \u003d input.replaceFirst(\"^(?i)alias\", \"\");"
+        "content": "            } else if (Pattern.matches(removeRegex, inputArgs)) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String[] args \u003d lineWithoutCommand.trim().split(\"\\\\s+\", 2);"
+        "content": "                // Remove specified alias"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String command \u003d args[0].trim();"
+        "content": "                String alias \u003d inputArgs.replaceFirst(\"-rm\", \"\").trim();"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String alias \u003d args[1].trim();"
+        "content": "                response \u003d Store.getAliasManager().removeAlias(alias);"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getAliasManager().addAlias(alias, command);"
+        "content": "            } else {"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "                // Add a new alias."
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "                String[] argTokens \u003d inputArgs.trim().split(\"\\\\s+\", 2);"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "                String command \u003d argTokens[0].trim();"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "                String alias \u003d argTokens[1].trim();"
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "                response \u003d Store.getAliasManager().addAlias(alias, command);"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Terminates the running of \u003ci\u003eDuke\u003c/i\u003e."
+        "content": "            }"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    BYE {"
+        "content": "        }"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "    },"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027bye\u0027 command."
+        "content": ""
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "    /**"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "     * Terminates the running of \u003ci\u003eDuke\u003c/i\u003e."
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "     */"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "    BYE {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "        /**"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027bye\u0027 command."
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)bye\\\\s*$\";"
+        "content": "         *"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"bye\");"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         */"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "        @Override"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String regex \u003d \"^\\\\s*$\";"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027bye\u0027 command."
+        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027bye\u0027 command."
+        "content": "            }"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "        }"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": ""
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": "        /**"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d ResourceHandler.getString(\"repl.farewell\");"
+        "content": "         * Executes the \u0027bye\u0027 command."
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // Return a `DukeResponse` with the exit flag enabled."
+        "content": "         *"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response, true);"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         * @return the output of running the \u0027bye\u0027 command."
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "         */"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        @Override"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Adds a {@code Deadline} task to the {@code TaskManager}."
+        "content": "            String response \u003d ResourceHandler.getString(\"repl.farewell\");"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            // Return a `DukeResponse` with the exit flag enabled."
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    DEADLINE {"
+        "content": "            return new DukeResponse(response, true);"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        }"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027deadline\u0027 command."
+        "content": "    },"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": ""
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    /**"
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "     * Adds a {@code Deadline} task to the {@code TaskManager}."
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "     */"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "    DEADLINE {"
       },
       {
         "lineNumber": 110,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)deadline\\\\s+.*\\\\S+.*\\\\s+/by\\\\s+.*\\\\S+.*\\\\s*$\";"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027deadline\u0027 command."
       },
       {
         "lineNumber": 112,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         *"
       },
       {
         "lineNumber": 113,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        ResourceHandler.getString(\"command.deadlineFormat\"));"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"deadline\");"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         */"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "        @Override"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String regex \u003d \"^\\\\s*.*\\\\S+.*\\\\s+/by\\\\s+.*\\\\S+.*\\\\s*$\";"
       },
       {
         "lineNumber": 120,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 121,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027deadline\u0027 command."
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "                        ResourceHandler.getString(\"command.deadlineFormat\"));"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027deadline\u0027 command."
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if an error occurs while running the \u0027deadline\u0027 command."
+        "content": "            }"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "        }"
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": ""
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String lineWithoutCommand \u003d input.replaceFirst(\"^(?i)deadline\", \"\");"
+        "content": "         * Executes the \u0027deadline\u0027 command."
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String[] args \u003d lineWithoutCommand.split(\"/by\", 2);"
+        "content": "         *"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String deadlineName \u003d args[0].trim();"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String dueDateString \u003d args[1].trim();"
+        "content": "         * @return the output of running the \u0027deadline\u0027 command."
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            LocalDateTime dueDate \u003d DateTimeParser.parseDateTime(dueDateString);"
+        "content": "         * @throws DukeException if an error occurs while running the \u0027deadline\u0027 command."
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getTaskManager().addTask(new Deadline(deadlineName, dueDate));"
+        "content": "         */"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "        @Override"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public DukeResponse execute(String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "            String[] argTokens \u003d inputArgs.split(\"/by\", 2);"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String deadlineName \u003d argTokens[0].trim();"
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "            String dueDateString \u003d argTokens[1].trim();"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Deletes a {@code Task} from the {@code TaskManager}."
+        "content": "            LocalDateTime dueDate \u003d DateTimeParser.parseDateTime(dueDateString);"
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            String response \u003d Store.getTaskManager().addTask(new Deadline(deadlineName, dueDate));"
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    DELETE {"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        }"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027delete\u0027 command."
+        "content": "    },"
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": ""
       },
       {
         "lineNumber": 146,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    /**"
       },
       {
         "lineNumber": 147,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "     * Deletes a {@code Task} from the {@code TaskManager}."
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "     */"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "    DELETE {"
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)delete\\\\s+\\\\d+\\\\s*$\";"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027delete\u0027 command."
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         *"
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 154,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        ResourceHandler.getString(\"command.deleteFormat\"));"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 155,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"delete\");"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         */"
       },
       {
         "lineNumber": 157,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "        @Override"
       },
       {
         "lineNumber": 158,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 159,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String regex \u003d \"^\\\\s*\\\\d+\\\\s*$\";"
       },
       {
         "lineNumber": 160,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 161,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027delete\u0027 command."
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
       },
       {
         "lineNumber": 162,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "                        ResourceHandler.getString(\"command.deleteFormat\"));"
       },
       {
         "lineNumber": 163,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 164,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027delete\u0027 command."
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 165,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "            }"
       },
       {
         "lineNumber": 166,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "        }"
       },
       {
         "lineNumber": 167,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": ""
       },
       {
         "lineNumber": 168,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String lineWithoutCommand \u003d input.replaceFirst(\"^(?i)delete\", \"\");"
+        "content": "        /**"
       },
       {
         "lineNumber": 169,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String listIndexString \u003d lineWithoutCommand.trim();"
+        "content": "         * Executes the \u0027delete\u0027 command."
       },
       {
         "lineNumber": 170,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // `listIndexString` is guaranteed to be a string made up of only digit characters after validation."
+        "content": "         *"
       },
       {
         "lineNumber": 171,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            int listIndex \u003d Integer.parseInt(listIndexString) - 1;"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 172,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response;"
+        "content": "         * @return the output of running the \u0027delete\u0027 command."
       },
       {
         "lineNumber": 173,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            try {"
+        "content": "         */"
       },
       {
         "lineNumber": 174,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                response \u003d Store.getTaskManager().removeTask(listIndex);"
+        "content": "        @Override"
       },
       {
         "lineNumber": 175,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            } catch (IndexOutOfBoundsException e) {"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 176,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                response \u003d ResourceHandler.getString(\"repl.invalidTaskIndex\");"
+        "content": "            String listIndexString \u003d inputArgs.trim();"
       },
       {
         "lineNumber": 177,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "            // `listIndexString` is guaranteed to be a string made up of only digit characters after validation."
       },
       {
         "lineNumber": 178,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            assert response !\u003d null;"
+        "content": "            int listIndex \u003d Integer.parseInt(listIndexString) - 1;"
       },
       {
         "lineNumber": 179,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "            String response;"
       },
       {
         "lineNumber": 180,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "            try {"
       },
       {
         "lineNumber": 181,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "                response \u003d Store.getTaskManager().removeTask(listIndex);"
       },
       {
         "lineNumber": 182,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 183,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "                response \u003d ResourceHandler.getString(\"repl.invalidTaskIndex\");"
       },
       {
         "lineNumber": 184,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Marks a {@code Task} as done."
+        "content": "            }"
       },
       {
         "lineNumber": 185,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            assert response !\u003d null;"
       },
       {
         "lineNumber": 186,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    DONE {"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 187,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        }"
       },
       {
         "lineNumber": 188,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027done\u0027 command."
+        "content": "    },"
       },
       {
         "lineNumber": 189,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": ""
       },
       {
         "lineNumber": 190,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    /**"
       },
       {
         "lineNumber": 191,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "     * Marks a {@code Task} as done."
       },
       {
         "lineNumber": 192,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "     */"
       },
       {
         "lineNumber": 193,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "    DONE {"
       },
       {
         "lineNumber": 194,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 195,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)done\\\\s+\\\\d+\\\\s*$\";"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027done\u0027 command."
       },
       {
         "lineNumber": 196,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         *"
       },
       {
         "lineNumber": 197,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 198,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        ResourceHandler.getString(\"command.doneFormat\"));"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 199,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"done\");"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 200,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         */"
       },
       {
         "lineNumber": 201,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "        @Override"
       },
       {
         "lineNumber": 202,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 203,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String regex \u003d \"^\\\\s*\\\\d+\\\\s*$\";"
       },
       {
         "lineNumber": 204,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 205,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027done\u0027 command."
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
       },
       {
         "lineNumber": 206,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "                        ResourceHandler.getString(\"command.doneFormat\"));"
       },
       {
         "lineNumber": 207,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 208,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027done\u0027 command."
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 209,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "            }"
       },
       {
         "lineNumber": 210,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "        }"
       },
       {
         "lineNumber": 211,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": ""
       },
       {
         "lineNumber": 212,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String lineWithoutCommand \u003d input.replaceFirst(\"^(?i)done\", \"\");"
+        "content": "        /**"
       },
       {
         "lineNumber": 213,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String listIndexString \u003d lineWithoutCommand.trim();"
+        "content": "         * Executes the \u0027done\u0027 command."
       },
       {
         "lineNumber": 214,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // `listIndexString` is guaranteed to be a string made up of only digit characters after validation."
+        "content": "         *"
       },
       {
         "lineNumber": 215,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            int listIndex \u003d Integer.parseInt(listIndexString) - 1;"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 216,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response;"
+        "content": "         * @return the output of running the \u0027done\u0027 command."
       },
       {
         "lineNumber": 217,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            try {"
+        "content": "         */"
       },
       {
         "lineNumber": 218,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                response \u003d Store.getTaskManager().markAsDone(listIndex);"
+        "content": "        @Override"
       },
       {
         "lineNumber": 219,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            } catch (IndexOutOfBoundsException e) {"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 220,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                response \u003d ResourceHandler.getString(\"repl.invalidTaskIndex\");"
+        "content": "            String listIndexString \u003d inputArgs.trim();"
       },
       {
         "lineNumber": 221,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "            // `listIndexString` is guaranteed to be a string made up of only digit characters after validation."
       },
       {
         "lineNumber": 222,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            assert response !\u003d null;"
+        "content": "            int listIndex \u003d Integer.parseInt(listIndexString) - 1;"
       },
       {
         "lineNumber": 223,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "            String response;"
       },
       {
         "lineNumber": 224,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "            try {"
       },
       {
         "lineNumber": 225,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "                response \u003d Store.getTaskManager().markAsDone(listIndex);"
       },
       {
         "lineNumber": 226,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            } catch (IndexOutOfBoundsException e) {"
       },
       {
         "lineNumber": 227,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "                response \u003d ResourceHandler.getString(\"repl.invalidTaskIndex\");"
       },
       {
         "lineNumber": 228,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Adds an {@code Event} task to the {@code TaskManager}."
+        "content": "            }"
       },
       {
         "lineNumber": 229,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            assert response !\u003d null;"
       },
       {
         "lineNumber": 230,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    EVENT {"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 231,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        }"
       },
       {
         "lineNumber": 232,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027event\u0027 command."
+        "content": "    },"
       },
       {
         "lineNumber": 233,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": ""
       },
       {
         "lineNumber": 234,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    /**"
       },
       {
         "lineNumber": 235,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "     * Adds an {@code Event} task to the {@code TaskManager}."
       },
       {
         "lineNumber": 236,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "     */"
       },
       {
         "lineNumber": 237,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "    EVENT {"
       },
       {
         "lineNumber": 238,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 239,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)event\\\\s+.*\\\\S+.*\\\\s+/at\\\\s+.*\\\\S+.*\\\\s*$\";"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027event\u0027 command."
       },
       {
         "lineNumber": 240,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         *"
       },
       {
         "lineNumber": 241,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 242,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        ResourceHandler.getString(\"command.eventFormat\"));"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 243,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"event\");"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 244,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         */"
       },
       {
         "lineNumber": 245,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "        @Override"
       },
       {
         "lineNumber": 246,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 247,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String regex \u003d \"^\\\\s*.*\\\\S+.*\\\\s+/at\\\\s+.*\\\\S+.*\\\\s*$\";"
       },
       {
         "lineNumber": 248,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 249,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027event\u0027 command."
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
       },
       {
         "lineNumber": 250,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "                        ResourceHandler.getString(\"command.eventFormat\"));"
       },
       {
         "lineNumber": 251,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 252,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027event\u0027 command."
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 253,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if an error occurs while running the \u0027event\u0027 command."
+        "content": "            }"
       },
       {
         "lineNumber": 254,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "        }"
       },
       {
         "lineNumber": 255,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": ""
       },
       {
         "lineNumber": 256,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 257,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String lineWithoutCommand \u003d input.replaceFirst(\"^(?i)event\", \"\");"
+        "content": "         * Executes the \u0027event\u0027 command."
       },
       {
         "lineNumber": 258,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String[] args \u003d lineWithoutCommand.split(\"/at\", 2);"
+        "content": "         *"
       },
       {
         "lineNumber": 259,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String eventName \u003d args[0].trim();"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 260,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String dateTimeString \u003d args[1].trim();"
+        "content": "         * @return the output of running the \u0027event\u0027 command."
       },
       {
         "lineNumber": 261,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            LocalDateTime dateTime \u003d DateTimeParser.parseDateTime(dateTimeString);"
+        "content": "         * @throws DukeException if an error occurs while running the \u0027event\u0027 command."
       },
       {
         "lineNumber": 262,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getTaskManager().addTask(new Event(eventName, dateTime));"
+        "content": "         */"
       },
       {
         "lineNumber": 263,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "        @Override"
       },
       {
         "lineNumber": 264,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public DukeResponse execute(String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 265,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "            String[] argTokens \u003d inputArgs.split(\"/at\", 2);"
       },
       {
         "lineNumber": 266,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String eventName \u003d argTokens[0].trim();"
       },
       {
         "lineNumber": 267,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "            String dateTimeString \u003d argTokens[1].trim();"
       },
       {
         "lineNumber": 268,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Searches for {@code Task}s in the {@code TaskManager} which match the keyword."
+        "content": "            LocalDateTime dateTime \u003d DateTimeParser.parseDateTime(dateTimeString);"
       },
       {
         "lineNumber": 269,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            String response \u003d Store.getTaskManager().addTask(new Event(eventName, dateTime));"
       },
       {
         "lineNumber": 270,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    FIND {"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 271,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        }"
       },
       {
         "lineNumber": 272,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027find\u0027 command."
+        "content": "    },"
       },
       {
         "lineNumber": 273,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": ""
       },
       {
         "lineNumber": 274,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    /**"
       },
       {
         "lineNumber": 275,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "     * Searches for {@code Task}s in the {@code TaskManager} which match the keyword."
       },
       {
         "lineNumber": 276,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "     */"
       },
       {
         "lineNumber": 277,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "    FIND {"
       },
       {
         "lineNumber": 278,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 279,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)find\\\\s+.*\\\\S+.*\\\\s*$\";"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027find\u0027 command."
       },
       {
         "lineNumber": 280,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         *"
       },
       {
         "lineNumber": 281,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 282,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        ResourceHandler.getString(\"command.findFormat\"));"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 283,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"find\");"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 284,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         */"
       },
       {
         "lineNumber": 285,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "        @Override"
       },
       {
         "lineNumber": 286,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 287,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            String regex \u003d \"^\\\\s*.*\\\\S+.*\\\\s*$\";"
       },
       {
         "lineNumber": 288,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 289,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027find\u0027 command."
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
       },
       {
         "lineNumber": 290,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "                        ResourceHandler.getString(\"command.findFormat\"));"
       },
       {
         "lineNumber": 291,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 292,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027find\u0027 command."
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 293,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "            }"
       },
       {
         "lineNumber": 294,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "        }"
       },
       {
         "lineNumber": 295,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": ""
       },
       {
         "lineNumber": 296,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String lineWithoutCommand \u003d input.replaceFirst(\"^(?i)find\", \"\");"
+        "content": "        /**"
       },
       {
         "lineNumber": 297,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String[] searchKeywords \u003d lineWithoutCommand.trim().split(\"\\\\s+\");"
+        "content": "         * Executes the \u0027find\u0027 command."
       },
       {
         "lineNumber": 298,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getTaskManager().getMatchingTasks(searchKeywords);"
+        "content": "         *"
       },
       {
         "lineNumber": 299,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 300,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         * @return the output of running the \u0027find\u0027 command."
       },
       {
         "lineNumber": 301,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "         */"
       },
       {
         "lineNumber": 302,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        @Override"
       },
       {
         "lineNumber": 303,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 304,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Lists all {@code Task}s in the {@code TaskManager}."
+        "content": "            String[] searchKeywords \u003d inputArgs.trim().split(\"\\\\s+\");"
       },
       {
         "lineNumber": 305,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            String response \u003d Store.getTaskManager().getMatchingTasks(searchKeywords);"
       },
       {
         "lineNumber": 306,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    LIST {"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 307,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        }"
       },
       {
         "lineNumber": 308,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027list\u0027 command."
+        "content": "    },"
       },
       {
         "lineNumber": 309,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": ""
       },
       {
         "lineNumber": 310,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    /**"
       },
       {
         "lineNumber": 311,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "     * Lists all {@code Task}s in the {@code TaskManager}."
       },
       {
         "lineNumber": 312,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "     */"
       },
       {
         "lineNumber": 313,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "    LIST {"
       },
       {
         "lineNumber": 314,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "        /**"
       },
       {
         "lineNumber": 315,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)list\\\\s*$\";"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027list\u0027 command."
       },
       {
         "lineNumber": 316,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         *"
       },
       {
         "lineNumber": 317,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 318,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"list\");"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 319,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 320,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "         */"
       },
       {
         "lineNumber": 321,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        @Override"
       },
       {
         "lineNumber": 322,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 323,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            String regex \u003d \"^\\\\s*$\";"
       },
       {
         "lineNumber": 324,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027list\u0027 command."
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 325,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
       },
       {
         "lineNumber": 326,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 327,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027list\u0027 command."
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 328,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "            }"
       },
       {
         "lineNumber": 329,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "        }"
       },
       {
         "lineNumber": 330,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": ""
       },
       {
         "lineNumber": 331,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getTaskManager().toString();"
+        "content": "        /**"
       },
       {
         "lineNumber": 332,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "         * Executes the \u0027list\u0027 command."
       },
       {
         "lineNumber": 333,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         *"
       },
       {
         "lineNumber": 334,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 335,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "         * @return the output of running the \u0027list\u0027 command."
       },
       {
         "lineNumber": 336,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "         */"
       },
       {
         "lineNumber": 337,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Lists all overdue {@code Task}s in the {@code TaskManager}."
+        "content": "        @Override"
       },
       {
         "lineNumber": 338,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 339,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    OVERDUE {"
+        "content": "            String response \u003d Store.getTaskManager().toString();"
       },
       {
         "lineNumber": 340,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 341,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027overdue\u0027 command."
+        "content": "        }"
       },
       {
         "lineNumber": 342,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "    },"
       },
       {
         "lineNumber": 343,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": ""
       },
       {
         "lineNumber": 344,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": "    /**"
       },
       {
         "lineNumber": 345,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "     * Lists all overdue {@code Task}s in the {@code TaskManager}."
       },
       {
         "lineNumber": 346,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "     */"
       },
       {
         "lineNumber": 347,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "    OVERDUE {"
       },
       {
         "lineNumber": 348,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)overdue\\\\s*$\";"
+        "content": "        /**"
       },
       {
         "lineNumber": 349,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027overdue\u0027 command."
       },
       {
         "lineNumber": 350,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
+        "content": "         *"
       },
       {
         "lineNumber": 351,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"overdue\");"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 352,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 353,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 354,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         */"
       },
       {
         "lineNumber": 355,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        @Override"
       },
       {
         "lineNumber": 356,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 357,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027overdue\u0027 command."
+        "content": "            String regex \u003d \"^\\\\s*$\";"
       },
       {
         "lineNumber": 358,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 359,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
       },
       {
         "lineNumber": 360,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027overdue\u0027 command."
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 361,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 362,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "            }"
       },
       {
         "lineNumber": 363,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": "        }"
       },
       {
         "lineNumber": 364,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getTaskManager().getOverdueTasks();"
+        "content": ""
       },
       {
         "lineNumber": 365,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "        /**"
       },
       {
         "lineNumber": 366,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         * Executes the \u0027overdue\u0027 command."
       },
       {
         "lineNumber": 367,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "         *"
       },
       {
         "lineNumber": 368,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 369,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "         * @return the output of running the \u0027overdue\u0027 command."
       },
       {
         "lineNumber": 370,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Adds a {@code ToDo} task to the {@code TaskManager}."
+        "content": "         */"
       },
       {
         "lineNumber": 371,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "        @Override"
       },
       {
         "lineNumber": 372,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    TODO {"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 373,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            String response \u003d Store.getTaskManager().getOverdueTasks();"
       },
       {
         "lineNumber": 374,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027todo\u0027 command."
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 375,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "        }"
       },
       {
         "lineNumber": 376,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    },"
       },
       {
         "lineNumber": 377,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": ""
       },
       {
         "lineNumber": 378,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "    /**"
       },
       {
         "lineNumber": 379,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "     * Adds a {@code ToDo} task to the {@code TaskManager}."
       },
       {
         "lineNumber": 380,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "     */"
       },
       {
         "lineNumber": 381,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)todo\\\\s+.*\\\\S+.*\\\\s*$\";"
+        "content": "    TODO {"
       },
       {
         "lineNumber": 382,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "        /**"
       },
       {
         "lineNumber": 383,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027todo\u0027 command."
       },
       {
         "lineNumber": 384,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        ResourceHandler.getString(\"command.toDoFormat\"));"
+        "content": "         *"
       },
       {
         "lineNumber": 385,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"todo\");"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 386,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 387,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 388,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         */"
       },
       {
         "lineNumber": 389,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        @Override"
       },
       {
         "lineNumber": 390,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 391,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027todo\u0027 command."
+        "content": "            String regex \u003d \"^\\\\s*.*\\\\S+.*\\\\s*$\";"
       },
       {
         "lineNumber": 392,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 393,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "                String template \u003d String.format(\"%s\\n%s\", ResourceHandler.getString(\"exception.invalidArgs\"),"
       },
       {
         "lineNumber": 394,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027todo\u0027 command."
+        "content": "                        ResourceHandler.getString(\"command.toDoFormat\"));"
       },
       {
         "lineNumber": 395,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 396,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 397,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": "            }"
       },
       {
         "lineNumber": 398,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String lineWithoutCommand \u003d input.replaceFirst(\"^(?i)todo\", \"\");"
+        "content": "        }"
       },
       {
         "lineNumber": 399,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String toDoName \u003d lineWithoutCommand.trim();"
+        "content": ""
       },
       {
         "lineNumber": 400,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getTaskManager().addTask(new ToDo(toDoName));"
+        "content": "        /**"
       },
       {
         "lineNumber": 401,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": "         * Executes the \u0027todo\u0027 command."
       },
       {
         "lineNumber": 402,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         *"
       },
       {
         "lineNumber": 403,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    },"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 404,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "         * @return the output of running the \u0027todo\u0027 command."
       },
       {
         "lineNumber": 405,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "         */"
       },
       {
         "lineNumber": 406,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Lists all upcoming {@code Task}s in the {@code TaskManager}."
+        "content": "        @Override"
       },
       {
         "lineNumber": 407,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 408,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    UPCOMING {"
+        "content": "            String toDoName \u003d inputArgs.trim();"
       },
       {
         "lineNumber": 409,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "            String response \u003d Store.getTaskManager().addTask(new ToDo(toDoName));"
       },
       {
         "lineNumber": 410,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Validates whether the user input is of the correct format for the \u0027upcoming\u0027 command."
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 411,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "        }"
       },
       {
         "lineNumber": 412,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "    },"
       },
       {
         "lineNumber": 413,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @throws DukeException if the user input is invalid."
+        "content": ""
       },
       {
         "lineNumber": 414,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "    /**"
       },
       {
         "lineNumber": 415,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "     * Lists all upcoming {@code Task}s in the {@code TaskManager}."
       },
       {
         "lineNumber": 416,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public void validate(String input) throws DukeException {"
+        "content": "     */"
       },
       {
         "lineNumber": 417,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String regex \u003d \"^(?i)upcoming\\\\s*$\";"
+        "content": "    UPCOMING {"
       },
       {
         "lineNumber": 418,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (!Pattern.matches(regex, input)) {"
+        "content": "        /**"
       },
       {
         "lineNumber": 419,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
+        "content": "         * Validates whether the user input is of the correct format for the \u0027upcoming\u0027 command."
       },
       {
         "lineNumber": 420,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                String message \u003d MessageFormat.format(template, \"upcoming\");"
+        "content": "         *"
       },
       {
         "lineNumber": 421,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                throw new DukeException(message);"
+        "content": "         * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 422,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 423,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "         * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 424,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "         */"
       },
       {
         "lineNumber": 425,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        /**"
+        "content": "        @Override"
       },
       {
         "lineNumber": 426,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * Executes the \u0027upcoming\u0027 command."
+        "content": "        public void validate(String alias, String inputArgs) throws DukeException {"
       },
       {
         "lineNumber": 427,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         *"
+        "content": "            String regex \u003d \"^\\\\s*$\";"
       },
       {
         "lineNumber": 428,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @param input the user input."
+        "content": "            if (!Pattern.matches(regex, inputArgs)) {"
       },
       {
         "lineNumber": 429,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         * @return the output of running the \u0027upcoming\u0027 command."
+        "content": "                String template \u003d ResourceHandler.getString(\"exception.noArgs\");"
       },
       {
         "lineNumber": 430,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "         */"
+        "content": "                String message \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 431,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        @Override"
+        "content": "                throw new DukeException(message);"
       },
       {
         "lineNumber": 432,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        public DukeResponse execute(String input) {"
+        "content": "            }"
       },
       {
         "lineNumber": 433,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            String response \u003d Store.getTaskManager().getUpcomingTasks();"
+        "content": "        }"
       },
       {
         "lineNumber": 434,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            return new DukeResponse(response);"
+        "content": ""
       },
       {
         "lineNumber": 435,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "        /**"
       },
       {
         "lineNumber": 436,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    };"
+        "content": "         * Executes the \u0027upcoming\u0027 command."
       },
       {
         "lineNumber": 437,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "         *"
       },
       {
         "lineNumber": 438,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "         * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 439,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Validates whether the user input is of the correct format."
+        "content": "         * @return the output of running the \u0027upcoming\u0027 command."
       },
       {
         "lineNumber": 440,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     *"
+        "content": "         */"
       },
       {
         "lineNumber": 441,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @param input the user input."
+        "content": "        @Override"
       },
       {
         "lineNumber": 442,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @throws DukeException if the user input is invalid."
+        "content": "        public DukeResponse execute(String inputArgs) {"
       },
       {
         "lineNumber": 443,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "            String response \u003d Store.getTaskManager().getUpcomingTasks();"
       },
       {
         "lineNumber": 444,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    public abstract void validate(String input) throws DukeException;"
+        "content": "            return new DukeResponse(response);"
       },
       {
         "lineNumber": 445,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 446,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "    };"
       },
       {
         "lineNumber": 447,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Executes the command."
+        "content": ""
       },
       {
         "lineNumber": 448,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     *"
+        "content": "    /**"
       },
       {
         "lineNumber": 449,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @param input the user input."
+        "content": "     * Validates whether the user input is of the correct format."
       },
       {
         "lineNumber": 450,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @return a {@code DukeResponse}."
+        "content": "     *"
       },
       {
         "lineNumber": 451,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @throws DukeException if an error occurs while running the command."
+        "content": "     * @param alias the name used in invoking the command; can be either the command name or an alias."
       },
       {
         "lineNumber": 452,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "     * @param inputArgs the user inputted arguments."
       },
       {
         "lineNumber": 453,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    public abstract DukeResponse execute(String input) throws DukeException;"
+        "content": "     * @throws DukeException if the user input is invalid."
       },
       {
         "lineNumber": 454,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 455,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public abstract void validate(String alias, String inputArgs) throws DukeException;"
+      },
+      {
+        "lineNumber": 456,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 457,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 458,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Executes the command."
+      },
+      {
+        "lineNumber": 459,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 460,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @param inputArgs the user inputted arguments."
+      },
+      {
+        "lineNumber": 461,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a {@code DukeResponse}."
+      },
+      {
+        "lineNumber": 462,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @throws DukeException if an error occurs while running the command."
+      },
+      {
+        "lineNumber": 463,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 464,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public abstract DukeResponse execute(String inputArgs) throws DukeException;"
+      },
+      {
+        "lineNumber": 465,
         "author": {
           "gitId": "ianyong"
         },
@@ -6586,7 +6656,7 @@
       }
     ],
     "authorContributionMap": {
-      "ianyong": 454
+      "ianyong": 465
     }
   },
   {
@@ -10562,416 +10632,598 @@
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                return ResourceHandler.getString(\"aliasManager.aliasConflict\");"
+        "content": "                String template \u003d ResourceHandler.getString(\"aliasManager.aliasConflict\");"
       },
       {
         "lineNumber": 39,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "                response \u003d MessageFormat.format(template, alias);"
       },
       {
         "lineNumber": 40,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "                return response;"
       },
       {
         "lineNumber": 41,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            }"
       },
       {
         "lineNumber": 42,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        try {"
+        "content": "        }"
       },
       {
         "lineNumber": 43,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            Command command \u003d Command.valueOf(commandString.toUpperCase());"
+        "content": ""
       },
       {
         "lineNumber": 44,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            Command previousCommand \u003d aliases.putIfAbsent(alias.toLowerCase(), command);"
+        "content": "        try {"
       },
       {
         "lineNumber": 45,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // If `previousCommand` is not `null`, then the alias is already in use."
+        "content": "            Command command \u003d Command.valueOf(commandString.toUpperCase());"
       },
       {
         "lineNumber": 46,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            if (previousCommand \u003d\u003d null) {"
+        "content": "            Command previousCommand \u003d aliases.putIfAbsent(alias.toLowerCase(), command);"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                response \u003d ResourceHandler.getString(\"aliasManager.addAlias\");"
+        "content": "            // If `previousCommand` is not `null`, then the alias is already in use."
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            } else {"
+        "content": "            if (previousCommand \u003d\u003d null) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                response \u003d ResourceHandler.getString(\"aliasManager.aliasInUse\");"
+        "content": "                String template \u003d ResourceHandler.getString(\"aliasManager.addAlias\");"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            }"
+        "content": "                response \u003d MessageFormat.format(template, alias.toLowerCase(), commandString.toLowerCase());"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        } catch (IllegalArgumentException e) {"
+        "content": "            } else {"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            // `commandString` does not correspond to a command."
+        "content": "                String template \u003d ResourceHandler.getString(\"aliasManager.aliasInUse\");"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            response \u003d MessageFormat.format(ResourceHandler.getString(\"aliasManager.invalidCommand\"),"
+        "content": "                response \u003d MessageFormat.format(template, alias.toLowerCase(),"
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                    commandString);"
+        "content": "                        previousCommand.toString().toLowerCase());"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "        } catch (IllegalArgumentException e) {"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        return response;"
+        "content": "            // `commandString` does not correspond to a command."
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    }"
+        "content": "            String template \u003d ResourceHandler.getString(\"aliasManager.invalidCommand\");"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            response \u003d MessageFormat.format(template, commandString);"
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Returns the {@code Command} that corresponds to the alias. Note that every command is an alias for"
+        "content": ""
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * itself."
+        "content": "        return response;"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @param alias the alias that is being looked up."
+        "content": ""
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @return the corresponding {@code Command}."
+        "content": "    /**"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": "     * Removes an association between an alias and a command."
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    public Command getCommand(String alias) {"
+        "content": "     *"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        Command command;"
+        "content": "     * @param alias the alias to be removed."
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        try {"
+        "content": "     * @return a string representation of the action of removing an alias."
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            command \u003d Command.valueOf(alias.toUpperCase());"
+        "content": "     */"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        } catch (IllegalArgumentException e) {"
+        "content": "    public String removeAlias(String alias) {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            command \u003d aliases.get(alias);"
+        "content": "        Command previousCommand \u003d aliases.remove(alias.toLowerCase());"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        // Throw an `IllegalArgumentException` to signify that no commands match."
+        "content": "        String response;"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        if (command \u003d\u003d null) {"
+        "content": "        if (previousCommand \u003d\u003d null) {"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "            throw new IllegalArgumentException();"
+        "content": "            String template \u003d ResourceHandler.getString(\"aliasManager.aliasNotFound\");"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        }"
+        "content": "            response \u003d MessageFormat.format(template, alias.toLowerCase());"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        return command;"
+        "content": "        } else {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    }"
+        "content": "            String template \u003d ResourceHandler.getString(\"aliasManager.removeAlias\");"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "ianyong"
         },
-        "content": ""
+        "content": "            response \u003d MessageFormat.format(template, alias.toLowerCase());"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    /**"
+        "content": "        }"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * Returns a list of aliases under the {@code AliasManager}."
+        "content": ""
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     *"
+        "content": "        return response;"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     * @return a list of aliases under the {@code AliasManager}."
+        "content": "    }"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "     */"
+        "content": ""
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    @Override"
+        "content": "    /**"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    public String toString() {"
+        "content": "     * Returns the {@code Command} that corresponds to the alias. Note that every command is an alias for"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        StringBuilder formattedList \u003d"
+        "content": "     * itself."
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                new StringBuilder(ResourceHandler.getString(\"aliasManager.listAliasesPrefix\") + \"\\n\");"
+        "content": "     *"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        List\u003cString\u003e keys \u003d new ArrayList\u003c\u003e(aliases.keySet());"
+        "content": "     * @param alias the alias that is being looked up."
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        IntStream.range(0, aliases.size())"
+        "content": "     * @return the corresponding {@code Command}."
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                .mapToObj(i -\u003e String.format(\"%d. %s -\u003e %s\\n\", i + 1,"
+        "content": "     */"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                        keys.get(i).toLowerCase(), aliases.get(keys.get(i)).toString().toLowerCase()))"
+        "content": "    public Command getCommand(String alias) {"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "                .forEach(formattedList::append);"
+        "content": "        Command command;"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "        return formattedList.toString();"
+        "content": "        try {"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "ianyong"
         },
-        "content": "    }"
+        "content": "            command \u003d Command.valueOf(alias.toUpperCase());"
       },
       {
         "lineNumber": 97,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        } catch (IllegalArgumentException e) {"
+      },
+      {
+        "lineNumber": 98,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            command \u003d aliases.get(alias);"
+      },
+      {
+        "lineNumber": 99,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 100,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        // Throw an `IllegalArgumentException` to signify that no commands match."
+      },
+      {
+        "lineNumber": 101,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        if (command \u003d\u003d null) {"
+      },
+      {
+        "lineNumber": 102,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "            throw new IllegalArgumentException();"
+      },
+      {
+        "lineNumber": 103,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 104,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return command;"
+      },
+      {
+        "lineNumber": 105,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 106,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 107,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    /**"
+      },
+      {
+        "lineNumber": 108,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * Returns a list of aliases under the {@code AliasManager}."
+      },
+      {
+        "lineNumber": 109,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     *"
+      },
+      {
+        "lineNumber": 110,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     * @return a list of aliases under the {@code AliasManager}."
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "     */"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    @Override"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    public String toString() {"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        StringBuilder formattedList \u003d"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                new StringBuilder(ResourceHandler.getString(\"aliasManager.listAliasesPrefix\") + \"\\n\");"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        List\u003cString\u003e keys \u003d new ArrayList\u003c\u003e(aliases.keySet());"
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        IntStream.range(0, aliases.size())"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                .mapToObj(i -\u003e String.format(\"%d. %s -\u003e %s\\n\", i + 1,"
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                        keys.get(i).toLowerCase(), aliases.get(keys.get(i)).toString().toLowerCase()))"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "                .forEach(formattedList::append);"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "        return formattedList.toString();"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "ianyong"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 123,
         "author": {
           "gitId": "ianyong"
         },
@@ -10979,7 +11231,7 @@
       }
     ],
     "authorContributionMap": {
-      "ianyong": 97
+      "ianyong": 123
     }
   },
   {
