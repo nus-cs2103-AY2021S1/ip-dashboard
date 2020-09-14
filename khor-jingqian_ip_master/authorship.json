@@ -6654,451 +6654,612 @@
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    DateTimeFormatter dateTimeFormat2 \u003d DateTimeFormatter.ofPattern(\"HH:mm MMM d yyyy\");"
+        "content": "                    if (entry.startsWith(\"[T]\")) {"
       },
       {
         "lineNumber": 47,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    if (entry.startsWith(\"[T]\")) {"
+        "content": "                        toDoList.add(createToDo(entry));"
       },
       {
         "lineNumber": 48,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        ToDo t \u003d new ToDo(entry.substring(7));"
+        "content": "                    } else if (entry.startsWith(\"[D]\")) {"
       },
       {
         "lineNumber": 49,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        if (entry.contains(\"✓\")) {"
+        "content": "                        toDoList.add(createDeadline(entry));"
       },
       {
         "lineNumber": 50,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                            t.completeTask();"
+        "content": "                    } else if (entry.startsWith(\"[E]\")) {"
       },
       {
         "lineNumber": 51,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        }"
+        "content": "                        toDoList.add(createEvent(entry));"
       },
       {
         "lineNumber": 52,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        toDoList.add(t);"
+        "content": "                    } else {"
       },
       {
         "lineNumber": 53,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    } else if (entry.startsWith(\"[D]\")) {"
+        "content": "                        throw new InvalidSaveFileException(\"Hmmmm.....there seems to be an entry\""
       },
       {
         "lineNumber": 54,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        int index \u003d entry.indexOf(\"(\");"
+        "content": "                                + \"that does not follow the convention!\");"
       },
       {
         "lineNumber": 55,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        String datetime \u003d entry.substring(index + 5, entry.length() - 1);"
+        "content": "                    }"
       },
       {
         "lineNumber": 56,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        LocalDateTime ldt \u003d LocalDateTime.parse(datetime, dateTimeFormat2);"
+        "content": "                }"
       },
       {
         "lineNumber": 57,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        Deadline d \u003d new Deadline(entry.substring(7, index - 1),"
+        "content": "            }"
       },
       {
         "lineNumber": 58,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                                ldt);"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 59,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        if (entry.contains(\"✓\")) {"
+        "content": "            throw new InvalidSaveFileException(\"Hmmmm....there is something wrong with the previous save file! We \""
       },
       {
         "lineNumber": 60,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                            d.completeTask();"
+        "content": "                    + \"will have to write a new one!\");"
       },
       {
         "lineNumber": 61,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        }"
+        "content": "        }"
       },
       {
         "lineNumber": 62,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        toDoList.add(d);"
+        "content": "        return toDoList;"
       },
       {
         "lineNumber": 63,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    } else if (entry.startsWith(\"[E]\")) {"
+        "content": "    }"
       },
       {
         "lineNumber": 64,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        int index \u003d entry.indexOf(\"(\");"
+        "content": ""
       },
       {
         "lineNumber": 65,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        String datetime \u003d entry.substring(index + 5, entry.length() - 1);"
+        "content": "    /**"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        LocalDateTime ldt \u003d LocalDateTime.parse(datetime, dateTimeFormat2);"
+        "content": "     * Called every time the list is updated or logic.Duke is closed."
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        Event e \u003d new Event(entry.substring(7, index - 1),"
+        "content": "     *"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                                ldt);"
+        "content": "     * @param toDoList The current tasks in logic.Duke."
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        if (entry.contains(\"✓\")) {"
+        "content": "     * @throws InvalidSaveFileException If there is an issue creating or writing the save file."
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                            e.completeTask();"
+        "content": "     */"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        }"
+        "content": "    public void saveFile(List\u003cTask\u003e toDoList) throws InvalidSaveFileException {"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        toDoList.add(e);"
+        "content": "        File dir \u003d new File(\"data\");"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    } else {"
+        "content": "        if (!dir.exists()) {"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                        throw new InvalidSaveFileException(\"Hmmmm.....there seems to be an entry\""
+        "content": "            dir.mkdir();"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                                + \"that does not follow the convention!\");"
+        "content": "        }"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    }"
+        "content": "        try {"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                }"
+        "content": "            FileWriter fw \u003d new FileWriter(fileLocation);"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            }"
+        "content": "            for (int i \u003d 0; i \u003c toDoList.size(); i++) {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "                Task interim \u003d toDoList.get(i);"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            throw new InvalidSaveFileException(\"Hmmmm....there is something wrong with the previous save file! We \""
+        "content": "                String desc \u003d interim.toString();"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    + \"will have to write a new one!\");"
+        "content": "                fw.write(desc + \"\\n\");"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        }"
+        "content": "            }"
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        return toDoList;"
+        "content": "            fw.close();"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    }"
+        "content": "        } catch (IOException e) {"
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": ""
+        "content": "            throw new InvalidSaveFileException("
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    /**"
+        "content": "                    \"☹ OOPS!!! logic.Duke is experiencing IO errors when writing to save file!\");"
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "     * Called every time the list is updated or logic.Duke is closed."
+        "content": "        }"
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "     *"
+        "content": "    }"
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "     * @param toDoList The current tasks in logic.Duke."
+        "content": ""
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "     * @throws InvalidSaveFileException If there is an issue creating or writing the save file."
+        "content": "    private ToDo createToDo(String entry) {"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "     */"
+        "content": "        final int STARTING_INDEX \u003d 7;"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    public void saveFile(List\u003cTask\u003e toDoList) throws InvalidSaveFileException {"
+        "content": "        ToDo todo \u003d new ToDo(entry.substring(STARTING_INDEX));"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        File dir \u003d new File(\"data\");"
+        "content": "        if (entry.contains(\"✓\")) {"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        if (!dir.exists()) {"
+        "content": "            todo.completeTask();"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            dir.mkdir();"
+        "content": "        }"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        }"
+        "content": "        return todo;"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        try {"
+        "content": "    }"
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            FileWriter fw \u003d new FileWriter(fileLocation);"
+        "content": ""
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            for (int i \u003d 0; i \u003c toDoList.size(); i++) {"
+        "content": "    private Deadline createDeadline(String entry) {"
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                Task interim \u003d toDoList.get(i);"
+        "content": ""
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                String desc \u003d interim.toString();"
+        "content": "        //format of example saved entry: [D][✓] return book (by: 13:56 Aug 23 2020)"
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                fw.write(desc + \"\\n\");"
+        "content": "        final int DATETIME_INDEX \u003d entry.indexOf(\"(\") + 5;"
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            }"
+        "content": "        final int DESC_INDEX \u003d 7;"
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            fw.close();"
+        "content": ""
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        } catch (IOException e) {"
+        "content": "        DateTimeFormatter dateTimeFormat \u003d DateTimeFormatter.ofPattern(\"HH:mm MMM d yyyy\");"
       },
       {
         "lineNumber": 106,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "            throw new InvalidSaveFileException("
+        "content": ""
       },
       {
         "lineNumber": 107,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "                    \"☹ OOPS!!! logic.Duke is experiencing IO errors when writing to save file!\");"
+        "content": "        String datetime \u003d entry.substring(DATETIME_INDEX, entry.length() - 1);"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "        }"
+        "content": "        LocalDateTime ldt \u003d LocalDateTime.parse(datetime, dateTimeFormat);"
       },
       {
         "lineNumber": 109,
         "author": {
           "gitId": "khor-jingqian"
         },
-        "content": "    }"
+        "content": "        Deadline deadline \u003d new Deadline(entry.substring(DESC_INDEX, DATETIME_INDEX - 1),"
       },
       {
         "lineNumber": 110,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                ldt);"
+      },
+      {
+        "lineNumber": 111,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if (entry.contains(\"✓\")) {"
+      },
+      {
+        "lineNumber": 112,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            deadline.completeTask();"
+      },
+      {
+        "lineNumber": 113,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 114,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return deadline;"
+      },
+      {
+        "lineNumber": 115,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 116,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 117,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    private Event createEvent(String entry) {"
+      },
+      {
+        "lineNumber": 118,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 119,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        //format of example saved entry: [E][✓] return book (at: 13:56 Aug 23 2020)"
+      },
+      {
+        "lineNumber": 120,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        final int DATETIME_INDEX \u003d entry.indexOf(\"(\") + 5;"
+      },
+      {
+        "lineNumber": 121,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        final int DESC_INDEX \u003d 7;"
+      },
+      {
+        "lineNumber": 122,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        DateTimeFormatter dateTimeFormat \u003d DateTimeFormatter.ofPattern(\"HH:mm MMM d yyyy\");"
+      },
+      {
+        "lineNumber": 123,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 124,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        String datetime \u003d entry.substring(DATETIME_INDEX, entry.length() - 1);"
+      },
+      {
+        "lineNumber": 125,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        LocalDateTime ldt \u003d LocalDateTime.parse(datetime, dateTimeFormat);"
+      },
+      {
+        "lineNumber": 126,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        Event event \u003d new Event(entry.substring(DESC_INDEX, DATETIME_INDEX - 1),"
+      },
+      {
+        "lineNumber": 127,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "                ldt);"
+      },
+      {
+        "lineNumber": 128,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        if (entry.contains(\"✓\")) {"
+      },
+      {
+        "lineNumber": 129,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "            event.completeTask();"
+      },
+      {
+        "lineNumber": 130,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 131,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "        return event;"
+      },
+      {
+        "lineNumber": 132,
+        "author": {
+          "gitId": "khor-jingqian"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 133,
         "author": {
           "gitId": "khor-jingqian"
         },
@@ -7106,7 +7267,7 @@
       }
     ],
     "authorContributionMap": {
-      "khor-jingqian": 110
+      "khor-jingqian": 133
     }
   },
   {
