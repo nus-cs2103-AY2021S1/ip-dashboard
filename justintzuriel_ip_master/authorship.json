@@ -9488,287 +9488,287 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                checkTaskFormat(type.toString().toLowerCase(), trimmedInput);"
+        "content": "                return getAddCommand(trimmedInput, type);"
       },
       {
         "lineNumber": 66,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                assert !trimmedInput.contains(\"/\");"
+        "content": "            case DEADLINE:"
       },
       {
         "lineNumber": 67,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                int startOfDescription \u003d trimmedInput.indexOf(\u0027 \u0027) + 1;"
+        "content": "            case EVENT:"
       },
       {
         "lineNumber": 68,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                String description \u003d trimmedInput.substring(startOfDescription);"
+        "content": "                return getAddTimedCommand(trimmedInput, type.toString().toLowerCase());"
       },
       {
         "lineNumber": 69,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                return new AddCommand(description);"
+        "content": "            case ALIAS:"
       },
       {
         "lineNumber": 70,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            case DEADLINE:"
+        "content": "                return getAliasCommand(trimmedInput);"
       },
       {
         "lineNumber": 71,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            case EVENT:"
+        "content": "            default:"
       },
       {
         "lineNumber": 72,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                return getAddTimedCommand(trimmedInput, type.toString().toLowerCase());"
+        "content": "                throw new DukeException(\"Oh dear! I\u0027m sorry, but I don\u0027t know what that means :(\");"
       },
       {
         "lineNumber": 73,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            case ALIAS:"
+        "content": "            }"
       },
       {
         "lineNumber": 74,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                checkAliasFormat(trimmedInput);"
+        "content": "        } catch (DateTimeParseException ex) {"
       },
       {
         "lineNumber": 75,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                String mapping \u003d trimmedInput.substring(trimmedInput.indexOf(\u0027 \u0027));"
+        "content": "            throw new DukeException(\"Oh dear! Please format the date and time as yyyy/MM/dd HHmm!\");"
       },
       {
         "lineNumber": 76,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                String alias \u003d mapping.split(\"\u003d\")[0].trim();"
+        "content": "        } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
       },
       {
         "lineNumber": 77,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                String typeAsString \u003d mapping.split(\"\u003d\")[1].trim();"
+        "content": "            throw new DukeException(\"Oh dear! Please give me a number!\");"
       },
       {
         "lineNumber": 78,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                CommandType commandToMap \u003d CommandType.valueOf(typeAsString.toUpperCase());"
+        "content": "        } catch (IllegalArgumentException ex) {"
       },
       {
         "lineNumber": 79,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                return new AliasCommand(alias, commandToMap);"
+        "content": "            throw new DukeException(\"Oh dear! I\u0027m sorry, but I don\u0027t know what that means :(\");"
       },
       {
         "lineNumber": 80,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            default:"
+        "content": "        }"
       },
       {
         "lineNumber": 81,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                throw new DukeException(\"Oh dear! I\u0027m sorry, but I don\u0027t know what that means :(\");"
+        "content": "    }"
       },
       {
         "lineNumber": 82,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            }"
+        "content": ""
       },
       {
         "lineNumber": 83,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } catch (DateTimeParseException ex) {"
+        "content": "    /**"
       },
       {
         "lineNumber": 84,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! Please format the date and time as yyyy/MM/dd HHmm!\");"
+        "content": "     * Returns a timed command."
       },
       {
         "lineNumber": 85,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {"
+        "content": "     *"
       },
       {
         "lineNumber": 86,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! Please give me a number!\");"
+        "content": "     * @param input user input."
       },
       {
         "lineNumber": 87,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } catch (IllegalArgumentException ex) {"
+        "content": "     * @param command type of command."
       },
       {
         "lineNumber": 88,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! I\u0027m sorry, but I don\u0027t know what that means :(\");"
+        "content": "     * @throws DukeException if there are any formatting issues."
       },
       {
         "lineNumber": 89,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "     */"
       },
       {
         "lineNumber": 90,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    }"
+        "content": "    private static AddCommand getAddCommand(String input, CommandType command) throws DukeException {"
       },
       {
         "lineNumber": 91,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        checkTaskFormat(command.toString().toLowerCase(), input);"
       },
       {
         "lineNumber": 92,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    /**"
+        "content": "        assert !input.contains(\"/\");"
       },
       {
         "lineNumber": 93,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * Returns a timed command."
+        "content": "        int startOfDescription \u003d input.indexOf(\u0027 \u0027) + 1;"
       },
       {
         "lineNumber": 94,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     *"
+        "content": "        String description \u003d input.substring(startOfDescription);"
       },
       {
         "lineNumber": 95,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @param input user input."
+        "content": "        return new AddCommand(description);"
       },
       {
         "lineNumber": 96,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @param command type of command."
+        "content": "    }"
       },
       {
         "lineNumber": 97,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @throws DukeException if there are any formatting issues."
+        "content": ""
       },
       {
         "lineNumber": 98,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 99,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    private static TimedAddCommand getAddTimedCommand(String input, String command) throws DukeException {"
+        "content": "     * Returns a timed command."
       },
       {
         "lineNumber": 100,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 101,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        checkTaskFormat(command, input);"
+        "content": "     * @param input user input."
       },
       {
         "lineNumber": 102,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        assert input.contains(\"/\");"
+        "content": "     * @param command type of command."
       },
       {
         "lineNumber": 103,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "     * @throws DukeException if there are any formatting issues."
       },
       {
         "lineNumber": 104,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        int startOfInfo \u003d input.indexOf(\u0027 \u0027) + 1;"
+        "content": "     */"
       },
       {
         "lineNumber": 105,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String info \u003d input.substring(startOfInfo);"
+        "content": "    private static TimedAddCommand getAddTimedCommand(String input, String command) throws DukeException {"
       },
       {
         "lineNumber": 106,
@@ -9782,14 +9782,14 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        int endOfDescription \u003d info.indexOf(\u0027/\u0027) - 1;"
+        "content": "        checkTaskFormat(command, input);"
       },
       {
         "lineNumber": 108,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String description \u003d info.substring(0, endOfDescription);"
+        "content": "        assert input.contains(\"/\");"
       },
       {
         "lineNumber": 109,
@@ -9803,14 +9803,14 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        int startOfMeta \u003d info.indexOf(\u0027/\u0027) + 4;"
+        "content": "        int startOfInfo \u003d input.indexOf(\u0027 \u0027) + 1;"
       },
       {
         "lineNumber": 111,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String meta \u003d info.substring(startOfMeta);"
+        "content": "        String info \u003d input.substring(startOfInfo);"
       },
       {
         "lineNumber": 112,
@@ -9824,49 +9824,49 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        DateTimeFormatter dateFormat \u003d DateTimeFormatter.ofPattern(\"yyyy/MM/dd\");"
+        "content": "        int endOfDescription \u003d info.indexOf(\u0027/\u0027) - 1;"
       },
       {
         "lineNumber": 114,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        String description \u003d info.substring(0, endOfDescription);"
       },
       {
         "lineNumber": 115,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasTime \u003d meta.contains(\" \");"
+        "content": ""
       },
       {
         "lineNumber": 116,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (hasTime) {"
+        "content": "        int startOfMeta \u003d info.indexOf(\u0027/\u0027) + 4;"
       },
       {
         "lineNumber": 117,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            DateTimeFormatter timeFormat \u003d DateTimeFormatter.ofPattern(\"HHmm\");"
+        "content": "        String meta \u003d info.substring(startOfMeta);"
       },
       {
         "lineNumber": 118,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            String dateAsString \u003d meta.substring(0, meta.indexOf(\u0027 \u0027));"
+        "content": ""
       },
       {
         "lineNumber": 119,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            String timeAsString \u003d meta.substring(meta.indexOf(\u0027 \u0027) + 1);"
+        "content": "        DateTimeFormatter dateFormat \u003d DateTimeFormatter.ofPattern(\"yyyy/MM/dd\");"
       },
       {
         "lineNumber": 120,
@@ -9880,175 +9880,175 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            LocalDate date \u003d LocalDate.parse(dateAsString, dateFormat);"
+        "content": "        boolean hasTime \u003d meta.contains(\" \");"
       },
       {
         "lineNumber": 122,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            LocalTime time \u003d LocalTime.parse(timeAsString, timeFormat);"
+        "content": "        if (hasTime) {"
       },
       {
         "lineNumber": 123,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "            DateTimeFormatter timeFormat \u003d DateTimeFormatter.ofPattern(\"HHmm\");"
       },
       {
         "lineNumber": 124,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            return new TimedAddCommand(command, description, date, time);"
+        "content": "            String dateAsString \u003d meta.substring(0, meta.indexOf(\u0027 \u0027));"
       },
       {
         "lineNumber": 125,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } else {"
+        "content": "            String timeAsString \u003d meta.substring(meta.indexOf(\u0027 \u0027) + 1);"
       },
       {
         "lineNumber": 126,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            LocalDate date \u003d LocalDate.parse(meta, dateFormat);"
+        "content": ""
       },
       {
         "lineNumber": 127,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            return new TimedAddCommand(command, description, date);"
+        "content": "            LocalDate date \u003d LocalDate.parse(dateAsString, dateFormat);"
       },
       {
         "lineNumber": 128,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "            LocalTime time \u003d LocalTime.parse(timeAsString, timeFormat);"
       },
       {
         "lineNumber": 129,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    }"
+        "content": ""
       },
       {
         "lineNumber": 130,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "            return new TimedAddCommand(command, description, date, time);"
       },
       {
         "lineNumber": 131,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    /**"
+        "content": "        } else {"
       },
       {
         "lineNumber": 132,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * Checks for any task formatting issues"
+        "content": "            LocalDate date \u003d LocalDate.parse(meta, dateFormat);"
       },
       {
         "lineNumber": 133,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     *"
+        "content": "            return new TimedAddCommand(command, description, date);"
       },
       {
         "lineNumber": 134,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @param type type of task."
+        "content": "        }"
       },
       {
         "lineNumber": 135,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @param input user input."
+        "content": "    }"
       },
       {
         "lineNumber": 136,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @throws DukeException if there are any formatting issues."
+        "content": ""
       },
       {
         "lineNumber": 137,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     */"
+        "content": "    /**"
       },
       {
         "lineNumber": 138,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    private static void checkTaskFormat(String type, String input) throws DukeException {"
+        "content": "     * Returns a timed command."
       },
       {
         "lineNumber": 139,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "     *"
       },
       {
         "lineNumber": 140,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        assert type !\u003d null \u0026\u0026 input !\u003d null;"
+        "content": "     * @param input user input."
       },
       {
         "lineNumber": 141,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        assert type.equals(\"todo\") || type.equals(\"deadline\") || type.equals(\"event\");"
+        "content": "     * @throws DukeException if there are any formatting issues."
       },
       {
         "lineNumber": 142,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "     */"
       },
       {
         "lineNumber": 143,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        int idxOfSpace \u003d input.indexOf(\u0027 \u0027);"
+        "content": "    private static AliasCommand getAliasCommand(String input) throws DukeException {"
       },
       {
         "lineNumber": 144,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        int idxOfMeta \u003d input.indexOf(\u0027/\u0027);"
+        "content": ""
       },
       {
         "lineNumber": 145,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        int infoLength \u003d idxOfMeta - (idxOfSpace + 1);"
+        "content": "        checkAliasFormat(input);"
       },
       {
         "lineNumber": 146,
@@ -10062,49 +10062,49 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasNoSpace \u003d idxOfSpace \u003d\u003d -1;"
+        "content": "        String mapping \u003d input.substring(input.indexOf(\u0027 \u0027));"
       },
       {
         "lineNumber": 148,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasTimestampOnly \u003d idxOfMeta !\u003d -1 \u0026\u0026 infoLength \u003c 1;"
+        "content": "        String alias \u003d mapping.split(\"\u003d\")[0].trim();"
       },
       {
         "lineNumber": 149,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasNoDescription \u003d hasNoSpace || hasTimestampOnly;"
+        "content": "        String typeAsString \u003d mapping.split(\"\u003d\")[1].trim();"
       },
       {
         "lineNumber": 150,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        CommandType commandToMap \u003d CommandType.valueOf(typeAsString.toUpperCase());"
       },
       {
         "lineNumber": 151,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (hasNoDescription) {"
+        "content": ""
       },
       {
         "lineNumber": 152,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! A task description cannot be empty!\");"
+        "content": "        return new AliasCommand(alias, commandToMap);"
       },
       {
         "lineNumber": 153,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "    }"
       },
       {
         "lineNumber": 154,
@@ -10118,77 +10118,77 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String info \u003d input.substring(input.indexOf(\u0027 \u0027) + 1);"
+        "content": "    /**"
       },
       {
         "lineNumber": 156,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "     * Checks for any task formatting issues"
       },
       {
         "lineNumber": 157,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (type.equals(\"todo\") \u0026\u0026 info.contains(\"/\")) {"
+        "content": "     *"
       },
       {
         "lineNumber": 158,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! A todo shouldn\u0027t contain a timestamp!\");"
+        "content": "     * @param type type of task."
       },
       {
         "lineNumber": 159,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "     * @param input user input."
       },
       {
         "lineNumber": 160,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (type.equals(\"deadline\") \u0026\u0026 !info.contains(\"/by\")) {"
+        "content": "     * @throws DukeException if there are any formatting issues."
       },
       {
         "lineNumber": 161,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! A deadline must contain \u0027/by\u0027!\");"
+        "content": "     */"
       },
       {
         "lineNumber": 162,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "    private static void checkTaskFormat(String type, String input) throws DukeException {"
       },
       {
         "lineNumber": 163,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (type.equals(\"event\") \u0026\u0026 !info.contains(\"/at\")) {"
+        "content": ""
       },
       {
         "lineNumber": 164,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An event must contain \u0027/at\u0027!\");"
+        "content": "        assert type !\u003d null \u0026\u0026 input !\u003d null;"
       },
       {
         "lineNumber": 165,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "        assert type.equals(\"todo\") || type.equals(\"deadline\") || type.equals(\"event\");"
       },
       {
         "lineNumber": 166,
@@ -10202,294 +10202,294 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean isTimedTask \u003d type.equals(\"deadline\") || type.equals(\"event\");"
+        "content": "        int idxOfSpace \u003d input.indexOf(\u0027 \u0027);"
       },
       {
         "lineNumber": 168,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasNoTimestamp \u003d isTimedTask \u0026\u0026 input.substring(idxOfMeta).length() \u003c 5;"
+        "content": "        int idxOfMeta \u003d input.indexOf(\u0027/\u0027);"
       },
       {
         "lineNumber": 169,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        int infoLength \u003d idxOfMeta - (idxOfSpace + 1);"
       },
       {
         "lineNumber": 170,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (type.equals(\"deadline\") \u0026\u0026 hasNoTimestamp) {"
+        "content": ""
       },
       {
         "lineNumber": 171,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! A deadline must contain a timestamp!\");"
+        "content": "        boolean hasNoSpace \u003d idxOfSpace \u003d\u003d -1;"
       },
       {
         "lineNumber": 172,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "        boolean hasTimestampOnly \u003d idxOfMeta !\u003d -1 \u0026\u0026 infoLength \u003c 1;"
       },
       {
         "lineNumber": 173,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (type.equals(\"event\") \u0026\u0026 hasNoTimestamp) {"
+        "content": "        boolean hasNoDescription \u003d hasNoSpace || hasTimestampOnly;"
       },
       {
         "lineNumber": 174,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An event must contain a timestamp!\");"
+        "content": ""
       },
       {
         "lineNumber": 175,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "        if (hasNoDescription) {"
       },
       {
         "lineNumber": 176,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    }"
+        "content": "            throw new DukeException(\"Oh dear! A task description cannot be empty!\");"
       },
       {
         "lineNumber": 177,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 178,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    /**"
+        "content": ""
       },
       {
         "lineNumber": 179,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * Checks for any alias formatting issues"
+        "content": "        String info \u003d input.substring(input.indexOf(\u0027 \u0027) + 1);"
       },
       {
         "lineNumber": 180,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     *"
+        "content": ""
       },
       {
         "lineNumber": 181,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @param input user input."
+        "content": "        if (type.equals(\"todo\") \u0026\u0026 info.contains(\"/\")) {"
       },
       {
         "lineNumber": 182,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     * @throws DukeException if there are any formatting issues."
+        "content": "            throw new DukeException(\"Oh dear! A todo shouldn\u0027t contain a timestamp!\");"
       },
       {
         "lineNumber": 183,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "     */"
+        "content": "        }"
       },
       {
         "lineNumber": 184,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    private static void checkAliasFormat(String input) throws DukeException {"
+        "content": "        if (type.equals(\"deadline\") \u0026\u0026 !info.contains(\"/by\")) {"
       },
       {
         "lineNumber": 185,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "            throw new DukeException(\"Oh dear! A deadline must contain \u0027/by\u0027!\");"
       },
       {
         "lineNumber": 186,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasNoSpace \u003d !input.contains(\" \");"
+        "content": "        }"
       },
       {
         "lineNumber": 187,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasNoEquals \u003d !input.contains(\"\u003d\");"
+        "content": "        if (type.equals(\"event\") \u0026\u0026 !info.contains(\"/at\")) {"
       },
       {
         "lineNumber": 188,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "            throw new DukeException(\"Oh dear! An event must contain \u0027/at\u0027!\");"
       },
       {
         "lineNumber": 189,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (hasNoSpace) {"
+        "content": "        }"
       },
       {
         "lineNumber": 190,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An alias command must have a mapping!\");"
+        "content": ""
       },
       {
         "lineNumber": 191,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } else if (hasNoEquals) {"
+        "content": "        boolean isTimedTask \u003d type.equals(\"deadline\") || type.equals(\"event\");"
       },
       {
         "lineNumber": 192,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An alias command must contain \u0027\u003d\u0027!\");"
+        "content": "        boolean hasNoTimestamp \u003d isTimedTask \u0026\u0026 input.substring(idxOfMeta).length() \u003c 5;"
       },
       {
         "lineNumber": 193,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": ""
       },
       {
         "lineNumber": 194,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        if (type.equals(\"deadline\") \u0026\u0026 hasNoTimestamp) {"
       },
       {
         "lineNumber": 195,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String mapping \u003d input.substring(input.indexOf(\u0027 \u0027));"
+        "content": "            throw new DukeException(\"Oh dear! A deadline must contain a timestamp!\");"
       },
       {
         "lineNumber": 196,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        int idxOfEquals \u003d mapping.indexOf(\u0027\u003d\u0027);"
+        "content": "        }"
       },
       {
         "lineNumber": 197,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String alias \u003d mapping.substring(0, idxOfEquals).trim();"
+        "content": "        if (type.equals(\"event\") \u0026\u0026 hasNoTimestamp) {"
       },
       {
         "lineNumber": 198,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean moreThanOneWord \u003d alias.contains(\" \");"
+        "content": "            throw new DukeException(\"Oh dear! An event must contain a timestamp!\");"
       },
       {
         "lineNumber": 199,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasNoAlias \u003d alias.length() \u003d\u003d 0;"
+        "content": "        }"
       },
       {
         "lineNumber": 200,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "    }"
       },
       {
         "lineNumber": 201,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String aliasInUpperCase \u003d alias.toUpperCase();"
+        "content": ""
       },
       {
         "lineNumber": 202,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean isACommandType \u003d false;"
+        "content": "    /**"
       },
       {
         "lineNumber": 203,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        for (CommandType type : CommandType.values()) {"
+        "content": "     * Checks for any alias formatting issues"
       },
       {
         "lineNumber": 204,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            if (aliasInUpperCase.equals(type.name())) {"
+        "content": "     *"
       },
       {
         "lineNumber": 205,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                isACommandType \u003d true;"
+        "content": "     * @param input user input."
       },
       {
         "lineNumber": 206,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "                break;"
+        "content": "     * @throws DukeException if there are any formatting issues."
       },
       {
         "lineNumber": 207,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            }"
+        "content": "     */"
       },
       {
         "lineNumber": 208,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "    private static void checkAliasFormat(String input) throws DukeException {"
       },
       {
         "lineNumber": 209,
@@ -10503,192 +10503,360 @@
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (moreThanOneWord) {"
+        "content": "        boolean hasNoSpace \u003d !input.contains(\" \");"
       },
       {
         "lineNumber": 211,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An alias can only consist of one word!\");"
+        "content": "        boolean hasNoEquals \u003d !input.contains(\"\u003d\");"
       },
       {
         "lineNumber": 212,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } else if (hasNoAlias) {"
+        "content": ""
       },
       {
         "lineNumber": 213,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An alias command needs an alias to map!\");"
+        "content": "        if (hasNoSpace) {"
       },
       {
         "lineNumber": 214,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } else if (isACommandType) {"
+        "content": "            throw new DukeException(\"Oh dear! An alias command must have a mapping!\");"
       },
       {
         "lineNumber": 215,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An alias cannot be a command type!\");"
+        "content": "        } else if (hasNoEquals) {"
       },
       {
         "lineNumber": 216,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "            throw new DukeException(\"Oh dear! An alias command must contain \u0027\u003d\u0027!\");"
       },
       {
         "lineNumber": 217,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        }"
       },
       {
         "lineNumber": 218,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean endsWithEquals \u003d idxOfEquals + 1 \u003e\u003d mapping.length();"
+        "content": ""
       },
       {
         "lineNumber": 219,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        String mapping \u003d input.substring(input.indexOf(\u0027 \u0027));"
       },
       {
         "lineNumber": 220,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (endsWithEquals) {"
+        "content": "        int idxOfEquals \u003d mapping.indexOf(\u0027\u003d\u0027);"
       },
       {
         "lineNumber": 221,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An alias command needs a command type to map to!\");"
+        "content": "        String alias \u003d mapping.substring(0, idxOfEquals).trim();"
       },
       {
         "lineNumber": 222,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "        boolean moreThanOneWord \u003d alias.contains(\" \");"
       },
       {
         "lineNumber": 223,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        boolean hasNoAlias \u003d alias.length() \u003d\u003d 0;"
       },
       {
         "lineNumber": 224,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        String type \u003d mapping.substring(idxOfEquals + 1).trim();"
+        "content": ""
       },
       {
         "lineNumber": 225,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        boolean hasNoType \u003d type.length() \u003d\u003d 0;"
+        "content": "        String aliasInUpperCase \u003d alias.toUpperCase();"
       },
       {
         "lineNumber": 226,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "        boolean isACommandType \u003d false;"
       },
       {
         "lineNumber": 227,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        if (hasNoType) {"
+        "content": "        for (CommandType type : CommandType.values()) {"
       },
       {
         "lineNumber": 228,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! An alias command needs a command type to map to!\");"
+        "content": "            if (aliasInUpperCase.equals(type.name())) {"
       },
       {
         "lineNumber": 229,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "                isACommandType \u003d true;"
       },
       {
         "lineNumber": 230,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": ""
+        "content": "                break;"
       },
       {
         "lineNumber": 231,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        try {"
+        "content": "            }"
       },
       {
         "lineNumber": 232,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            CommandType.valueOf(type.toUpperCase());"
+        "content": "        }"
       },
       {
         "lineNumber": 233,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        } catch (IllegalArgumentException ex) {"
+        "content": ""
       },
       {
         "lineNumber": 234,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "            throw new DukeException(\"Oh dear! \" + type + \" is not a valid command type!\");"
+        "content": "        if (moreThanOneWord) {"
       },
       {
         "lineNumber": 235,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "        }"
+        "content": "            throw new DukeException(\"Oh dear! An alias can only consist of one word!\");"
       },
       {
         "lineNumber": 236,
         "author": {
           "gitId": "justintzuriel"
         },
-        "content": "    }"
+        "content": "        } else if (hasNoAlias) {"
       },
       {
         "lineNumber": 237,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "            throw new DukeException(\"Oh dear! An alias command needs an alias to map!\");"
+      },
+      {
+        "lineNumber": 238,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        } else if (isACommandType) {"
+      },
+      {
+        "lineNumber": 239,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "            throw new DukeException(\"Oh dear! An alias cannot be a command type!\");"
+      },
+      {
+        "lineNumber": 240,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 241,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 242,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        boolean endsWithEquals \u003d idxOfEquals + 1 \u003e\u003d mapping.length();"
+      },
+      {
+        "lineNumber": 243,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 244,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        if (endsWithEquals) {"
+      },
+      {
+        "lineNumber": 245,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "            throw new DukeException(\"Oh dear! An alias command needs a command type to map to!\");"
+      },
+      {
+        "lineNumber": 246,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 247,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 248,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        String type \u003d mapping.substring(idxOfEquals + 1).trim();"
+      },
+      {
+        "lineNumber": 249,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        boolean hasNoType \u003d type.length() \u003d\u003d 0;"
+      },
+      {
+        "lineNumber": 250,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 251,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        if (hasNoType) {"
+      },
+      {
+        "lineNumber": 252,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "            throw new DukeException(\"Oh dear! An alias command needs a command type to map to!\");"
+      },
+      {
+        "lineNumber": 253,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 254,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": ""
+      },
+      {
+        "lineNumber": 255,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        try {"
+      },
+      {
+        "lineNumber": 256,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "            CommandType.valueOf(type.toUpperCase());"
+      },
+      {
+        "lineNumber": 257,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        } catch (IllegalArgumentException ex) {"
+      },
+      {
+        "lineNumber": 258,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "            throw new DukeException(\"Oh dear! \" + type + \" is not a valid command type!\");"
+      },
+      {
+        "lineNumber": 259,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "        }"
+      },
+      {
+        "lineNumber": 260,
+        "author": {
+          "gitId": "justintzuriel"
+        },
+        "content": "    }"
+      },
+      {
+        "lineNumber": 261,
         "author": {
           "gitId": "justintzuriel"
         },
@@ -10696,7 +10864,7 @@
       }
     ],
     "authorContributionMap": {
-      "justintzuriel": 237
+      "justintzuriel": 261
     }
   },
   {
