@@ -32,6 +32,7 @@ window.vSummary = {
       isSafariBrowser: /.*Version.*Safari.*/.test(navigator.userAgent),
       // eslint-disable-next-line new-cap
       randomGenerator: new Math.seedrandom('Seeded Random Generator'),
+      filterGroupSelectionWatcherFlag: false,
     };
   },
   watch: {
@@ -54,20 +55,18 @@ window.vSummary = {
     },
 
     filterGroupSelection() {
-      const { allGroupsMerged } = this;
-      this.getFilteredRepos();
-
-      // merge group is not allowed when group by none
-      // also reset merged groups
-      if (this.filterGroupSelection === 'groupByNone' || !allGroupsMerged) {
-        this.$store.commit('updateMergedGroup', []);
-      } else {
-        const mergedGroups = [];
-        this.filtered.forEach((group) => {
-          mergedGroups.push(this.getGroupName(group));
-        });
-        this.$store.commit('updateMergedGroup', mergedGroups);
+      // Deactivates watcher
+      if (!this.filterGroupSelectionWatcherFlag) {
+        return;
       }
+      const { allGroupsMerged } = this;
+
+      this.$store.commit('incrementLoadingOverlayCount', 1);
+      setTimeout(() => {
+        this.getFilteredRepos();
+        this.updateMergedGroup(allGroupsMerged);
+        this.$store.commit('incrementLoadingOverlayCount', -1);
+      });
     },
 
     tmpFilterSinceDate() {
@@ -119,6 +118,9 @@ window.vSummary = {
       let totalCount = 0;
       this.repos.forEach((repo) => {
         repo.users.forEach((user) => {
+          if (user.checkedFileTypeContribution === undefined) {
+            this.updateCheckedFileTypeContribution(user);
+          }
           if (user.checkedFileTypeContribution > 0) {
             totalCount += 1;
             totalLines += user.checkedFileTypeContribution;
@@ -142,6 +144,7 @@ window.vSummary = {
           this.filtered.forEach((group) => {
             mergedGroups.push(this.getGroupName(group));
           });
+          this.filtered = [];
           this.$store.commit('updateMergedGroup', mergedGroups);
         } else {
           this.$store.commit('updateMergedGroup', []);
@@ -243,8 +246,10 @@ window.vSummary = {
 
       if (hash.timeframe) { this.filterTimeFrame = hash.timeframe; }
       if (hash.mergegroup) {
-        // make a copy to prevent custom merged groups from overwritten
-        this.customMergedGroups = hash.mergegroup;
+        this.$store.commit(
+            'updateMergedGroup',
+            hash.mergegroup.split(window.HASH_DELIMITER),
+        );
       }
       if (hash.since && dateFormatRegex.test(hash.since)) {
         this.tmpFilterSinceDate = hash.since;
@@ -264,15 +269,6 @@ window.vSummary = {
         this.checkedFileTypes = parsedFileTypes.filter((type) => this.fileTypes.includes(type));
       }
       window.decodeHash();
-    },
-
-    restoreMergedGroups() {
-      if (this.customMergedGroups) {
-        this.$store.commit(
-            'updateMergedGroup',
-            this.customMergedGroups.split(window.HASH_DELIMITER),
-        );
-      }
     },
 
     getDates() {
@@ -319,8 +315,13 @@ window.vSummary = {
       this.getDates();
       window.deactivateAllOverlays();
 
-      this.getFilteredRepos();
-      this.getMergedRepos();
+      this.$store.commit('incrementLoadingOverlayCount', 1);
+      // Use setTimeout() to force this.filtered to update only after loading screen is displayed.
+      setTimeout(() => {
+        this.getFilteredRepos();
+        this.getMergedRepos();
+        this.$store.commit('incrementLoadingOverlayCount', -1);
+      });
     },
 
     getFilteredRepos() {
@@ -361,6 +362,20 @@ window.vSummary = {
         isSortingWithinDsc: this.isSortingWithinDsc,
       };
       this.filtered = this.sortFiltered(this.filtered, filterControl);
+    },
+
+    updateMergedGroup(allGroupsMerged) {
+      // merge group is not allowed when group by none
+      // also reset merged groups
+      if (this.filterGroupSelection === 'groupByNone' || !allGroupsMerged) {
+        this.$store.commit('updateMergedGroup', []);
+      } else {
+        const mergedGroups = [];
+        this.filtered.forEach((group) => {
+          mergedGroups.push(this.getGroupName(group));
+        });
+        this.$store.commit('updateMergedGroup', mergedGroups);
+      }
     },
 
     getMergedRepos() {
@@ -916,11 +931,10 @@ window.vSummary = {
     });
   },
   mounted() {
-    this.$store.commit('updateMergedGroup', []);
-
-    // restoring custom merged groups after watchers finish their job
+    // Delay execution of filterGroupSelection watcher
+    // to prevent clearing of merged groups
     setTimeout(() => {
-      this.restoreMergedGroups();
+      this.filterGroupSelectionWatcherFlag = true;
     }, 0);
   },
   components: {
