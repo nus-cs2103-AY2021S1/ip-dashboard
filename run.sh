@@ -15,3 +15,4 @@
 ### java -jar RepoSense.jar --repos https://github.com/reposense/RepoSense.git
 
 java -jar RepoSense.jar --config ./configs --since 14/08/2020 --until 27/09/2020 --formats java md fxml sh bat gradle txt --timezone UTC+08
+
